@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Furma.tech — Digital Venture Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;1,400;1,600&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #fafafa;
+    --fg:       #0d0d0d;
+    --grey-50:  #f7f7f7;
+    --grey-100: #f0f0f0;
+    --grey-200: #e2e2e2;
+    --grey-400: #a0a0a0;
+    --grey-600: #525252;
+    --grey-800: #282828;
+    --black:    #0d0d0d;
+    --white:    #fafafa;
+    --border:   #e2e2e2;
+    --radius:   4px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ─── UTILITIES ─────────────────────────────────────────────── */
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .serif { font-family: 'Cormorant', serif; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grey-600);
+    border: 1px solid var(--grey-200);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  .tag-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+
+  .tag-dot.live { color: #22c55e; }
+  .tag-dot.dev  { color: #f59e0b; }
+  .tag-dot.soon { color: var(--grey-400); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: var(--radius);
+    transition: all 0.18s ease;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-dark {
+    background: var(--black);
+    color: var(--white);
+  }
+  .btn-dark:hover { background: var(--grey-800); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--grey-400); background: var(--grey-50); }
+
+  .btn-white {
+    background: var(--white);
+    color: var(--black);
+  }
+  .btn-white:hover { background: var(--grey-100); }
+
+  /* ─── ANIMATIONS ─────────────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .animate-fade-up {
+    opacity: 0;
+    animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.35s; }
+  .delay-4 { animation-delay: 0.5s; }
+  .delay-5 { animation-delay: 0.65s; }
+
+  /* ─── NAV ────────────────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 64px;
+    background: rgba(250, 250, 250, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    color: var(--fg);
+  }
+
+  .nav-logo span {
+    color: var(--grey-400);
+    font-weight: 400;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    color: var(--grey-600);
+    transition: color 0.15s;
+  }
+
+  .nav-links a:hover { color: var(--fg); }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* ─── HERO ───────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 64px;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 48px 80px 48px;
+    border-right: 1px solid var(--border);
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .hero-line {
+    width: 40px;
+    height: 1px;
+    background: var(--grey-400);
+  }
+
+  .hero-eyebrow-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-600);
+  }
+
+  .hero-title {
+    font-family: 'Cormorant', serif;
+    font-size: clamp(52px, 6vw, 88px);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    margin-bottom: 28px;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--grey-600);
+  }
+
+  .hero-body {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--grey-600);
+    max-width: 440px;
+    margin-bottom: 40px;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 80px 48px;
+    background: var(--grey-50);
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 48px;
+  }
+
+  .hero-stat {
+    background: var(--white);
+    padding: 28px 24px;
+  }
+
+  .hero-stat-num {
+    font-family: 'Cormorant', serif;
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--fg);
+    margin-bottom: 6px;
+  }
+
+  .hero-stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grey-400);
+  }
+
+  .hero-verticals {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .hero-vertical {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--fg);
+    transition: all 0.15s;
+  }
+
+  .hero-vertical:hover {
+    border-color: var(--fg);
+    background: var(--fg);
+    color: var(--white);
+  }
+
+  .hero-vertical:hover .hero-vertical-tag {
+    border-color: rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.6);
+  }
+
+  .hero-vertical-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-vertical-desc {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--grey-400);
+    margin-top: 2px;
+    transition: color 0.15s;
+  }
+
+  .hero-vertical:hover .hero-vertical-desc { color: rgba(255,255,255,0.5); }
+
+  .hero-vertical-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--grey-400);
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+    border-radius: 2px;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .hero-vertical-arrow {
+    font-size: 18px;
+    color: var(--grey-400);
+    margin-left: 12px;
+    transition: color 0.15s;
+  }
+
+  .hero-vertical:hover .hero-vertical-arrow { color: var(--white); }
+
+  /* ─── SECTION SHARED ─────────────────────────────────────────── */
+  .section { padding: 120px 48px; }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 64px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-400);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+  }
+
+  .section-title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--grey-500);
+  }
+
+  .section-desc {
+    max-width: 380px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--grey-600);
+    padding-top: 8px;
+  }
+
+  /* ─── AITLAS SECTION (dark) ──────────────────────────────────── */
+  .section-aitlas {
+    background: var(--black);
+    color: var(--white);
+    padding: 120px 48px;
+  }
+
+  .section-aitlas .section-label { color: rgba(255,255,255,0.3); }
+  .section-aitlas .section-title { color: var(--white); }
+  .section-aitlas .section-desc  { color: rgba(255,255,255,0.5); }
+  .section-aitlas .section-header { border-bottom-color: rgba(255,255,255,0.1); }
+
+  /* Aitlas product cards */
+  .aitlas-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .aitlas-card {
+    background: var(--black);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+
+  .aitlas-card:hover { background: #141414; }
+
+  .aitlas-card-index {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.2);
+    margin-bottom: 40px;
+  }
+
+  .aitlas-card-icon {
+    font-size: 28px;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .aitlas-card-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .aitlas-card-domain {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.06em;
+    margin-bottom: 20px;
+  }
+
+  .aitlas-card-desc {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 32px;
+  }
+
+  .aitlas-card-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 40px;
+  }
+
+  .aitlas-card-features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .aitlas-card-features li::before {
+    content: '';
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    flex-shrink: 0;
+  }
+
+  .aitlas-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 2px;
+    transition: border-color 0.15s;
+  }
+
+  .aitlas-card-cta:hover { border-color: var(--white); }
+
+  .aitlas-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+
+  .aitlas-badge-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+  }
+
+  .aitlas-badge-dot.green { background: #22c55e; }
+  .aitlas-badge-dot.amber { background: #f59e0b; }
+
+  /* Featured card (first — larger) */
+  .aitlas-card.featured {
+    grid-row: span 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ─── SAAS SECTION ───────────────────────────────────────────── */
+  .saas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .saas-card {
+    background: var(--white);
+    padding: 40px 36px;
+    transition: all 0.18s ease;
+    text-decoration: none;
+    color: var(--fg);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .saas-card:hover {
+    background: var(--grey-50);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+    z-index: 1;
+  }
+
+  .saas-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .saas-card-icon {
+    font-size: 24px;
+  }
+
+  .saas-card-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    border: 1px solid;
+  }
+
+  .status-live   { color: #16a34a; border-color: #bbf7d0; background: #f0fdf4; }
+  .status-dev    { color: #b45309; border-color: #fde68a; background: #fffbeb; }
+  .status-soon   { color: var(--grey-400); border-color: var(--grey-200); background: var(--grey-50); }
+
+  .saas-card-name {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .saas-card-category {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--grey-400);
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+  }
+
+  .saas-card-desc {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--grey-600);
+    flex-grow: 1;
+    margin-bottom: 24px;
+  }
+
+  .saas-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 1px solid var(--grey-100);
+  }
+
+  .saas-card-integration {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--grey-400);
+    letter-spacing: 0.04em;
+  }
+
+  .saas-card-link {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fg);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .saas-card:hover .saas-card-link { opacity: 1; }
+
+  /* ─── STUDIO SECTION ─────────────────────────────────────────── */
+  .studio {
+    background: var(--grey-50);
+    padding: 120px 48px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .studio-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 96px;
+    align-items: start;
+  }
+
+  .studio-body {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.75;
+    color: var(--grey-600);
+    margin-top: 24px;
+  }
+
+  .studio-body p + p { margin-top: 16px; }
+
+  .studio-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-top: 8px;
+  }
+
+  .pillar {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    transition: border-color 0.15s;
+  }
+
+  .pillar:hover { border-color: var(--grey-800); }
+
+  .pillar-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--grey-400);
+    letter-spacing: 0.1em;
+    padding-top: 2px;
+    flex-shrink: 0;
+    width: 24px;
+  }
+
+  .pillar-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  .pillar-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--grey-600);
+  }
+
+  /* ─── CTA SECTION ────────────────────────────────────────────── */
+  .cta-section {
+    padding: 120px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .cta-block {
+    padding: 64px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 320px;
+  }
+
+  .cta-block.dark {
+    background: var(--black);
+    color: var(--white);
+  }
+
+  .cta-block.light {
+    background: var(--white);
+    color: var(--fg);
+  }
+
+  .cta-block-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.4;
+    margin-bottom: 20px;
+  }
+
+  .cta-block-title {
+    font-family: 'Cormorant', serif;
+    font-size: clamp(32px, 3.5vw, 48px);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+
+  .cta-block-desc {
+    font-size: 15px;
+    line-height: 1.6;
+    opacity: 0.55;
+    max-width: 340px;
+    margin-bottom: 40px;
+  }
+
+  /* ─── FOOTER ─────────────────────────────────────────────────── */
+  footer {
+    background: var(--black);
+    color: var(--white);
+    padding: 64px 48px 40px;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 32px;
+  }
+
+  .footer-brand-name {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .footer-brand-name span { color: rgba(255,255,255,0.3); font-weight: 400; }
+
+  .footer-brand-desc {
+    font-size: 13px;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.4);
+    max-width: 260px;
+  }
+
+  .footer-col-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    margin-bottom: 16px;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .footer-links a:hover { color: var(--white); }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.04em;
+  }
+
+  .footer-entity {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── DIVIDER ─────────────────────────────────────────────────── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0 48px;
+  }
+
+  /* ─── SCROLL REVEAL ──────────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── TICKER ─────────────────────────────────────────────────── */
+  .ticker-wrap {
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--grey-50);
+    padding: 14px 0;
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 0;
+    width: max-content;
+    animation: ticker 28s linear infinite;
+  }
+
+  .ticker-track:hover { animation-play-state: paused; }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .ticker-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grey-400);
+    white-space: nowrap;
+  }
+
+  .ticker-item::after {
+    content: '·';
+    font-size: 18px;
+    color: var(--grey-200);
+    margin-left: 16px;
+  }
+
+  /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { border-top: 1px solid var(--border); }
+    .aitlas-grid { grid-template-columns: 1fr; }
+    .saas-grid { grid-template-columns: 1fr 1fr; }
+    .studio-inner { grid-template-columns: 1fr; gap: 48px; }
+    .cta-section { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero-left, .hero-right { padding: 48px 20px; }
+    .section, .section-aitlas, .studio { padding: 80px 20px; }
+    .saas-grid { grid-template-columns: 1fr; }
+    .cta-block { padding: 48px 32px; }
+    .footer-top { grid-template-columns: 1fr; gap: 32px; }
+    footer { padding: 48px 20px 32px; }
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ──────────────────────────────────────────────────────── -->
+<nav>
+  <a href="#" class="nav-logo">furma<span>.tech</span></a>
+  <ul class="nav-links">
+    <li><a href="#aitlas">Aitlas</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#studio">Studio</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="#aitlas" class="btn btn-outline">Explore Aitlas</a>
+    <a href="#contact" class="btn btn-dark">Get in touch →</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ──────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow animate-fade-up">
+      <div class="hero-line"></div>
+      <span class="hero-eyebrow-text">Digital Venture Studio — Est. 2026</span>
+    </div>
+
+    <h1 class="hero-title animate-fade-up delay-1">
+      We build<br>
+      software<br>
+      <em>that works.</em>
+    </h1>
+
+    <p class="hero-body animate-fade-up delay-2">
+      Furma.tech is a bootstrapped venture studio operating two verticals: 
+      industry-grade SaaS tools for local businesses, and Aitlas — a sovereign 
+      AI ecosystem for the next generation of autonomous work.
+    </p>
+
+    <div class="hero-ctas animate-fade-up delay-3">
+      <a href="#aitlas" class="btn btn-dark">See Aitlas →</a>
+      <a href="#products" class="btn btn-outline">Industry tools</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-stats animate-fade-up delay-2">
+      <div class="hero-stat">
+        <div class="hero-stat-num">2</div>
+        <div class="hero-stat-label">Verticals</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">10</div>
+        <div class="hero-stat-label">Products</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">0%</div>
+        <div class="hero-stat-label">VC funding</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">EU</div>
+        <div class="hero-stat-label">Entity (OÜ)</div>
+      </div>
+    </div>
+
+    <div class="hero-verticals animate-fade-up delay-3">
+      <a href="#aitlas" class="hero-vertical">
+        <div>
+          <div class="hero-vertical-title">Aitlas — AI Ecosystem</div>
+          <div class="hero-vertical-desc">Nexus · Agents · Actions · f.loop</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="hero-vertical-tag">In Development</span>
+          <span class="hero-vertical-arrow">↗</span>
+        </div>
+      </a>
+      <a href="#products" class="hero-vertical">
+        <div>
+          <div class="hero-vertical-title">Industry SaaS</div>
+          <div class="hero-vertical-desc">Tourism · Hospitality · Civic</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="hero-vertical-tag">Launching</span>
+          <span class="hero-vertical-arrow">↗</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TICKER ────────────────────────────────────────────────────── -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">Nexus</span>
+    <span class="ticker-item">f.loop</span>
+    <span class="ticker-item">Agents Store</span>
+    <span class="ticker-item">restauManager</span>
+    <span class="ticker-item">BYOK Architecture</span>
+    <span class="ticker-item">GuideTours</span>
+    <span class="ticker-item">MCP Protocol</span>
+    <span class="ticker-item">f.rsrx</span>
+    <span class="ticker-item">openGovern</span>
+    <span class="ticker-item">Durable Agents</span>
+    <span class="ticker-item">f.twyt</span>
+    <span class="ticker-item">QArt</span>
+    <span class="ticker-item">Nexus</span>
+    <span class="ticker-item">f.loop</span>
+    <span class="ticker-item">Agents Store</span>
+    <span class="ticker-item">restauManager</span>
+    <span class="ticker-item">BYOK Architecture</span>
+    <span class="ticker-item">GuideTours</span>
+    <span class="ticker-item">MCP Protocol</span>
+    <span class="ticker-item">f.rsrx</span>
+    <span class="ticker-item">openGovern</span>
+    <span class="ticker-item">Durable Agents</span>
+    <span class="ticker-item">f.twyt</span>
+    <span class="ticker-item">QArt</span>
+  </div>
+</div>
+
+<!-- ─── AITLAS ────────────────────────────────────────────────────── -->
+<section class="section-aitlas" id="aitlas">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">Vertical B — The AI Ecosystem</div>
+      <h2 class="section-title">Aitlas</h2>
+    </div>
+    <p class="section-desc">
+      A sovereign agentic operating system. Bring your own keys.
+      Run real agents. Own your infrastructure.
+    </p>
+  </div>
+
+  <div class="aitlas-grid reveal">
+
+    <!-- Nexus -->
+    <div class="aitlas-card featured">
+      <div class="aitlas-card-index">01</div>
+      <div class="aitlas-badge">
+        <span class="aitlas-badge-dot amber"></span>
+        In Development
+      </div>
+      <span class="aitlas-card-icon">⬡</span>
+      <div class="aitlas-card-name">Nexus</div>
+      <div class="aitlas-card-domain">nexus.aitlas.xyz</div>
+      <p class="aitlas-card-desc">
+        The command center. A web-based AI workspace where you bring your own 
+        OpenAI, Anthropic, or DeepSeek key — we never touch your tokens. 
+        Two modes: free basic chat or agentic mode with full tool access.
+      </p>
+      <ul class="aitlas-card-features">
+        <li>BYOK — your keys, your costs</li>
+        <li>Multi-provider model selector</li>
+        <li>MCP tool registry</li>
+        <li>Persistent conversation threads</li>
+        <li>Real-time task monitor</li>
+      </ul>
+      <a href="#" class="aitlas-card-cta">Learn more →</a>
+    </div>
+
+    <!-- Agents -->
+    <div class="aitlas-card">
+      <div class="aitlas-card-index">02</div>
+      <div class="aitlas-badge">
+        <span class="aitlas-badge-dot amber"></span>
+        In Development
+      </div>
+      <span class="aitlas-card-icon">◈</span>
+      <div class="aitlas-card-name">Agents</div>
+      <div class="aitlas-card-domain">agents.aitlas.xyz</div>
+      <p class="aitlas-card-desc">
+        The marketplace for pre-built Super Agents. Hire a Crypto Quant, 
+        a Code Guardian, or a Support Bot. Each agent is a curated stack 
+        of skills and tools — ready to work.
+      </p>
+      <ul class="aitlas-card-features">
+        <li>Community agent marketplace</li>
+        <li>30/70 revenue share for authors</li>
+        <li>Free trial on every agent</li>
+        <li>Version-locked hiring</li>
+      </ul>
+      <a href="#" class="aitlas-card-cta">Browse store →</a>
+    </div>
+
+    <!-- Actions -->
+    <div class="aitlas-card">
+      <div class="aitlas-card-index">03</div>
+      <div class="aitlas-badge">
+        <span class="aitlas-badge-dot green"></span>
+        Live
+      </div>
+      <span class="aitlas-card-icon">⚡</span>
+      <div class="aitlas-card-name">Actions</div>
+      <div class="aitlas-card-domain">f.xyz</div>
+      <p class="aitlas-card-desc">
+        Sovereign micro-tools exposed via MCP. Each action is a 
+        verified, audited compute service that agents can call.
+        Credits consumed. Results delivered.
+      </p>
+      <ul class="aitlas-card-features">
+        <li>f.twyt — Twitter intelligence</li>
+        <li>f.library — Vector knowledge base</li>
+        <li>f.rsrx — Deep research</li>
+        <li>f.loop — Durable agent runtime</li>
+      </ul>
+      <a href="#" class="aitlas-card-cta">See all actions →</a>
+    </div>
+
+  </div>
+
+  <div style="margin-top: 48px; padding-top: 48px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between;" class="reveal">
+    <p style="font-size:14px; color: rgba(255,255,255,0.35); max-width: 420px; line-height: 1.7;">
+      Aitlas runs on a pay-for-compute model. You pay for tool execution — 
+      never for LLM tokens. Basic chat is free forever with BYOK.
+    </p>
+    <div style="display: flex; gap: 12px;">
+      <a href="#" class="btn btn-white">Explore Aitlas →</a>
+      <a href="#" class="btn" style="background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.1);">Join waitlist</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── INDUSTRY SAAS ─────────────────────────────────────────────── -->
+<section class="section" id="products">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">Vertical A — Industry Software</div>
+      <h2 class="section-title">Built for<br><em>real businesses.</em></h2>
+    </div>
+    <p class="section-desc">
+      Focused, profitable SaaS tools for tourism, hospitality, 
+      civic tech, and beyond. No AI hype. Just software that 
+      solves specific problems.
+    </p>
+  </div>
+
+  <div class="saas-grid reveal">
+
+    <!-- restauManager -->
+    <a href="#" class="saas-card">
+      <div class="saas-card-header">
+        <span class="saas-card-icon">🍽</span>
+        <span class="saas-card-status status-dev">In Development</span>
+      </div>
+      <div class="saas-card-name">restauManager</div>
+      <div class="saas-card-category">Hospitality · Restaurant</div>
+      <p class="saas-card-desc">
+        Floor plan management, reservation control, and staff coordination 
+        for restaurants. Direct integration with TheFork for real-time 
+        booking sync. Built for Catalonia, scales anywhere.
+      </p>
+      <div class="saas-card-footer">
+        <span class="saas-card-integration mono">TheFork API</span>
+        <a href="#" class="saas-card-link">View product →</a>
+      </div>
+    </a>
+
+    <!-- GuideTours -->
+    <a href="#" class="saas-card">
+      <div class="saas-card-header">
+        <span class="saas-card-icon">🗺</span>
+        <span class="saas-card-status status-dev">In Development</span>
+      </div>
+      <div class="saas-card-name">GuideTours</div>
+      <div class="saas-card-category">Tourism · Tour Operators</div>
+      <p class="saas-card-desc">
+        Booking management and calendar sync for tour companies and 
+        local guides. Connects with Viator to eliminate manual data 
+        entry and missed bookings.
+      </p>
+      <div class="saas-card-footer">
+        <span class="saas-card-integration mono">Viator API</span>
+        <a href="#" class="saas-card-link">View product →</a>
+      </div>
+    </a>
+
+    <!-- QArt -->
+    <a href="#" class="saas-card">
+      <div class="saas-card-header">
+        <span class="saas-card-icon">◼</span>
+        <span class="saas-card-status status-soon">Coming Soon</span>
+      </div>
+      <div class="saas-card-name">QArt</div>
+      <div class="saas-card-category">Marketing · Brand</div>
+      <p class="saas-card-desc">
+        AI-generated QR codes that look like art. Transform any link 
+        into a branded, scannable visual asset. Perfect for menus, 
+        posters, and packaging.
+      </p>
+      <div class="saas-card-footer">
+        <span class="saas-card-integration mono">Standalone</span>
+        <a href="#" class="saas-card-link">View product →</a>
+      </div>
+    </a>
+
+    <!-- FinanceHub -->
+    <a href="#" class="saas-card">
+      <div class="saas-card-header">
+        <span class="saas-card-icon">📈</span>
+        <span class="saas-card-status status-soon">Paused</span>
+      </div>
+      <div class="saas-card-name">FinanceHub</div>
+      <div class="saas-card-category">Finance · Market Data</div>
+      <p class="saas-card-desc">
+        Personal market data tracking and portfolio monitoring. 
+        Aggregates feeds, tracks positions, and surfaces actionable 
+        signals without the noise of full trading platforms.
+      </p>
+      <div class="saas-card-footer">
+        <span class="saas-card-integration mono">Market APIs</span>
+        <a href="#" class="saas-card-link">View product →</a>
+      </div>
+    </a>
+
+    <!-- OneToMany -->
+    <a href="#" class="saas-card">
+      <div class="saas-card-header">
+        <span class="saas-card-icon">◎</span>
+        <span class="saas-card-status status-soon">Paused</span>
+      </div>
+      <div class="saas-card-name">OneToMany</div>
+      <div class="saas-card-category">Productivity · Goals</div>
+      <p class="saas-card-desc">
+        Goal setting and habit tracking designed around the principle 
+        that one discipline cascades into many. Focused, opinionated, 
+        and built for people who actually ship.
+      </p>
+      <div class="saas-card-footer">
+        <span class="saas-card-integration mono">Standalone</span>
+        <a href="#" class="saas-card-link">View product →</a>
+      </div>
+    </a>
+
+    <!-- LinkUp -->
+    <a href="#" class="saas-card">
+      <div class="saas-card-header">
+        <span class="saas-card-icon">⬡</span>
+        <span class="saas-card-status status-soon">Paused</span>
+      </div>
+      <div class="saas-card-name">LinkUp</div>
+      <div class="saas-card-category">Social · Video</div>
+      <p class="saas-card-desc">
+        Short-video social matching. Connect people through shared 
+        interests expressed in video. Think LinkedIn meets Reels — 
+        for professional communities.
+      </p>
+      <div class="saas-card-footer">
+        <span class="saas-card-integration mono">Standalone</span>
+        <a href="#" class="saas-card-link">View product →</a>
+      </div>
+    </a>
+
+    <!-- openGovern -->
+    <a href="#" class="saas-card" style="grid-column: 1 / -1; display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center;">
+      <div>
+        <div class="saas-card-header" style="margin-bottom:12px">
+          <span class="saas-card-icon">🏛</span>
+          <span class="saas-card-status status-soon">Paused</span>
+        </div>
+        <div class="saas-card-name">openGovern</div>
+        <div class="saas-card-category">Civic Tech · Municipal</div>
+        <p class="saas-card-desc" style="margin-bottom:0">
+          Direct democracy tooling for local governments and civic organizations. 
+          Structured polling, proposal tracking, and transparent voting for 
+          municipal decisions — starting with Catalan municipalities.
+        </p>
+      </div>
+      <div style="text-align:right; flex-shrink: 0;">
+        <div class="saas-card-footer" style="border:none; padding:0; justify-content:flex-end">
+          <a href="#" class="saas-card-link" style="opacity:1">View product →</a>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ─── STUDIO ────────────────────────────────────────────────────── -->
+<section class="studio" id="studio">
+  <div class="studio-inner">
+    <div class="reveal">
+      <div class="section-label">The Studio</div>
+      <h2 class="section-title" style="margin-bottom: 0;">About<br><em>Furma.tech</em></h2>
+      <div class="studio-body">
+        <p>
+          Furma.tech is a 100% bootstrapped digital venture studio 
+          based in Sitges, Catalonia, operating as an Estonian OÜ. 
+          We build, own, and operate every product we ship.
+        </p>
+        <p>
+          No venture capital. No burn rate anxiety. The business 
+          model is simple: industry SaaS generates steady MRR that 
+          funds AI R&D. Everything compounds.
+        </p>
+        <p>
+          We build in public, document everything, and operate with 
+          a strict constraint: if it can't sustain itself, it doesn't 
+          get built.
+        </p>
+      </div>
+    </div>
+
+    <div class="studio-pillars reveal">
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <div>
+          <div class="pillar-title">Bootstrapped forever</div>
+          <p class="pillar-desc">
+            0% VC. 100% retained earnings. Profits are reinvested 
+            into infrastructure and product — never extracted early.
+          </p>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <div>
+          <div class="pillar-title">Sovereign by design</div>
+          <p class="pillar-desc">
+            Every Aitlas product runs on user-owned keys and 
+            self-hosted compute. We sell tools, not lock-in.
+          </p>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03</div>
+        <div>
+          <div class="pillar-title">Standards over proprietary</div>
+          <p class="pillar-desc">
+            MCP-first, polyrepo architecture, open schemas. 
+            Built to last and built to interoperate.
+          </p>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">04</div>
+        <div>
+          <div class="pillar-title">Profitable, not famous</div>
+          <p class="pillar-desc">
+            Metrics that matter: MRR, churn, and compute margin. 
+            Not GitHub stars or press coverage.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ───────────────────────────────────────────────────────── -->
+<div class="cta-section" id="contact">
+  <div class="cta-block dark reveal">
+    <div>
+      <div class="cta-block-label">For developers & power users</div>
+      <h3 class="cta-block-title">Join the Aitlas waitlist</h3>
+      <p class="cta-block-desc">
+        Early access to Nexus, free compute credits, and a seat in 
+        the founding community. Be first to run sovereign agents.
+      </p>
+    </div>
+    <a href="#" class="btn btn-white">Get early access →</a>
+  </div>
+
+  <div class="cta-block light reveal">
+    <div>
+      <div class="cta-block-label" style="color: var(--grey-400);">For local businesses</div>
+      <h3 class="cta-block-title">Book a product demo</h3>
+      <p class="cta-block-desc">
+        restauManager and GuideTours are launching in Catalonia. 
+        Talk to us about pricing, onboarding, and integration 
+        with your existing stack.
+      </p>
+    </div>
+    <a href="mailto:hello@furma.tech" class="btn btn-dark">Contact us →</a>
+  </div>
+</div>
+
+<!-- ─── FOOTER ────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">furma<span>.tech</span></div>
+      <p class="footer-brand-desc">
+        Digital venture studio. Building sovereign AI infrastructure 
+        and focused industry software from Sitges, Catalonia.
+      </p>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Aitlas</div>
+      <ul class="footer-links">
+        <li><a href="#">Nexus</a></li>
+        <li><a href="#">Agents Store</a></li>
+        <li><a href="#">Actions (f.xyz)</a></li>
+        <li><a href="#">f.loop</a></li>
+        <li><a href="#">Waitlist</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Products</div>
+      <ul class="footer-links">
+        <li><a href="#">restauManager</a></li>
+        <li><a href="#">GuideTours</a></li>
+        <li><a href="#">QArt</a></li>
+        <li><a href="#">FinanceHub</a></li>
+        <li><a href="#">openGovern</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Studio</div>
+      <ul class="footer-links">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="mailto:hello@furma.tech">Contact</a></li>
+        <li><a href="#">GitHub</a></li>
+        <li><a href="#">Privacy</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Furma.tech OÜ · All rights reserved</span>
+    <span class="footer-entity">Estonian OÜ · Operating globally</span>
+  </div>
+</footer>
+
+<script>
+  // ─── Scroll reveal ───────────────────────────────────────────────
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(el => observer.observe(el));
+
+  // ─── Nav scroll shadow ───────────────────────────────────────────
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.boxShadow = window.scrollY > 20
+      ? '0 1px 24px rgba(0,0,0,0.07)'
+      : 'none';
+  });
+</script>
+</body>
+</html>
