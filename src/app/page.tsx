@@ -389,7 +389,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
             {/* Nova */}
             <Link href="/nova" className="group bg-white rounded-xl border border-grey-200 p-5 card-hover flex flex-col">
               <div className="flex items-center justify-between mb-4">
@@ -460,7 +460,7 @@ export default function Home() {
             </Link>
 
             {/* f.rsrx */}
-            <Link href="/aitlas#actions" className="group bg-white rounded-xl border border-grey-200 p-5 card-hover flex flex-col opacity-70 hover:opacity-100 transition-opacity">
+            <Link href="/rsrx" className="group bg-white rounded-xl border border-grey-200 p-5 card-hover flex flex-col">
               <div className="flex items-center justify-between mb-4">
                 <span className="px-2 py-1 rounded bg-amber-500/10 text-[10px] font-mono text-amber-600">
                   In Dev
@@ -479,6 +479,52 @@ export default function Home() {
                 <span className="font-mono">2-12 credits</span>
                 <span>•</span>
                 <span className="font-mono">rsrx.f.xyz</span>
+              </div>
+            </Link>
+
+            {/* f.pay */}
+            <Link href="/pay" className="group bg-white rounded-xl border border-grey-200 p-5 card-hover flex flex-col">
+              <div className="flex items-center justify-between mb-4">
+                <span className="px-2 py-1 rounded bg-green-500/10 text-[10px] font-mono text-green-600">
+                  Live
+                </span>
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-white font-bold text-xs">
+                  $
+                </div>
+              </div>
+              <h3 className="font-serif text-xl font-semibold text-fg mb-2">
+                f.pay
+              </h3>
+              <p className="text-[13px] text-grey-600 leading-relaxed flex-1 mb-4">
+                Payments. Stripe + crypto, approvals, limits.
+              </p>
+              <div className="flex items-center gap-2 text-[11px] text-grey-400">
+                <span className="font-mono">2% fee</span>
+                <span>•</span>
+                <span className="font-mono">pay.f.xyz</span>
+              </div>
+            </Link>
+
+            {/* f.health */}
+            <Link href="/health" className="group bg-white rounded-xl border border-grey-200 p-5 card-hover flex flex-col">
+              <div className="flex items-center justify-between mb-4">
+                <span className="px-2 py-1 rounded bg-green-500/10 text-[10px] font-mono text-green-600">
+                  Live
+                </span>
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400 to-pink-500 flex items-center justify-center text-white font-bold text-xs">
+                  ♥
+                </div>
+              </div>
+              <h3 className="font-serif text-xl font-semibold text-fg mb-2">
+                f.health
+              </h3>
+              <p className="text-[13px] text-grey-600 leading-relaxed flex-1 mb-4">
+                Wearables. Whoop, Oura, Apple Health aggregation.
+              </p>
+              <div className="flex items-center gap-2 text-[11px] text-grey-400">
+                <span className="font-mono">€19/mo</span>
+                <span>•</span>
+                <span className="font-mono">health.f.xyz</span>
               </div>
             </Link>
 
