@@ -140,8 +140,11 @@ export default function AitlasPage() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Hero */}
-      <section className="px-6 md:px-12 py-20 md:py-32">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+      <section className="relative px-6 md:px-12 py-20 md:py-32 overflow-hidden">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-radial opacity-40 pointer-events-none"></div>
+        <div className="absolute top-40 right-40 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+        
+        <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div>
             <div className="flex items-center gap-3 mb-8 animate-fade-up">
               <div className="w-10 h-px bg-white/20"></div>
@@ -305,7 +308,13 @@ export default function AitlasPage() {
           {actions.map((action) => (
             <div
               key={action.name}
-              className="p-5 border border-white/8 hover:border-white/20 transition-colors"
+              className={`relative p-5 border rounded-lg transition-all hover:scale-[1.02] ${
+                action.status === "Live" 
+                  ? "bg-gradient-to-br from-green-500/5 to-transparent border-white/8 hover:border-green-500/30"
+                  : action.status === "Dev"
+                  ? "bg-gradient-to-br from-amber-500/5 to-transparent border-white/8 hover:border-amber-500/30"
+                  : "bg-white/3 border-white/8 hover:border-white/20"
+              }`}
             >
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[15px] font-bold text-white">{action.name}</span>
@@ -353,18 +362,24 @@ export default function AitlasPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 border border-white/10">
-            <div className="text-[24px] mb-4">💰</div>
+          <div className="p-6 border border-white/10 hover:border-white/20 transition-colors">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/20 flex items-center justify-center mb-4">
+              <span className="text-amber-400 text-xl font-bold">%</span>
+            </div>
             <div className="text-[15px] font-bold text-white mb-2">70% Revenue Share</div>
             <p className="text-[13px] text-white/40">Publish your agents. Keep 70% of revenue. We handle payments, hosting, and discovery.</p>
           </div>
-          <div className="p-6 border border-white/10">
-            <div className="text-[24px] mb-4">🔒</div>
+          <div className="p-6 border border-white/10 hover:border-white/20 transition-colors">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/20 flex items-center justify-center mb-4">
+              <span className="text-blue-400 text-xl font-bold">🔐</span>
+            </div>
             <div className="text-[15px] font-bold text-white mb-2">Version Locking</div>
             <p className="text-[13px] text-white/40">Agents lock to a specific version at hire time. Opt-in upgrades prevent breaking changes.</p>
           </div>
-          <div className="p-6 border border-white/10">
-            <div className="text-[24px] mb-4">🎁</div>
+          <div className="p-6 border border-white/10 hover:border-white/20 transition-colors">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/20 flex items-center justify-center mb-4">
+              <span className="text-green-400 text-xl font-bold">✓</span>
+            </div>
             <div className="text-[15px] font-bold text-white mb-2">Free Trials</div>
             <p className="text-[13px] text-white/40">Every agent includes 10 trial credits. Users can test before committing.</p>
           </div>

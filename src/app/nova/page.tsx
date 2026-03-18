@@ -91,8 +91,11 @@ export default function NovaPage() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Hero */}
-      <section className="px-6 md:px-12 py-20 md:py-32">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+      <section className="relative px-6 md:px-12 py-20 md:py-32 overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-radial-blue opacity-30 pointer-events-none"></div>
+        <div className="absolute top-20 right-20 w-[300px] h-[300px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+        
+        <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div>
             <div className="flex items-center gap-3 mb-8 animate-fade-up">
               <div className="w-10 h-px bg-white/20"></div>
@@ -141,7 +144,9 @@ export default function NovaPage() {
 
         {/* Interface Preview */}
         <div className="max-w-2xl animate-fade-up delay-3">
-          <div className="bg-[#0d0d0d] border border-white/10 rounded-lg overflow-hidden">
+          <div className="relative rounded-lg overflow-hidden">
+            <div className="absolute -inset-px bg-gradient-to-r from-blue-500/20 via-transparent to-purple-500/10 rounded-lg"></div>
+            <div className="relative bg-[#0d0d0d] border border-white/10 rounded-lg overflow-hidden">
             {/* Window chrome */}
             <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
               <div className="w-3 h-3 rounded-full bg-red-500/60"></div>
@@ -175,6 +180,7 @@ export default function NovaPage() {
                   </div>
                 </div>
               </div>
+            </div>
             </div>
           </div>
         </div>
@@ -225,9 +231,12 @@ export default function NovaPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl">
           {features.map((feature) => (
-            <div key={feature.title} className="p-6 bg-black border border-white/8 hover:border-white/15 transition-colors">
-              <h3 className="text-[16px] font-bold text-white mb-3">{feature.title}</h3>
-              <p className="text-[13px] leading-[1.6] text-white/50">{feature.desc}</p>
+            <div key={feature.title} className="group relative p-6 bg-black border border-white/8 hover:border-blue-500/30 transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
+              <div className="relative">
+                <h3 className="text-[16px] font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">{feature.title}</h3>
+                <p className="text-[13px] leading-[1.6] text-white/50">{feature.desc}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -245,9 +254,16 @@ export default function NovaPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl">
-          {useCases.map((useCase) => (
-            <div key={useCase.title} className="p-6 bg-[#0d0d0d] border border-white/8">
-              <div className="text-[28px] mb-4">{useCase.icon}</div>
+          {useCases.map((useCase, i) => (
+            <div key={useCase.title} className="group p-6 bg-[#0d0d0d] border border-white/8 hover:border-white/20 transition-all hover:scale-[1.02]">
+              <div className={`w-12 h-12 rounded-xl mb-4 flex items-center justify-center ${
+                i === 0 ? "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30" :
+                i === 1 ? "bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30" :
+                i === 2 ? "bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30" :
+                "bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30"
+              }`}>
+                <span className="text-lg">{useCase.icon}</span>
+              </div>
               <h3 className="text-[16px] font-bold text-white mb-2">{useCase.title}</h3>
               <p className="text-[13px] leading-[1.6] text-white/50">{useCase.desc}</p>
             </div>
@@ -270,10 +286,14 @@ export default function NovaPage() {
           {pricing.map((plan) => (
             <div
               key={plan.name}
-              className={`p-8 border ${plan.popular ? "border-white/20 bg-white/5" : "border-white/10 bg-transparent"}`}
+              className={`relative p-8 border transition-all hover:scale-[1.02] ${
+                plan.popular 
+                  ? "border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-purple-500/5" 
+                  : "border-white/10 bg-transparent hover:border-white/20"
+              }`}
             >
               {plan.popular && (
-                <div className="font-mono text-[9px] font-medium tracking-[0.08em] uppercase px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30 mb-4 w-fit">
+                <div className="absolute -top-3 left-6 font-mono text-[9px] font-medium tracking-[0.08em] uppercase px-2 py-0.5 rounded bg-blue-500 text-white border border-blue-400">
                   Most Popular
                 </div>
               )}

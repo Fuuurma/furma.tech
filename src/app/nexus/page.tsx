@@ -84,8 +84,11 @@ export default function NexusPage() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Hero */}
-      <section className="px-6 md:px-12 py-20 md:py-32">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+      <section className="relative px-6 md:px-12 py-20 md:py-32 overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-radial opacity-40 pointer-events-none"></div>
+        <div className="absolute top-20 right-20 w-[300px] h-[300px] bg-amber-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+        
+        <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div>
             <div className="flex items-center gap-3 mb-8 animate-fade-up">
               <div className="w-10 h-px bg-white/20"></div>
@@ -133,18 +136,21 @@ export default function NexusPage() {
         </div>
 
         <div className="max-w-2xl animate-fade-up delay-3">
-          <div className="p-6 bg-[#0d0d0d] border border-white/10 rounded-lg font-mono text-[13px] text-white/70">
-            <span className="text-white/40">{`// Start a durable agent task`}</span>
-            {"\n"}
-            <span className="text-blue-400">const</span> <span className="text-white">task = </span>
-            <span className="text-purple-400">await</span> <span className="text-white">nexus.</span>
-            <span className="text-amber-400">run</span>({"\n"}
-            {"  "}<span className="text-white/60">{`agent: "researcher",`}</span>{"\n"}
-            {"  "}<span className="text-white/60">{`prompt: "Analyze the AI market...",`}</span>{"\n"}
-            {"  "}<span className="text-white/60">timeout: </span>
-            <span className="text-green-400">3600000</span> <span className="text-white/40">{`// 1 hour`}</span>{"\n"}
-            <span className="text-white">);</span>{"\n"}
-            <span className="text-white/30">{`// Task continues even if server restarts`}</span>
+          <div className="relative">
+            <div className="absolute -inset-px bg-gradient-to-r from-amber-500/20 via-transparent to-amber-500/10 rounded-lg blur-sm"></div>
+            <div className="relative p-6 bg-[#0d0d0d] border border-white/10 rounded-lg font-mono text-[13px] text-white/70">
+              <span className="text-white/40">{`// Start a durable agent task`}</span>
+              {"\n"}
+              <span className="text-blue-400">const</span> <span className="text-white">task = </span>
+              <span className="text-purple-400">await</span> <span className="text-white">nexus.</span>
+              <span className="text-amber-400">run</span>({"\n"}
+              {"  "}<span className="text-white/60">{`agent: "researcher",`}</span>{"\n"}
+              {"  "}<span className="text-white/60">{`prompt: "Analyze the AI market...",`}</span>{"\n"}
+              {"  "}<span className="text-white/60">timeout: </span>
+              <span className="text-green-400">3600000</span> <span className="text-white/40">{`// 1 hour`}</span>{"\n"}
+              <span className="text-white">);</span>{"\n"}
+              <span className="text-white/30">{`// Task continues even if server restarts`}</span>
+            </div>
           </div>
         </div>
       </section>
@@ -259,9 +265,12 @@ export default function NexusPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl">
           {features.map((feature) => (
-            <div key={feature.title} className="p-6 bg-[#0d0d0d] border border-white/8 hover:border-white/15 transition-colors">
-              <h3 className="text-[16px] font-bold text-white mb-3">{feature.title}</h3>
-              <p className="text-[13px] leading-[1.6] text-white/50">{feature.desc}</p>
+            <div key={feature.title} className="group relative p-6 bg-[#0d0d0d] border border-white/8 hover:border-amber-500/30 transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
+              <div className="relative">
+                <h3 className="text-[16px] font-bold text-white mb-3 group-hover:text-amber-400 transition-colors">{feature.title}</h3>
+                <p className="text-[13px] leading-[1.6] text-white/50">{feature.desc}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -279,9 +288,16 @@ export default function NexusPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl">
-          {useCases.map((useCase) => (
-            <div key={useCase.title} className="p-6 bg-black border border-white/8">
-              <div className="text-[28px] mb-4">{useCase.icon}</div>
+          {useCases.map((useCase, i) => (
+            <div key={useCase.title} className="group p-6 bg-black border border-white/8 hover:border-white/20 transition-all hover:scale-[1.02]">
+              <div className={`w-12 h-12 rounded-xl mb-4 flex items-center justify-center ${
+                i === 0 ? "bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30" :
+                i === 1 ? "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30" :
+                i === 2 ? "bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30" :
+                "bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30"
+              }`}>
+                <span className="text-lg">{useCase.icon}</span>
+              </div>
               <h3 className="text-[16px] font-bold text-white mb-2">{useCase.title}</h3>
               <p className="text-[13px] leading-[1.6] text-white/50">{useCase.desc}</p>
             </div>
@@ -339,10 +355,14 @@ export default function NexusPage() {
           {pricing.map((plan) => (
             <div
               key={plan.name}
-              className={`p-8 border ${plan.popular ? "border-white/20 bg-white/5" : "border-white/10 bg-transparent"}`}
+              className={`relative p-8 border transition-all hover:scale-[1.02] ${
+                plan.popular 
+                  ? "border-amber-500/30 bg-gradient-to-br from-amber-500/10 to-orange-500/5" 
+                  : "border-white/10 bg-transparent hover:border-white/20"
+              }`}
             >
               {plan.popular && (
-                <div className="font-mono text-[9px] font-medium tracking-[0.08em] uppercase px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30 mb-4 w-fit">
+                <div className="absolute -top-3 left-6 font-mono text-[9px] font-medium tracking-[0.08em] uppercase px-2 py-0.5 rounded bg-amber-500 text-black border border-amber-400">
                   Most Popular
                 </div>
               )}
