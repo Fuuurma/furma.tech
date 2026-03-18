@@ -39,7 +39,7 @@ export default function Navigation() {
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/aitlas" className={`text-sm font-medium transition-colors no-underline ${isActive('/aitlas') || isActive('/nexus') || isActive('/nova') ? 'text-fg' : 'text-grey-600 hover:text-fg'}`}>
+            <Link href="/aitlas" className={`text-sm font-medium transition-colors no-underline ${isActive('/aitlas') || isActive('/nexus') || isActive('/nova') || isActive('/rsrx') || isActive('/pay') || isActive('/health') || isActive('/twyt') || isActive('/library') || isActive('/agents') ? 'text-fg' : 'text-grey-600 hover:text-fg'}`}>
               Aitlas
             </Link>
             <Link href="/products" className={`text-sm font-medium transition-colors no-underline ${isActive('/products') || isActive('/restauramanager') || isActive('/guidetours') ? 'text-fg' : 'text-grey-600 hover:text-fg'}`}>
