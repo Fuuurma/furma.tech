@@ -1,303 +1,187 @@
-# AGENTS.md – AI Coding Assistant Guidelines
+# AGENTS.md – Furma.tech Development Guidelines
 
-**Purpose:** This file instructs AI coding tools (Cursor, Claude Code, GitHub Copilot) on Furma.tech development standards.
-
----
-
-## 0. Aitlas Ecosystem Architecture
-
-This project is part of the **Aitlas Ecosystem** - a standardized polyrepo architecture.
-- **Rule Zero:** DO NOT attempt to combine this repository with other Furma.tech products. Maintain strict isolation.
-- **Communication:** All cross-application communication must occur exclusively via the **Model Context Protocol (MCP)**.
-- **Background Tasks:** Next.js API routes have strict timeouts. ANY task taking longer than 15 seconds MUST be offloaded to `f.loop`.
+**Purpose:** Instructions for AI coding assistants working in this codebase.
 
 ---
 
-## 1. Core Directives
+## 1. Project Overview
 
-### Strict Types
-- Use TypeScript with `strict: true` in `tsconfig.json`
-- **NEVER** use `any` type. Use `unknown` with proper type guards instead.
-- Define interfaces for all API boundaries.
+Next.js 16 website for Furma.tech - a bootstrapped venture studio with two verticals: industry SaaS tools and the Aitlas AI ecosystem.
 
-### Validation
-- All incoming data (POST/PUT endpoints, form inputs) **MUST** be validated using `zod`.
-- Import schemas from `@/lib/schemas`.
-- Return detailed validation errors to clients.
-
-### API Responses
-- Never return raw objects.
-- Use proper Next.js `NextResponse.json()` with appropriate status codes.
-- Return `{ error: string, details?: unknown }` for error responses.
-
-### Logging
-- Use the Pino logger from `@/lib/logger`.
-- Never use `console.log` in production code.
-- Log structured data: `logInfo("Action", { userId, itemId })`.
-
-### Rate Limiting
-- All `/api/` routes must implement rate limiting.
-- Use `@/lib/rate-limit` utilities.
-- Handle 429 responses gracefully in UI.
+- **Stack:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4
+- **Path alias:** `@/*` maps to `./src/*`
+- **Strict mode:** Enabled
 
 ---
 
-## 2. Project Structure
+## 2. Commands
 
-```
-furma.tech/
-├── app/                    # Next.js App Router
-├── components/             # React components
-│   └── ui/                # shadcn/ui components
-├── lib/                   # Core utilities (SINGLE SOURCE OF TRUTH)
-│   ├── schemas.ts        # Zod validation schemas
-│   ├── rate-limit.ts     # Rate limiting
-│   ├── logger.ts         # Logging
-│   ├── cache.ts          # Caching
-│   └── utils.ts          # General utilities
-├── __tests__/             # Unit tests (Vitest)
-└── public/                # Static assets
+```bash
+# Development
+pnpm dev          # Start dev server (http://localhost:3000)
+pnpm build        # Production build
+pnpm start        # Start production server
+
+# Linting
+pnpm lint         # Run ESLint on all files
 ```
 
 ---
 
-## 3. Naming Conventions
+## 3. Project Structure
 
-### Files
-- **Components:** PascalCase (`HeroSection.tsx`, `ProductCard.tsx`)
-- **Utilities:** camelCase (`formatDate.ts`, `validateEmail.ts`)
-- **Tests:** `.test.ts` or `.spec.ts` suffix
-- **Config:** camelCase (`vitest.config.ts`, `next.config.ts`)
-
-### Variables & Functions
-- **Variables:** camelCase (`isLoading`, `userData`)
-- **Constants:** UPPER_SNAKE_CASE (`MAX_RETRY_COUNT`, `API_BASE_URL`)
-- **Types/Interfaces:** PascalCase (`UserProfile`, `ApiResponse`)
-- **React Components:** PascalCase
-
----
-
-## 4. Component Guidelines
-
-### Functional Components
-- Use `"use client"` directive only when needed (event handlers, hooks, state).
-- Prefer server components by default.
-- Use proper TypeScript types for props.
-
-### shadcn/ui
-- All UI components come from shadcn/ui.
-- Do NOT use raw Radix UI or Headless UI unless necessary.
-- Customize via Tailwind classes, not custom CSS.
-
-### Tailwind CSS
-- Use utility classes from Tailwind v4.
-- Keep consistent color palette: `zinc` for grays.
-- Use `fade-in` and animation components for entrance effects.
+```
+src/
+├── app/                 # Next.js App Router pages
+│   ├── layout.tsx      # Root layout
+│   ├── page.tsx        # Home page
+│   └── globals.css     # Global styles + CSS custom properties
+├── components/         # React components (PascalCase)
+├── lib/               # Utilities (camelCase)
+│   └── utils.ts       # cn() helper for Tailwind
+└── styles/            # (empty, globals.css is in app/)
+```
 
 ---
 
-## 5. API Route Standards
+## 4. Code Style
 
-### Request Handling
+### Imports
+- Use `@/` alias for absolute imports: `import Link from 'next/link'`
+- Group order: external → internal → types
+- Trailing commas required
+
+### TypeScript
+- **Strict mode always** - no `any`, use `unknown` with type guards
+- Define interfaces for all component props and API responses
+
+### Naming Conventions
+| Type | Convention | Example |
+|------|------------|---------|
+| Components | PascalCase | `Navigation.tsx`, `ProductCard.tsx` |
+| Utilities | camelCase | `formatDate.ts`, `validateEmail.ts` |
+| Types/Interfaces | PascalCase | `UserData`, `ApiResponse` |
+| Constants | UPPER_SNAKE_CASE | `MAX_RETRIES` |
+
+### Formatting
+- 2-space indentation
+- Single quotes for strings
+- Max line length: 100 characters
+
+---
+
+## 5. Component Guidelines
+
+### File Structure
 ```typescript
-import { NextResponse } from "next/server";
-import { mySchema } from "@/lib/schemas";
-import { logInfo, logError } from "@/lib/logger";
-import { checkRateLimit, myRateLimit } from "@/lib/rate-limit";
+'use client';  // Only when needed (hooks, state, event handlers)
 
-export async function POST(request: Request) {
-  // 1. Rate limiting
-  const ip = request.headers.get("x-forwarded-for") || "unknown";
-  const rateCheck = await checkRateLimit(ip, myRateLimit);
-  if (!rateCheck.success) {
-    return NextResponse.json(
-      { error: "Too many requests" },
-      { status: 429 }
-    );
-  }
+import Link from 'next/link';
+import { useState } from 'react';
 
-  // 2. Parse & validate
-  const body = await request.json();
-  const result = mySchema.safeParse(body);
-  if (!result.success) {
-    return NextResponse.json(
-      { error: "Validation failed", details: result.error.issues },
-      { status: 400 }
-    );
-  }
+interface Props {
+  title: string;
+  onClick?: () => void;
+}
 
-  // 3. Process
-  logInfo("Action performed", { data: result.data });
-
-  // 4. Respond
-  return NextResponse.json({ success: true, data: result.data });
+export default function MyComponent({ title, onClick }: Props) {
+  return <div onClick={onClick}>{title}</div>;
 }
 ```
 
+### Server vs Client
+- Prefer **server components** by default
+- Add `'use client'` only for: hooks (`useState`, `useEffect`), event handlers, browser APIs
+
 ---
 
-## 6. Testing Standards
+## 6. Tailwind CSS v4
 
-### Unit Tests
-- Use **Vitest** for testing framework.
-- Place tests in `__tests__/` directory.
-- Test business logic, schemas, utilities, and components.
+### CSS Custom Properties (from globals.css)
+```css
+--color-bg: #fafafa        /* Background */
+--color-fg: #0d0d0d        /* Foreground/text */
+--color-grey-50: #f7f7f7
+--color-grey-100: #f0f0f0
+--color-grey-200: #e2e2e2
+--color-grey-400: #a0a0a0
+--color-grey-600: #525252
+--color-grey-800: #282828
 
-### Test Structure
-```typescript
-import { describe, it, expect } from "vitest";
-import { myFunction } from "../lib/my-module";
-
-describe("myFunction", () => {
-  it("does something specific", () => {
-    expect(myFunction(input)).toBe(expectedOutput);
-  });
-});
+--font-serif: var(--font-cormorant)
+--font-sans: var(--font-syne)
+--font-mono: var(--font-jetbrains)
 ```
 
-### Running Tests
-```bash
-pnpm test        # Run all tests
-pnpm test:watch # Watch mode
+### Available Animation Classes
+```css
+.animate-fade-up          /* Fade up animation */
+.delay-1 through .delay-5 /* Animation delays (0.1s to 0.65s) */
+.animate-ticker           /* Horizontal ticker (pauses on hover) */
+.reveal / .reveal.visible /* Scroll reveal (use JS to add .visible) */
+```
+
+### Section Spacing
+```css
+.section  /* padding: 120px 0 (80px on mobile) */
 ```
 
 ---
 
-## 7. Security Guidelines
+## 7. Error Handling
 
-### BYOK (Bring Your Own Key)
-- **Zero-Burn Principle:** Users provide their own LLM API keys (OpenAI, Anthropic, DeepSeek).
-- **Key Storage:** API keys are NEVER stored in plain text. Use AES-256-GCM encryption from `@/lib/encryption.ts`.
-- **Encryption Example:**
-```typescript
-import { encryptApiKey, decryptApiKey } from "@/lib/encryption";
-
-const { encrypted, iv, authTag, salt } = encryptApiKey(apiKey);
-// Store encrypted data in database
-
-// To use:
-const key = decryptApiKey(encryptedData);
-// Use for LLM call → immediately garbage-collect
-```
-
-### Never Expose
-- API keys, tokens, secrets in client-side code
-- Database connection strings in frontend
-- Internal implementation details
-
-### Validate & Sanitize
-- All user input must be validated with Zod
-- Escape output when rendering user content
-- Use parameterized queries (Prisma handles this)
-
-### Authentication
-- Use NextAuth for auth requirements
-- Never implement custom auth unless absolutely necessary
-
----
-
-## 8. Database Schema (Prisma)
-
-This project uses Prisma with the Furma DNA schema. Core models:
-- **User** - Furma ID SSO + computeCredits (THE PAYWALL)
-- **ApiKey** - BYOK API keys (AES-256 encrypted)
-- **Agent** - Agent Store personas
-- **Skill** - Agent skills with MCP targets
-- **TaskQueue** - f.loop async tasks
-
-**Multi-Tenancy Isolation:** Every Prisma query MUST include `userId` in the `where` clause.
-- *Correct:* `prisma.document.findMany({ where: { userId: session?.user?.id, ... } })`
-- *Incorrect:* `prisma.document.findMany({ where: { ... } })`
-
----
-
-## 9. Performance Guidelines
-
-### Server Components
-- Use server components by default
-- Pass only serialized data to client components
-
-### Caching
-- Use `lib/cache.ts` for in-memory caching
-- Implement proper cache invalidation
-
-### Images
-- Use `next/image` for optimization
-- Specify dimensions and formats
-
----
-
-## 9. Error Handling
-
-### Try-Catch
 ```typescript
 try {
   // operation
 } catch (error) {
-  logError("Operation failed", error);
+  console.error('Operation failed:', error);
   return NextResponse.json(
-    { error: "Operation failed" },
+    { error: 'Operation failed' },
     { status: 500 }
   );
 }
 ```
 
-### Custom Errors
-- Create custom error classes for domain-specific errors
-- Use error codes for client handling
+- Use try/catch for async operations
+- Return meaningful error messages with proper status codes (400, 401, 429, 500)
 
 ---
 
-## 10. Git Conventions
-
-### Commits
-- Use clear, concise commit messages
-- Start with verb: "Add feature", "Fix bug", "Update docs"
-
-### Branch Naming
-- `feature/` for new features
-- `fix/` for bug fixes
-- `refactor/` for code improvements
-
----
-
-## 11. Before Committing
-
-Run these commands:
+## 8. Before Committing
 
 ```bash
 pnpm lint      # Check for lint errors
-pnpm test      # Run tests
 pnpm build     # Verify build passes
 ```
 
-**NEVER** commit code that fails any of these checks.
+**Never** commit code that fails these checks.
 
 ---
 
-## 12. Dependencies
+## 9. Prohibited Patterns
 
-### Adding Dependencies
-- Check if functionality already exists in `@/lib/`
-- Use well-maintained, type-safe packages
-- Add proper types (`@types/*`) for TypeScript
+- ❌ `any` type (use `unknown` with type guards)
+- ❌ `console.log` in production code
+- ❌ Inline styles (use Tailwind)
+- ❌ Relative imports when `@/` alias available
 
-### Prohibited
-- `any` type usage
-- `console.log` (use logger instead)
-- Raw SQL (use Prisma)
-- Inline styles (use Tailwind)
+---
+
+## 10. Future Integrations (Roadmap)
+
+When adding these, update AGENTS.md with relevant guidelines:
+- **Testing:** Vitest + React Testing Library
+- **Validation:** Zod schemas in `@/lib/schemas`
+- **Logging:** pino logger in `@/lib/logger`
+- **Database:** Prisma
+- **Auth:** NextAuth.js
 
 ---
 
 ## Summary
 
-When working on Furma.tech code:
-1. ✅ Use TypeScript strictly
-2. ✅ Validate with Zod
-3. ✅ Log with Pino
-4. ✅ Rate limit APIs
-5. ✅ Test with Vitest
-6. ✅ Use shadcn/ui components
-7. ✅ Follow naming conventions
-8. ✅ Run lint/test/build before commit
+1. Use TypeScript strictly - no `any`
+2. Prefer server components, add `'use client'` sparingly
+3. Use Tailwind v4 with CSS custom properties from globals.css
+4. Run `pnpm lint` and `pnpm build` before commit
+5. Keep components small and focused
