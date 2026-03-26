@@ -528,11 +528,39 @@ html {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
-/* Subtle gradient backgrounds */
-.bg-gradient-radial {
-  background: radial-gradient(ellipse at top, rgba(245, 158, 11, 0.08) 0%, transparent 50%);
+/* Glassmorphism & Interaction Variables */
+:root {
+  --glass-bg: oklch(1 0 0 / 0.7);
+  --glass-border: 1px solid oklch(0 0 0 / 0.1);
+  --glass-blur: blur(24px);
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.dark {
+  --glass-bg: oklch(0.1 0 0 / 0.7);
+  --glass-border: 1px solid oklch(1 0 0 / 0.1);
+}
+
+/* Base Interaction Classes */
+.glass {
+background: var(--glass-bg);
+backdrop-filter: var(--glass-blur);
+border: var(--glass-border);
+}
+
+.transition-spring {
+transition: all 0.5s var(--ease-spring);
+}
+
+/* Pulse Animation */
+@keyframes pulse-subtle {
+0%, 100% { opacity: 1; transform: scale(1); }
+50% { opacity: 0.85; transform: scale(0.98); }
+}
+
+.group-active:active {
+animation: pulse-subtle 0.2s ease-in-out;
+}
 .dark .bg-gradient-radial {
   background: radial-gradient(ellipse at top, rgba(245, 158, 11, 0.15) 0%, transparent 60%);
 }

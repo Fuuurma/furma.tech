@@ -164,13 +164,13 @@ export default function Home() {
                             <div className="text-[12px] text-grey-500 dark:text-grey-400 font-medium">B2B Tools</div>
                           </div>
                         </div>
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-mono font-bold bg-green-500/10 text-green-600 border border-green-500/20 uppercase tracking-wider">
-                          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
-                          Live
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20 uppercase tracking-wider">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                          Building
                         </span>
                       </div>
                       <p className="text-[15px] text-grey-600 dark:text-grey-400 mb-6 leading-relaxed">
-                        Profitable SaaS for restaurants and tour operators. Built for Catalonia,
+                        SaaS for restaurants and tour operators. Built for Catalonia,
                         designed to scale across Europe.
                       </p>
                       <div className="flex gap-2">
@@ -437,8 +437,8 @@ export default function Home() {
             <Link href="/projects/aitlas/twyt" className="block h-full">
               <Card variant="standard" hover className="h-full flex flex-col p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <span className="px-2 py-0.5 rounded bg-green-500/10 text-[10px] font-mono font-bold text-green-600 uppercase">
-                    Live
+                  <span className="px-2 py-0.5 rounded bg-amber-500/10 text-[10px] font-mono font-bold text-amber-600 uppercase">
+                    In Dev
                   </span>
                   <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
                     T
@@ -460,8 +460,8 @@ export default function Home() {
             <Link href="/projects/aitlas/library" className="block h-full">
               <Card variant="standard" hover className="h-full flex flex-col p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <span className="px-2 py-0.5 rounded bg-green-500/10 text-[10px] font-mono font-bold text-green-600 uppercase">
-                    Live
+                  <span className="px-2 py-0.5 rounded bg-amber-500/10 text-[10px] font-mono font-bold text-amber-600 uppercase">
+                    In Dev
                   </span>
                   <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
                     L
@@ -506,8 +506,8 @@ export default function Home() {
             <Link href="/projects/aitlas/pay" className="block h-full">
               <Card variant="standard" hover className="h-full flex flex-col p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <span className="px-2 py-0.5 rounded bg-green-500/10 text-[10px] font-mono font-bold text-green-600 uppercase">
-                    Live
+                  <span className="px-2 py-0.5 rounded bg-amber-500/10 text-[10px] font-mono font-bold text-amber-600 uppercase">
+                    In Dev
                   </span>
                   <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
                     $
@@ -529,8 +529,8 @@ export default function Home() {
             <Link href="/projects/aitlas/health" className="block h-full">
               <Card variant="standard" hover className="h-full flex flex-col p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <span className="px-2 py-0.5 rounded bg-green-500/10 text-[10px] font-mono font-bold text-green-600 uppercase">
-                    Live
+                  <span className="px-2 py-0.5 rounded bg-amber-500/10 text-[10px] font-mono font-bold text-amber-600 uppercase">
+                    In Dev
                   </span>
                   <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-red-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
                     ♥

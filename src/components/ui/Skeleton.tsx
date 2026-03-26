@@ -135,7 +135,7 @@ export function TableSkeleton({
  */
 export function PageSkeleton() {
   return (
-    <div className="min-h-screen bg-bg p-6 md:p-12 space-y-12">
+    <div className="min-h-screen bg-background p-6 md:p-12 space-y-12">
       {/* Hero */}
       <div className="max-w-4xl space-y-6">
         <Skeleton className="h-4 w-32" />

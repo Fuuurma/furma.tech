@@ -85,7 +85,7 @@ export default function UpdatesPage() {
                 key={c}
                 className={`px-4 py-2 rounded-full font-mono text-[11px] font-bold uppercase tracking-wider transition-all ${
                   c === "All" 
-                    ? "bg-fg text-bg dark:bg-white dark:text-black" 
+                    ? "bg-foreground text-background dark:bg-white dark:text-black" 
                     : "bg-white dark:bg-grey-800 border border-grey-200 dark:border-grey-700 text-grey-500 hover:border-fg dark:hover:border-white"
                 }`}
               >
@@ -143,7 +143,7 @@ export default function UpdatesPage() {
         <Container size="md" className="text-center">
           <ScrollReveal>
             <div className="mb-12">
-              <h2 className="font-serif text-[clamp(32px,4vw,48px)] font-semibold mb-4 text-fg">Stay in the loop.</h2>
+              <h2 className="font-serif text-[clamp(32px,4vw,48px)] font-semibold mb-4 text-foreground">Stay in the loop.</h2>
               <p className="text-grey-600 dark:text-grey-400">
                 Get the latest studio updates and technical deep-dives delivered to your inbox. 
                 No spam, just signal.

@@ -51,7 +51,7 @@ export function WaitlistForm({ action, variant = 'default' }: WaitlistFormProps)
           placeholder="Enter your email"
           required
           disabled={isPending || status === 'success'}
-          className="flex-1 px-4 py-3 rounded-lg border border-grey-200 dark:border-grey-800 bg-white dark:bg-grey-900 text-fg placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all disabled:opacity-50"
+          className="flex-1 px-4 py-3 rounded-lg border border-grey-200 dark:border-grey-800 bg-white dark:bg-grey-900 text-foreground placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all disabled:opacity-50"
         />
         <Button
           type="submit"
@@ -84,7 +84,7 @@ export function WaitlistForm({ action, variant = 'default' }: WaitlistFormProps)
           placeholder="Enter your work email"
           required
           disabled={isPending || status === 'success'}
-          className="w-full px-4 py-3 rounded-lg border border-grey-200 dark:border-grey-800 bg-white dark:bg-grey-900 text-fg placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all disabled:opacity-50"
+          className="w-full px-4 py-3 rounded-lg border border-grey-200 dark:border-grey-800 bg-white dark:bg-grey-900 text-foreground placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all disabled:opacity-50"
         />
       </div>
       

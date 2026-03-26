@@ -30,8 +30,8 @@ export function Card({
   };
 
   const hoverStyles = hover 
-    ? "hover:border-grey-400 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 card-hover" 
-    : "transition-all duration-300";
+    ? "transition-spring group-active hover:border-grey-400 dark:hover:border-grey-600 hover:-translate-y-1 hover:shadow-xl" 
+    : "transition-spring";
 
   return (
     <div className={`rounded-xl border ${variantStyles[variant]} ${paddingStyles[padding]} ${hoverStyles} ${className}`}>

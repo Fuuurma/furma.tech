@@ -24,7 +24,7 @@ export function Button({
   disabled = false,
   glow = false,
 }: ButtonProps) {
-  const baseStyles = "inline-flex items-center justify-center gap-2 font-semibold no-underline rounded-xl transition-all duration-300 hover-lift relative overflow-hidden";
+  const baseStyles = "inline-flex items-center justify-center gap-2 font-semibold no-underline rounded-xl transition-spring group-active relative overflow-hidden";
 
   const variantStyles = {
     primary: "bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-white dark:text-black dark:hover:bg-grey-200 shadow-lg shadow-black/10 dark:shadow-white/10",

@@ -110,7 +110,7 @@ export default function RsrxPage() {
 
             <ScrollReveal delay={200}>
               <div className="relative py-20 lg:py-32">
-                <Card padding="lg" className="bg-fg text-bg shadow-2xl rotate-1 border-white/10">
+                <Card padding="lg" className="bg-foreground text-background shadow-2xl rotate-1 border-white/10">
                   <div className="font-mono text-[10px] text-white/30 mb-6 uppercase tracking-widest font-bold">Research Agent Active</div>
                   <div className="space-y-6">
                     <div>

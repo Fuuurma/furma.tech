@@ -48,9 +48,8 @@ export default function Navigation() {
           <div className="hidden md:flex items-center gap-1">
             {[
               { name: 'Aitlas', path: '/projects/aitlas' },
-              { name: 'Products', path: '/projects/saas' },
+              { name: 'SaaS', path: '/projects/saas' },
               { name: 'About', path: '/about' },
-              { name: 'Careers', path: '/careers' },
               { name: 'Updates', path: '/updates' },
             ].map((link) => {
               const active = isActive(link.path) || (link.path === '/projects/aitlas' && (isActive('/projects/aitlas/nexus') || isActive('/projects/aitlas/nova') || isActive('/projects/aitlas/rsrx') || isActive('/projects/aitlas/pay') || isActive('/projects/aitlas/health') || isActive('/projects/aitlas/twyt') || isActive('/projects/aitlas/library') || isActive('/projects/aitlas/agents')));
@@ -86,9 +85,9 @@ export default function Navigation() {
             aria-expanded={isOpen}
           >
             <div className="w-6 h-5 relative flex flex-col justify-between">
-              <span className={`w-full h-0.5 bg-fg rounded-full transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-              <span className={`w-full h-0.5 bg-fg rounded-full transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`}></span>
-              <span className={`w-full h-0.5 bg-fg rounded-full transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-2.5' : ''}`}></span>
+              <span className={`w-full h-0.5 bg-foreground rounded-full transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+              <span className={`w-full h-0.5 bg-foreground rounded-full transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`}></span>
+              <span className={`w-full h-0.5 bg-foreground rounded-full transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-2.5' : ''}`}></span>
             </div>
           </button>
         </div>
@@ -99,9 +98,8 @@ export default function Navigation() {
             <div className="flex flex-col gap-2">
               {[
                 { name: 'Aitlas', path: '/projects/aitlas' },
-                { name: 'Products', path: '/projects/saas' },
+                { name: 'SaaS', path: '/projects/saas' },
                 { name: 'About', path: '/about' },
-                { name: 'Careers', path: '/careers' },
                 { name: 'Updates', path: '/updates' },
                 { name: 'Contact', path: '/contact' },
               ].map((link) => (
