@@ -265,10 +265,10 @@ export default function GuideToursPage() {
 
           <StaggerChildren className="flex flex-wrap justify-center gap-4">
             {[
-              { name: "Viator", status: "Available", icon: "🌍" },
+              { name: "Viator", status: "Available", icon: "🌐" },
               { name: "GetYourGuide", status: "Coming Soon", icon: "🎯" },
-              { name: "Airbnb Experiences", status: "Coming Soon", icon: "🏠" },
-              { name: "TripAdvisor", status: "Planned", icon: "📍" },
+              { name: "Airbnb Experiences", status: "Coming Soon", icon: "🏡" },
+              { name: "TripAdvisor", status: "Planned", icon: "📌" },
             ].map((integration) => (
               <ScrollReveal key={integration.name}>
                 <Card padding="md" className={`card-elevated ${integration.status === "Available" ? 'hover:border-purple-500/30 transition-colors' : 'opacity-60'}`}>

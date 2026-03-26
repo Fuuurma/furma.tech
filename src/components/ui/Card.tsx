@@ -8,18 +8,18 @@ interface CardProps {
   variant?: "standard" | "premium" | "ghost" | "dark";
 }
 
-export function Card({ 
-  children, 
-  className = "", 
-  hover = false, 
+export function Card({
+  children,
+  className = "",
+  hover = false,
   padding = "md",
   variant = "standard"
 }: CardProps) {
   const paddingStyles = {
     none: "",
-    sm: "p-4",
-    md: "p-6",
-    lg: "p-8",
+    sm: "p-3 sm:p-4",
+    md: "p-4 sm:p-6",
+    lg: "p-6 sm:p-8",
   };
 
   const variantStyles = {
@@ -29,8 +29,8 @@ export function Card({
     dark: "bg-foreground text-background border-grey-800 dark:bg-foreground dark:text-background dark:border-grey-700",
   };
 
-  const hoverStyles = hover 
-    ? "transition-spring group-active hover:border-grey-400 dark:hover:border-grey-600 hover:-translate-y-1 hover:shadow-xl" 
+  const hoverStyles = hover
+    ? "transition-spring group-active hover:border-grey-400 dark:hover:border-grey-600 hover:-translate-y-1 hover:shadow-xl"
     : "transition-spring";
 
   return (

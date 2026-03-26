@@ -64,7 +64,7 @@ const supportedFormats = [
   { format: "TXT", icon: "📃" },
   { format: "MD", icon: "📑" },
   { format: "HTML", icon: "🌐" },
-  { format: "JSON", icon: "⚙️" },
+  { format: "JSON", icon: "⚙" },
 ];
 
 export default function LibraryPage() {

@@ -26,7 +26,7 @@ const docs = [
     items: [
       { title: "Nova - AI Workspace", href: "/projects/aitlas/nova", description: "BYOK AI workspace with multi-provider support" },
       { title: "Nexus - Agent Runtime", href: "/projects/aitlas/nexus", description: "Durable execution for long-running agent tasks" },
-      { title: "GWagents Store", href: "/projects/aitlas/agents", description: "Marketplace for pre-built AI agents" },
+      { title: "Agents Store", href: "/projects/aitlas/agents", description: "Marketplace for pre-built AI agents" },
     ],
   },
   {
@@ -89,7 +89,7 @@ export default function DocsPage() {
                   <div className="w-8 h-8 rounded-full bg-foreground text-background flex items-center justify-center font-bold">3</div>
                   <strong className="text-foreground block">Run your agent</strong>
                   <p className="text-[14px] text-grey-600 dark:text-grey-400">
-                    Hire from GWagents Store or build your own using Nexus for long-running tasks.
+                    Hire from Agents Store or build your own using Nexus for long-running tasks.
                   </p>
                 </div>
               </div>

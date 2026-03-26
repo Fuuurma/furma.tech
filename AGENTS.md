@@ -2,169 +2,183 @@
 
 **Purpose:** Instructions for AI coding assistants working in this codebase.
 
-**Next.js Version:** 16.2.1 (Agentic-Ready)
+**Context:** Furma.tech is a bootstrapped venture studio (Estonian OÜ, Sitges, Catalonia). Two verticals:
+- **Industry SaaS** — B2B tools for restaurants/tourism (restauManager, GuideTours)
+- **Aitlas** — Sovereign AI ecosystem (BYOK model, MCP-first, 34+ Actions)
+
+Core ethos: 0% VC, profitable before flashy, "build software that works."
+
+**Stack:** Next.js 16.2.1 | React 19.2.3 | TypeScript (strict) | Tailwind v4 | Zod | Radix UI | Lucide
 
 ---
 
-## 0. Agentic Development (Next.js 16.2)
-
-### Runtime-Aware Development
-- **Browser Log Forwarding:** Client errors are forwarded to terminal by default
-- **Dev Server Lock:** Check `.next/dev/lock` for running server PID before starting new processes
-- **Server Function Logging:** All server actions log function name, args, and execution time
-
-### Documentation Access
-- Full Next.js docs available at: `node_modules/next/dist/docs/`
-- Read version-matched docs before implementing new features
-- This AGENTS.md file is the primary source of truth for project-specific patterns
-
-### Agent Tools (Experimental)
-```bash
-# Install next-browser tool for runtime inspection
-npx skills add vercel-labs/next-browser
-
-# Available commands in supported agents:
-/next-browser tree          # Inspect React component tree
-/next-browser ppr lock      # Analyze PPR static/dynamic regions
-/next-browser goto <url>    # Navigate and capture state
-```
-
----
-
-## 1. Project Overview
-
-Next.js 16.2 website for Furma.tech - a bootstrapped venture studio with two verticals: industry SaaS tools and the Aitlas AI ecosystem.
-
-- **Stack:** Next.js 16.2.1 (App Router), React 19, TypeScript, Tailwind CSS v4
-- **Path alias:** `@/*` maps to `./src/*`
-- **Strict mode:** Enabled
-- **Turbopack:** Enabled by default (400% faster startup)
-
----
-
-## 2. Commands
+## 1. Commands
 
 ```bash
-# Development
 pnpm dev          # Start dev server (http://localhost:3000)
 pnpm dev --turbo  # Force Turbopack (default in 16.2)
 pnpm build        # Production build
 pnpm start        # Start production server
-
-# Linting
-pnpm lint         # Run ESLint on all files
-
-# Debugging
-pnpm start --inspect  # Attach Node.js debugger to production server
+pnpm lint         # Run ESLint
 ```
 
-### Agent Process Management
-```bash
-# Check if dev server is running
-cat .next/dev/lock  # Shows PID, port, URL
+**Note:** No test framework configured yet. When adding tests, use Vitest + RTL.
 
-# Kill existing server before starting new one
-taskkill /F /T /PID <pid_from_lock_file>
+### Dev Server Lock
+```bash
+cat .next/dev/lock  # Check running PID
+taskkill /F /T /PID <pid>  # Kill stuck server (Windows)
 ```
 
 ---
 
-## 3. Project Structure
+## 2. Project Structure
 
 ```
 src/
-├── app/                 # Next.js App Router pages
-│   ├── layout.tsx      # Root layout
-│   ├── page.tsx        # Home page
-│   └── globals.css     # Global styles + CSS custom properties
-├── components/         # React components (PascalCase)
-├── lib/               # Utilities (camelCase)
-│   └── utils.ts       # cn() helper for Tailwind
-└── styles/            # (empty, globals.css is in app/)
+├── app/                    # Next.js App Router (route groups, layouts, pages)
+│   ├── layout.tsx         # Root layout with fonts, theme, nav, footer
+│   ├── globals.css         # Tailwind v4 config, CSS variables, animations
+│   └── [route]/page.tsx   # Route pages
+├── components/
+│   ├── *.tsx              # Shared components (PascalCase)
+│   └── ui/                # Primitive UI components
+├── lib/                   # Utilities (camelCase)
+│   └── utils.ts           # cn() helper using clsx + tailwind-merge
+└── styles/                # (unused, globals.css is in app/)
 ```
 
 ---
 
-## 4. Code Style
+## 3. Code Style
 
-### Imports
-- Use `@/` alias for absolute imports: `import Link from 'next/link'`
-- Group order: external → internal → types
-- Trailing commas required
+### Imports (ordered, trailing commas)
+```typescript
+// 1. React core
+import { ReactNode, useState } from "react";
+// 2. Next.js (link, image, metadata)
+import Link from "next/link";
+import type { Metadata } from "next";
+// 3. Third-party (Radix, Lucide, class-variance-authority, Zod)
+import { clsx, type ClassValue } from "clsx";
+// 4. Internal @/ aliases
+import Navigation from "@/components/Navigation";
+// 5. Relative imports (rarely used)
+```
 
-### TypeScript
-- **Strict mode always** - no `any`, use `unknown` with type guards
-- Define interfaces for all component props and API responses
+### TypeScript Rules
+- **No `any`** – use `unknown` with type guards
+- Define interfaces for all props and API responses
+- Use `Readonly<T>` for immutable props in server components
 
 ### Naming Conventions
 | Type | Convention | Example |
 |------|------------|---------|
-| Components | PascalCase | `Navigation.tsx`, `ProductCard.tsx` |
-| Utilities | camelCase | `formatDate.ts`, `validateEmail.ts` |
-| Types/Interfaces | PascalCase | `UserData`, `ApiResponse` |
+| Components | PascalCase | `Button.tsx`, `PricingSection.tsx` |
+| UI components | PascalCase | `src/components/ui/Button.tsx` |
+| Utilities | camelCase | `cn()`, `formatDate.ts` |
+| Types/Interfaces | PascalCase | `ButtonProps`, `ApiResponse` |
 | Constants | UPPER_SNAKE_CASE | `MAX_RETRIES` |
 
 ### Formatting
-- 2-space indentation
-- Single quotes for strings
+- 2-space indentation, single quotes, trailing commas
 - Max line length: 100 characters
+- Named exports for utilities, default exports for components
 
 ---
 
-## 5. Component Guidelines
+## 4. Component Patterns
 
-### File Structure
+### Server Component (default)
 ```typescript
-'use client';  // Only when needed (hooks, state, event handlers)
-
-import Link from 'next/link';
-import { useState } from 'react';
+import type { Metadata } from "next";
 
 interface Props {
   title: string;
-  onClick?: () => void;
 }
 
-export default function MyComponent({ title, onClick }: Props) {
-  return <div onClick={onClick}>{title}</div>;
+export const metadata: Metadata = { title: "Page" };
+
+export default function MyPage({ title }: Props) {
+  return <div>{title}</div>;
 }
 ```
 
-### Server vs Client
-- Prefer **server components** by default
-- Add `'use client'` only for: hooks (`useState`, `useEffect`), event handlers, browser APIs
+### Client Component (when needed)
+```typescript
+"use client";
+
+import { useState } from "react";
+
+interface Props {
+  defaultValue?: string;
+  onSubmit: (value: string) => void;
+}
+
+export default function MyComponent({ defaultValue = "", onSubmit }: Props) {
+  const [value, setValue] = useState(defaultValue);
+  return <input value={value} onChange={(e) => setValue(e.target.value)} />;
+}
+```
+
+**Add `'use client'` only for:** `useState`, `useEffect`, event handlers, browser APIs, `onClick`, `onChange`.
 
 ---
 
-## 6. Tailwind CSS v4
+## 5. Tailwind CSS v4
 
-### CSS Custom Properties (from globals.css)
+### Color Variables (from globals.css)
 ```css
---color-bg: #fafafa        /* Background */
---color-fg: #0d0d0d        /* Foreground/text */
---color-grey-50: #f7f7f7
---color-grey-100: #f0f0f0
---color-grey-200: #e2e2e2
---color-grey-400: #a0a0a0
---color-grey-600: #525252
---color-grey-800: #282828
-
---font-serif: var(--font-cormorant)
---font-sans: var(--font-syne)
---font-mono: var(--font-jetbrains)
+/* Semantic */
+--color-primary, --color-secondary, --color-muted, --color-border
+/* Grey scale */
+--color-grey-50 through --color-grey-900
+/* Brand accents */
+--color-amber, --color-green, --color-blue, --color-purple (with -400, -500, -10, -20 variants)
+/* Fonts */
+--font-serif, --font-sans, --font-mono
 ```
 
-### Available Animation Classes
+### Animation Classes
 ```css
-.animate-fade-up          /* Fade up animation */
-.delay-1 through .delay-5 /* Animation delays (0.1s to 0.65s) */
-.animate-ticker           /* Horizontal ticker (pauses on hover) */
-.reveal / .reveal.visible /* Scroll reveal (use JS to add .visible) */
+.animate-fade-up         /* Main fade-up */
+.delay-1 through .delay-5  /* 0.1s to 0.65s delays */
+.animate-ticker          /* Horizontal ticker (pauses on hover) */
+.reveal / .reveal.visible  /* Scroll reveal (add .visible via JS) */
+/* Directional reveals: .reveal-up, .reveal-down, .reveal-left, .reveal-right */
+.section                 /* padding: 120px 0 (80px mobile) */
 ```
 
-### Section Spacing
+### Glass & Effects
 ```css
-.section  /* padding: 120px 0 (80px on mobile) */
+.glass         /* backdrop-filter blur + semi-transparent bg */
+.hover-lift    /* translateY(-4px) on hover */
+.card-hover    /* subtle shadow lift on hover */
+.gradient-text /* amber→orange→pink text gradient */
+.glow-amber-sm /* amber glow effect */
+```
+
+---
+
+## 6. Zod Validation (v4)
+
+```typescript
+import { z } from "zod";
+
+const ContactSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  message: z.string().min(10),
+});
+
+// Infer type from schema
+type ContactInput = z.infer<typeof ContactSchema>;
+
+// Parse with error handling
+const result = ContactSchema.safeParse(data);
+if (!result.success) {
+  return { errors: result.error.flatten().fieldErrors };
+}
 ```
 
 ---
@@ -172,57 +186,53 @@ export default function MyComponent({ title, onClick }: Props) {
 ## 7. Error Handling
 
 ```typescript
+// Server actions / API routes
 try {
-  // operation
+  const data = await operation();
+  return NextResponse.json({ data });
 } catch (error) {
-  console.error('Operation failed:', error);
+  console.error("Operation failed:", error);
   return NextResponse.json(
-    { error: 'Operation failed' },
+    { error: "Failed to complete operation" },
     { status: 500 }
   );
 }
-```
 
-- Use try/catch for async operations
-- Return meaningful error messages with proper status codes (400, 401, 429, 500)
+// Client-side: display user-friendly messages
+try {
+  await submitForm(data);
+} catch {
+  setError("Something went wrong. Please try again.");
+}
+```
 
 ---
 
 ## 8. Before Committing
 
 ```bash
-pnpm lint      # Check for lint errors
-pnpm build     # Verify build passes
+pnpm lint   # ESLint check
+pnpm build  # Production build
 ```
-
-**Never** commit code that fails these checks.
 
 ---
 
 ## 9. Prohibited Patterns
 
-- ❌ `any` type (use `unknown` with type guards)
+- ❌ `any` type
 - ❌ `console.log` in production code
 - ❌ Inline styles (use Tailwind)
-- ❌ Relative imports when `@/` alias available
+- ❌ Relative imports when `@/` alias is available
+- ❌ Non-named exports for UI components (use named exports instead)
 
 ---
 
-## 10. Future Integrations (Roadmap)
+## 10. Key Files
 
-When adding these, update AGENTS.md with relevant guidelines:
-- **Testing:** Vitest + React Testing Library
-- **Validation:** Zod schemas in `@/lib/schemas`
-- **Logging:** pino logger in `@/lib/logger`
-- **Database:** Prisma
-- **Auth:** NextAuth.js
-
----
-
-## Summary
-
-1. Use TypeScript strictly - no `any`
-2. Prefer server components, add `'use client'` sparingly
-3. Use Tailwind v4 with CSS custom properties from globals.css
-4. Run `pnpm lint` and `pnpm build` before commit
-5. Keep components small and focused
+| File | Purpose |
+|------|---------|
+| `src/app/layout.tsx` | Root layout with fonts, ThemeProvider, Analytics |
+| `src/app/globals.css` | Tailwind v4 config, CSS variables, animations |
+| `src/lib/utils.ts` | `cn()` utility for Tailwind class merging |
+| `src/components/ThemeProvider.tsx` | Dark mode state management |
+| `eslint.config.mjs` | ESLint config (Next core-web-vitals + TypeScript) |

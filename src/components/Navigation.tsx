@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import ThemeToggle from './ThemeToggle';
@@ -13,7 +14,20 @@ import {
   NavigationMenuContent,
   NavigationMenuLink,
 } from './ui/NavigationMenu';
-import { Sparkles, Building2, MapPin, Clock, Users, BookOpen, Zap, Brain, Database, MessageSquare, Store, Plane } from 'lucide-react';
+import {
+  Sparkles,
+  Building2,
+  MapPin,
+  Clock,
+  Users,
+  BookOpen,
+  Zap,
+  Brain,
+  Database,
+  MessageSquare,
+  Store,
+  Plane,
+} from 'lucide-react';
 
 // Aitlas products
 const aitlasProducts = [
@@ -32,7 +46,7 @@ const aitlasProducts = [
   {
     title: 'Agents',
     href: '/projects/aitlas/agents',
-    description: 'GWagents marketplace',
+    description: 'Agents marketplace',
     icon: Brain,
   },
   {
@@ -94,8 +108,21 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 no-underline group">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-grey-800 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl shadow-lg shadow-black/10 dark:bg-gradient-to-br dark:from-white dark:to-grey-200 dark:shadow-white/10">
-              <span className="text-primary-foreground font-serif font-bold text-xl">F</span>
+            <div className="w-10 h-10 flex items-center justify-center transition-all duration-300 group-hover:scale-105">
+              <Image
+                src="/logo-minimal.svg"
+                alt="Furma.tech"
+                width={40}
+                height={40}
+                className="dark:hidden"
+              />
+              <Image
+                src="/logo-dark.svg"
+                alt="Furma.tech"
+                width={40}
+                height={40}
+                className="hidden dark:block"
+              />
             </div>
             <div className="flex flex-col">
               <span className="font-bold text-[15px] tracking-tight text-foreground leading-none">Furma.tech</span>

@@ -21,7 +21,7 @@ const jobs = [
     department: 'Design',
     location: 'Remote (EU)',
     type: 'Full-time',
-    description: 'Shape the user experience for Nova, GWagents Store, and our industry SaaS products.',
+    description: 'Shape the user experience for Nova, Agents Store, and our industry SaaS products.',
     skills: ['Figma', 'UI/UX', 'Design Systems', 'Prototyping'],
   },
   {

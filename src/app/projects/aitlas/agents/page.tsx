@@ -7,7 +7,7 @@ import { StaggerChildren, ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Coins, Shield, Bot, Microscope, CheckCircle2 } from "lucide-react";
 
 export const metadata = constructMetadata({
-  title: "GWagents Store — AI Agent Marketplace",
+  title: "Agents Store — AI Agent Marketplace",
   description: "Hire pre-built Super Agents or publish your own. 70% revenue share for creators.",
 });
 
@@ -81,9 +81,9 @@ const creatorPerks = [
 export default function AgentsPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <ProjectHero 
+      <ProjectHero
         label="Aitlas — Marketplace"
-        title="GWagents Store"
+        title="Agents Store"
         description="The marketplace for pre-built Super Agents. Hire a specialist to join your workspace or publish your own skills. 70% revenue share for creators."
         status="In Development"
         tags={["Agent Store", "70/30 Rev Share", "MCP Native"]}

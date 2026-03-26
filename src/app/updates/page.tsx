@@ -23,18 +23,18 @@ const posts = [
   },
   {
     slug: "f-twyt-production",
-    title: "f.twyt is Now Live: Twitter Intelligence for 1 Credit",
-    excerpt: "Our first Action is production-ready. Search, ingest, and semantically search Twitter without rate limits.",
-    date: "Feb 28, 2026",
-    category: "Release",
+    title: "Introducing f.twyt: Twitter Intelligence",
+    excerpt: "Our first Action in development. Search, ingest, and semantically search Twitter without rate limits.",
+    date: "Feb 2026",
+    category: "In Dev",
     readTime: "5 min read",
   },
   {
     slug: "restauManager-alpha",
-    title: "restauManager Alpha: First Beta Users Onboarded",
-    excerpt: "We welcomed our first restaurant partners in Catalonia. Early feedback shows strong product-market fit.",
-    date: "Jan 15, 2026",
-    category: "Product",
+    title: "restauManager: Development Update",
+    excerpt: "Building restaurant management software for Catalonia. TheFork integration and floor plan management.",
+    date: "Jan 2026",
+    category: "In Dev",
     readTime: "4 min read",
   },
   {
@@ -56,14 +56,14 @@ const posts = [
   {
     slug: "aitlas-launch",
     title: "Introducing Aitlas: A Sovereign AI Ecosystem",
-    excerpt: "Nova, GWagents Store, Actions, and Nexus runtime. The pieces are coming together for a new kind of AI platform.",
-    date: "Oct 30, 2025",
-    category: "Announcement",
+    excerpt: "Nova, Agents Store, Actions, and Nexus runtime. Building a new kind of AI platform.",
+    date: "Oct 2025",
+    category: "In Dev",
     readTime: "5 min read",
   },
 ];
 
-const categories = ["All", "Product", "Release", "Company", "Technical"];
+const categories = ["All", "In Dev", "Product", "Company", "Technical"];
 
 export default function UpdatesPage() {
   return (

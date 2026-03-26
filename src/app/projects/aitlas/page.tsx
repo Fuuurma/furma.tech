@@ -61,12 +61,12 @@ const products = [
 ];
 
 const actions = [
-  { name: "f.twyt", desc: "Twitter intelligence", status: "dev", icon: "🐦" },
-  { name: "f.library", desc: "Vector knowledge base", status: "dev", icon: "📚" },
-  { name: "f.rsrx", desc: "Deep web research", status: "dev", icon: "🔬" },
-  { name: "f.guard", desc: "AI code reviewer", status: "dev", icon: "🛡️" },
-  { name: "f.support", desc: "Autonomous helpdesk", status: "roadmap", icon: "💬" },
-  { name: "f.decloy", desc: "Infra deployer", status: "roadmap", icon: "🚀" },
+  { name: "f.twyt", desc: "Twitter intelligence", status: "dev", icon: "𝕏" },
+  { name: "f.library", desc: "Vector knowledge base", status: "dev", icon: "📖" },
+  { name: "f.rsrx", desc: "Deep web research", status: "dev", icon: "🔍" },
+  { name: "f.guard", desc: "AI code reviewer", status: "dev", icon: "🛡" },
+  { name: "f.support", desc: "Autonomous helpdesk", status: "roadmap", icon: "💭" },
+  { name: "f.decloy", desc: "Infra deployer", status: "roadmap", icon: "⚡" },
 ];
 
 const principles = [
@@ -85,56 +85,56 @@ export default function AitlasPage() {
         <div className="absolute top-1/4 right-[-10%] w-[800px] h-[800px] bg-gradient-radial-blue pointer-events-none opacity-40 blur-[120px] animate-pulse-glow"></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none blur-[100px]"></div>
 
-        <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 md:px-12">
           {/* Breadcrumbs */}
-          <Breadcrumbs className="mb-8" />
-          
+          <Breadcrumbs className="mb-6 sm:mb-8" />
+
           <ScrollReveal>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-8 backdrop-blur-sm card-elevated">
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6 sm:mb-8 backdrop-blur-sm card-elevated">
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-              <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-amber-600">Public Beta</span>
+              <span className="font-mono text-[10px] sm:text-[11px] font-bold tracking-[0.12em] uppercase text-amber-600">Public Beta</span>
             </div>
 
-            <h1 className="font-serif text-[clamp(48px,8vw,80px)] font-semibold leading-[0.9] tracking-tight text-fg mb-8">
+            <h1 className="font-serif text-[clamp(40px,8vw,56px)] sm:text-[clamp(48px,8vw,64px)] md:text-[clamp(48px,8vw,80px)] font-semibold leading-[0.9] tracking-tight text-fg mb-6 sm:mb-8">
               Aitlas Ecosystem
             </h1>
-            
-            <p className="text-[40px] md:text-[56px] font-serif font-bold text-fg leading-[0.95] mb-8">
+
+            <p className="text-[32px] sm:text-[40px] md:text-[48px] lg:text-[56px] font-serif font-bold text-fg leading-[0.95] mb-6 sm:mb-8">
               Sovereign AI,<br />
               <span className="gradient-text italic">your terms.</span>
             </p>
 
-            <p className="text-[20px] leading-[1.7] text-grey-600 dark:text-grey-400 max-w-[700px] mx-auto mb-12">
+            <p className="text-[16px] sm:text-[18px] md:text-[20px] leading-[1.6] sm:leading-[1.7] text-grey-600 dark:text-grey-400 max-w-[700px] mx-auto mb-10 sm:mb-12">
               A modular agentic operating system where you own your keys, connect tools via MCP,
               and run autonomous agents without trusting a single cloud vendor.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-              <Button href="/projects/aitlas/nova" variant="premium" size="lg" glow className="shadow-xl shadow-amber-500/30 min-w-[200px]">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-12 sm:mb-16">
+              <Button href="/projects/aitlas/nova" variant="premium" size="lg" glow className="shadow-xl shadow-amber-500/30 min-w-[200px] w-full sm:w-auto">
                 Try Nova Workspace
                 <ArrowRight className="w-4 h-4" />
               </Button>
-              <Button href="#actions" variant="outline" size="lg" className="card-elevated min-w-[200px]">
+              <Button href="#actions" variant="outline" size="lg" className="card-elevated min-w-[200px] w-full sm:w-auto">
                 Explore Actions
               </Button>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 pt-12 border-t border-grey-200 dark:border-grey-800">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 md:gap-12 pt-8 sm:pt-12 border-t border-grey-200 dark:border-grey-800">
               <div>
-                <div className="font-serif text-[36px] md:text-[42px] font-bold text-fg leading-none">34+</div>
-                <div className="text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-2">MCP Tools</div>
+                <div className="font-serif text-[28px] sm:text-[32px] md:text-[36px] lg:text-[42px] font-bold text-fg leading-none">34+</div>
+                <div className="text-[10px] sm:text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-1 sm:mt-2">MCP Tools</div>
               </div>
               <div>
-                <div className="font-serif text-[36px] md:text-[42px] font-bold text-fg leading-none">4</div>
-                <div className="text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-2">Core Products</div>
+                <div className="font-serif text-[28px] sm:text-[32px] md:text-[36px] lg:text-[42px] font-bold text-fg leading-none">4</div>
+                <div className="text-[10px] sm:text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-1 sm:mt-2">Core Products</div>
               </div>
               <div>
-                <div className="font-serif text-[36px] md:text-[42px] font-bold text-fg leading-none">0%</div>
-                <div className="text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-2">Vendor Lock-in</div>
+                <div className="font-serif text-[28px] sm:text-[32px] md:text-[36px] lg:text-[42px] font-bold text-fg leading-none">0%</div>
+                <div className="text-[10px] sm:text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-1 sm:mt-2">Vendor Lock-in</div>
               </div>
               <div>
-                <div className="font-serif text-[36px] md:text-[42px] font-bold text-fg leading-none">BYOK</div>
-                <div className="text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-2">Your Keys</div>
+                <div className="font-serif text-[28px] sm:text-[32px] md:text-[36px] lg:text-[42px] font-bold text-fg leading-none">BYOK</div>
+                <div className="text-[10px] sm:text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-1 sm:mt-2">Your Keys</div>
               </div>
             </div>
           </ScrollReveal>
@@ -143,26 +143,26 @@ export default function AitlasPage() {
 
       {/* Core Principles */}
       <section className="section bg-white dark:bg-grey-900">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
           <ScrollReveal>
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-grey-100 dark:bg-grey-800 border border-grey-200 dark:border-grey-700 mb-6">
-                <Sparkles className="w-4 h-4 text-amber-500" />
-                <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-600 dark:text-grey-400">Core Principles</span>
+            <div className="text-center mb-12 sm:mb-16">
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-grey-100 dark:bg-grey-800 border border-grey-200 dark:border-grey-700 mb-4 sm:mb-6">
+                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-amber-500" />
+                <span className="font-mono text-[10px] sm:text-[11px] font-bold tracking-[0.12em] uppercase text-grey-600 dark:text-grey-400">Core Principles</span>
               </div>
-              <h2 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.08] tracking-tight text-fg">Built for sovereignty</h2>
+              <h2 className="font-serif text-[clamp(28px,5vw,40px)] sm:text-[clamp(32px,5vw,48px)] md:text-[clamp(36px,5vw,56px)] font-semibold leading-[1.08] tracking-tight text-fg">Built for sovereignty</h2>
             </div>
           </ScrollReveal>
 
-          <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StaggerChildren className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {principles.map((principle, index) => (
               <ScrollReveal key={principle.title} delay={index * 50}>
                 <Card hover padding="lg" className="card-elevated text-center h-full">
-                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white mx-auto mb-6 shadow-lg shadow-amber-500/25">
-                    <principle.icon className="w-7 h-7" strokeWidth={1.5} />
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white mx-auto mb-4 sm:mb-6 shadow-lg shadow-amber-500/25">
+                    <principle.icon className="w-6 h-6 sm:w-7 sm:h-7" strokeWidth={1.5} />
                   </div>
-                  <h3 className="text-[16px] font-bold text-fg mb-3">{principle.title}</h3>
-                  <p className="text-[14px] text-grey-600 dark:text-grey-400 leading-relaxed">{principle.desc}</p>
+                  <h3 className="text-[15px] sm:text-[16px] font-bold text-fg mb-2 sm:mb-3">{principle.title}</h3>
+                  <p className="text-[13px] sm:text-[14px] text-grey-600 dark:text-grey-400 leading-relaxed">{principle.desc}</p>
                 </Card>
               </ScrollReveal>
             ))}
@@ -172,17 +172,17 @@ export default function AitlasPage() {
 
       {/* Products Grid */}
       <section className="section bg-grey-50 dark:bg-grey-900/50">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
           <ScrollReveal>
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6">
-                <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-amber-600">Products</span>
+            <div className="text-center mb-12 sm:mb-16">
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-4 sm:mb-6">
+                <span className="font-mono text-[10px] sm:text-[11px] font-bold tracking-[0.12em] uppercase text-amber-600">Products</span>
               </div>
-              <h2 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.08] tracking-tight text-fg">Everything you need</h2>
+              <h2 className="font-serif text-[clamp(28px,5vw,40px)] sm:text-[clamp(32px,5vw,48px)] md:text-[clamp(36px,5vw,56px)] font-semibold leading-[1.08] tracking-tight text-fg">Everything you need</h2>
             </div>
           </ScrollReveal>
 
-          <StaggerChildren className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <StaggerChildren className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             {products.map((product, index) => (
               <ScrollReveal key={product.name} delay={index * 100}>
                 <Link href={product.href} className="block group no-underline">

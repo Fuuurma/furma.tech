@@ -36,9 +36,9 @@ export function Button({
   };
 
   const sizeStyles = {
-    sm: "text-[12px] px-4 py-2",
-    md: "text-[13px] px-5 py-3.5",
-    lg: "text-[14px] px-7 py-4",
+    sm: "text-[11px] sm:text-[12px] px-3.5 sm:px-4 py-1.5 sm:py-2",
+    md: "text-[12px] sm:text-[13px] px-4.5 sm:px-5 py-3 sm:py-3.5",
+    lg: "text-[13px] sm:text-[14px] px-6 sm:px-7 py-3.5 sm:py-4",
   };
 
   const glowStyle = glow ? "glow-amber-sm" : "";
