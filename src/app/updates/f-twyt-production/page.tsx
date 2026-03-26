@@ -6,19 +6,19 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = constructMetadata({
-  title: "f.twyt is Now Live | Furma.tech",
-  description: "Our first Action is production-ready. Search, ingest, and semantically search Twitter without rate limits.",
+  title: "Introducing f.twyt | Furma.tech",
+  description: "Our first Action in development. Search, ingest, and semantically search Twitter without rate limits.",
 });
 
 export default function FTwytProductionPost() {
   return (
     <div className="min-h-screen bg-bg text-fg">
       <ProjectHero 
-        label="Product Release"
-        title="f.twyt is Now Live"
-        description="Our first Action is production-ready. Search, ingest, and semantically search Twitter without rate limits."
-        status="Live"
-        tags={["February 28, 2026", "5 min read"]}
+        label="In Development"
+        title="Introducing f.twyt"
+        description="Our first Action in development. Search, ingest, and semantically search Twitter without rate limits."
+        status="In Dev"
+        tags={["February 2026", "5 min read"]}
       />
 
       <Section variant="default" className="py-24">
@@ -29,15 +29,14 @@ export default function FTwytProductionPost() {
           
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <p className="text-[17px] leading-[1.8] mb-6">
-              After weeks of testing, f.twyt is now production-ready. This is our first Action in the
-              f.xyz suite — a Twitter intelligence tool that lets you search, ingest, and semantically
-              search tweets without worrying about rate limits.
+              f.twyt is our first Action in the f.xyz suite — a Twitter intelligence tool that will let you search, 
+              ingest, and semantically search tweets without worrying about rate limits.
             </p>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">What f.twyt Does</h2>
+            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">What f.twyt Will Do</h2>
             <p className="text-[17px] leading-[1.8] mb-6">
-              f.twyt wraps the Twitter API with intelligent rate limit handling and adds semantic search
-              capabilities on top. You can:
+              f.twyt will wrap the Twitter API with intelligent rate limit handling and add semantic search
+              capabilities on top. You will be able to:
             </p>
             <ul className="space-y-4 mb-6 list-none pl-0">
               <li className="flex gap-4">
@@ -58,19 +57,19 @@ export default function FTwytProductionPost() {
               </li>
             </ul>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">Pricing</h2>
+            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">Planned Pricing</h2>
             <p className="text-[17px] leading-[1.8] mb-6">
-              Each search query costs 1 credit. Ingesting tweets costs 2 credits per tweet.
+              Each search query will cost 1 credit. Ingesting tweets will cost 2 credits per tweet.
               Compare this to Twitter&apos;s API pricing which starts at $100/month for basic access.
             </p>
 
             <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">Getting Started</h2>
             <p className="text-[17px] leading-[1.8] mb-6">
-              Sign up for a free account, add some credits, and connect your Twitter API keys
+              Once ready, you&apos;ll be able to sign up for a free account, add credits, and connect your Twitter API keys
               (or use ours if you don&apos;t have access). The choice is yours — that&apos;s the BYOK way.
             </p>
 
-            <Button href="/projects/aitlas/twyt" variant="premium">Try f.twyt →</Button>
+            <Button href="/projects/aitlas/twyt" variant="outline">Learn more about f.twyt →</Button>
           </div>
         </Container>
       </Section>

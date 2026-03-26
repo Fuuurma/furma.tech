@@ -50,13 +50,13 @@ const timeline = [
   },
   {
     year: "2026",
-    title: "Vertical A Launch",
-    desc: "restauManager and GuideTours enter development for local tourism & hospitality.",
+    title: "Vertical A Development",
+    desc: "restauManager and GuideTours in development for local tourism & hospitality.",
   },
   {
     year: "2026",
-    title: "Aitlas Alpha",
-    desc: "Nexus and Actions suite begin public testing. Nova Workspace in private beta.",
+    title: "Aitlas Development",
+    desc: "Nexus and Actions suite in active development. Nova Workspace planned.",
   },
 ];
 

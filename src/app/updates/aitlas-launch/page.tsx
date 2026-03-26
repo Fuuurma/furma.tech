@@ -7,18 +7,18 @@ import Link from "next/link";
 
 export const metadata = constructMetadata({
   title: "Introducing Aitlas: A Sovereign AI Ecosystem | Furma.tech",
-  description: "Nova, GWagents Store, Actions, and Nexus runtime. The pieces are coming together for a new kind of AI platform.",
+  description: "Nova, Agents Store, Actions, and Nexus runtime. Building a new kind of AI platform.",
 });
 
 export default function AitlasLaunchPost() {
   return (
     <div className="min-h-screen bg-bg text-fg">
       <ProjectHero 
-        label="Announcement"
+        label="In Development"
         title="Introducing Aitlas"
-        description="Nova, GWagents Store, Actions, and Nexus runtime. The pieces are coming together for a new kind of AI platform."
-        status="Product"
-        tags={["October 30, 2025", "5 min read"]}
+        description="Nova, Agents Store, Actions, and Nexus runtime. Building a new kind of AI platform."
+        status="In Dev"
+        tags={["2026", "5 min read"]}
       />
 
       <Section variant="default" className="py-24">
@@ -29,7 +29,7 @@ export default function AitlasLaunchPost() {
           
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <p className="text-[17px] leading-[1.8] mb-6">
-              Today we&apos;re launching Aitlas — a new kind of AI platform built around three principles:
+              We&apos;re building Aitlas — a new kind of AI platform built around three principles:
               your keys, your data, and your agents.
             </p>
 
@@ -39,7 +39,7 @@ export default function AitlasLaunchPost() {
               every token. We think there&apos;s a better way.
             </p>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">Introducing Aitlas</h2>
+            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">Aitlas Components</h2>
             <p className="text-[17px] leading-[1.8] mb-6">
               Aitlas is a modular AI operating system with four core components:
             </p>
@@ -54,7 +54,7 @@ export default function AitlasLaunchPost() {
               </li>
               <li className="flex gap-4">
                 <span className="text-amber-600 font-mono font-bold">→</span>
-                <span><strong className="text-fg">GWagents Store</strong> — Marketplace for pre-built AI agents</span>
+                <span><strong className="text-fg">Agents Store</strong> — Marketplace for pre-built AI agents</span>
               </li>
               <li className="flex gap-4">
                 <span className="text-amber-600 font-mono font-bold">→</span>
@@ -64,18 +64,17 @@ export default function AitlasLaunchPost() {
 
             <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">Zero Token Liability</h2>
             <p className="text-[17px] leading-[1.8] mb-6">
-              With Aitlas, you bring your own API keys. You pay OpenAI or Anthropic directly. We never
+              With Aitlas, you bring your own API keys. You pay OpenAI or Anthropic directly. We&apos;ll never
               touch your tokens and never profit from your API spend. We make money on compute credits
               for Actions, not on markups.
             </p>
 
             <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">What&apos;s Next</h2>
             <p className="text-[17px] leading-[1.8] mb-8">
-              f.twyt and f.library are live today. Nexus runtime and the GWagents Store are coming soon.
-              Join the waitlist to get early access.
+              All components are currently in development. Join the waitlist to get early access when ready.
             </p>
 
-            <Button href="/projects/aitlas" variant="premium">Discover Aitlas →</Button>
+            <Button href="/projects/aitlas" variant="outline">Discover Aitlas →</Button>
           </div>
         </Container>
       </Section>

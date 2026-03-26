@@ -33,20 +33,20 @@ const updates = [
   {
     slug: "nova-workspace-launch",
     date: "Mar 2026",
-    title: "Nova Workspace Beta",
-    description: "Our unified AI workspace is now in private beta. Connect multiple LLM providers in one interface.",
+    title: "Nova Workspace Development",
+    description: "Our unified AI workspace is in active development. BYOK architecture with multi-provider support.",
   },
   {
     slug: "f-twyt-production",
     date: "Feb 2026",
-    title: "f.twyt Now Live",
-    description: "Twitter intelligence tool enters production. Advanced search and semantic analysis for social listening.",
+    title: "f.twyt In Development",
+    description: "Twitter intelligence tool in development. Advanced search and semantic analysis for social listening.",
   },
   {
     slug: "restauManager-alpha",
     date: "Jan 2026",
-    title: "restauManager Alpha",
-    description: "First beta users onboarded in Catalonia. Early results show 3+ hours saved per week on reservations.",
+    title: "restauManager Development",
+    description: "Restaurant management platform in development. TheFork integration and reservation management.",
   },
 ];
 
@@ -54,100 +54,100 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center overflow-hidden pt-20">
+      <section className="relative min-h-screen flex items-center overflow-hidden pt-16 sm:pt-20">
         {/* Background elements */}
         <div className="absolute inset-0 bg-gradient-radial pointer-events-none"></div>
         <div className="absolute top-20 right-[-10%] w-[800px] h-[800px] bg-gradient-radial-blue pointer-events-none opacity-40 blur-[100px] animate-pulse-glow"></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-gradient-radial pointer-events-none opacity-30 blur-[100px]"></div>
 
         <Container size="full" className="relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-24 items-center">
             <ScrollReveal>
               <div>
                 {/* Badge - Enhanced */}
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-10 backdrop-blur-sm card-elevated">
+                <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6 sm:mb-8 md:mb-10 backdrop-blur-sm card-elevated">
                   <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                  <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-amber-600">
-                    Now in Public Beta
+                  <span className="font-mono text-[10px] sm:text-[11px] font-bold tracking-[0.12em] uppercase text-amber-600">
+                    Building in Progress
                   </span>
                 </div>
 
                 {/* Headline - Enhanced typography */}
-                <h1 className="font-serif text-[clamp(48px,8vw,104px)] font-semibold leading-[0.9] tracking-tight text-foreground mb-8">
+                <h1 className="font-serif text-[clamp(40px,8vw,64px)] sm:text-[clamp(48px,8vw,80px)] md:text-[clamp(48px,8vw,104px)] font-semibold leading-[0.9] tracking-tight text-foreground mb-6 sm:mb-8">
                   Build software<br />
                   <span className="gradient-text italic">that works.</span>
                 </h1>
 
-                <p className="text-[20px] leading-[1.7] text-grey-600 dark:text-grey-400 max-w-[540px] mb-12">
+                <p className="text-[17px] sm:text-[18px] md:text-[20px] leading-[1.6] sm:leading-[1.7] text-grey-600 dark:text-grey-400 max-w-[540px] mb-8 sm:mb-10 md:mb-12">
                   Bootstrapped venture studio building profitable SaaS for traditional industries
                   and <span className="text-foreground font-medium">Aitlas</span>, the sovereign AI platform for autonomous work.
                 </p>
 
                 {/* Enhanced CTA buttons */}
-                <div className="flex gap-4 flex-wrap">
-                  <Button href="/projects/aitlas" variant="premium" size="lg" glow className="shadow-lg shadow-amber-500/20">
+                <div className="flex gap-3 sm:gap-4 flex-wrap">
+                  <Button href="/projects/aitlas" variant="premium" size="lg" glow className="shadow-lg shadow-amber-500/20 flex-1 sm:flex-none">
                     Explore Aitlas
                     <span className="ml-1">→</span>
                   </Button>
-                  <Button href="/projects/saas" variant="outline" size="lg" className="card-elevated">
+                  <Button href="/projects/saas" variant="outline" size="lg" className="card-elevated flex-1 sm:flex-none">
                     Industry Tools
                   </Button>
                 </div>
 
                 {/* Trust indicators */}
-                <div className="flex items-center gap-8 mt-16 pt-8 border-t border-grey-200 dark:border-grey-800">
+                <div className="flex flex-wrap items-center gap-6 sm:gap-8 mt-10 sm:mt-12 md:mt-16 pt-6 sm:pt-8 border-t border-grey-200 dark:border-grey-800">
                   <div>
-                    <div className="font-serif text-[28px] font-bold text-foreground leading-none">0%</div>
-                    <div className="text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-1">VC Funding</div>
+                    <div className="font-serif text-[24px] sm:text-[28px] font-bold text-foreground leading-none">0%</div>
+                    <div className="text-[10px] sm:text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-1">VC Funding</div>
                   </div>
-                  <div className="w-px h-10 bg-grey-200 dark:bg-grey-800"></div>
+                  <div className="w-px h-8 sm:h-10 bg-grey-200 dark:bg-grey-800"></div>
                   <div>
-                    <div className="font-serif text-[28px] font-bold text-foreground leading-none">10+</div>
-                    <div className="text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-1">Products</div>
+                    <div className="font-serif text-[24px] sm:text-[28px] font-bold text-foreground leading-none">10+</div>
+                    <div className="text-[10px] sm:text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-1">Products</div>
                   </div>
-                  <div className="w-px h-10 bg-grey-200 dark:bg-grey-800"></div>
+                  <div className="w-px h-8 sm:h-10 bg-grey-200 dark:bg-grey-800"></div>
                   <div>
-                    <div className="font-serif text-[28px] font-bold text-foreground leading-none">EU</div>
-                    <div className="text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-1">Based</div>
+                    <div className="font-serif text-[24px] sm:text-[28px] font-bold text-foreground leading-none">EU</div>
+                    <div className="text-[10px] sm:text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-1">Based</div>
                   </div>
                 </div>
               </div>
             </ScrollReveal>
-            
+
             {/* Right side - Product cards */}
             <ScrollReveal delay={200}>
               <div className="relative">
                 {/* Decorative glow */}
                 <div className="absolute -inset-4 bg-amber-500/5 blur-3xl rounded-full pointer-events-none animate-float"></div>
 
-                <div className="relative space-y-4">
+                <div className="relative space-y-3 sm:space-y-4">
                   {/* Aitlas Card - Enhanced */}
                   <Link href="/projects/aitlas" className="block group">
                     <Card variant="premium" hover padding="lg" className="relative overflow-hidden card-elevated">
-                      <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-amber-500/15 to-transparent pointer-events-none"></div>
-                      <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center gap-4">
-                          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold text-xl shadow-xl shadow-amber-500/25 group-hover:scale-110 transition-transform duration-300">
+                      <div className="absolute top-0 right-0 w-32 sm:w-40 h-32 sm:h-40 bg-gradient-to-br from-amber-500/15 to-transparent pointer-events-none"></div>
+                      <div className="flex items-center justify-between mb-4 sm:mb-6">
+                        <div className="flex items-center gap-3 sm:gap-4">
+                          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-xl shadow-amber-500/25 group-hover:scale-110 transition-transform duration-300">
                             A
                           </div>
                           <div>
-                            <div className="text-[18px] font-bold text-foreground">Aitlas</div>
-                            <div className="text-[12px] text-grey-500 dark:text-grey-400 font-medium">Sovereign AI Platform</div>
+                            <div className="text-[16px] sm:text-[18px] font-bold text-foreground">Aitlas</div>
+                            <div className="text-[11px] sm:text-[12px] text-grey-500 dark:text-grey-400 font-medium">Sovereign AI Platform</div>
                           </div>
                         </div>
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20 uppercase tracking-wider">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-[9px] sm:text-[10px] font-mono font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20 uppercase tracking-wider">
                           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
                           In Dev
                         </span>
                       </div>
-                      <p className="text-[15px] text-grey-600 dark:text-grey-400 mb-6 leading-relaxed">
+                      <p className="text-[14px] sm:text-[15px] text-grey-600 dark:text-grey-400 mb-4 sm:mb-6 leading-relaxed">
                         Unified AI workspace with Nova, Nexus runtime, and 34+ specialized Actions.
                         Bring your own keys—zero vendor lock-in.
                       </p>
-                      <div className="flex gap-2">
-                        <span className="px-2.5 py-1.5 rounded-lg bg-grey-50 text-[10px] font-mono font-medium text-grey-600 border border-grey-100 uppercase tracking-wide dark:bg-grey-800 dark:text-grey-400 dark:border-grey-700">MCP</span>
-                        <span className="px-2.5 py-1.5 rounded-lg bg-grey-50 text-[10px] font-mono font-medium text-grey-600 border border-grey-100 uppercase tracking-wide dark:bg-grey-800 dark:text-grey-400 dark:border-grey-700">BYOK</span>
-                        <span className="px-2.5 py-1.5 rounded-lg bg-grey-50 text-[10px] font-mono font-medium text-grey-600 border border-grey-100 uppercase tracking-wide dark:bg-grey-800 dark:text-grey-400 dark:border-grey-700">34+ Actions</span>
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                        <span className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-grey-50 text-[9px] sm:text-[10px] font-mono font-medium text-grey-600 border border-grey-100 uppercase tracking-wide dark:bg-grey-800 dark:text-grey-400 dark:border-grey-700">MCP</span>
+                        <span className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-grey-50 text-[9px] sm:text-[10px] font-mono font-medium text-grey-600 border border-grey-100 uppercase tracking-wide dark:bg-grey-800 dark:text-grey-400 dark:border-grey-700">BYOK</span>
+                        <span className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-grey-50 text-[9px] sm:text-[10px] font-mono font-medium text-grey-600 border border-grey-100 uppercase tracking-wide dark:bg-grey-800 dark:text-grey-400 dark:border-grey-700">34+ Actions</span>
                       </div>
                     </Card>
                   </Link>
@@ -155,45 +155,45 @@ export default function Home() {
                   {/* Industry SaaS Card - Enhanced */}
                   <Link href="/projects/saas" className="block group">
                     <Card variant="standard" hover padding="lg" className="card-elevated">
-                      <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center gap-4">
-                          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl shadow-xl shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
+                      <div className="flex items-center justify-between mb-4 sm:mb-6">
+                        <div className="flex items-center gap-3 sm:gap-4">
+                          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-xl shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
                             B
                           </div>
                           <div>
-                            <div className="text-[18px] font-bold text-foreground">Industry SaaS</div>
-                            <div className="text-[12px] text-grey-500 dark:text-grey-400 font-medium">B2B Tools</div>
+                            <div className="text-[16px] sm:text-[18px] font-bold text-foreground">Industry SaaS</div>
+                            <div className="text-[11px] sm:text-[12px] text-grey-500 dark:text-grey-400 font-medium">B2B Tools</div>
                           </div>
                         </div>
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20 uppercase tracking-wider">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-[9px] sm:text-[10px] font-mono font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20 uppercase tracking-wider">
                           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
                           In Dev
                         </span>
                       </div>
-                      <p className="text-[15px] text-grey-600 dark:text-grey-400 mb-6 leading-relaxed">
+                      <p className="text-[14px] sm:text-[15px] text-grey-600 dark:text-grey-400 mb-4 sm:mb-6 leading-relaxed">
                         SaaS for restaurants and tour operators. Built for Catalonia,
                         designed to scale across Europe.
                       </p>
-                      <div className="flex gap-2">
-                        <span className="px-2.5 py-1.5 rounded-lg bg-grey-50 text-[10px] font-mono font-medium text-grey-600 border border-grey-100 uppercase tracking-wide dark:bg-grey-800 dark:text-grey-400 dark:border-grey-700">TheFork</span>
-                        <span className="px-2.5 py-1.5 rounded-lg bg-grey-50 text-[10px] font-mono font-medium text-grey-600 border border-grey-100 uppercase tracking-wide dark:bg-grey-800 dark:text-grey-400 dark:border-grey-700">Viator</span>
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                        <span className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-grey-50 text-[9px] sm:text-[10px] font-mono font-medium text-grey-600 border border-grey-100 uppercase tracking-wide dark:bg-grey-800 dark:text-grey-400 dark:border-grey-700">TheFork</span>
+                        <span className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-grey-50 text-[9px] sm:text-[10px] font-mono font-medium text-grey-600 border border-grey-100 uppercase tracking-wide dark:bg-grey-800 dark:text-grey-400 dark:border-grey-700">Viator</span>
                       </div>
                     </Card>
                   </Link>
 
                   {/* Stats - Enhanced */}
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-3 gap-3 sm:gap-4">
                     <Card padding="md" className="text-center bg-grey-50/50 border-grey-100 dark:bg-grey-800/50 dark:border-grey-700 card-elevated">
-                      <div className="font-serif text-[36px] font-bold text-foreground leading-none mb-1">2</div>
-                      <div className="text-[10px] font-mono font-bold text-grey-500 uppercase tracking-[0.12em]">Verticals</div>
+                      <div className="font-serif text-[28px] sm:text-[32px] md:text-[36px] font-bold text-foreground leading-none mb-1">2</div>
+                      <div className="text-[9px] sm:text-[10px] font-mono font-bold text-grey-500 uppercase tracking-[0.12em]">Verticals</div>
                     </Card>
                     <Card padding="md" className="text-center bg-grey-50/50 border-grey-100 dark:bg-grey-800/50 dark:border-grey-700 card-elevated">
-                      <div className="font-serif text-[36px] font-bold text-foreground leading-none mb-1">0%</div>
-                      <div className="text-[10px] font-mono font-bold text-grey-500 uppercase tracking-[0.12em]">VC</div>
+                      <div className="font-serif text-[28px] sm:text-[32px] md:text-[36px] font-bold text-foreground leading-none mb-1">0%</div>
+                      <div className="text-[9px] sm:text-[10px] font-mono font-bold text-grey-500 uppercase tracking-[0.12em]">VC</div>
                     </Card>
                     <Card padding="md" className="text-center bg-grey-50/50 border-grey-100 dark:bg-grey-800/50 dark:border-grey-700 card-elevated">
-                      <div className="font-serif text-[32px] font-bold text-foreground leading-none mb-1">EU</div>
-                      <div className="text-[10px] font-mono font-bold text-grey-400 uppercase tracking-[0.1em]">Entity</div>
+                      <div className="font-serif text-[24px] sm:text-[28px] md:text-[32px] font-bold text-foreground leading-none mb-1">EU</div>
+                      <div className="text-[9px] sm:text-[10px] font-mono font-bold text-grey-400 uppercase tracking-[0.1em]">Entity</div>
                     </Card>
                   </div>
                 </div>
@@ -209,22 +209,22 @@ export default function Home() {
       {/* The Studio Section */}
       <Section variant="default" className="overflow-hidden border-b border-grey-100 dark:border-grey-800">
         <Container size="full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 sm:gap-20 lg:gap-24 items-center">
             <ScrollReveal>
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-foreground text-background mb-8 dark:bg-white dark:text-black">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-foreground text-background mb-6 sm:mb-8 dark:bg-white dark:text-black">
                   <span className="font-mono text-[10px] font-bold uppercase tracking-widest">The Studio Model</span>
                 </div>
-                <h2 className="font-serif text-[clamp(36px,5vw,64px)] font-semibold leading-[1.05] text-foreground mb-8">
+                <h2 className="font-serif text-[clamp(32px,5vw,48px)] sm:text-[clamp(36px,5vw,56px)] md:text-[clamp(36px,5vw,64px)] font-semibold leading-[1.05] text-foreground mb-6 sm:mb-8">
                   Build. Own. Fund.<br />
                   <span className="gradient-text italic">Independence by design.</span>
                 </h2>
-                <p className="text-[18px] leading-[1.7] text-grey-600 dark:text-grey-400 mb-10">
-                  Furma.tech is a digital venture studio. 
-                  We build high-margin SaaS tools for real-world industries to fund our 
+                <p className="text-[16px] sm:text-[17px] md:text-[18px] leading-[1.6] sm:leading-[1.7] text-grey-600 dark:text-grey-400 mb-8 sm:mb-10">
+                  Furma.tech is a digital venture studio.
+                  We build high-margin SaaS tools for real-world industries to fund our
                   long-term vision for a sovereign AI ecosystem. 100% bootstrapped.
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-lg bg-grey-100 dark:bg-grey-800 flex items-center justify-center">
@@ -250,26 +250,26 @@ export default function Home() {
             <ScrollReveal delay={200}>
               <div className="relative">
                 <div className="absolute -inset-10 bg-gradient-to-br from-amber-500/10 to-blue-500/10 blur-3xl rounded-full opacity-50"></div>
-                <div className="grid grid-cols-2 gap-4 relative">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 relative">
                   <Card padding="lg" className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 flex flex-col items-center text-center">
-                    <Package className="w-8 h-8 mb-4 text-amber-500" />
-                    <div className="font-bold text-[14px] mb-1">Build</div>
-                    <p className="text-[11px] text-grey-400">Industry Grade Tools</p>
+                    <Package className="w-6 h-6 sm:w-8 sm:h-8 mb-3 sm:mb-4 text-amber-500" />
+                    <div className="font-bold text-[13px] sm:text-[14px] mb-1">Build</div>
+                    <p className="text-[10px] sm:text-[11px] text-grey-400">Industry Grade Tools</p>
                   </Card>
-                  <Card padding="lg" className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 flex flex-col items-center text-center mt-8">
-                    <Globe className="w-8 h-8 mb-4 text-blue-500" />
-                    <div className="font-bold text-[14px] mb-1">Own</div>
-                    <p className="text-[11px] text-grey-400">100% Equity Retained</p>
+                  <Card padding="lg" className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 flex flex-col items-center text-center mt-6 sm:mt-8">
+                    <Globe className="w-6 h-6 sm:w-8 sm:h-8 mb-3 sm:mb-4 text-blue-500" />
+                    <div className="font-bold text-[13px] sm:text-[14px] mb-1">Own</div>
+                    <p className="text-[10px] sm:text-[11px] text-grey-400">100% Equity Retained</p>
                   </Card>
-                  <Card padding="lg" className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 flex flex-col items-center text-center -mt-8">
-                    <Zap className="w-8 h-8 mb-4 text-purple-500" />
-                    <div className="font-bold text-[14px] mb-1">Fund</div>
-                    <p className="text-[11px] text-grey-400">R&D from Profits</p>
+                  <Card padding="lg" className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 flex flex-col items-center text-center -mt-6 sm:-mt-8">
+                    <Zap className="w-6 h-6 sm:w-8 sm:h-8 mb-3 sm:mb-4 text-purple-500" />
+                    <div className="font-bold text-[13px] sm:text-[14px] mb-1">Fund</div>
+                    <p className="text-[10px] sm:text-[11px] text-grey-400">R&D from Profits</p>
                   </Card>
                   <Card padding="lg" className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 flex flex-col items-center text-center">
-                    <BarChart3 className="w-8 h-8 mb-4 text-green-500" />
-                    <div className="font-bold text-[14px] mb-1">Scale</div>
-                    <p className="text-[11px] text-grey-400">Sustainable baseline</p>
+                    <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 mb-3 sm:mb-4 text-green-500" />
+                    <div className="font-bold text-[13px] sm:text-[14px] mb-1">Scale</div>
+                    <p className="text-[10px] sm:text-[11px] text-grey-400">Sustainable baseline</p>
                   </Card>
                 </div>
               </div>
@@ -282,43 +282,43 @@ export default function Home() {
       <Section variant="default" className="overflow-hidden">
         <Container size="full">
           <ScrollReveal>
-            <div className="flex items-center gap-4 mb-20">
-              <div className="w-12 h-px bg-grey-200 dark:bg-grey-800"></div>
-              <span className="font-mono text-[12px] font-bold tracking-[0.2em] uppercase text-grey-400 dark:text-grey-500">
+            <div className="flex items-center gap-3 sm:gap-4 mb-16 sm:mb-20">
+              <div className="w-8 sm:w-12 h-px bg-grey-200 dark:bg-grey-800"></div>
+              <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-[0.2em] uppercase text-grey-400 dark:text-grey-500">
                 Dual-Vertical Strategy
               </span>
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 sm:gap-20">
             {/* B2B SaaS */}
             <ScrollReveal>
               <div className="max-w-xl">
-                <div className="flex items-center gap-3 mb-8">
+                <div className="flex items-center gap-3 mb-6 sm:mb-8">
                   <span className="tag py-1.5 px-3">
                     <span className="tag-dot live"></span>
                     <span className="text-[11px] font-bold tracking-widest uppercase">Cash Engine</span>
                   </span>
                 </div>
-                <h2 className="font-serif text-[clamp(40px,5vw,64px)] font-semibold leading-[1.1] text-foreground mb-8">
+                <h2 className="font-serif text-[clamp(32px,5vw,48px)] sm:text-[clamp(40px,5vw,56px)] md:text-[clamp(40px,5vw,64px)] font-semibold leading-[1.1] text-foreground mb-6 sm:mb-8">
                   Industry SaaS
                 </h2>
-                <p className="text-[18px] text-grey-600 dark:text-grey-400 leading-relaxed mb-10">
+                <p className="text-[16px] sm:text-[17px] md:text-[18px] text-grey-600 dark:text-grey-400 leading-relaxed mb-8 sm:mb-10">
                   High-margin SaaS for traditional industries. These profitable products fund our AI R&D
                   while maintaining complete independence from VC pressure.
                 </p>
-                <div className="space-y-6 mb-12">
-                  <div className="flex items-start gap-5">
+                <div className="space-y-5 sm:space-y-6 mb-10 sm:mb-12">
+                  <div className="flex items-start gap-4 sm:gap-5">
                     <div className="w-1.5 h-1.5 rounded-full bg-foreground mt-2.5 flex-shrink-0"></div>
                     <div>
-                      <div className="font-bold text-[17px] text-foreground mb-1">restauManager</div>
+                      <div className="font-bold text-[16px] sm:text-[17px] text-foreground mb-1">restauManager</div>
                       <div className="text-sm text-grey-500 dark:text-grey-400">Restaurant management platform (TheFork sync)</div>
                     </div>
                   </div>
-                  <div className="flex items-start gap-5">
+                  <div className="flex items-start gap-4 sm:gap-5">
                     <div className="w-1.5 h-1.5 rounded-full bg-foreground mt-2.5 flex-shrink-0"></div>
                     <div>
-                      <div className="font-bold text-[17px] text-foreground mb-1">GuideTours</div>
+                      <div className="font-bold text-[16px] sm:text-[17px] text-foreground mb-1">GuideTours</div>
                       <div className="text-sm text-grey-500 dark:text-grey-400">Tour operator booking aggregation (Viator)</div>
                     </div>
                   </div>
@@ -331,20 +331,20 @@ export default function Home() {
 
             {/* Aitlas */}
             <ScrollReveal delay={100}>
-              <div className="max-w-xl p-10 bg-grey-50 rounded-3xl border border-grey-100 relative overflow-hidden group dark:bg-grey-800/50 dark:border-grey-700">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-radial-blue opacity-20 group-hover:opacity-40 transition-opacity"></div>
+              <div className="max-w-xl p-6 sm:p-8 md:p-10 bg-grey-50 rounded-2xl sm:rounded-3xl border border-grey-100 relative overflow-hidden group dark:bg-grey-800/50 dark:border-grey-700">
+                <div className="absolute top-0 right-0 w-48 h-48 sm:w-64 sm:h-64 bg-gradient-radial-blue opacity-20 group-hover:opacity-40 transition-opacity"></div>
 
                 <div className="relative">
-                  <div className="flex items-center gap-3 mb-8">
+                  <div className="flex items-center gap-3 mb-6 sm:mb-8">
                     <span className="tag py-1.5 px-3 bg-amber-500/10 text-amber-600 border-amber-500/20">
                       <span className="tag-dot dev bg-amber-500"></span>
                       <span className="text-[11px] font-bold tracking-widest uppercase">Growth Engine</span>
                     </span>
                   </div>
-                  <h2 className="font-serif text-[clamp(40px,5vw,64px)] font-semibold leading-[1.1] text-foreground mb-8">
+                  <h2 className="font-serif text-[clamp(32px,5vw,48px)] sm:text-[clamp(40px,5vw,56px)] md:text-[clamp(40px,5vw,64px)] font-semibold leading-[1.1] text-foreground mb-6 sm:mb-8">
                     Aitlas Ecosystem
                   </h2>
-                  <p className="text-[18px] text-grey-600 dark:text-grey-400 leading-relaxed mb-10">
+                  <p className="text-[16px] sm:text-[17px] md:text-[18px] text-grey-600 dark:text-grey-400 leading-relaxed mb-8 sm:mb-10">
                     The core of our AI ecosystem. A sovereign platform where users bring their own API keys,
                     run autonomous agents via Nexus, and access 34+ specialized tools—without vendor lock-in.
                   </p>
