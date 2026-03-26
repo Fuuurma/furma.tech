@@ -3,17 +3,20 @@ import { Syne, Cormorant, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { Analytics } from "@/components/Analytics";
 
 const syne = Syne({
   subsets: ["latin"],
-  variable: "--font-syne",
+  variable: "--font-sans",
   display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 const cormorant = Cormorant({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-cormorant",
+  variable: "--font-serif",
   display: "swap",
   style: ["normal", "italic"],
 });
@@ -52,11 +55,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${syne.variable} ${cormorant.variable} ${jetbrainsMono.variable} scroll-smooth`}>
+    <html lang="en" className={`${syne.variable} ${cormorant.variable} ${jetbrainsMono.variable} scroll-smooth`} suppressHydrationWarning>
       <body className="font-sans antialiased min-h-screen flex flex-col">
+        <ThemeProvider defaultTheme="light" storageKey="furma-theme">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-fg focus:text-bg focus:rounded"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-foreground focus:text-background focus:rounded"
         >
           Skip to main content
         </a>
@@ -65,6 +69,8 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <Analytics />
+        </ThemeProvider>
       </body>
     </html>
   );

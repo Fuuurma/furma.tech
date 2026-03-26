@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-bg text-fg">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Hero */}
       <section className="px-6 md:px-12 py-20 md:py-32 border-b border-grey-200">
         <div className="max-w-3xl px-6 md:px-12">
@@ -18,7 +18,7 @@ export default function PrivacyPage() {
               Legal
             </span>
           </div>
-          <h1 className="font-serif text-[clamp(42px,5vw,72px)] font-semibold leading-[1.02] tracking-tight text-fg mb-7 animate-fade-up delay-1">
+          <h1 className="font-serif text-[clamp(42px,5vw,72px)] font-semibold leading-[1.02] tracking-tight text-foreground mb-7 animate-fade-up delay-1">
             Privacy<br />
             <em className="italic font-normal text-grey-600">Policy.</em>
           </h1>
@@ -182,7 +182,7 @@ export default function PrivacyPage() {
       {/* CTA */}
       <section className="px-6 md:px-12 py-16 bg-grey-50 border-t border-grey-200">
         <div className="max-w-2xl px-6 md:px-12">
-          <h2 className="font-serif text-[28px] font-semibold leading-[1.1] tracking-tight text-fg mb-4">
+          <h2 className="font-serif text-[28px] font-semibold leading-[1.1] tracking-tight text-foreground mb-4">
             Questions?
           </h2>
           <p className="text-[15px] leading-[1.7] text-grey-600 mb-6">
@@ -190,7 +190,7 @@ export default function PrivacyPage() {
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 text-[13px] font-semibold no-underline px-6 py-3 rounded bg-fg text-bg hover:bg-grey-800 transition-all"
+            className="inline-flex items-center gap-2 text-[13px] font-semibold no-underline px-6 py-3 rounded bg-foreground text-background hover:bg-grey-800 transition-all"
           >
             Contact us →
           </Link>

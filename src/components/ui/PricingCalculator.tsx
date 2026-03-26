@@ -28,8 +28,8 @@ export default function PricingCalculator({ className = "" }: PricingCalculatorP
   const dollarEstimate = monthlyEstimate * 0.01; // 1 credit ≈ $0.01
 
   return (
-    <div className={`bg-white border border-grey-200 rounded-lg p-8 ${className}`}>
-      <h3 className="font-serif text-[24px] font-semibold text-fg mb-6">
+    <div className={`bg-background border border-grey-200 dark:border-grey-800 rounded-lg p-8 ${className}`}>
+      <h3 className="font-serif text-[24px] font-semibold text-foreground mb-6">
         Pricing Calculator
       </h3>
       <p className="text-[14px] text-grey-600 mb-6">
@@ -40,14 +40,14 @@ export default function PricingCalculator({ className = "" }: PricingCalculatorP
         {/* Twitter Intelligence */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label className="text-sm font-medium text-fg">
+            <label className="text-sm font-medium text-foreground">
               f.twyt queries per month
             </label>
             <input
               type="number"
               value={tweets}
               onChange={(e) => setTweets(Math.max(0, parseInt(e.target.value) || 0))}
-              className="w-24 px-3 py-2 border border-grey-200 rounded text-fg text-sm"
+              className="w-24 px-3 py-2 border border-grey-200 rounded text-foreground text-sm dark:border-grey-800 dark:bg-grey-900"
               min="0"
             />
           </div>
@@ -59,14 +59,14 @@ export default function PricingCalculator({ className = "" }: PricingCalculatorP
         {/* Vector Knowledge */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label className="text-sm font-medium text-fg">
+            <label className="text-sm font-medium text-foreground">
               Documents to upload (f.library)
             </label>
             <input
               type="number"
               value={documents}
               onChange={(e) => setDocuments(Math.max(0, parseInt(e.target.value) || 0))}
-              className="w-24 px-3 py-2 border border-grey-200 rounded text-fg text-sm"
+              className="w-24 px-3 py-2 border border-grey-200 rounded text-foreground text-sm dark:border-grey-800 dark:bg-grey-900"
               min="0"
             />
           </div>
@@ -78,14 +78,14 @@ export default function PricingCalculator({ className = "" }: PricingCalculatorP
         {/* Document Searches */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label className="sm font-medium text-fg">
+            <label className="sm font-medium text-foreground">
               Knowledge base searches per month
             </label>
             <input
               type="number"
               value={searches}
               onChange={(e) => setSearches(Math.max(0, parseInt(e.target.value) || 0))}
-              className="w-24 px-3 py-2 border border-grey-200 rounded text-fg text-sm"
+              className="w-24 px-3 py-2 border border-grey-200 rounded text-foreground text-sm dark:border-grey-800 dark:bg-grey-900"
               min="0"
             />
           </div>
@@ -97,14 +97,14 @@ export default function PricingCalculator({ className = "" }: PricingCalculatorP
         {/* Agent Runtime */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label className="sm font-medium text-fg">
+            <label className="sm font-medium text-foreground">
               Long-running agent tasks (Nexus)
             </label>
             <input
               type="number"
               value={agentsHired}
               onChange={(e) => setAgentsHired(Math.max(0, parseInt(e.target.value) || 0))}
-              className="w-24 px-3 py-2 border border-grey-200 rounded text-fg text-sm"
+              className="w-24 px-3 py-2 border border-grey-200 rounded text-foreground text-sm dark:border-grey-800 dark:bg-grey-900"
               min="0"
             />
           </div>
@@ -121,7 +121,7 @@ export default function PricingCalculator({ className = "" }: PricingCalculatorP
             </span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-serif text-[32px] font-semibold text-fg">
+            <span className="font-serif text-[32px] font-semibold text-foreground">
               {monthlyEstimate.toLocaleString()}
             </span>
             <span className="text-sm text-grey-500">

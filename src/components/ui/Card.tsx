@@ -5,9 +5,16 @@ interface CardProps {
   className?: string;
   hover?: boolean;
   padding?: "none" | "sm" | "md" | "lg";
+  variant?: "standard" | "premium" | "ghost" | "dark";
 }
 
-export function Card({ children, className = "", hover = false, padding = "md" }: CardProps) {
+export function Card({ 
+  children, 
+  className = "", 
+  hover = false, 
+  padding = "md",
+  variant = "standard"
+}: CardProps) {
   const paddingStyles = {
     none: "",
     sm: "p-4",
@@ -15,10 +22,19 @@ export function Card({ children, className = "", hover = false, padding = "md" }
     lg: "p-8",
   };
 
-  const hoverStyles = hover ? "hover:border-grey-800 hover:-translate-y-0.5 hover:shadow-lg transition-all" : "";
+  const variantStyles = {
+    standard: "bg-card border-border dark:bg-card dark:border-border",
+    premium: "bg-card border-amber-500/20 glow-amber-sm dark:bg-card dark:border-amber-500/30",
+    ghost: "bg-transparent border-transparent hover:border-grey-200 hover:bg-grey-50 dark:border-transparent dark:hover:border-grey-800 dark:hover:bg-grey-800/50",
+    dark: "bg-foreground text-background border-grey-800 dark:bg-foreground dark:text-background dark:border-grey-700",
+  };
+
+  const hoverStyles = hover 
+    ? "hover:border-grey-400 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 card-hover" 
+    : "transition-all duration-300";
 
   return (
-    <div className={`bg-white border border-grey-200 ${paddingStyles[padding]} ${hoverStyles} ${className}`}>
+    <div className={`rounded-xl border ${variantStyles[variant]} ${paddingStyles[padding]} ${hoverStyles} ${className}`}>
       {children}
     </div>
   );
@@ -39,7 +55,7 @@ interface CardTitleProps {
 }
 
 export function CardTitle({ children, className = "" }: CardTitleProps) {
-  return <h3 className={`text-[18px] font-bold tracking-tight text-fg ${className}`}>{children}</h3>;
+  return <h3 className={`text-[18px] font-bold tracking-tight text-foreground ${className}`}>{children}</h3>;
 }
 
 interface CardDescriptionProps {
@@ -48,7 +64,7 @@ interface CardDescriptionProps {
 }
 
 export function CardDescription({ children, className = "" }: CardDescriptionProps) {
-  return <p className={`text-[14px] text-grey-600 ${className}`}>{children}</p>;
+  return <p className={`text-[14px] text-grey-600 dark:text-grey-400 ${className}`}>{children}</p>;
 }
 
 interface CardContentProps {
@@ -66,5 +82,5 @@ interface CardFooterProps {
 }
 
 export function CardFooter({ children, className = "" }: CardFooterProps) {
-  return <div className={`mt-4 pt-4 border-t border-grey-100 ${className}`}>{children}</div>;
+  return <div className={`mt-4 pt-4 border-t border-grey-100 dark:border-grey-800 ${className}`}>{children}</div>;
 }

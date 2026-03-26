@@ -9,9 +9,9 @@ interface SectionProps {
 
 export function Section({ children, className = "", id, variant = "default" }: SectionProps) {
   const variantStyles = {
-    default: "bg-bg",
-    grey: "bg-grey-50",
-    dark: "bg-fg text-bg",
+    default: "bg-background",
+    grey: "bg-secondary dark:bg-grey-900/50",
+    dark: "bg-foreground text-background",
   };
 
   return (
@@ -54,8 +54,8 @@ export function SectionHeader({ label, title, description, variant = "light" }: 
   const variantStyles = {
     light: {
       label: "text-grey-400",
-      title: "text-fg",
-      description: "text-grey-600",
+      title: "text-foreground",
+      description: "text-grey-600 dark:text-grey-400",
     },
     dark: {
       label: "text-white/40",

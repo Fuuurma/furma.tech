@@ -2,15 +2,43 @@
 
 **Purpose:** Instructions for AI coding assistants working in this codebase.
 
+**Next.js Version:** 16.2.1 (Agentic-Ready)
+
+---
+
+## 0. Agentic Development (Next.js 16.2)
+
+### Runtime-Aware Development
+- **Browser Log Forwarding:** Client errors are forwarded to terminal by default
+- **Dev Server Lock:** Check `.next/dev/lock` for running server PID before starting new processes
+- **Server Function Logging:** All server actions log function name, args, and execution time
+
+### Documentation Access
+- Full Next.js docs available at: `node_modules/next/dist/docs/`
+- Read version-matched docs before implementing new features
+- This AGENTS.md file is the primary source of truth for project-specific patterns
+
+### Agent Tools (Experimental)
+```bash
+# Install next-browser tool for runtime inspection
+npx skills add vercel-labs/next-browser
+
+# Available commands in supported agents:
+/next-browser tree          # Inspect React component tree
+/next-browser ppr lock      # Analyze PPR static/dynamic regions
+/next-browser goto <url>    # Navigate and capture state
+```
+
 ---
 
 ## 1. Project Overview
 
-Next.js 16 website for Furma.tech - a bootstrapped venture studio with two verticals: industry SaaS tools and the Aitlas AI ecosystem.
+Next.js 16.2 website for Furma.tech - a bootstrapped venture studio with two verticals: industry SaaS tools and the Aitlas AI ecosystem.
 
-- **Stack:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4
+- **Stack:** Next.js 16.2.1 (App Router), React 19, TypeScript, Tailwind CSS v4
 - **Path alias:** `@/*` maps to `./src/*`
 - **Strict mode:** Enabled
+- **Turbopack:** Enabled by default (400% faster startup)
 
 ---
 
@@ -19,11 +47,24 @@ Next.js 16 website for Furma.tech - a bootstrapped venture studio with two verti
 ```bash
 # Development
 pnpm dev          # Start dev server (http://localhost:3000)
+pnpm dev --turbo  # Force Turbopack (default in 16.2)
 pnpm build        # Production build
 pnpm start        # Start production server
 
 # Linting
 pnpm lint         # Run ESLint on all files
+
+# Debugging
+pnpm start --inspect  # Attach Node.js debugger to production server
+```
+
+### Agent Process Management
+```bash
+# Check if dev server is running
+cat .next/dev/lock  # Shows PID, port, URL
+
+# Kill existing server before starting new one
+taskkill /F /T /PID <pid_from_lock_file>
 ```
 
 ---
