@@ -5,6 +5,7 @@ import { Section, Container, SectionHeader } from '@/components/ui/Section';
 import { ScrollReveal, StaggerChildren } from '@/components/ui/ScrollReveal';
 import { LogoBar } from '@/components/ui/LogoBar';
 import { WaitlistForm } from '@/components/ui/WaitlistForm';
+import { submitWaitlistSignup } from '@/lib/actions';
 import { Package, Globe, Shield, Zap, TrendingUp, BarChart3, ArrowRight } from 'lucide-react';
 
 const testimonials = [
@@ -166,7 +167,7 @@ export default function Home() {
                         </div>
                         <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20 uppercase tracking-wider">
                           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-                          Building
+                          In Dev
                         </span>
                       </div>
                       <p className="text-[15px] text-grey-600 dark:text-grey-400 mb-6 leading-relaxed">
@@ -666,9 +667,9 @@ export default function Home() {
           <ScrollReveal>
             {/* Enhanced badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-background/10 border border-white/20 mb-10 backdrop-blur-sm card-elevated">
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
               <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-white/70">
-                Join the waitlist
+                Early Access
               </span>
             </div>
             
@@ -679,22 +680,17 @@ export default function Home() {
             </h2>
             
             <p className="text-[20px] text-white/60 leading-relaxed mb-12 max-w-2xl mx-auto">
-              Join us in creating a sovereign AI ecosystem where users own their keys,
-              control their data, and run autonomous agents without vendor lock-in.
+              Join our waitlist for early access to Aitlas. Be the first to try Nova, 
+              Nexus, and our 34+ MCP tools.
             </p>
             
-            {/* Enhanced CTA buttons */}
-            <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
-              <Button href="/contact" variant="premium" size="lg" glow className="shadow-xl shadow-amber-500/30">
-                Get in touch →
-              </Button>
-              <Button href="https://github.com/Fuuurma" variant="dark" size="lg" className="bg-background/10 hover:bg-background/20 text-white backdrop-blur-sm border border-white/20 card-elevated">
-                View on GitHub ↗
-              </Button>
+            {/* Waitlist Form */}
+            <div className="max-w-md mx-auto mb-12">
+              <WaitlistForm action={submitWaitlistSignup} variant="default" />
             </div>
             
             {/* Social proof */}
-            <div className="flex items-center justify-center gap-8 mt-16 pt-8 border-t border-white/10">
+            <div className="flex items-center justify-center gap-8 mt-8 pt-8 border-t border-white/10">
               <div className="text-center">
                 <div className="font-serif text-[24px] font-bold text-white leading-none">100%</div>
                 <div className="text-[11px] font-mono text-white/50 uppercase tracking-wider mt-1">Bootstrapped</div>
@@ -706,8 +702,10 @@ export default function Home() {
               </div>
               <div className="w-px h-10 bg-background/10"></div>
               <div className="text-center">
-                <div className="font-serif text-[24px] font-bold text-white leading-none">0%</div>
-                <div className="text-[11px] font-mono text-white/50 uppercase tracking-wider mt-1">VC</div>
+                <a href="https://github.com/Fuuurma" target="_blank" rel="noopener noreferrer" className="no-underline">
+                  <div className="font-serif text-[24px] font-bold text-white leading-none hover:text-amber-400 transition-colors">GitHub</div>
+                  <div className="text-[11px] font-mono text-white/50 uppercase tracking-wider mt-1 hover:text-amber-400 transition-colors">Open Source</div>
+                </a>
               </div>
             </div>
           </ScrollReveal>

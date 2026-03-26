@@ -54,7 +54,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/projects/aitlas/agents" className="text-xs md:text-sm text-grey-600 hover:text-foreground transition-colors no-underline dark:text-grey-500 dark:hover:text-white">
-                  GWagents Store
+                  Agents Store
                 </Link>
               </li>
             </ul>
@@ -97,7 +97,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/projects/saas" className="text-xs md:text-sm text-grey-600 hover:text-foreground transition-colors no-underline dark:text-grey-500 dark:hover:text-white">
-                  Products
+                  Industry SaaS
                 </Link>
               </li>
               <li>
