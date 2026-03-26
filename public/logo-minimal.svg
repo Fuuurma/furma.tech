@@ -1,0 +1,15 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Furma.tech Logo - Ultra Minimalist -->
+  <!-- Pure black on white, perfect proportions -->
+  <rect width="512" height="512" fill="white"/>
+  
+  <!-- Geometric F - constructed with perfect ratios -->
+  <!-- Vertical stem: 48px wide, 312px tall -->
+  <rect x="180" y="100" width="48" height="312" fill="black" rx="4"/>
+  
+  <!-- Top bar: 152px wide, 48px tall -->
+  <rect x="228" y="100" width="152" height="48" fill="black" rx="4"/>
+  
+  <!-- Middle bar: 104px wide, 48px tall -->
+  <rect x="228" y="210" width="104" height="48" fill="black" rx="4"/>
+</svg>

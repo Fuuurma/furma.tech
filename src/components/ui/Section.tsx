@@ -15,7 +15,7 @@ export function Section({ children, className = "", id, variant = "default" }: S
   };
 
   return (
-    <section id={id} className={`px-6 md:px-12 py-20 ${variantStyles[variant]} ${className}`}>
+    <section id={id} className={`px-4 sm:px-6 md:px-12 py-16 sm:py-20 ${variantStyles[variant]} ${className}`}>
       <div>{children}</div>
     </section>
   );
@@ -37,7 +37,7 @@ export function Container({ children, className = "", size = "lg" }: ContainerPr
   };
 
   return (
-    <div className={`${sizeStyles[size]} mx-auto ${className}`}>
+    <div className={`${sizeStyles[size]} mx-auto px-2 sm:px-0 ${className}`}>
       {children}
     </div>
   );

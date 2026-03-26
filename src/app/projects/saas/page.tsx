@@ -24,7 +24,7 @@ const activeProducts = [
     category: "Hospitality",
     tagline: "Restaurant Management",
     desc: "Complete restaurant management platform with TheFork integration. Manage floor plans, reservations, and staff from one dashboard.",
-    status: "In Development",
+    status: "In Dev",
     href: "/projects/saas/restauramanager",
     integration: "TheFork API",
     features: [
@@ -42,7 +42,7 @@ const activeProducts = [
     category: "Tourism",
     tagline: "Tour Operator Platform",
     desc: "Unified booking management for tour companies. Connect with Viator and eliminate manual data entry.",
-    status: "In Development",
+    status: "In Dev",
     href: "/projects/saas/guidetours",
     integration: "Viator API",
     features: [
@@ -57,7 +57,7 @@ const activeProducts = [
 ];
 
 const upcomingProducts = [
-  { icon: Square, name: "QArt", category: "Marketing", desc: "AI-generated QR codes that look like art", status: "Coming Soon" },
+  { icon: Square, name: "QArt", category: "Marketing", desc: "AI-generated QR codes that look like art", status: "Roadmap" },
   { icon: TrendingUp, name: "FinanceHub", category: "Finance", desc: "Market data tracking and portfolio monitoring", status: "Paused" },
   { icon: CircleDot, name: "OneToMany", category: "Productivity", desc: "Goal setting and habit tracking", status: "Paused" },
   { icon: Hexagon, name: "LinkUp", category: "Social", desc: "Short-video professional matching", status: "Paused" },
@@ -65,10 +65,10 @@ const upcomingProducts = [
 ];
 
 const benefits = [
-  { icon: Clock, stat: "10+ hrs", title: "Saved Weekly", desc: "Eliminate manual entry and automate repetitive tasks" },
-  { icon: BarChart3, stat: "+15%", title: "Revenue Boost", desc: "Optimize table turnover and reduce no-shows" },
-  { icon: Users, stat: "4.8★", title: "Avg Rating", desc: "Better service leads to happier customers" },
-  { icon: Shield, stat: "99.9%", title: "Uptime", desc: "Reliable infrastructure you can count on" },
+  { icon: Clock, stat: "10+ hrs", title: "Target Savings", desc: "Our goal: eliminate manual entry and automate repetitive tasks" },
+  { icon: BarChart3, stat: "+15%", title: "Target Growth", desc: "Our goal: optimize table turnover and reduce no-shows" },
+  { icon: Users, stat: "4.8★", title: "Target Rating", desc: "Our goal: help you deliver better service" },
+  { icon: Shield, stat: "99.9%", title: "Target Uptime", desc: "Our goal: reliable infrastructure you can count on" },
 ];
 
 export default function ProductsPage() {
@@ -122,7 +122,7 @@ export default function ProductsPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 pt-12 border-t border-grey-200 dark:border-grey-800">
               <div>
                 <div className="font-serif text-[36px] md:text-[42px] font-bold text-foreground leading-none">2</div>
-                <div className="text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-2">Active Products</div>
+                <div className="text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-2">Building</div>
               </div>
               <div>
                 <div className="font-serif text-[36px] md:text-[42px] font-bold text-foreground leading-none">40+</div>
