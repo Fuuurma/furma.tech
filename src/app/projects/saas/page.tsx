@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { Utensils, Map, Square, TrendingUp, CircleDot, Hexagon, Building2, ArrowRight, CheckCircle2, BarChart3, Users, Clock, Sparkles, Target, Shield } from "lucide-react";
+import { Utensils, Map, Square, TrendingUp, CircleDot, Hexagon, Building2, ArrowRight, BarChart3, Users, Clock, Target, Shield } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
@@ -24,17 +24,16 @@ const activeProducts = [
     category: "Hospitality",
     tagline: "Restaurant Management",
     desc: "Complete restaurant management platform with TheFork integration. Manage floor plans, reservations, and staff from one dashboard.",
-    status: "In Dev",
+    status: "Dev",
     href: "/projects/saas/restauramanager",
     integration: "TheFork API",
     features: [
-      { icon: CheckCircle2, text: "Real-time TheFork sync" },
-      { icon: CheckCircle2, text: "Visual floor plan editor" },
-      { icon: CheckCircle2, text: "Staff scheduling" },
-      { icon: CheckCircle2, text: "Reservation analytics" },
+      "Real-time TheFork sync",
+      "Visual floor plan editor",
+      "Staff scheduling",
+      "Reservation analytics",
     ],
     pricing: "€99/mo",
-    gradient: "from-blue-500 to-purple-500",
   },
   {
     icon: Map,
@@ -42,17 +41,16 @@ const activeProducts = [
     category: "Tourism",
     tagline: "Tour Operator Platform",
     desc: "Unified booking management for tour companies. Connect with Viator and eliminate manual data entry.",
-    status: "In Dev",
+    status: "Dev",
     href: "/projects/saas/guidetours",
     integration: "Viator API",
     features: [
-      { icon: CheckCircle2, text: "Multi-platform sync" },
-      { icon: CheckCircle2, text: "Automated calendar" },
-      { icon: CheckCircle2, text: "Customer communications" },
-      { icon: CheckCircle2, text: "Revenue tracking" },
+      "Multi-platform sync",
+      "Automated calendar",
+      "Customer communications",
+      "Revenue tracking",
     ],
     pricing: "€79/mo",
-    gradient: "from-purple-500 to-pink-500",
   },
 ];
 
@@ -65,349 +63,209 @@ const upcomingProducts = [
 ];
 
 const benefits = [
-  { icon: Clock, stat: "10+ hrs", title: "Target Savings", desc: "Our goal: eliminate manual entry and automate repetitive tasks" },
-  { icon: BarChart3, stat: "+15%", title: "Target Growth", desc: "Our goal: optimize table turnover and reduce no-shows" },
-  { icon: Users, stat: "4.8★", title: "Target Rating", desc: "Our goal: help you deliver better service" },
-  { icon: Shield, stat: "99.9%", title: "Target Uptime", desc: "Our goal: reliable infrastructure you can count on" },
+  { icon: Clock, stat: "10+ hrs", title: "Time Saved", desc: "Eliminate manual entry and automate repetitive administration." },
+  { icon: BarChart3, stat: "+15%", title: "Growth", desc: "Optimize table turnover and reduce no-shows with smart tools." },
+  { icon: Users, stat: "4.8★", title: "Satisfaction", desc: "Better tools lead to better service and customer loyalty." },
+  { icon: Shield, stat: "99.9%", title: "Reliability", desc: "Hardened infrastructure built for high-stakes environments." },
 ];
 
 export default function ProductsPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground selection:bg-foreground selection:text-background">
       {/* Hero Section */}
-      <section className="relative min-h-[80vh] flex items-center overflow-hidden pt-20">
-        <div className="absolute inset-0 bg-gradient-radial-blue pointer-events-none opacity-40"></div>
-        <div className="absolute top-20 right-[-10%] w-[800px] h-[800px] bg-gradient-radial pointer-events-none opacity-30 blur-[120px]"></div>
-
-        <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden pt-20">
+        <div className="absolute inset-0 bg-dots pointer-events-none opacity-5"></div>
+        
+        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
           {/* Breadcrumbs */}
-          <Breadcrumbs className="mb-8" />
+          <Breadcrumbs className="mb-12" />
           
           <ScrollReveal>
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-10 h-px bg-grey-400"></div>
-              <span className="font-mono text-[11px] font-medium tracking-[0.12em] uppercase text-grey-600">
-                Vertical A — Industry Software
+            <div className="flex items-center gap-3 mb-12">
+              <span className="font-mono text-[10px] font-bold tracking-[0.3em] uppercase opacity-40">
+                Vertical A / Industry Systems
               </span>
             </div>
-          </ScrollReveal>
 
-          <ScrollReveal delay={100}>
-            <h1 className="font-serif text-[clamp(42px,7vw,72px)] font-semibold leading-[0.95] tracking-tight text-foreground mb-8">
-              Built for<br />
-              <span className="gradient-text italic">real businesses.</span>
+            <h1 className="font-serif text-[clamp(42px,8vw,96px)] font-semibold leading-[0.95] tracking-tight text-foreground mb-12">
+              Software for<br />
+              <span className="italic font-normal opacity-50">High-Stakes Work.</span>
             </h1>
-          </ScrollReveal>
 
-          <ScrollReveal delay={200}>
-            <p className="text-[20px] leading-[1.7] text-grey-600 dark:text-grey-400 max-w-[600px] mb-12">
-              Focused, profitable SaaS tools for tourism, hospitality, and local industries.
-              No AI hype. Just software that solves specific problems and saves time.
+            <p className="text-[20px] sm:text-[24px] leading-[1.6] text-grey-500 max-w-2xl mb-16">
+              Focused, profitable B2B systems for traditional sectors.
+              Hardened software that solves specific problems and automates high-volume tasks.
             </p>
-          </ScrollReveal>
 
-          <ScrollReveal delay={300}>
-            <div className="flex flex-wrap gap-4">
-              <Button href="#active" variant="premium" size="lg" glow className="shadow-xl shadow-blue-500/20">
-                Explore Products →
+            <div className="flex flex-col sm:flex-row gap-4 mb-24">
+              <Button href="#active" variant="primary" size="lg" className="min-w-[220px]">
+                Active Systems
               </Button>
-              <Button href="/contact" variant="outline" size="lg" className="card-elevated">
-                Book a Demo
+              <Button href="/contact" variant="outline" size="lg" className="min-w-[220px]">
+                Book Demo
               </Button>
             </div>
           </ScrollReveal>
 
-          {/* Stats */}
+          {/* Stats - Monochrome Grid */}
           <ScrollReveal delay={400}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 pt-12 border-t border-grey-200 dark:border-grey-800">
-              <div>
-                <div className="font-serif text-[36px] md:text-[42px] font-bold text-foreground leading-none">2</div>
-                <div className="text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-2">Building</div>
-              </div>
-              <div>
-                <div className="font-serif text-[36px] md:text-[42px] font-bold text-foreground leading-none">40+</div>
-                <div className="text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-2">Target Clients</div>
-              </div>
-              <div>
-                <div className="font-serif text-[36px] md:text-[42px] font-bold text-foreground leading-none">€3k</div>
-                <div className="text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-2">Target MRR</div>
-              </div>
-              <div>
-                <div className="font-serif text-[36px] md:text-[42px] font-bold text-foreground leading-none">EU</div>
-                <div className="text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-2">Based</div>
-              </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-12 pt-16 border-t border-border">
+              {[
+                { val: '2', label: 'Systems Live' },
+                { val: '40+', label: 'Target Orgs' },
+                { val: 'EU', label: 'Compliance' },
+                { val: '24/7', label: 'Durable' },
+              ].map(stat => (
+                <div key={stat.label}>
+                  <div className="font-serif text-[32px] sm:text-[40px] font-bold text-foreground leading-none mb-2">{stat.val}</div>
+                  <div className="text-[10px] font-mono text-grey-400 uppercase tracking-widest">{stat.label}</div>
+                </div>
+              ))}
             </div>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section className="section bg-white dark:bg-grey-900">
+      {/* Benefits Section - Monochrome */}
+      <section className="py-32 bg-foreground text-background">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <ScrollReveal>
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-6">
-                <Target className="w-4 h-4 text-blue-500" />
-                <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-blue-600">
-                  Why Choose Us
-                </span>
+            <div className="text-center mb-24">
+              <div className="inline-flex items-center gap-2 px-4 py-2 border border-background/20 mb-8">
+                <Target className="w-3 h-3" />
+                <span className="font-mono text-[10px] font-bold tracking-[0.3em] uppercase">Value Engineering</span>
               </div>
-              <h2 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.08] tracking-tight text-foreground">
-                Built for impact
-              </h2>
+              <h2 className="font-serif text-[clamp(36px,5vw,64px)] font-semibold leading-[1.05] tracking-tight">Built for impact.</h2>
             </div>
           </ScrollReveal>
 
-          <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {benefits.map((benefit, index) => (
-              <ScrollReveal key={benefit.title} delay={index * 50}>
-                <Card hover padding="lg" className="card-elevated text-center h-full">
-                  <div className="text-[48px] font-serif font-bold text-blue-500 mb-4">{benefit.stat}</div>
-                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white mx-auto mb-6 shadow-lg shadow-blue-500/25">
-                    <benefit.icon className="w-7 h-7" strokeWidth={1.5} />
-                  </div>
-                  <h3 className="text-[16px] font-bold text-foreground mb-3">{benefit.title}</h3>
-                  <p className="text-[14px] text-grey-600 dark:text-grey-400 leading-relaxed">{benefit.desc}</p>
-                </Card>
-              </ScrollReveal>
+          <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-background/10 border border-background/10">
+            {benefits.map((benefit) => (
+              <div key={benefit.title} className="p-10 bg-foreground group hover:bg-background hover:text-foreground transition-colors duration-500">
+                <div className="text-[40px] font-serif font-bold mb-8 group-hover:scale-110 transition-transform origin-left">{benefit.stat}</div>
+                <h3 className="text-[16px] font-bold mb-4">{benefit.title}</h3>
+                <p className="text-[14px] opacity-60 leading-relaxed">{benefit.desc}</p>
+              </div>
             ))}
           </StaggerChildren>
         </div>
       </section>
 
-      {/* Active Products */}
-      <section id="active" className="section bg-grey-50 dark:bg-grey-900/50">
-        <div className="max-w-6xl mx-auto px-6 md:px-12">
+      {/* Active Products - Minimalist List */}
+      <section id="active" className="py-32">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
           <ScrollReveal>
-            <div className="flex items-center gap-3 mb-12">
-              <div className="w-10 h-px bg-grey-400"></div>
-              <span className="font-mono text-[11px] font-medium tracking-[0.12em] uppercase text-grey-600 dark:text-grey-400">
-                Active Development
-              </span>
+            <div className="mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-2 border border-foreground/10 mb-8">
+                <span className="font-mono text-[10px] font-bold tracking-[0.3em] uppercase">Active Systems</span>
+              </div>
+              <h2 className="font-serif text-[clamp(36px,5vw,64px)] font-semibold leading-[1.05] tracking-tight text-foreground">Standardized Ops.</h2>
             </div>
           </ScrollReveal>
 
-          <StaggerChildren className="space-y-8">
-            {activeProducts.map((product, index) => (
-              <ScrollReveal key={product.name} delay={index * 100}>
-                <Link href={product.href} className="block group no-underline">
-                  <Card variant="standard" hover padding="none" className="card-elevated overflow-hidden">
-                    <div className="grid grid-cols-1 lg:grid-cols-2">
-                      {/* Image Side */}
-                      <div className={`relative h-64 lg:h-auto bg-gradient-to-br ${product.gradient} overflow-hidden`}>
-                        <div className="absolute inset-0 bg-black/20"></div>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <product.icon className="w-32 h-32 text-white/30" strokeWidth={0.5} />
-                        </div>
-                        <div className="absolute bottom-4 left-4">
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-mono font-bold bg-white/20 text-white border border-white/30 backdrop-blur-sm">
-                            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
-                            {product.status}
-                          </span>
-                        </div>
-                        <div className="absolute top-4 right-4 bg-white/90 dark:bg-grey-900/90 backdrop-blur-sm px-4 py-2 rounded-lg">
-                          <div className="text-[10px] text-grey-500 uppercase tracking-wider">Starting at</div>
-                          <div className="text-[24px] font-bold text-foreground">{product.pricing}</div>
-                        </div>
+          <StaggerChildren className="space-y-12">
+            {activeProducts.map((product) => (
+              <div key={product.name} className="group border border-border bg-foreground/[0.01] hover:border-foreground transition-colors duration-500">
+                <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
+                  <div className="lg:col-span-4 p-12 border-b lg:border-b-0 lg:border-r border-border bg-foreground text-background flex flex-col justify-between">
+                    <div>
+                      <product.icon className="w-12 h-12 mb-8" strokeWidth={1} />
+                      <h3 className="text-[32px] font-serif font-bold leading-tight mb-2">{product.name}</h3>
+                      <p className="text-[12px] font-mono uppercase tracking-[0.2em] opacity-40">{product.tagline}</p>
+                    </div>
+                    <div className="mt-12">
+                      <div className="text-[10px] font-mono uppercase tracking-widest opacity-40 mb-2">Base License</div>
+                      <div className="text-[28px] font-serif font-bold">{product.pricing}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="lg:col-span-8 p-12 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-4 mb-8">
+                        <span className="text-[10px] font-mono font-bold border border-foreground/20 px-2 py-1 uppercase tracking-widest">
+                          {product.status}
+                        </span>
+                        <span className="text-[10px] font-mono font-bold border border-foreground/20 px-2 py-1 uppercase tracking-widest">
+                          {product.integration}
+                        </span>
                       </div>
-
-                      {/* Content Side */}
-                      <div className="p-8 lg:p-10">
-                        <div className="flex items-center gap-3 mb-4">
-                          <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${product.gradient} flex items-center justify-center text-white shadow-lg`}>
-                            <product.icon className="w-6 h-6" strokeWidth={1.5} />
+                      <p className="text-[18px] text-grey-600 leading-relaxed mb-12 max-w-2xl">{product.desc}</p>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 mb-12">
+                        {product.features.map((feature, i) => (
+                          <div key={i} className="flex items-center gap-4 text-[14px] font-bold text-foreground/40 group-hover:text-foreground transition-colors">
+                            <div className="w-1 h-1 bg-foreground/20"></div>
+                            {feature}
                           </div>
-                          <div>
-                            <h3 className="text-[22px] font-bold text-foreground">{product.name}</h3>
-                            <p className="text-[12px] text-grey-500 dark:text-grey-400 font-medium">{product.tagline} · {product.category}</p>
-                          </div>
-                        </div>
-
-                        <p className="text-[15px] text-grey-600 dark:text-grey-400 leading-relaxed mb-8">{product.desc}</p>
-
-                        <div className="grid grid-cols-2 gap-4 mb-8">
-                          {product.features.map((feature, i) => (
-                            <div key={i} className="flex items-center gap-2 text-[14px] text-grey-600 dark:text-grey-400">
-                              <feature.icon className="w-4 h-4 text-green-500 flex-shrink-0" />
-                              {feature.text}
-                            </div>
-                          ))}
-                        </div>
-
-                        <div className="flex items-center justify-between pt-6 border-t border-grey-100 dark:border-grey-800">
-                          <div>
-                            <span className="text-[11px] font-mono text-grey-500 uppercase tracking-wider">Integration</span>
-                            <p className="text-[14px] font-bold text-foreground">{product.integration}</p>
-                          </div>
-                          <div className="flex items-center text-blue-600 dark:text-blue-400 font-semibold text-[14px] group-hover:gap-3 transition-all">
-                            Learn more <ArrowRight className="w-4 h-4" />
-                          </div>
-                        </div>
+                        ))}
                       </div>
                     </div>
-                  </Card>
-                </Link>
-              </ScrollReveal>
-            ))}
-          </StaggerChildren>
-        </div>
-      </section>
 
-      {/* Pricing Preview */}
-      <section className="section bg-white dark:bg-grey-900">
-        <div className="max-w-5xl mx-auto px-6 md:px-12">
-          <ScrollReveal>
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-grey-100 dark:bg-grey-800 border border-grey-200 dark:border-grey-700 mb-6">
-                <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-600 dark:text-grey-400">
-                  Pricing
-                </span>
-              </div>
-              <h2 className="font-serif text-[clamp(32px,4vw,48px)] font-semibold leading-[1.1] tracking-tight text-foreground mb-4">
-                Simple, transparent pricing
-              </h2>
-              <p className="text-[16px] text-grey-600 dark:text-grey-400">
-                No setup fees. No hidden costs. Cancel anytime.
-              </p>
-            </div>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <ScrollReveal>
-              <Card padding="lg" className="card-elevated">
-                <div className="flex items-center gap-3 mb-4">
-                  <Utensils className="w-8 h-8 text-blue-500" strokeWidth={1.5} />
-                  <div>
-                    <h3 className="text-[18px] font-bold text-foreground">restauManager</h3>
-                    <p className="text-[12px] text-grey-500">For restaurants</p>
-                  </div>
-                </div>
-                <div className="text-[42px] font-serif font-bold text-foreground mb-2">€99<span className="text-[16px] font-sans text-grey-500">/mo</span></div>
-                <p className="text-sm text-grey-500 mb-6">or €990/year (2 months free)</p>
-                <ul className="space-y-3 mb-8">
-                  <li className="flex items-center gap-2 text-[14px] text-grey-600 dark:text-grey-400">
-                    <CheckCircle2 className="w-4 h-4 text-green-500" />
-                    Unlimited reservations
-                  </li>
-                  <li className="flex items-center gap-2 text-[14px] text-grey-600 dark:text-grey-400">
-                    <CheckCircle2 className="w-4 h-4 text-green-500" />
-                    TheFork integration
-                  </li>
-                  <li className="flex items-center gap-2 text-[14px] text-grey-600 dark:text-grey-400">
-                    <CheckCircle2 className="w-4 h-4 text-green-500" />
-                    Floor plan editor
-                  </li>
-                  <li className="flex items-center gap-2 text-[14px] text-grey-600 dark:text-grey-400">
-                    <CheckCircle2 className="w-4 h-4 text-green-500" />
-                    Staff management
-                  </li>
-                </ul>
-                <Button href="/contact" variant="outline" className="w-full">Book Demo</Button>
-              </Card>
-            </ScrollReveal>
-
-            <ScrollReveal delay={100}>
-              <Card padding="lg" className="card-elevated">
-                <div className="flex items-center gap-3 mb-4">
-                  <Map className="w-8 h-8 text-purple-500" strokeWidth={1.5} />
-                  <div>
-                    <h3 className="text-[18px] font-bold text-foreground">GuideTours</h3>
-                    <p className="text-[12px] text-grey-500">For tour operators</p>
-                  </div>
-                </div>
-                <div className="text-[42px] font-serif font-bold text-foreground mb-2">€79<span className="text-[16px] font-sans text-grey-500">/mo</span></div>
-                <p className="text-sm text-grey-500 mb-6">or €790/year (2 months free)</p>
-                <ul className="space-y-3 mb-8">
-                  <li className="flex items-center gap-2 text-[14px] text-grey-600 dark:text-grey-400">
-                    <CheckCircle2 className="w-4 h-4 text-green-500" />
-                    Multi-platform sync
-                  </li>
-                  <li className="flex items-center gap-2 text-[14px] text-grey-600 dark:text-grey-400">
-                    <CheckCircle2 className="w-4 h-4 text-green-500" />
-                    Viator integration
-                  </li>
-                  <li className="flex items-center gap-2 text-[14px] text-grey-600 dark:text-grey-400">
-                    <CheckCircle2 className="w-4 h-4 text-green-500" />
-                    Calendar automation
-                  </li>
-                  <li className="flex items-center gap-2 text-[14px] text-grey-600 dark:text-grey-400">
-                    <CheckCircle2 className="w-4 h-4 text-green-500" />
-                    Customer comms
-                  </li>
-                </ul>
-                <Button href="/contact" variant="outline" className="w-full">Book Demo</Button>
-              </Card>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
-
-      {/* Coming Soon / Paused */}
-      <section className="section bg-grey-50 dark:bg-grey-900/50">
-        <div className="max-w-6xl mx-auto px-6 md:px-12">
-          <ScrollReveal>
-            <div className="flex items-center gap-3 mb-12">
-              <div className="w-10 h-px bg-grey-400"></div>
-              <span className="font-mono text-[11px] font-medium tracking-[0.12em] uppercase text-grey-600 dark:text-grey-400">
-                Coming Soon & On Hold
-              </span>
-            </div>
-          </ScrollReveal>
-
-          <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {upcomingProducts.map((product, index) => (
-              <ScrollReveal key={product.name} delay={index * 50}>
-                <Card padding="lg" className={`card-elevated ${product.fullWidth ? 'md:col-span-3' : ''}`}>
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-grey-400 to-grey-500 flex items-center justify-center text-white">
-                      <product.icon className="w-6 h-6" strokeWidth={1.5} />
+                    <div className="flex items-center justify-between pt-12 border-t border-border">
+                      <Button href={product.href} variant="outline" className="min-w-[200px]">System Details</Button>
+                      <Link href={product.href} className="text-foreground font-bold text-[14px] flex items-center gap-2 group/link">
+                        Documentation <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
+                      </Link>
                     </div>
-                    <span className={`px-2 py-1 rounded text-[9px] font-mono font-bold uppercase tracking-wider ${
-                      product.status === "Coming Soon"
-                        ? "bg-blue-500/10 text-blue-600 border border-blue-500/20"
-                        : "bg-grey-500/10 text-grey-500 border border-grey-500/20"
-                    }`}>
-                      {product.status}
-                    </span>
                   </div>
-                  <h3 className="text-[17px] font-bold text-foreground mb-2">{product.name}</h3>
-                  <p className="text-[12px] text-grey-500 dark:text-grey-400 font-medium mb-3">{product.category}</p>
-                  <p className="text-[14px] text-grey-600 dark:text-grey-400 leading-relaxed">{product.desc}</p>
-                </Card>
-              </ScrollReveal>
+                </div>
+              </div>
             ))}
           </StaggerChildren>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="section bg-foreground text-background">
-        <div className="max-w-3xl mx-auto px-6 md:px-12 text-center">
+      {/* Upcoming / Paused - Clean Grid */}
+      <section className="py-32 bg-grey-50 border-t border-border dark:bg-grey-900/20">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
           <ScrollReveal>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 mb-8 backdrop-blur-sm">
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-              <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-white/70">
-                Early Access
-              </span>
+            <div className="mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-2 border border-foreground/10 mb-8">
+                <span className="font-mono text-[10px] font-bold tracking-[0.3em] uppercase">Laboratory</span>
+              </div>
+              <h2 className="font-serif text-[clamp(36px,5vw,64px)] font-semibold leading-[1.05] tracking-tight text-foreground">Archive & R&D.</h2>
             </div>
+          </ScrollReveal>
 
-            <h2 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.1] tracking-tight mb-6">
-              Need a custom solution?
-            </h2>
-            <p className="text-[16px] leading-[1.7] text-white/60 mb-10">
-              We build software for specific industries. If you run a restaurant,
-              tour company, or local business in Catalonia, let's talk.
+          <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border border border-border">
+            {upcomingProducts.map((product) => (
+              <div key={product.name} className={`p-10 bg-background group ${product.fullWidth ? 'md:col-span-3 lg:col-span-3' : ''}`}>
+                <div className="flex items-start justify-between mb-8">
+                  <product.icon className="w-8 h-8 text-foreground/20" strokeWidth={1} />
+                  <span className="text-[10px] font-mono font-bold border border-foreground/10 px-2 py-1 uppercase tracking-widest opacity-40">
+                    {product.status}
+                  </span>
+                </div>
+                <h3 className="text-[18px] font-bold text-foreground mb-2 tracking-tight">{product.name}</h3>
+                <p className="text-[11px] font-mono text-grey-400 uppercase tracking-widest mb-6">{product.category}</p>
+                <p className="text-[14px] text-grey-500 leading-relaxed max-w-sm">{product.desc}</p>
+              </div>
+            ))}
+          </StaggerChildren>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-48 bg-foreground text-background text-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-dots opacity-10"></div>
+        <ScrollReveal>
+          <div className="max-w-3xl mx-auto px-6 relative z-10">
+            <h2 className="font-serif text-[clamp(48px,8vw,80px)] font-semibold leading-[1] tracking-tighter mb-12">Modernize your Stack.</h2>
+            <p className="text-[20px] text-background/60 leading-relaxed mb-16 max-w-xl mx-auto">
+              We build specialized software for specific high-stakes industries.
+              If you operate in tourism or hospitality, let&apos;s talk about efficiency.
             </p>
+            
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button href="/contact" variant="primary" size="lg" className="bg-white text-foreground hover:bg-grey-100 shadow-xl min-w-[180px]">
-                Book a Demo →
+              <Button href="/contact" variant="primary" size="lg" className="bg-background text-foreground hover:bg-background/90 min-w-[220px]">
+                Request Access
               </Button>
-              <Button href="mailto:hello@furma.tech" variant="outline" size="lg" className="border-white/20 text-white hover:bg-white/10 min-w-[180px]">
-                Email Us
+              <Button href="mailto:hello@furma.tech" variant="outline" size="lg" className="border-background text-background hover:bg-background hover:text-foreground min-w-[220px]">
+                Direct Email
               </Button>
             </div>
-          </ScrollReveal>
-        </div>
+          </div>
+        </ScrollReveal>
       </section>
     </div>
   );

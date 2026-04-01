@@ -21,43 +21,40 @@ export function ProjectHero({
   const isDark = variant === "dark";
 
   return (
-    <section className={`px-4 sm:px-6 md:px-12 py-16 sm:py-20 md:py-32 ${isDark ? "bg-foreground text-background" : "bg-background text-foreground"}`}>
+    <section className={`px-4 sm:px-6 md:px-12 py-24 sm:py-32 ${isDark ? "bg-foreground text-background" : "bg-background text-foreground"}`}>
       <Container size="full">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8 mb-12 md:mb-16">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-16 sm:mb-24">
           <ScrollReveal>
-            <div>
-              <div className="flex items-center gap-3 mb-6 md:mb-8">
-                <div className={`w-8 sm:w-10 h-px ${isDark ? "bg-white/20" : "bg-grey-200"}`}></div>
-                <span className={`font-mono text-[10px] sm:text-[11px] font-medium tracking-[0.12em] uppercase ${isDark ? "text-white/40" : "text-grey-400"}`}>
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-3 mb-8">
+                <span className={`font-mono text-[10px] font-bold tracking-[0.3em] uppercase ${isDark ? "opacity-40" : "text-grey-400"}`}>
                   {label}
                 </span>
               </div>
-              <h1 className="font-serif text-[clamp(36px,5vw,48px)] sm:text-[clamp(42px,5vw,56px)] md:text-[clamp(42px,5vw,72px)] font-semibold leading-[1.02] tracking-tight">
+              <h1 className="font-serif text-[clamp(40px,6vw,80px)] font-semibold leading-[0.95] tracking-tighter">
                 {title}
               </h1>
             </div>
           </ScrollReveal>
 
           <ScrollReveal delay={100}>
-            <p className={`text-[14px] sm:text-[15px] leading-relaxed max-w-[380px] ${isDark ? "text-white/60" : "text-grey-600 dark:text-grey-400"}`}>
+            <p className={`text-[16px] sm:text-[18px] leading-relaxed max-w-sm ${isDark ? "opacity-60" : "text-grey-500"}`}>
               {description}
             </p>
           </ScrollReveal>
         </div>
 
         <ScrollReveal delay={200}>
-          <div className="flex flex-wrap gap-2 sm:gap-3">
+          <div className="flex flex-wrap gap-2 pt-12 border-t border-current opacity-10">
             {status && (
-              <span className="font-mono text-[9px] sm:text-[10px] font-medium tracking-[0.08em] uppercase px-2 py-1 rounded border text-amber-400 border-amber-500/30 bg-amber-500/10">
+              <span className={`font-mono text-[10px] font-bold tracking-[0.1em] uppercase px-3 py-1 border border-current`}>
                 {status}
               </span>
             )}
             {tags.map((tag) => (
               <span
                 key={tag}
-                className={`font-mono text-[9px] sm:text-[10px] font-medium tracking-[0.08em] uppercase px-2 py-1 rounded border ${
-                  isDark ? "text-white/30 border-white/10" : "text-grey-400 border-grey-200 dark:text-grey-500 dark:border-grey-800"
-                }`}
+                className="font-mono text-[10px] font-bold tracking-[0.1em] uppercase px-3 py-1 border border-current opacity-40"
               >
                 {tag}
               </span>

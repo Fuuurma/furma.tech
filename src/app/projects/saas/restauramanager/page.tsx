@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { Utensils, Calendar, Users, BarChart3, Clock, CheckCircle2, ArrowRight, Phone, Wifi, Shield, Star, TrendingUp, MapPin, Sparkles, ChevronRight } from "lucide-react";
+import { Utensils, Calendar, Users, BarChart3, Clock, CheckCircle2, ArrowRight, Phone, Shield, TrendingUp, MapPin, Sparkles, Star } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
@@ -50,46 +50,11 @@ const features = [
 ];
 
 const benefits = [
-  { icon: Clock, stat: "10+ hrs", title: "Saved Weekly", desc: "Eliminate manual entry and automate repetitive tasks" },
-  { icon: TrendingUp, stat: "+15%", title: "Revenue Boost", desc: "Optimize table turnover and reduce no-shows" },
-  { icon: Star, stat: "4.8★", title: "Avg Rating", desc: "Better service leads to happier customers" },
-  { icon: Shield, stat: "99.9%", title: "Uptime", desc: "Reliable infrastructure you can count on" },
+  { icon: Clock, stat: "Target", title: "Time Savings", desc: "Our goal: eliminate manual entry and automate repetitive tasks" },
+  { icon: TrendingUp, stat: "Target", title: "Revenue Growth", desc: "Our goal: optimize table turnover and reduce no-shows" },
+  { icon: Star, stat: "Target", title: "Better Service", desc: "Our goal: help you deliver memorable dining experiences" },
+  { icon: Shield, stat: "Target", title: "Reliability", desc: "Our goal: reliable infrastructure you can count on" },
 ];
-
-const testimonials = [
-  {
-    quote: "restauManager cut our reservation admin by 70%. The TheFork integration works flawlessly—best investment we've made this year.",
-    author: "Carlos Mendoza",
-    role: "Owner",
-    restaurant: "La Taberna, Sitges",
-    rating: 5,
-  },
-  {
-    quote: "Finally, a system that understands how restaurants actually work. The floor plan editor is intuitive and the staff love it.",
-    author: "Maria García",
-    role: "General Manager",
-    restaurant: "El Racó, Barcelona",
-    rating: 5,
-  },
-];
-
-const pricing = {
-  standard: {
-    name: "Standard",
-    price: "€99",
-    period: "/mo",
-    desc: "For independent restaurants",
-    features: ["Unlimited reservations", "TheFork integration", "Floor plan editor (up to 20 tables)", "Staff management (up to 10 users)", "Basic analytics", "Email support"],
-  },
-  pro: {
-    name: "Professional",
-    price: "€149",
-    period: "/mo",
-    desc: "For multi-location groups",
-    popular: true,
-    features: ["Everything in Standard", "Multi-location support", "Unlimited floor plans", "Unlimited staff users", "Advanced analytics & reports", "Customer database", "Priority support", "API access"],
-  },
-};
 
 export default function RestauManagerPage() {
   return (
@@ -273,44 +238,6 @@ export default function RestauManagerPage() {
                   </div>
                   <h3 className="text-[17px] font-bold text-fg mb-3">{feature.title}</h3>
                   <p className="text-[14px] text-grey-600 dark:text-grey-400 leading-relaxed">{feature.desc}</p>
-                </Card>
-              </ScrollReveal>
-            ))}
-          </StaggerChildren>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="section bg-white dark:bg-grey-900">
-        <div className="max-w-5xl mx-auto px-6 md:px-12">
-          <ScrollReveal>
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-grey-100 dark:bg-grey-800 border border-grey-200 dark:border-grey-700 mb-6">
-                <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-600 dark:text-grey-400">Testimonials</span>
-              </div>
-              <h2 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.08] tracking-tight text-fg">Loved by restaurants</h2>
-            </div>
-          </ScrollReveal>
-
-          <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <ScrollReveal key={testimonial.author} delay={index * 100}>
-                <Card padding="lg" className="card-elevated">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    ))}
-                  </div>
-                  <p className="text-[15px] text-grey-600 dark:text-grey-400 leading-relaxed mb-6 italic">&ldquo;{testimonial.quote}&rdquo;</p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold">
-                      {testimonial.author.charAt(0)}
-                    </div>
-                    <div>
-                      <div className="font-bold text-fg">{testimonial.author}</div>
-                      <div className="text-[12px] text-grey-500">{testimonial.role}, {testimonial.restaurant}</div>
-                    </div>
-                  </div>
                 </Card>
               </ScrollReveal>
             ))}

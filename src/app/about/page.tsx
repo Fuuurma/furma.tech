@@ -4,8 +4,7 @@ import { Section, Container } from "@/components/ui/Section";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
-import { Shield, Zap, TrendingUp, BarChart3, Code2, Cpu, Globe, Rocket } from "lucide-react";
-import Link from "next/link";
+import { Shield, Zap, TrendingUp, BarChart3 } from "lucide-react";
 
 export const metadata = constructMetadata({
   title: "About the Studio — Furma.tech",

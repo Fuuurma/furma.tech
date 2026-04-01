@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Furma.tech
+
+**Bootstrapped venture studio building profitable SaaS and the Aitlas AI ecosystem.**
+
+- **Industry SaaS** — B2B tools for restaurants/tourism (restauManager, GuideTours)
+- **Aitlas** — Sovereign AI platform (BYOK, MCP-first, 34+ Actions)
+- **0% VC** | Estonian OÜ | Based in Sitges, Catalonia
+
+---
+
+## Stack
+
+Next.js 16.2 (App Router) | React 19 | TypeScript (strict) | Tailwind CSS v4 | Zod | Radix UI | Lucide
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Commands
 
-## Learn More
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start dev server (Turbopack enabled) |
+| `pnpm build` | Production build |
+| `pnpm start` | Start production server |
+| `pnpm lint` | ESLint check |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/                    # App Router pages
+│   ├── layout.tsx         # Root layout (fonts, theme, nav, footer)
+│   ├── globals.css         # Tailwind v4 config + CSS variables
+│   └── [route]/page.tsx   # Route pages
+├── components/
+│   ├── ui/                # Primitive UI components
+│   └── *.tsx              # Shared components
+├── lib/
+│   ├── utils.ts           # cn() utility
+│   ├── metadata.ts        # SEO metadata
+│   ├── schemas.ts         # Zod validation
+│   └── actions.ts        # Server actions
+└── hooks/                # Custom React hooks
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Design System
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Colors**: Semantic CSS variables (`--color-primary`, `--color-secondary`, etc.) + grey scale (`--color-grey-50` through `--color-grey-900`)
+- **Fonts**: Syne (sans), Cormorant (serif), JetBrains Mono (mono)
+- **Animations**: `.animate-fade-up`, `.animate-ticker`, `.reveal` (scroll-triggered)
+- **Effects**: `.glass`, `.glow-amber-sm`, `.hover-lift`, `.card-hover`
+
+See `AGENTS.md` for full guidelines.
+
+---
+
+## Key Pages
+
+| Route | Description |
+|-------|-------------|
+| `/` | Homepage |
+| `/about` | Studio info |
+| `/projects/aitlas` | AI ecosystem |
+| `/projects/saas` | Industry SaaS |
+| `/contact` | Contact form |
+| `/docs` | Developer portal |
+
+---
+
+## License
+
+Proprietary — Furma.tech OÜ

@@ -5,8 +5,8 @@ import { PricingSection } from "@/components/ui/PricingSection";
 import { Section, Container } from "@/components/ui/Section";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
-import { Activity, Apple, Zap, Shield, Heart, Moon, TrendingUp, CheckCircle2 } from "lucide-react";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { Activity, Apple, Zap, Moon, TrendingUp } from "lucide-react";
 
 export const metadata = constructMetadata({
   title: "f.health — Wearable Data | Furma.tech",
@@ -93,7 +93,7 @@ export default function HealthPage() {
         label="Aitlas — Action"
         title="f.health"
         description="Unified health data infrastructure. Aggregate metrics from Whoop, Oura, and Apple Health into a single sovereign knowledge base for AI insights."
-        status="Live"
+        status="In Development"
         tags={["Health Tech", "Quantified Self", "Data Privacy"]}
       />
 

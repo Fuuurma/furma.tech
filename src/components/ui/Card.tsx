@@ -23,18 +23,18 @@ export function Card({
   };
 
   const variantStyles = {
-    standard: "bg-card border-border dark:bg-card dark:border-border",
-    premium: "bg-card border-amber-500/20 glow-amber-sm dark:bg-card dark:border-amber-500/30",
-    ghost: "bg-transparent border-transparent hover:border-grey-200 hover:bg-grey-50 dark:border-transparent dark:hover:border-grey-800 dark:hover:bg-grey-800/50",
-    dark: "bg-foreground text-background border-grey-800 dark:bg-foreground dark:text-background dark:border-grey-700",
+    standard: "bg-card border-border",
+    premium: "bg-card border-foreground/20",
+    ghost: "bg-transparent border-transparent hover:border-border hover:bg-foreground/[0.02]",
+    dark: "bg-foreground text-background border-foreground",
   };
 
   const hoverStyles = hover
-    ? "transition-spring group-active hover:border-grey-400 dark:hover:border-grey-600 hover:-translate-y-1 hover:shadow-xl"
-    : "transition-spring";
+    ? "transition-all duration-500 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5"
+    : "transition-all duration-500";
 
   return (
-    <div className={`rounded-xl border ${variantStyles[variant]} ${paddingStyles[padding]} ${hoverStyles} ${className}`}>
+    <div className={`rounded-none border ${variantStyles[variant]} ${paddingStyles[padding]} ${hoverStyles} ${className}`}>
       {children}
     </div>
   );
@@ -64,7 +64,7 @@ interface CardDescriptionProps {
 }
 
 export function CardDescription({ children, className = "" }: CardDescriptionProps) {
-  return <p className={`text-[14px] text-grey-600 dark:text-grey-400 ${className}`}>{children}</p>;
+  return <p className={`text-[14px] text-grey-500 ${className}`}>{children}</p>;
 }
 
 interface CardContentProps {
@@ -82,5 +82,5 @@ interface CardFooterProps {
 }
 
 export function CardFooter({ children, className = "" }: CardFooterProps) {
-  return <div className={`mt-4 pt-4 border-t border-grey-100 dark:border-grey-800 ${className}`}>{children}</div>;
+  return <div className={`mt-4 pt-4 border-t border-border ${className}`}>{children}</div>;
 }

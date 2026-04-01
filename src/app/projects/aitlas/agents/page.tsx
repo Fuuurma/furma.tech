@@ -4,48 +4,36 @@ import { Section, Container } from "@/components/ui/Section";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { StaggerChildren, ScrollReveal } from "@/components/ui/ScrollReveal";
-import { Coins, Shield, Bot, Microscope, CheckCircle2 } from "lucide-react";
+import { Coins, Shield, Bot, Microscope, CheckCircle2, Sparkles, Zap, TrendingUp } from "lucide-react";
 
 export const metadata = constructMetadata({
   title: "Agents Store — AI Agent Marketplace",
-  description: "Hire pre-built Super Agents or publish your own. 70% revenue share for creators.",
+  description: "A marketplace for pre-built AI agents. Hire specialists or publish your own. 70% revenue share for creators.",
 });
 
-const featuredAgents = [
+const plannedAgents = [
   {
-    name: "The Crypto Quant",
+    name: "Crypto Quant Agent",
     category: "Finance",
-    price: "€29/mo",
-    desc: "Monitors DEXs, tracks whale wallets, analyzes on-chain data, and alerts you to opportunities.",
-    rating: 4.9,
-    reviews: 234,
+    desc: "Will monitor DEXs, track whale wallets, analyze on-chain data, and alert you to opportunities.",
     icon: Coins,
   },
   {
     name: "Code Guardian",
     category: "Development",
-    price: "€19/mo",
-    desc: "Reviews pull requests, catches bugs before they ship, enforces coding standards automatically.",
-    rating: 4.8,
-    reviews: 512,
+    desc: "Will review pull requests, catch bugs before they ship, and enforce coding standards automatically.",
     icon: Shield,
   },
   {
     name: "Support Bot",
     category: "Customer Success",
-    price: "€39/mo",
-    desc: "Handles tier-1 support tickets, processes refunds, answers FAQs, escalates when needed.",
-    rating: 4.7,
-    reviews: 189,
+    desc: "Will handle tier-1 support tickets, process refunds, answer FAQs, and escalate when needed.",
     icon: Bot,
   },
   {
     name: "Research Agent",
     category: "Knowledge",
-    price: "€24/mo",
-    desc: "Deep dives on any topic. Synthesizes academic papers, web sources, and generates reports.",
-    rating: 4.9,
-    reviews: 98,
+    desc: "Will conduct deep dives on any topic, synthesize academic papers, web sources, and generate reports.",
     icon: Microscope,
   },
 ];
@@ -53,7 +41,7 @@ const featuredAgents = [
 const benefits = [
   {
     title: "70/30 Revenue Share",
-    desc: "You keep 70% of every subscription. We handle payments, hosting, and support.",
+    desc: "Creators keep 70% of every subscription. We handle payments, hosting, and support.",
   },
   {
     title: "Version Locking",
@@ -61,7 +49,7 @@ const benefits = [
   },
   {
     title: "Free Trials",
-    desc: "Every agent includes trial credits. Users can test before committing.",
+    desc: "Every agent will include trial credits. Users can test before committing.",
   },
   {
     title: "MCP Native",
@@ -72,7 +60,7 @@ const benefits = [
 const creatorPerks = [
   "Publish agents in minutes",
   "Set your own pricing",
-  "Access to Nova beta users",
+  "Access to Nova users",
   "Developer community support",
   "Analytics dashboard",
   "Automatic billing & payouts",
@@ -84,47 +72,42 @@ export default function AgentsPage() {
       <ProjectHero
         label="Aitlas — Marketplace"
         title="Agents Store"
-        description="The marketplace for pre-built Super Agents. Hire a specialist to join your workspace or publish your own skills. 70% revenue share for creators."
+        description="A marketplace for pre-built AI agents. Hire specialists to join your workspace or publish your own skills. 70% revenue share for creators."
         status="In Development"
         tags={["Agent Store", "70/30 Rev Share", "MCP Native"]}
       />
 
-      {/* Featured Agents */}
+      {/* Planned Agents */}
       <Section variant="default">
         <Container size="full">
           <ScrollReveal>
             <div className="max-w-4xl mb-12">
               <div className="font-mono text-[11px] font-bold tracking-[0.2em] uppercase text-grey-400 mb-4">
-                Featured Agents
+                Planned Agents
               </div>
               <h2 className="font-serif text-[clamp(28px,3vw,40px)] font-semibold leading-[1.1] tracking-tight text-foreground">
-                Pre-built agents,<br /><em className="italic font-normal gradient-text">ready to work.</em>
+                Pre-built agents,<br /><em className="italic font-normal gradient-text">coming soon.</em>
               </h2>
+              <p className="text-[17px] text-grey-600 dark:text-grey-400 mt-6 max-w-2xl">
+                We're building a curated marketplace of specialized AI agents. Each agent will be 
+                MCP-native, version-locked, and available for trial before purchase.
+              </p>
             </div>
           </ScrollReveal>
 
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {featuredAgents.map((agent) => (
+            {plannedAgents.map((agent) => (
               <Card key={agent.name} padding="lg" hover className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800">
                 <div className="flex items-start justify-between mb-6">
                   <div className="w-12 h-12 rounded-xl bg-grey-50 dark:bg-grey-800 flex items-center justify-center text-foreground dark:text-white border border-grey-100 dark:border-grey-700">
                     <agent.icon className="w-6 h-6" strokeWidth={1.5} />
                   </div>
-                  <div className="text-right">
-                    <div className="font-mono text-[10px] uppercase tracking-wider text-grey-400 mb-1">{agent.category}</div>
-                    <div className="text-[18px] font-bold text-foreground">{agent.price}</div>
+                  <div className="px-3 py-1 rounded-full bg-amber-500/10 text-[10px] font-mono font-bold text-amber-600 uppercase tracking-wider">
+                    Planned
                   </div>
                 </div>
                 <h3 className="text-[20px] font-bold text-foreground mb-2">{agent.name}</h3>
-                <p className="text-[14px] text-grey-600 dark:text-grey-400 mb-6 leading-relaxed">{agent.desc}</p>
-                <div className="flex items-center gap-4 pt-4 border-t border-grey-50 dark:border-grey-800">
-                  <div className="flex items-center gap-1">
-                    <span className="text-amber-400">★</span>
-                    <span className="text-[14px] font-bold text-foreground">{agent.rating}</span>
-                  </div>
-                  <span className="text-grey-200 dark:text-grey-800">•</span>
-                  <span className="text-[14px] text-grey-400">{agent.reviews} reviews</span>
-                </div>
+                <p className="text-[14px] text-grey-600 dark:text-grey-400 leading-relaxed">{agent.desc}</p>
               </Card>
             ))}
           </StaggerChildren>
@@ -163,26 +146,32 @@ export default function AgentsPage() {
             <ScrollReveal delay={200}>
               <Card padding="lg" variant="dark" className="bg-foreground text-background shadow-2xl scale-[1.05]">
                 <div className="font-mono text-[11px] font-bold tracking-[0.2em] uppercase text-white/30 mb-6">
-                  Revenue Projection
+                  Example Revenue Projection
                 </div>
-                <div className="text-[28px] font-bold mb-2">Crypto Quant</div>
+                <div className="text-[28px] font-bold mb-2">Your Agent</div>
                 <div className="text-[15px] text-white/50 mb-8 pb-8 border-b border-white/10">
-                  234 subscribers @ €29/mo
+                  Example: 200 subscribers @ €25/mo
                 </div>
                 
                 <div className="space-y-4">
                   <div className="flex justify-between text-[15px]">
                     <span className="text-white/50">Gross Revenue</span>
-                    <span className="font-mono font-bold">€6,786/mo</span>
+                    <span className="font-mono font-bold">€5,000/mo</span>
                   </div>
                   <div className="flex justify-between text-[15px]">
                     <span className="text-white/50">Platform Fee (30%)</span>
-                    <span className="text-white/40">-€2,036</span>
+                    <span className="text-white/40">-€1,500</span>
                   </div>
                   <div className="flex justify-between text-[20px] font-bold pt-4 border-t border-white/10">
-                    <span className="text-amber-400">Net Profit</span>
-                    <span className="text-amber-400 font-mono">€4,750/mo</span>
+                    <span className="text-amber-400">Your Profit</span>
+                    <span className="text-amber-400 font-mono">€3,500/mo</span>
                   </div>
+                </div>
+                
+                <div className="mt-6 pt-6 border-t border-white/10">
+                  <p className="text-[12px] text-white/40">
+                    * Example calculation. Actual revenue depends on your agent's value and market demand.
+                  </p>
                 </div>
               </Card>
             </ScrollReveal>
@@ -196,7 +185,7 @@ export default function AgentsPage() {
           <ScrollReveal>
             <div className="text-center mb-16">
               <h2 className="font-serif text-[clamp(28px,3vw,40px)] font-semibold mb-4">Built for trust</h2>
-              <p className="text-grey-600 dark:text-grey-400">Why creators and users choose GWagents Store.</p>
+              <p className="text-grey-600 dark:text-grey-400">Why creators and users will choose Agents Store.</p>
             </div>
           </ScrollReveal>
           
@@ -215,7 +204,7 @@ export default function AgentsPage() {
       <Section variant="dark" className="text-center py-32">
         <Container size="md">
           <h2 className="font-serif text-[clamp(36px,5vw,64px)] font-semibold leading-[1.1] mb-8">
-            Ready to hire or build?
+            Ready to build?
           </h2>
           <p className="text-[18px] text-white/60 mb-12 max-w-xl mx-auto">
             Join the waitlist to get early access when we launch. Creators can apply now to be 

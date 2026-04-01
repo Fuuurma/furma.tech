@@ -5,8 +5,7 @@ import { Section, Container } from "@/components/ui/Section";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
-import { BookOpen, Search, Upload, Database, Brain, FolderOpen, Download, FileText, CheckCircle2 } from "lucide-react";
-import Link from "next/link";
+import { BookOpen, Search, Upload, Database, FileText } from "lucide-react";
 
 export const metadata = constructMetadata({
   title: "f.library — Vector Knowledge Base | Furma.tech",
@@ -74,7 +73,7 @@ export default function LibraryPage() {
         label="Aitlas — Action"
         title="f.library"
         description="Vectorized personal knowledge base. Upload PDFs, documents, and notes. Search across everything with AI-powered semantic search. Never lose a valuable insight again."
-        status="Live"
+        status="In Development"
         tags={["Vector DB", "Semantic Search", "Personal Knowledge"]}
       />
 

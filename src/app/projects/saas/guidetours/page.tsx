@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { Map, Calendar, Clock, Users, BarChart3, CheckCircle2, ArrowRight, Phone, Globe, Shield, Star, TrendingUp, Mail, Sparkles, ChevronRight } from "lucide-react";
+import { Map, Calendar, Clock, Users, BarChart3, CheckCircle2, ArrowRight, Phone, Globe, Shield, TrendingUp, Mail, Sparkles, Star } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
@@ -50,27 +50,10 @@ const features = [
 ];
 
 const benefits = [
-  { icon: Clock, stat: "8+ hrs", title: "Saved Weekly", desc: "Eliminate manual entry across platforms" },
-  { icon: TrendingUp, stat: "-25%", title: "Fewer No-Shows", desc: "Automated reminders keep customers committed" },
-  { icon: Star, stat: "4.9★", title: "Avg Rating", desc: "Professional comms lead to better reviews" },
-  { icon: Shield, stat: "100%", title: "Sync Rate", desc: "Never miss a booking from any platform" },
-];
-
-const testimonials = [
-  {
-    quote: "GuideTours transformed how we handle bookings. The Viator sync is flawless and we've cut our admin time in half.",
-    author: "Laura Fernández",
-    role: "Owner",
-    company: "Barcelona Walking Tours",
-    rating: 5,
-  },
-  {
-    quote: "Finally, a system built for tour operators. The calendar view shows everything at a glance and the automated reminders reduced our no-shows significantly.",
-    author: "Marc Puig",
-    role: "Operations Manager",
-    company: "Costa Brava Adventures",
-    rating: 5,
-  },
+  { icon: Clock, stat: "Target", title: "Time Savings", desc: "Our goal: eliminate manual entry across platforms" },
+  { icon: TrendingUp, stat: "Target", title: "Fewer No-Shows", desc: "Our goal: automated reminders keep customers committed" },
+  { icon: Star, stat: "Target", title: "Better Reviews", desc: "Our goal: professional comms lead to better reviews" },
+  { icon: Shield, stat: "Target", title: "Reliability", desc: "Our goal: never miss a booking from any platform" },
 ];
 
 const pricing: {
@@ -201,7 +184,7 @@ export default function GuideToursPage() {
                     </div>
 
                     <div className="bg-grey-100 dark:bg-grey-800 rounded-lg p-4 mb-4">
-                      <div className="text-[11px] font-bold text-grey-500 mb-3">Today's Schedule</div>
+                      <div className="text-[11px] font-bold text-grey-500 mb-3">Today&apos;s Schedule</div>
                       <div className="space-y-2">
                         <div className="flex items-center gap-3 p-2 bg-white dark:bg-grey-700 rounded-lg border-l-4 border-purple-500">
                           <div className="text-[11px] font-mono text-grey-500 w-12">09:00</div>
@@ -337,44 +320,6 @@ export default function GuideToursPage() {
                   </div>
                   <h3 className="text-[17px] font-bold text-fg mb-3">{feature.title}</h3>
                   <p className="text-[14px] text-grey-600 dark:text-grey-400 leading-relaxed">{feature.desc}</p>
-                </Card>
-              </ScrollReveal>
-            ))}
-          </StaggerChildren>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="section bg-grey-50 dark:bg-grey-900/50">
-        <div className="max-w-5xl mx-auto px-6 md:px-12">
-          <ScrollReveal>
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-grey-100 dark:bg-grey-800 border border-grey-200 dark:border-grey-700 mb-6">
-                <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-600 dark:text-grey-400">Testimonials</span>
-              </div>
-              <h2 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.08] tracking-tight text-fg">Loved by tour operators</h2>
-            </div>
-          </ScrollReveal>
-
-          <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <ScrollReveal key={testimonial.author} delay={index * 100}>
-                <Card padding="lg" className="card-elevated">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    ))}
-                  </div>
-                  <p className="text-[15px] text-grey-600 dark:text-grey-400 leading-relaxed mb-6 italic">&ldquo;{testimonial.quote}&rdquo;</p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold">
-                      {testimonial.author.charAt(0)}
-                    </div>
-                    <div>
-                      <div className="font-bold text-fg">{testimonial.author}</div>
-                      <div className="text-[12px] text-grey-500">{testimonial.role}, {testimonial.company}</div>
-                    </div>
-                  </div>
                 </Card>
               </ScrollReveal>
             ))}

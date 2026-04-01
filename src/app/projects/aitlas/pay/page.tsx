@@ -5,8 +5,8 @@ import { PricingSection } from "@/components/ui/PricingSection";
 import { Section, Container } from "@/components/ui/Section";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
-import { CreditCard, Bitcoin, Shield, Lock, Bell, Activity, CheckCircle2 } from "lucide-react";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { CreditCard, Bitcoin } from "lucide-react";
 
 export const metadata = constructMetadata({
   title: "f.pay — Payment Processing | Furma.tech",
@@ -87,7 +87,7 @@ export default function PayPage() {
         label="Aitlas — Action"
         title="f.pay"
         description="Unified payment processing for agentic workflows. Accept Stripe and crypto with granular controls, human approvals, and full data sovereignty."
-        status="Live"
+        status="In Development"
         tags={["Payments", "Stripe", "Web3", "Control"]}
       />
 

@@ -2,11 +2,11 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { ArrowLeft, Download, Copy, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Download, CheckCircle2, XCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Furma.tech Logo — Brand Assets",
-  description: "Download official Furma.tech logo files in SVG format.",
+  title: "Brand Assets | Furma.tech",
+  description: "Official Furma.tech logo files and brand guidelines. Minimalist, clean, and sovereign.",
   robots: { index: false, follow: false },
 };
 
@@ -15,168 +15,168 @@ const logos = [
     name: "Logo Minimal",
     file: "/logo-minimal.svg",
     bg: "bg-white",
-    desc: "Primary logo - clean geometric F",
+    desc: "Primary mark - geometric F structure.",
   },
   {
     name: "Logo Dark",
     file: "/logo-dark.svg",
     bg: "bg-black",
-    desc: "Inverted for dark backgrounds",
+    desc: "Inverted for dark backgrounds.",
   },
   {
     name: "Logo Clean",
     file: "/logo-clean.svg",
     bg: "bg-white",
-    desc: "With accent dot",
+    desc: "Legacy mark with structural dot.",
   },
   {
     name: "Favicon",
     file: "/favicon.svg",
     bg: "bg-white",
-    desc: "32x32 browser icon",
+    desc: "Standard 32x32 browser icon.",
   },
 ];
 
 export default function LogoPage() {
   return (
-    <div className="min-h-screen bg-bg text-fg">
+    <div className="min-h-screen bg-background text-foreground selection:bg-foreground selection:text-background">
       {/* Header */}
-      <section className="section border-b border-grey-200 dark:border-grey-800">
+      <section className="py-24 border-b border-border">
         <div className="max-w-4xl mx-auto px-6 md:px-12">
-          <Link href="/" className="inline-flex items-center gap-2 text-[14px] text-grey-600 dark:text-grey-400 hover:text-fg transition-colors mb-8">
+          <Link href="/" className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest text-grey-500 hover:text-foreground transition-colors mb-12">
             <ArrowLeft className="w-4 h-4" />
             Back to Home
           </Link>
           
-          <h1 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.08] tracking-tight text-fg mb-4">
-            Furma.tech Logo
+          <h1 className="font-serif text-[clamp(48px,8vw,80px)] font-semibold leading-[0.9] tracking-tighter text-foreground mb-8">
+            Brand Assets.
           </h1>
-          <p className="text-[18px] text-grey-600 dark:text-grey-400 leading-relaxed">
-            Minimalist, clean brand identity. Pure black and white.
+          <p className="text-[20px] text-grey-500 leading-relaxed max-w-2xl">
+            A minimalist, clean identity designed for high-stakes software systems.
+            Strictly monochrome. Professional. Sovereign.
           </p>
         </div>
       </section>
 
       {/* Logo Grid */}
-      <section className="section">
+      <section className="py-24">
         <div className="max-w-6xl mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border border border-border mb-24">
             {logos.map((logo) => (
-              <div key={logo.name} className="space-y-4">
-                <div className={`aspect-square rounded-2xl border border-grey-200 dark:border-grey-800 ${logo.bg} flex items-center justify-center p-8 card-elevated`}>
+              <div key={logo.name} className="bg-background p-12 group transition-colors hover:bg-foreground/[0.01]">
+                <div className={`aspect-square border border-border ${logo.bg} flex items-center justify-center p-12 mb-8 transition-transform group-hover:scale-[0.98] duration-500`}>
                   <Image
                     src={logo.file}
                     alt={logo.name}
-                    width={256}
-                    height={256}
-                    className="max-w-[80%] max-h-[80%] object-contain"
+                    width={200}
+                    height={200}
+                    className="max-w-full max-h-full object-contain"
                   />
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-end justify-between">
                   <div>
-                    <h3 className="font-bold text-fg text-[16px]">{logo.name}</h3>
-                    <p className="text-[13px] text-grey-500">{logo.desc}</p>
+                    <h3 className="font-bold text-foreground text-[18px] mb-1">{logo.name}</h3>
+                    <p className="text-[12px] font-mono text-grey-400 uppercase tracking-widest">{logo.desc}</p>
                   </div>
                   <a
                     href={logo.file}
                     download
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-grey-200 dark:border-grey-800 text-[13px] font-semibold hover:bg-grey-50 dark:hover:bg-grey-800 transition-colors"
+                    className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest hover:underline underline-offset-8"
                   >
                     <Download className="w-4 h-4" />
-                    Download
+                    SVG
                   </a>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Usage Guidelines */}
-          <div className="max-w-3xl mx-auto">
-            <h2 className="font-serif text-[clamp(28px,4vw,40px)] font-semibold leading-[1.1] tracking-tight text-fg mb-8">
-              Usage Guidelines
-            </h2>
-            
-            <div className="space-y-6">
-              <div className="p-6 rounded-xl bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800">
-                <h3 className="font-bold text-fg mb-3 flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-500" />
-                  Do&apos;s
-                </h3>
-                <ul className="space-y-2 text-[14px] text-grey-600 dark:text-grey-400">
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-1.5 flex-shrink-0"></span>
-                    Use the minimal logo for most applications
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-1.5 flex-shrink-0"></span>
-                    Maintain clear space around the logo
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-1.5 flex-shrink-0"></span>
-                    Use dark logo on light backgrounds, white logo on dark backgrounds
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-1.5 flex-shrink-0"></span>
-                    Keep the logo proportions intact
-                  </li>
-                </ul>
-              </div>
+          {/* Guidelines & Palette */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
+            {/* Usage Guidelines */}
+            <div>
+              <h2 className="font-serif text-[clamp(32px,4vw,48px)] font-semibold leading-[1.1] tracking-tight text-foreground mb-12">
+                Guidelines.
+              </h2>
+              
+              <div className="space-y-12">
+                <div>
+                  <h3 className="text-[11px] font-mono font-bold uppercase tracking-[0.3em] text-grey-400 mb-6 flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4" />
+                    Principles
+                  </h3>
+                  <ul className="space-y-4 text-[15px] text-grey-600">
+                    <li className="flex items-start gap-4">
+                      <div className="w-1 h-1 bg-foreground mt-2.5"></div>
+                      Use the minimal logo for most applications.
+                    </li>
+                    <li className="flex items-start gap-4">
+                      <div className="w-1 h-1 bg-foreground mt-2.5"></div>
+                      Maintain significant clear space around the mark.
+                    </li>
+                    <li className="flex items-start gap-4">
+                      <div className="w-1 h-1 bg-foreground mt-2.5"></div>
+                      Black logo on white. White logo on black.
+                    </li>
+                  </ul>
+                </div>
 
-              <div className="p-6 rounded-xl bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800">
-                <h3 className="font-bold text-fg mb-3 flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-red-500" />
-                  Don&apos;ts
-                </h3>
-                <ul className="space-y-2 text-[14px] text-grey-600 dark:text-grey-400">
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 flex-shrink-0"></span>
-                    Don&apos;t stretch or distort the logo
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 flex-shrink-0"></span>
-                    Don&apos;t add effects like shadows or gradients
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 flex-shrink-0"></span>
-                    Don&apos;t change the colors
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 flex-shrink-0"></span>
-                    Don&apos;t rotate or flip the logo
-                  </li>
-                </ul>
+                <div>
+                  <h3 className="text-[11px] font-mono font-bold uppercase tracking-[0.3em] text-grey-400 mb-6 flex items-center gap-2">
+                    <XCircle className="w-4 h-4" />
+                    Restrictions
+                  </h3>
+                  <ul className="space-y-4 text-[15px] text-grey-600">
+                    <li className="flex items-start gap-4">
+                      <div className="w-1 h-1 bg-foreground mt-2.5"></div>
+                      No stretching, distortion, or rotation.
+                    </li>
+                    <li className="flex items-start gap-4">
+                      <div className="w-1 h-1 bg-foreground mt-2.5"></div>
+                      No drop shadows, outer glows, or gradients.
+                    </li>
+                    <li className="flex items-start gap-4">
+                      <div className="w-1 h-1 bg-foreground mt-2.5"></div>
+                      No introduction of non-monochrome colors.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Color Palette */}
+            <div>
+              <h2 className="font-serif text-[clamp(32px,4vw,48px)] font-semibold leading-[1.1] tracking-tight text-foreground mb-12">
+                Palette.
+              </h2>
+              
+              <div className="grid grid-cols-1 gap-4">
+                <div className="p-8 border border-border flex items-center gap-8 group hover:border-foreground transition-colors duration-500">
+                  <div className="w-24 h-24 bg-black border border-white/10"></div>
+                  <div>
+                    <div className="font-mono text-[10px] text-grey-400 uppercase tracking-widest mb-1">Black / Deep Space</div>
+                    <div className="font-serif text-2xl font-bold">#000000</div>
+                    <div className="text-[11px] font-mono opacity-40 mt-1">oklch(0 0 0)</div>
+                  </div>
+                </div>
+                <div className="p-8 border border-border flex items-center gap-8 group hover:border-foreground transition-colors duration-500">
+                  <div className="w-24 h-24 bg-white border border-black/10"></div>
+                  <div>
+                    <div className="font-mono text-[10px] text-grey-400 uppercase tracking-widest mb-1">White / Pure Signal</div>
+                    <div className="font-serif text-2xl font-bold">#FFFFFF</div>
+                    <div className="text-[11px] font-mono opacity-40 mt-1">oklch(1 0 0)</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Color Palette */}
-          <div className="max-w-3xl mx-auto mt-16">
-            <h2 className="font-serif text-[clamp(28px,4vw,40px)] font-semibold leading-[1.1] tracking-tight text-fg mb-8">
-              Color Palette
-            </h2>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-6 rounded-xl border border-grey-200 dark:border-grey-800">
-                <div className="w-full h-24 rounded-lg bg-black mb-4"></div>
-                <div className="font-mono text-[11px] text-grey-500 mb-1">BLACK</div>
-                <div className="font-bold text-fg">#0D0D0D</div>
-              </div>
-              <div className="p-6 rounded-xl border border-grey-200 dark:border-grey-800">
-                <div className="w-full h-24 rounded-lg bg-white mb-4"></div>
-                <div className="font-mono text-[11px] text-grey-500 mb-1">WHITE</div>
-                <div className="font-bold text-fg">#FAFAFA</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Back to Home */}
-          <div className="text-center mt-20 pt-16 border-t border-grey-200 dark:border-grey-800">
-            <Link href="/">
-              <Button variant="premium" size="lg">
-                Back to Furma.tech
-                <ArrowLeft className="w-4 h-4 ml-2 rotate-180" />
-              </Button>
-            </Link>
+          {/* Footer Navigation */}
+          <div className="text-center mt-32 pt-16 border-t border-border">
+            <Button href="/" variant="primary" size="lg" className="min-w-[280px]">
+              Back to Furma.tech
+              <ArrowLeft className="w-4 h-4 ml-2 rotate-180" />
+            </Button>
           </div>
         </div>
       </section>

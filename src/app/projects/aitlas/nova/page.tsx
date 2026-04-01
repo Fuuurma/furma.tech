@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { Hexagon, Brain, Zap, Shield, ArrowRight, CheckCircle2, Monitor, Smartphone, Globe, Sparkles, Key, Cloud, MessageSquare, Code, FileText, Settings, ChevronRight } from "lucide-react";
+import { Hexagon, Brain, Zap, Shield, ArrowRight, CheckCircle2, Monitor, Smartphone, Globe, Sparkles, Key, Cloud, MessageSquare, Code, FileText, Settings } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";

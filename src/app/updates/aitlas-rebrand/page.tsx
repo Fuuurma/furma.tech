@@ -1,7 +1,6 @@
 import { constructMetadata } from "@/lib/metadata";
 import { ProjectHero } from "@/components/ui/ProjectHero";
 import { Section, Container } from "@/components/ui/Section";
-import { Button } from "@/components/ui/Button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 

@@ -5,8 +5,7 @@ import { Section, Container } from "@/components/ui/Section";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
-import { Globe, Search, Database, Zap, Shield, Sparkles, Filter, Download, BarChart3, CheckCircle2 } from "lucide-react";
-import Link from "next/link";
+import { Globe, Search, BarChart3, CheckCircle2 } from "lucide-react";
 
 export const metadata = constructMetadata({
   title: "f.twyt — Twitter Intelligence | Furma.tech",
@@ -72,7 +71,7 @@ export default function TwytPage() {
         label="Aitlas — Action"
         title="f.twyt"
         description="Advanced Twitter search, feed ingestion, and semantic search. Build your own algorithm-free feed. Track trends, monitor competitors, and curate your personal Twitter intelligence."
-        status="Live"
+        status="In Development"
         tags={["Twitter Intelligence", "MCP Action", "Data Export"]}
       />
 

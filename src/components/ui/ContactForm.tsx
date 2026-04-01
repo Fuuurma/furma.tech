@@ -27,9 +27,7 @@ export function ContactForm({ action }: ContactFormProps) {
         if (result.success) {
           setStatus('success');
           setMessage('Thank you! We\'ll be in touch within 48 hours.');
-          // Track successful submission
           trackEvent('contact_form_submit', { success: true });
-          // Reset form after success
           const form = document.getElementById('contact-form') as HTMLFormElement;
           form?.reset();
         } else {
@@ -45,13 +43,15 @@ export function ContactForm({ action }: ContactFormProps) {
     });
   }
 
+  const inputStyles = "w-full px-4 py-3 rounded-none border border-border bg-background text-foreground placeholder-grey-400 focus:outline-none focus:border-foreground transition-all disabled:opacity-50 disabled:cursor-not-allowed";
+
   return (
-    <form id="contact-form" action={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <form id="contact-form" action={handleSubmit} className="space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Name */}
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-fg mb-2">
-            Name <span className="text-red-500">*</span>
+          <label htmlFor="name" className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-3">
+            Full Name
           </label>
           <input
             type="text"
@@ -59,15 +59,15 @@ export function ContactForm({ action }: ContactFormProps) {
             name="name"
             required
             disabled={isPending || status === 'success'}
-            className="w-full px-4 py-3 rounded-lg border border-grey-200 dark:border-grey-800 bg-white dark:bg-grey-900 text-fg placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className={inputStyles}
             placeholder="John Doe"
           />
         </div>
 
         {/* Email */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-fg mb-2">
-            Email <span className="text-red-500">*</span>
+          <label htmlFor="email" className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-3">
+            Email Address
           </label>
           <input
             type="email"
@@ -75,39 +75,39 @@ export function ContactForm({ action }: ContactFormProps) {
             name="email"
             required
             disabled={isPending || status === 'success'}
-            className="w-full px-4 py-3 rounded-lg border border-grey-200 dark:border-grey-800 bg-white dark:bg-grey-900 text-fg placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className={inputStyles}
             placeholder="john@company.com"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Company */}
         <div>
-          <label htmlFor="company" className="block text-sm font-medium text-fg mb-2">
-            Company
+          <label htmlFor="company" className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-3">
+            Organization
           </label>
           <input
             type="text"
             id="company"
             name="company"
             disabled={isPending || status === 'success'}
-            className="w-full px-4 py-3 rounded-lg border border-grey-200 dark:border-grey-800 bg-white dark:bg-grey-900 text-fg placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className={inputStyles}
             placeholder="Your company"
           />
         </div>
 
         {/* Subject */}
         <div>
-          <label htmlFor="subject" className="block text-sm font-medium text-fg mb-2">
-            Subject <span className="text-red-500">*</span>
+          <label htmlFor="subject" className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-3">
+            Subject
           </label>
           <select
             id="subject"
             name="subject"
             required
             disabled={isPending || status === 'success'}
-            className="w-full px-4 py-3 rounded-lg border border-grey-200 dark:border-grey-800 bg-white dark:bg-grey-900 text-fg focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className={inputStyles}
           >
             <option value="">Select a subject</option>
             <option value="product_demo">Product Demo Request</option>
@@ -120,73 +120,69 @@ export function ContactForm({ action }: ContactFormProps) {
 
       {/* Message */}
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-fg mb-2">
-          Message <span className="text-red-500">*</span>
+        <label htmlFor="message" className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-3">
+          Detailed Request
         </label>
         <textarea
           id="message"
           name="message"
           required
-          rows={5}
+          rows={6}
           disabled={isPending || status === 'success'}
-          className="w-full px-4 py-3 rounded-lg border border-grey-200 dark:border-grey-800 bg-white dark:bg-grey-900 text-fg placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed resize-none"
+          className={`${inputStyles} resize-none`}
           placeholder="Tell us about your needs..."
         />
       </div>
 
       {/* Newsletter */}
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-4">
         <input
           type="checkbox"
           id="newsletter"
           name="newsletter"
           disabled={isPending || status === 'success'}
-          className="mt-1 w-4 h-4 rounded border-grey-300 text-amber-500 focus:ring-amber-500 focus:ring-offset-0"
+          className="mt-1 w-4 h-4 rounded-none border-border bg-background text-foreground focus:ring-0 focus:ring-offset-0"
         />
-        <label htmlFor="newsletter" className="text-sm text-grey-600 dark:text-grey-400">
-          Subscribe to our newsletter for product updates and insights. No spam, unsubscribe anytime.
+        <label htmlFor="newsletter" className="text-[13px] text-grey-500 leading-relaxed">
+          I want to receive product updates and engineering logs. No spam.
         </label>
       </div>
 
       {/* Status Messages */}
       {status === 'success' && (
-        <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400">
-          <p className="font-medium">✓ {message}</p>
+        <div className="p-6 border border-foreground bg-foreground text-background">
+          <p className="text-sm font-bold uppercase tracking-widest">✓ {message}</p>
         </div>
       )}
 
       {status === 'error' && (
-        <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400">
-          <p className="font-medium">✕ {message}</p>
+        <div className="p-6 border border-border bg-foreground/[0.02]">
+          <p className="text-sm font-bold uppercase tracking-widest opacity-50">✕ {message}</p>
         </div>
       )}
 
       {/* Submit Button */}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row items-center gap-6 pt-4">
         <Button
           type="submit"
-          variant="premium"
+          variant="primary"
           size="lg"
           disabled={isPending || status === 'success'}
-          className="min-w-[160px]"
+          className="min-w-[240px] h-16"
         >
           {isPending ? (
-            <span className="flex items-center gap-2">
-              <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-              </svg>
-              Sending...
+            <span className="flex items-center gap-2 uppercase tracking-widest">
+              Processing...
             </span>
           ) : status === 'success' ? (
-            'Sent!'
+            'Sent Successfully'
           ) : (
-            'Send Message →'
+            'Transmit Message'
           )}
         </Button>
         
         {isPending && (
-          <p className="text-sm text-grey-500">Please wait while we process your message...</p>
+          <p className="text-[11px] font-mono text-grey-400 uppercase tracking-widest animate-pulse">Establishing Connection...</p>
         )}
       </div>
     </form>

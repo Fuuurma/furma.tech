@@ -5,8 +5,8 @@ import { PricingSection } from "@/components/ui/PricingSection";
 import { Section, Container } from "@/components/ui/Section";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
-import { Search, Globe, Database, Brain, FileText, CheckCircle2, FlaskConical } from "lucide-react";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { CheckCircle2 } from "lucide-react";
 
 export const metadata = constructMetadata({
   title: "f.rsrx — Deep Research | Furma.tech",

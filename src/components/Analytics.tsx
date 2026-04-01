@@ -27,9 +27,7 @@ export function Analytics() {
  */
 export function trackEvent(eventName: string, data?: Record<string, unknown>) {
   if (typeof window !== 'undefined') {
-    // @ts-ignore - Vercel Analytics global
     if (window.va) {
-      // @ts-ignore
       window.va('event', { eventName, data });
     }
   }

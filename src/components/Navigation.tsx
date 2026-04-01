@@ -12,21 +12,18 @@ import {
   NavigationMenuItem,
   NavigationMenuTrigger,
   NavigationMenuContent,
-  NavigationMenuLink,
 } from './ui/NavigationMenu';
+import { Sheet, SheetContent, SheetTrigger } from './ui/Sheet';
 import {
   Sparkles,
-  Building2,
-  MapPin,
-  Clock,
-  Users,
   BookOpen,
   Zap,
   Brain,
-  Database,
   MessageSquare,
   Store,
   Plane,
+  Menu,
+  ArrowRight
 } from 'lucide-react';
 
 // Aitlas products
@@ -81,7 +78,6 @@ const saasProducts = [
 
 export default function Navigation() {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const isActive = (path: string) => {
@@ -101,32 +97,32 @@ export default function Navigation() {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       isScrolled
-        ? 'bg-background/85 backdrop-blur-xl border-b border-border py-0 dark:bg-background/95 dark:backdrop-blur-xl dark:border-border'
+        ? 'bg-background/90 backdrop-blur-xl border-b border-border py-0'
         : 'bg-transparent border-b border-transparent py-2'
     }`} aria-label="Main navigation">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 no-underline group">
-            <div className="w-10 h-10 flex items-center justify-center transition-all duration-300 group-hover:scale-105">
+            <div className="w-10 h-10 flex items-center justify-center transition-all duration-500 group-hover:scale-105">
               <Image
                 src="/logo-minimal.svg"
                 alt="Furma.tech"
-                width={40}
-                height={40}
+                width={36}
+                height={36}
                 className="dark:hidden"
               />
               <Image
                 src="/logo-dark.svg"
                 alt="Furma.tech"
-                width={40}
-                height={40}
+                width={36}
+                height={36}
                 className="hidden dark:block"
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-bold text-[15px] tracking-tight text-foreground leading-none">Furma.tech</span>
-              <span className="text-[10px] font-mono text-grey-500 dark:text-grey-400 leading-none mt-1">Venture Studio</span>
+              <span className="font-bold text-[14px] tracking-tight text-foreground leading-none">Furma.tech</span>
+              <span className="text-[9px] font-mono text-grey-500 uppercase tracking-widest mt-1">Venture Studio</span>
             </div>
           </Link>
 
@@ -136,72 +132,72 @@ export default function Navigation() {
               <NavigationMenuList>
                 {/* Aitlas Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-[13px] font-bold">
+                  <NavigationMenuTrigger className="text-[12px] font-bold uppercase tracking-widest px-4">
                     Aitlas
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid gap-3 p-4 md:w-[400px] lg:w-[450px]">
-                      <div className="mb-2">
-                        <h4 className="font-semibold text-sm text-foreground mb-1">Aitlas AI Ecosystem</h4>
-                        <p className="text-xs text-muted-foreground">Sovereign AI workspace with BYOK architecture</p>
+                    <div className="grid gap-1 p-4 md:w-[400px] lg:w-[450px] bg-background">
+                      <div className="mb-4 px-3">
+                        <h4 className="font-serif text-lg font-bold text-foreground mb-1">Aitlas Ecosystem</h4>
+                        <p className="text-xs text-grey-500">Sovereign AI workspace and autonomous agents.</p>
                       </div>
-                      {aitlasProducts.map((product) => (
-                        <Link
-                          key={product.title}
-                          href={product.href}
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-secondary/50 focus:bg-secondary/50"
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-secondary/50">
-                              <product.icon className="h-4 w-4 text-foreground" />
+                      <div className="grid grid-cols-1 gap-1">
+                        {aitlasProducts.map((product) => (
+                          <Link
+                            key={product.title}
+                            href={product.href}
+                            className="flex items-center gap-4 p-3 rounded-none transition-colors hover:bg-foreground hover:text-background group"
+                          >
+                            <div className="flex items-center justify-center w-8 h-8 border border-border group-hover:border-background transition-colors">
+                              <product.icon className="h-4 w-4" />
                             </div>
                             <div className="flex-1">
-                              <div className="text-sm font-semibold leading-none text-foreground">
+                              <div className="text-sm font-bold leading-none">
                                 {product.title}
                               </div>
-                              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                              <p className="mt-1 text-xs leading-relaxed opacity-60">
                                 {product.description}
                               </p>
                             </div>
-                          </div>
-                        </Link>
-                      ))}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
 
                 {/* SaaS Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-[13px] font-bold">
+                  <NavigationMenuTrigger className="text-[12px] font-bold uppercase tracking-widest px-4">
                     SaaS
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid gap-3 p-4 md:w-[350px]">
-                      <div className="mb-2">
-                        <h4 className="font-semibold text-sm text-foreground mb-1">Industry B2B SaaS</h4>
-                        <p className="text-xs text-muted-foreground">Cash-generating tools for traditional industries</p>
+                    <div className="grid gap-1 p-4 md:w-[350px] bg-background">
+                      <div className="mb-4 px-3">
+                        <h4 className="font-serif text-lg font-bold text-foreground mb-1">Industry SaaS</h4>
+                        <p className="text-xs text-grey-500">B2B tools for traditional sectors.</p>
                       </div>
-                      {saasProducts.map((product) => (
-                        <Link
-                          key={product.title}
-                          href={product.href}
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-secondary/50 focus:bg-secondary/50"
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-secondary/50">
-                              <product.icon className="h-4 w-4 text-foreground" />
+                      <div className="grid grid-cols-1 gap-1">
+                        {saasProducts.map((product) => (
+                          <Link
+                            key={product.title}
+                            href={product.href}
+                            className="flex items-center gap-4 p-3 rounded-none transition-colors hover:bg-foreground hover:text-background group"
+                          >
+                            <div className="flex items-center justify-center w-8 h-8 border border-border group-hover:border-background transition-colors">
+                              <product.icon className="h-4 w-4" />
                             </div>
                             <div className="flex-1">
-                              <div className="text-sm font-semibold leading-none text-foreground">
+                              <div className="text-sm font-bold leading-none">
                                 {product.title}
                               </div>
-                              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                              <p className="mt-1 text-xs leading-relaxed opacity-60">
                                 {product.description}
                               </p>
                             </div>
-                          </div>
-                        </Link>
-                      ))}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
@@ -211,20 +207,20 @@ export default function Navigation() {
             {/* Regular Nav Links */}
             <Link
               href="/about"
-              className={`px-4 py-2 text-[13px] font-bold transition-all no-underline rounded-full ${
+              className={`px-4 py-2 text-[12px] font-bold uppercase tracking-widest transition-all no-underline ${
                 isActive('/about')
-                  ? 'text-foreground bg-secondary/70 shadow-sm dark:text-white dark:bg-grey-800/70'
-                  : 'text-grey-500 hover:text-foreground hover:bg-secondary/50 dark:text-grey-400 dark:hover:text-white dark:hover:bg-grey-800/50'
+                  ? 'text-foreground underline underline-offset-8 decoration-2'
+                  : 'text-grey-500 hover:text-foreground'
               }`}
             >
               About
             </Link>
             <Link
               href="/updates"
-              className={`px-4 py-2 text-[13px] font-bold transition-all no-underline rounded-full ${
+              className={`px-4 py-2 text-[12px] font-bold uppercase tracking-widest transition-all no-underline ${
                 isActive('/updates')
-                  ? 'text-foreground bg-secondary/70 shadow-sm dark:text-white dark:bg-grey-800/70'
-                  : 'text-grey-500 hover:text-foreground hover:bg-secondary/50 dark:text-grey-400 dark:hover:text-white dark:hover:bg-grey-800/50'
+                  ? 'text-foreground underline underline-offset-8 decoration-2'
+                  : 'text-grey-500 hover:text-foreground'
               }`}
             >
               Updates
@@ -232,118 +228,117 @@ export default function Navigation() {
           </div>
 
           {/* CTA */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-6">
             <ThemeToggle />
-            <Button href="/contact" variant="dark" size="sm" className="shadow-lg shadow-black/10 dark:shadow-white/10">
-              Get in touch →
-            </Button>
+            <Link 
+              href="/contact" 
+              className="text-[12px] font-bold uppercase tracking-[0.2em] text-foreground flex items-center gap-2 group"
+            >
+              Contact <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
+            </Link>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 hover:bg-secondary rounded-xl transition-all duration-300 dark:hover:bg-grey-800"
-            aria-label="Toggle menu"
-            aria-expanded={isOpen}
-          >
-            <div className="w-6 h-5 relative flex flex-col justify-between">
-              <span className={`w-full h-0.5 bg-foreground rounded-full transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-              <span className={`w-full h-0.5 bg-foreground rounded-full transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`}></span>
-              <span className={`w-full h-0.5 bg-foreground rounded-full transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-2.5' : ''}`}></span>
-            </div>
-          </button>
+          {/* Mobile menu - Sheet */}
+          <Sheet>
+            <SheetTrigger asChild className="md:hidden">
+              <button
+                className="p-2 hover:bg-foreground/5 transition-all duration-300"
+                aria-label="Toggle menu"
+              >
+                <Menu className="w-6 h-6" />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-full sm:w-[400px] px-0 bg-background border-l border-border">
+              <div className="flex flex-col h-full">
+                <div className="flex items-center gap-3 mb-12 px-8 pt-8">
+                  <div className="w-10 h-10 border border-foreground flex items-center justify-center font-serif font-bold text-xl">
+                    F
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-bold text-[16px] tracking-tight text-foreground leading-none">Furma.tech</span>
+                    <span className="text-[10px] font-mono text-grey-500 leading-none mt-1 uppercase tracking-widest">Venture Studio</span>
+                  </div>
+                </div>
+                
+                <div className="flex-1 overflow-y-auto px-8">
+                  <div className="flex flex-col gap-10">
+                    {/* Aitlas Mobile Submenu */}
+                    <div>
+                      <h4 className="text-[10px] font-bold text-grey-400 uppercase tracking-[0.3em] mb-4">Aitlas AI</h4>
+                      <div className="flex flex-col gap-1 border-l border-border">
+                        {aitlasProducts.map((product) => (
+                          <Link
+                            key={product.title}
+                            href={product.href}
+                            className={`flex items-center gap-4 px-4 py-3 text-[15px] font-bold transition-all ${
+                              isActive(product.href)
+                                ? 'text-foreground bg-foreground/5'
+                                : 'text-grey-500 hover:text-foreground'
+                            }`}
+                          >
+                            <span className="font-medium">{product.title}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* SaaS Mobile Submenu */}
+                    <div>
+                      <h4 className="text-[10px] font-bold text-grey-400 uppercase tracking-[0.3em] mb-4">Industry SaaS</h4>
+                      <div className="flex flex-col gap-1 border-l border-border">
+                        {saasProducts.map((product) => (
+                          <Link
+                            key={product.title}
+                            href={product.href}
+                            className={`flex items-center gap-4 px-4 py-3 text-[15px] font-bold transition-all ${
+                              isActive(product.href)
+                                ? 'text-foreground bg-foreground/5'
+                                : 'text-grey-500 hover:text-foreground'
+                            }`}
+                          >
+                            <span className="font-medium">{product.title}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Other Links */}
+                    <div className="flex flex-col gap-4">
+                      <Link
+                        href="/about"
+                        className={`text-[20px] font-serif font-bold ${isActive('/about') ? 'text-foreground' : 'text-grey-500'}`}
+                      >
+                        About
+                      </Link>
+                      <Link
+                        href="/updates"
+                        className={`text-[20px] font-serif font-bold ${isActive('/updates') ? 'text-foreground' : 'text-grey-500'}`}
+                      >
+                        Updates
+                      </Link>
+                      <Link
+                        href="/contact"
+                        className={`text-[20px] font-serif font-bold ${isActive('/contact') ? 'text-foreground' : 'text-grey-500'}`}
+                      >
+                        Contact
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-8 mt-auto px-8 py-8 border-t border-border">
+                  <ThemeToggle />
+                  <Link 
+                    href="/contact" 
+                    className="flex-1 text-[13px] font-bold uppercase tracking-[0.2em] flex items-center justify-between"
+                  >
+                    Start a project <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
-
-        {/* Mobile menu */}
-        {isOpen && (
-          <div className="md:hidden py-6 border-t border-grey-100 animate-fade-in dark:border-grey-800">
-            <div className="flex flex-col gap-2">
-              {/* Aitlas Mobile Submenu */}
-              <div className="mb-2">
-                <h4 className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Aitlas AI</h4>
-                {aitlasProducts.map((product) => (
-                  <Link
-                    key={product.title}
-                    href={product.href}
-                    className={`flex items-center gap-3 px-4 py-2.5 text-sm no-underline transition-all ${
-                      isActive(product.href)
-                        ? 'bg-secondary text-foreground dark:bg-grey-800 dark:text-white'
-                        : 'text-grey-600 dark:text-grey-400 hover:bg-secondary/50'
-                    }`}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <product.icon className="h-4 w-4" />
-                    <span className="font-medium">{product.title}</span>
-                  </Link>
-                ))}
-              </div>
-
-              {/* SaaS Mobile Submenu */}
-              <div className="mb-2">
-                <h4 className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">SaaS Products</h4>
-                {saasProducts.map((product) => (
-                  <Link
-                    key={product.title}
-                    href={product.href}
-                    className={`flex items-center gap-3 px-4 py-2.5 text-sm no-underline transition-all ${
-                      isActive(product.href)
-                        ? 'bg-secondary text-foreground dark:bg-grey-800 dark:text-white'
-                        : 'text-grey-600 dark:text-grey-400 hover:bg-secondary/50'
-                    }`}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <product.icon className="h-4 w-4" />
-                    <span className="font-medium">{product.title}</span>
-                  </Link>
-                ))}
-              </div>
-
-              {/* Other Links */}
-              <div className="border-t border-grey-100 dark:border-grey-800 pt-2">
-                <Link
-                  href="/about"
-                  className={`block px-4 py-2.5 text-sm font-medium no-underline transition-all ${
-                    isActive('/about')
-                      ? 'bg-secondary text-foreground dark:bg-grey-800 dark:text-white'
-                      : 'text-grey-600 dark:text-grey-400'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  About
-                </Link>
-                <Link
-                  href="/updates"
-                  className={`block px-4 py-2.5 text-sm font-medium no-underline transition-all ${
-                    isActive('/updates')
-                      ? 'bg-secondary text-foreground dark:bg-grey-800 dark:text-white'
-                      : 'text-grey-600 dark:text-grey-400'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Updates
-                </Link>
-                <Link
-                  href="/contact"
-                  className={`block px-4 py-2.5 text-sm font-medium no-underline transition-all ${
-                    isActive('/contact')
-                      ? 'bg-secondary text-foreground dark:bg-grey-800 dark:text-white'
-                      : 'text-grey-600 dark:text-grey-400'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Contact
-                </Link>
-              </div>
-
-              <div className="flex items-center gap-3 mt-4 px-4">
-                <ThemeToggle />
-                <Button href="/contact" variant="dark" className="flex-1 shadow-lg" onClick={() => setIsOpen(false)}>
-                  Get in touch →
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </nav>
   );

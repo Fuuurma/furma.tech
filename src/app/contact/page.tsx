@@ -2,11 +2,10 @@ import { constructMetadata } from "@/lib/metadata";
 import { ProjectHero } from "@/components/ui/ProjectHero";
 import { Section, Container } from "@/components/ui/Section";
 import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
 import { ContactForm } from "@/components/ui/ContactForm";
 import { WaitlistForm } from "@/components/ui/WaitlistForm";
 import { submitContactForm, submitWaitlistSignup } from "@/lib/actions";
-import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Mail, MapPin, Building2, MessageSquare, Users, Globe, ArrowRight } from "lucide-react";
 
 export const metadata = constructMetadata({
@@ -57,8 +56,8 @@ export default function ContactPage() {
               <div className="py-20">
                 <h2 className="font-serif text-[clamp(32px,4vw,48px)] font-semibold mb-8">Send us a message.</h2>
                 <p className="text-[17px] text-grey-600 dark:text-grey-400 mb-10 max-w-md">
-                  Tell us about your needs and we'll get back to you within 48 hours.
-                  Whether it's a product demo or partnership, we're here to help.
+                  Tell us about your needs and we&apos;ll get back to you within 48 hours.
+                  Whether it&apos;s a product demo or partnership, we&apos;re here to help.
                 </p>
                 <ContactForm action={submitContactForm} />
               </div>

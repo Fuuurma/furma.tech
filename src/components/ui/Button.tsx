@@ -24,24 +24,24 @@ export function Button({
   disabled = false,
   glow = false,
 }: ButtonProps) {
-  const baseStyles = "inline-flex items-center justify-center gap-2 font-semibold no-underline rounded-xl transition-spring group-active relative overflow-hidden";
+  const baseStyles = "inline-flex items-center justify-center gap-2 font-bold no-underline rounded-none transition-all duration-300 group-active relative overflow-hidden uppercase tracking-widest";
 
   const variantStyles = {
-    primary: "bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-white dark:text-black dark:hover:bg-grey-200 shadow-lg shadow-black/10 dark:shadow-white/10",
-    secondary: "bg-secondary text-secondary-foreground border border-border hover:bg-secondary/80 dark:bg-grey-900 dark:text-white dark:border-grey-800 dark:hover:border-grey-600 shadow-md",
-    outline: "border border-border text-foreground hover:bg-secondary dark:border-grey-800 dark:text-white dark:hover:bg-grey-800",
-    ghost: "text-muted-foreground hover:text-foreground hover:bg-secondary dark:text-grey-400 dark:hover:text-white dark:hover:bg-grey-800",
-    premium: "bg-primary text-primary-foreground hover:bg-primary/90 border border-amber-500/30 dark:bg-white dark:text-black dark:hover:bg-grey-200 dark:border-amber-500/40 shadow-xl shadow-amber-500/20",
-    dark: "bg-primary text-primary-foreground hover:bg-primary/90 border border-white/10 dark:bg-white dark:text-black dark:hover:bg-grey-200 shadow-lg",
+    primary: "bg-foreground text-background hover:opacity-90 shadow-lg shadow-foreground/5",
+    secondary: "bg-grey-100 text-foreground border border-border hover:bg-grey-200 dark:bg-grey-900 dark:border-grey-800 dark:hover:bg-grey-800",
+    outline: "border border-foreground text-foreground hover:bg-foreground hover:text-background",
+    ghost: "text-grey-500 hover:text-foreground hover:bg-foreground/5",
+    premium: "bg-foreground text-background border border-foreground/20 hover:bg-background hover:text-foreground shadow-2xl shadow-foreground/10",
+    dark: "bg-foreground text-background hover:bg-background hover:text-foreground border border-foreground transition-colors",
   };
 
   const sizeStyles = {
-    sm: "text-[11px] sm:text-[12px] px-3.5 sm:px-4 py-1.5 sm:py-2",
-    md: "text-[12px] sm:text-[13px] px-4.5 sm:px-5 py-3 sm:py-3.5",
-    lg: "text-[13px] sm:text-[14px] px-6 sm:px-7 py-3.5 sm:py-4",
+    sm: "text-[10px] px-4 py-2",
+    md: "text-[11px] px-6 py-3.5",
+    lg: "text-[12px] px-8 py-4.5",
   };
 
-  const glowStyle = glow ? "glow-amber-sm" : "";
+  const glowStyle = glow ? "shadow-[0_0_20px_rgba(var(--foreground),0.2)]" : "";
 
   const styles = `${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${glowStyle} ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`;
 

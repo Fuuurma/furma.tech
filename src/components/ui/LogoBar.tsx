@@ -11,18 +11,18 @@ const partners = [
 
 export function LogoBar() {
   return (
-    <section className="py-12 border-y border-grey-100 dark:border-grey-800 bg-background/50">
+    <section className="py-16 border-y border-border bg-background">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <ScrollReveal>
           <div className="flex flex-col items-center">
-            <p className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-grey-400 mb-8">
+            <p className="font-mono text-[9px] font-bold tracking-[0.3em] uppercase text-grey-400 mb-12">
               Powering our ecosystem
             </p>
-            <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 opacity-40 grayscale group">
+            <div className="flex flex-wrap justify-center items-center gap-x-16 gap-y-10 opacity-30 grayscale">
               {partners.map((p) => (
                 <span 
                   key={p.name} 
-                  className="font-serif text-[18px] md:text-[22px] font-bold text-fg tracking-tighter hover:grayscale-0 hover:opacity-100 transition-all cursor-default"
+                  className="font-serif text-[18px] md:text-[22px] font-bold text-foreground tracking-tighter hover:opacity-100 transition-all cursor-default"
                 >
                   {p.logo}
                 </span>
