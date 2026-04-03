@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Section, Container, SectionHeader } from '@/components/ui/Section';
 import { ScrollReveal, StaggerChildren } from '@/components/ui/ScrollReveal';
 import { LogoBar } from '@/components/ui/LogoBar';
@@ -55,36 +55,31 @@ export default function Home() {
     <div className="min-h-screen bg-background text-foreground selection:bg-foreground selection:text-background">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center overflow-hidden pt-16 sm:pt-20">
-        {/* Background elements - Minimalist Monochrome */}
-        <div className="absolute inset-0 bg-dots pointer-events-none"></div>
-        <div className="absolute top-20 right-[-10%] w-[600px] h-[600px] bg-gradient-radial pointer-events-none opacity-20 blur-[100px] animate-pulse-glow"></div>
+        {/* Dynamic Background Layer */}
+        <div className="absolute inset-0 bg-dots [mask-image:radial-gradient(ellipse_at_center,black_70%,transparent_100%)] opacity-[0.03] dark:opacity-[0.07]"></div>
+        
+        {/* Clean gradient background elements */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-foreground/5"></div>
+        <div className="absolute top-0 right-0 w-[800px] h-[600px] rounded-full bg-gradient-to-bl from-foreground/10 to-transparent blur-3xl pointer-events-none opacity-40"></div>
+        <div className="absolute -bottom-40 left-0 w-[600px] h-[600px] rounded-full bg-foreground/5 blur-3xl pointer-events-none opacity-30"></div>
 
         <Container size="full" className="relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-24 items-center">
             <ScrollReveal>
-              <div>
-                {/* Badge - Monochrome Minimal */}
-                <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-foreground/5 border border-foreground/10 mb-6 sm:mb-8 md:mb-10 backdrop-blur-sm">
-                  <span className="w-1.5 h-1.5 rounded-full bg-foreground animate-pulse"></span>
-                  <span className="font-mono text-[9px] sm:text-[10px] font-bold tracking-[0.15em] uppercase text-foreground/70">
-                    Venture Studio / AI Lab
-                  </span>
-                </div>
-
-                {/* Headline - Clean typography */}
-                <h1 className="font-serif text-[clamp(40px,8vw,64px)] sm:text-[clamp(48px,8vw,80px)] md:text-[clamp(48px,8vw,96px)] font-semibold leading-[0.95] tracking-tight text-foreground mb-6 sm:mb-8">
-                  Engineering<br />
-                  <span className="italic font-normal opacity-60">Future Systems.</span>
+              <div className="max-w-[700px]">
+                {/* Headline - Clean typography with reveal */}
+                <h1 className="font-serif text-[clamp(44px,8vw,64px)] sm:text-[clamp(52px,8vw,80px)] md:text-[clamp(52px,8vw,96px)] font-semibold leading-[0.92] tracking-tighter text-foreground mb-6 sm:mb-8">
+                  <span className="inline-block animate-fade-up">Software that</span><br />
+                  <span className="opacity-60 inline-block animate-fade-up delay-1 italic font-normal">works.</span>
                 </h1>
 
-                <p className="text-[17px] sm:text-[18px] md:text-[20px] leading-[1.6] text-grey-600 dark:text-grey-400 max-w-[500px] mb-8 sm:mb-10 md:mb-12">
-                  Building profitable SaaS for traditional industries
-                  and <span className="text-foreground font-medium underline decoration-foreground/20 underline-offset-4">Aitlas</span>, a sovereign AI ecosystem for autonomous work.
+                <p className="text-[17px] sm:text-[18px] md:text-[20px] leading-[1.6] text-grey-600 dark:text-grey-400 max-w-[550px] mb-8 sm:mb-10 md:mb-12 animate-fade-up delay-2">
+                  Bootstrapped, profitable, and built to last. We create industry-specific SaaS and AI infrastructure for teams that value control and clarity over hype.
                 </p>
 
                 {/* Clean CTA buttons */}
-                <div className="flex gap-4 flex-wrap">
-                  <Button href="/projects/aitlas" variant="primary" size="lg" className="flex-1 sm:flex-none h-14 px-8">
+                <div className="flex gap-4 flex-wrap animate-fade-up delay-3">
+                  <Button href="/projects/aitlas" variant="default" size="lg" glow className="flex-1 sm:flex-none h-14 px-8">
                     Explore Aitlas
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
@@ -94,88 +89,92 @@ export default function Home() {
                 </div>
 
                 {/* Trust indicators - Simplified */}
-                <div className="flex flex-wrap items-center gap-8 sm:gap-12 mt-12 sm:mt-16 md:mt-20 pt-8 border-t border-border">
+                <div className="flex flex-wrap items-center gap-8 sm:gap-12 mt-12 sm:mt-16 md:mt-20 pt-8 border-t border-border animate-fade-up delay-4">
                   <div>
                     <div className="font-serif text-[24px] sm:text-[28px] font-bold text-foreground leading-none">0%</div>
-                    <div className="text-[9px] font-mono text-grey-500 uppercase tracking-widest mt-2">VC Funding</div>
+                    <div className="text-[9px] font-mono text-grey-500 uppercase tracking-[0.2em] mt-2">VC Funding</div>
                   </div>
                   <div>
                     <div className="font-serif text-[24px] sm:text-[28px] font-bold text-foreground leading-none">10+</div>
-                    <div className="text-[9px] font-mono text-grey-500 uppercase tracking-widest mt-2">Products</div>
+                    <div className="text-[9px] font-mono text-grey-500 uppercase tracking-[0.2em] mt-2">Products</div>
                   </div>
                   <div>
                     <div className="font-serif text-[24px] sm:text-[28px] font-bold text-foreground leading-none">EU</div>
-                    <div className="text-[9px] font-mono text-grey-500 uppercase tracking-widest mt-2">Catalonia</div>
+                    <div className="text-[9px] font-mono text-grey-500 uppercase tracking-[0.2em] mt-2">Catalonia</div>
                   </div>
                 </div>
               </div>
             </ScrollReveal>
 
-            {/* Right side - Product cards - Monochrome */}
+            {/* Right side - Product cards - Enhanced Glassmorphism */}
             <ScrollReveal delay={200}>
               <div className="relative">
                 <div className="relative space-y-4 sm:space-y-6">
                   {/* Aitlas Card */}
-                  <Link href="/projects/aitlas" className="block group">
-                    <Card variant="standard" hover padding="lg" className="relative overflow-hidden border-foreground/5 bg-foreground/[0.02] backdrop-blur-sm transition-all duration-500 hover:border-foreground/20">
-                      <div className="flex items-center justify-between mb-6 sm:mb-8">
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-none border border-foreground/10 bg-foreground text-background flex items-center justify-center font-bold text-lg sm:text-xl transition-transform duration-500 group-hover:scale-105">
-                            A
+                  <div className="animate-float">
+                    <Link href="/projects/aitlas" className="block group">
+                      <Card className="glass glow-mono relative overflow-hidden transition-spring hover:border-foreground/30 p-8 sm:p-10 border-foreground/5 shadow-2xl shadow-foreground/[0.02]">
+                        <div className="flex items-center justify-between mb-8 sm:mb-10">
+                          <div className="flex items-center gap-5">
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-none border border-foreground/10 bg-foreground text-background flex items-center justify-center font-bold text-xl sm:text-2xl transition-spring group-hover:scale-105">
+                              A
+                            </div>
+                            <div>
+                              <div className="text-[18px] sm:text-[20px] font-bold text-foreground tracking-tight">Aitlas</div>
+                              <div className="text-[10px] text-grey-500 font-mono uppercase tracking-[0.2em] mt-1">Sovereign AI</div>
+                            </div>
                           </div>
-                          <div>
-                            <div className="text-[16px] sm:text-[18px] font-bold text-foreground tracking-tight">Aitlas</div>
-                            <div className="text-[11px] text-grey-500 font-mono uppercase tracking-widest">Sovereign AI</div>
-                          </div>
-                        </div>
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm text-[9px] font-mono font-bold bg-foreground text-background uppercase tracking-wider">
-                          Dev
-                        </span>
-                      </div>
-                      <p className="text-[14px] sm:text-[15px] text-grey-600 dark:text-grey-400 mb-6 leading-relaxed">
-                        Unified AI workspace with Nova, Nexus runtime, and specialized Actions.
-                        Sovereign compute with zero vendor lock-in.
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {['MCP', 'BYOK', 'Nexus'].map(tag => (
-                          <span key={tag} className="px-2 py-1 bg-foreground/5 text-[9px] font-mono text-grey-500 border border-foreground/5 uppercase tracking-tighter">
-                            {tag}
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none text-[9px] font-mono font-bold bg-foreground text-background uppercase tracking-[0.1em]">
+                            Dev
                           </span>
-                        ))}
-                      </div>
-                    </Card>
-                  </Link>
+                        </div>
+                        <p className="text-[15px] sm:text-[16px] text-grey-600 dark:text-grey-400 mb-8 leading-relaxed max-w-[400px]">
+                          Unified AI workspace with Nova, Nexus runtime, and specialized Actions.
+                          Sovereign compute with zero vendor lock-in.
+                        </p>
+                        <div className="flex flex-wrap gap-2.5">
+                          {['MCP', 'BYOK', 'Nexus'].map(tag => (
+                            <span key={tag} className="px-2.5 py-1 bg-foreground/[0.03] text-[9px] font-mono text-grey-500 border border-foreground/5 uppercase tracking-[0.05em]">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </Card>
+                    </Link>
+                  </div>
 
                   {/* Industry SaaS Card */}
-                  <Link href="/projects/saas" className="block group">
-                    <Card variant="standard" hover padding="lg" className="border-foreground/5 bg-foreground/[0.02] backdrop-blur-sm transition-all duration-500 hover:border-foreground/20">
-                      <div className="flex items-center justify-between mb-6 sm:mb-8">
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-none border border-foreground/10 bg-transparent text-foreground flex items-center justify-center font-bold text-lg sm:text-xl transition-transform duration-500 group-hover:scale-105">
-                            B
+                  <div className="animate-float [animation-delay:1s]">
+                    <Link href="/projects/saas" className="block group">
+                      <Card className="glass glow-mono transition-spring hover:border-foreground/30 p-8 sm:p-10 border-foreground/5 shadow-2xl shadow-foreground/[0.02]">
+                        <div className="flex items-center justify-between mb-8 sm:mb-10">
+                          <div className="flex items-center gap-5">
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-none border border-foreground/10 bg-transparent text-foreground flex items-center justify-center font-bold text-xl sm:text-2xl transition-spring group-hover:scale-105">
+                              B
+                            </div>
+                            <div>
+                              <div className="text-[18px] sm:text-[20px] font-bold text-foreground tracking-tight">Industry SaaS</div>
+                              <div className="text-[10px] text-grey-500 font-mono uppercase tracking-[0.2em] mt-1">B2B Tools</div>
+                            </div>
                           </div>
-                          <div>
-                            <div className="text-[16px] sm:text-[18px] font-bold text-foreground tracking-tight">Industry SaaS</div>
-                            <div className="text-[11px] text-grey-500 font-mono uppercase tracking-widest">B2B Tools</div>
-                          </div>
-                        </div>
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm text-[9px] font-mono font-bold border border-foreground/20 text-foreground uppercase tracking-wider">
-                          Live
-                        </span>
-                      </div>
-                      <p className="text-[14px] sm:text-[15px] text-grey-600 dark:text-grey-400 mb-6 leading-relaxed">
-                        High-margin tools for traditional sectors. Built for Catalonia,
-                        designed to scale across Europe.
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {['TheFork', 'Viator', 'REST'].map(tag => (
-                          <span key={tag} className="px-2 py-1 bg-foreground/5 text-[9px] font-mono text-grey-500 border border-foreground/5 uppercase tracking-tighter">
-                            {tag}
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none text-[9px] font-mono font-bold border border-foreground/20 text-foreground uppercase tracking-[0.1em]">
+                            Live
                           </span>
-                        ))}
-                      </div>
-                    </Card>
-                  </Link>
+                        </div>
+                        <p className="text-[15px] sm:text-[16px] text-grey-600 dark:text-grey-400 mb-8 leading-relaxed max-w-[400px]">
+                          High-margin tools for traditional sectors. Built for Catalonia,
+                          designed to scale across Europe.
+                        </p>
+                        <div className="flex flex-wrap gap-2.5">
+                          {['TheFork', 'Viator', 'REST'].map(tag => (
+                            <span key={tag} className="px-2.5 py-1 bg-foreground/[0.03] text-[9px] font-mono text-grey-500 border border-foreground/5 uppercase tracking-[0.05em]">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </Card>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </ScrollReveal>
@@ -232,7 +231,7 @@ export default function Home() {
                     { icon: Zap, label: 'Fund', sub: 'R&D Profits' },
                     { icon: BarChart3, label: 'Scale', sub: 'Sustainable' },
                   ].map((item, i) => (
-                    <Card key={i} padding="lg" className={`bg-transparent border-foreground/10 flex flex-col items-center text-center group hover:border-foreground/30 transition-colors ${i % 2 === 1 ? 'mt-8' : ''}`}>
+                    <Card key={i} className={`bg-transparent border-foreground/10 flex flex-col items-center text-center group hover:border-foreground/30 transition-colors p-6 sm:p-8 ${i % 2 === 1 ? 'mt-8' : ''}`}>
                       <item.icon className="w-6 h-6 mb-4 text-foreground/40 group-hover:text-foreground transition-colors" />
                       <div className="font-bold text-[14px] mb-1">{item.label}</div>
                       <p className="text-[10px] font-mono text-grey-400 uppercase tracking-tighter">{item.sub}</p>

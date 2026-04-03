@@ -2,8 +2,8 @@ import Link from "next/link";
 import { constructMetadata } from "@/lib/metadata";
 import { ProjectHero } from "@/components/ui/ProjectHero";
 import { Section, Container } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { StaggerChildren, ScrollReveal } from "@/components/ui/ScrollReveal";
 
 export const metadata = constructMetadata({
@@ -65,7 +65,7 @@ export default function DocsPage() {
             </h2>
           </ScrollReveal>
           
-          <Card padding="lg" className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 shadow-xl">
+          <Card className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 shadow-xl p-6 sm:p-8">
             <div className="prose prose-lg dark:prose-invert max-w-none">
               <h3 className="text-[20px] font-bold text-foreground mb-6">Get Started in 3 Steps</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -121,10 +121,8 @@ export default function DocsPage() {
                       href={item.href}
                       className="no-underline block group h-full"
                     >
-                      <Card 
-                        padding="lg" 
-                        className="h-full group-hover:border-fg transition-all duration-300 bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800"
-                        hover
+                      <Card
+                        className="h-full group-hover:border-fg transition-all duration-300 bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500"
                       >
                         <h4 className="text-[17px] font-bold text-foreground mb-3 group-hover:text-amber-600 transition-colors">
                           {item.title}

@@ -5,15 +5,15 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import ThemeToggle from './ThemeToggle';
-import { Button } from './ui/Button';
+import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,
   NavigationMenuTrigger,
   NavigationMenuContent,
-} from './ui/NavigationMenu';
-import { Sheet, SheetContent, SheetTrigger } from './ui/Sheet';
+} from '@/components/ui/navigation-menu';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
   Sparkles,
   BookOpen,
@@ -240,7 +240,7 @@ export default function Navigation() {
 
           {/* Mobile menu - Sheet */}
           <Sheet>
-            <SheetTrigger asChild className="md:hidden">
+            <SheetTrigger className="md:hidden">
               <button
                 className="p-2 hover:bg-foreground/5 transition-all duration-300"
                 aria-label="Toggle menu"

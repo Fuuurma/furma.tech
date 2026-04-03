@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { Hexagon, Store, Zap, Brain, ArrowRight, Shield, Key, Cloud, Cpu, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
-import Breadcrumbs from "@/components/ui/Breadcrumbs";
+import Breadcrumbs from "@/components/ui/breadcrumb";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -100,7 +100,7 @@ export default function AitlasPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-24">
-              <Button href="/projects/aitlas/nova" variant="primary" size="lg" className="min-w-[240px]">
+              <Button href="/projects/aitlas/nova" variant="default" size="lg" className="min-w-[240px]">
                 Explore Nova
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -165,7 +165,7 @@ export default function AitlasPage() {
           <StaggerChildren className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {products.map((product) => (
               <Link key={product.name} href={product.href} className="group block">
-                <Card variant="standard" hover padding="lg" className="h-full border-foreground/5 bg-foreground/[0.01]">
+                <Card className="h-full border-foreground/5 bg-foreground/[0.01] p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                   <div className="flex items-start justify-between mb-12">
                     <div className="flex items-center gap-6">
                       <div className="w-16 h-16 border border-foreground flex items-center justify-center group-hover:bg-foreground group-hover:text-background transition-colors duration-500">
@@ -245,7 +245,7 @@ export default function AitlasPage() {
             <p className="text-[20px] text-background/60 leading-relaxed mb-16 max-w-xl mx-auto">Join the waitlist for the sovereign AI beta. Control your nodes, connect your tools, automate with zero compromises.</p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button href="/contact" variant="primary" size="lg" className="bg-background text-foreground hover:bg-background/90 min-w-[220px]">
+              <Button href="/contact" variant="default" size="lg" className="bg-background text-foreground hover:bg-background/90 min-w-[220px]">
                 Join Beta Access
               </Button>
               <Button href="https://github.com/Fuuurma" variant="outline" size="lg" className="border-background text-background hover:bg-background hover:text-foreground min-w-[220px]">

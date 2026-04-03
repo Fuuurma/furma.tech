@@ -1,8 +1,8 @@
 import { constructMetadata } from "@/lib/metadata";
 import { ProjectHero } from "@/components/ui/ProjectHero";
 import { Section, Container } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { StaggerChildren, ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Coins, Shield, Bot, Microscope, CheckCircle2, Sparkles, Zap, TrendingUp } from "lucide-react";
 
@@ -97,7 +97,7 @@ export default function AgentsPage() {
 
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {plannedAgents.map((agent) => (
-              <Card key={agent.name} padding="lg" hover className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800">
+              <Card key={agent.name} className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                 <div className="flex items-start justify-between mb-6">
                   <div className="w-12 h-12 rounded-xl bg-grey-50 dark:bg-grey-800 flex items-center justify-center text-foreground dark:text-white border border-grey-100 dark:border-grey-700">
                     <agent.icon className="w-6 h-6" strokeWidth={1.5} />
@@ -144,7 +144,7 @@ export default function AgentsPage() {
             </ScrollReveal>
 
             <ScrollReveal delay={200}>
-              <Card padding="lg" variant="dark" className="bg-foreground text-background shadow-2xl scale-[1.05]">
+              <Card className="bg-foreground text-background border-foreground shadow-2xl scale-[1.05] p-6 sm:p-8">
                 <div className="font-mono text-[11px] font-bold tracking-[0.2em] uppercase text-white/30 mb-6">
                   Example Revenue Projection
                 </div>
@@ -191,7 +191,7 @@ export default function AgentsPage() {
           
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {benefits.map((benefit) => (
-              <Card key={benefit.title} padding="md" className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800" hover>
+              <Card key={benefit.title} className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 p-4 sm:p-6 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                 <h3 className="text-[16px] font-bold text-foreground mb-3">{benefit.title}</h3>
                 <p className="text-[13px] text-grey-600 dark:text-grey-400 leading-relaxed">{benefit.desc}</p>
               </Card>

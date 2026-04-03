@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { Container, SectionHeader } from "./Section";
-import { Card } from "./Card";
+import { Card } from "@/components/ui/card";
 import { StaggerChildren } from "./ScrollReveal";
-import { Button } from "./Button";
+import { Button } from "@/components/ui/button";
 
 interface PricingPlan {
   name: string;
@@ -41,10 +40,7 @@ export function PricingSection({
           {plans.map((plan) => (
             <Card
               key={plan.name}
-              padding="lg"
-              variant={plan.popular ? "dark" : "standard"}
-              className="flex flex-col h-full bg-background"
-              hover
+              className={`flex flex-col h-full bg-background p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500 ${plan.popular ? 'bg-foreground text-background border-foreground' : ''}`}
             >
               <div className="flex items-center justify-between mb-8">
                 <div className="text-[14px] font-bold uppercase tracking-widest">{plan.name}</div>
@@ -79,7 +75,7 @@ export function PricingSection({
 
               <Button 
                 href={plan.href || "/contact"} 
-                variant={plan.popular ? "primary" : "outline"}
+                variant={plan.popular ? "default" : "outline"}
                 className="w-full h-14"
               >
                 {plan.buttonText || "Request Access"}

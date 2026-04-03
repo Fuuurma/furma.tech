@@ -1,4 +1,4 @@
-import { PageSkeleton } from '@/components/ui/Skeleton';
+import { PageSkeleton } from '@/components/ui/skeleton';
 
 /**
  * Global loading state for all pages

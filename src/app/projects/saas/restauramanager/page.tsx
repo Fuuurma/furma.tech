@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { Utensils, Calendar, Users, BarChart3, Clock, CheckCircle2, ArrowRight, Phone, Shield, TrendingUp, MapPin, Sparkles, Star } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
 import { getOgImageUrl } from "@/lib/metadata";
 
@@ -203,7 +203,7 @@ export default function RestauManagerPage() {
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {benefits.map((benefit, index) => (
               <ScrollReveal key={benefit.title} delay={index * 50}>
-                <Card hover padding="lg" className="card-elevated text-center h-full group">
+                <Card className="card-elevated text-center h-full group p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                   <div className="text-[48px] font-serif font-bold text-amber-500 mb-4">{benefit.stat}</div>
                   <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white mx-auto mb-6 shadow-lg shadow-amber-500/25 group-hover:scale-110 transition-transform duration-300">
                     <benefit.icon className="w-7 h-7" strokeWidth={1.5} />
@@ -232,7 +232,7 @@ export default function RestauManagerPage() {
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
               <ScrollReveal key={feature.title} delay={index * 50}>
-                <Card hover padding="lg" className="card-elevated h-full">
+                <Card className="card-elevated h-full p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white mb-6 shadow-lg shadow-amber-500/25">
                     <feature.icon className="w-6 h-6" strokeWidth={1.5} />
                   </div>
@@ -260,7 +260,7 @@ export default function RestauManagerPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <ScrollReveal>
-              <Card padding="lg" className="card-elevated">
+              <Card className="card-elevated p-6 sm:p-8">
                 <div className="flex items-center gap-3 mb-4">
                   <Utensils className="w-8 h-8 text-amber-500" strokeWidth={1.5} />
                   <div>
@@ -293,7 +293,7 @@ export default function RestauManagerPage() {
             </ScrollReveal>
 
             <ScrollReveal delay={100}>
-              <Card variant="premium" padding="lg" className="card-elevated relative scale-105 shadow-xl shadow-amber-500/20">
+              <Card className="card-elevated relative scale-105 shadow-xl shadow-amber-500/20 border-foreground/20 p-6 sm:p-8">
                 <div className="absolute top-4 right-4 px-2 py-1 rounded bg-amber-500/20 text-amber-700 text-[10px] font-mono font-bold uppercase">Most Popular</div>
                 <div className="flex items-center gap-3 mb-4">
                   <BarChart3 className="w-8 h-8 text-amber-500" strokeWidth={1.5} />

@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { Utensils, Map, Square, TrendingUp, CircleDot, Hexagon, Building2, ArrowRight, BarChart3, Users, Clock, Target, Shield } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
-import Breadcrumbs from "@/components/ui/Breadcrumbs";
+import Breadcrumbs from "@/components/ui/breadcrumb";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -98,7 +98,7 @@ export default function ProductsPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-24">
-              <Button href="#active" variant="primary" size="lg" className="min-w-[220px]">
+              <Button href="#active" variant="default" size="lg" className="min-w-[220px]">
                 Active Systems
               </Button>
               <Button href="/contact" variant="outline" size="lg" className="min-w-[220px]">
@@ -257,7 +257,7 @@ export default function ProductsPage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button href="/contact" variant="primary" size="lg" className="bg-background text-foreground hover:bg-background/90 min-w-[220px]">
+              <Button href="/contact" variant="default" size="lg" className="bg-background text-foreground hover:bg-background/90 min-w-[220px]">
                 Request Access
               </Button>
               <Button href="mailto:hello@furma.tech" variant="outline" size="lg" className="border-background text-background hover:bg-background hover:text-foreground min-w-[220px]">

@@ -1,8 +1,8 @@
 import { constructMetadata } from "@/lib/metadata";
 import { ProjectHero } from "@/components/ui/ProjectHero";
 import { Section, Container } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
 import { ArrowRight, Calendar, Clock, Tag } from "lucide-react";
 import Link from "next/link";
@@ -102,7 +102,7 @@ export default function UpdatesPage() {
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((post) => (
               <Link key={post.slug} href={`/updates/${post.slug}`} className="group no-underline block h-full">
-                <Card padding="lg" hover className="h-full flex flex-col bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800">
+                <Card className="h-full flex flex-col bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                   <div className="flex items-center gap-4 mb-6">
                     <div className="flex items-center gap-1.5 font-mono text-[10px] font-bold text-amber-600 uppercase tracking-widest">
                       <Calendar className="w-3 h-3" />

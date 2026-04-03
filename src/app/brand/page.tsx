@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download, CheckCircle2, XCircle } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -173,7 +173,7 @@ export default function LogoPage() {
 
           {/* Footer Navigation */}
           <div className="text-center mt-32 pt-16 border-t border-border">
-            <Button href="/" variant="primary" size="lg" className="min-w-[280px]">
+            <Button href="/" variant="default" size="lg" className="min-w-[280px]">
               Back to Furma.tech
               <ArrowLeft className="w-4 h-4 ml-2 rotate-180" />
             </Button>

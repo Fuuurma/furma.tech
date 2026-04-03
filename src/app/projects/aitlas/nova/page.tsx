@@ -1,8 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { Hexagon, Brain, Zap, Shield, ArrowRight, CheckCircle2, Monitor, Smartphone, Globe, Sparkles, Key, Cloud, MessageSquare, Code, FileText, Settings } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
+import { Hexagon, Brain, Zap, Shield, ArrowRight, CheckCircle2, AlertCircle, Monitor, Smartphone, Globe, Sparkles, Key, Cloud, MessageSquare, Code, FileText, Settings } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
 import { getOgImageUrl } from "@/lib/metadata";
 
@@ -50,10 +49,10 @@ const features = [
 ];
 
 const providers = [
-  { name: "GPT-4 / Codex", provider: "OpenAI", status: "Available", icon: "🟢" },
-  { name: "Claude 3", provider: "Anthropic", status: "Available", icon: "🟢" },
-  { name: "DeepSeek Coder", provider: "DeepSeek", status: "Available", icon: "🟢" },
-  { name: "Llama 3", provider: "Meta", status: "Coming Soon", icon: "🟡" },
+  { name: "GPT-4 / Codex", provider: "OpenAI", status: "Available", icon: CheckCircle2 },
+  { name: "Claude 3", provider: "Anthropic", status: "Available", icon: CheckCircle2 },
+  { name: "DeepSeek Coder", provider: "DeepSeek", status: "Available", icon: CheckCircle2 },
+  { name: "Llama 3", provider: "Meta", status: "Coming Soon", icon: AlertCircle },
 ];
 
 const useCases = [
@@ -133,7 +132,7 @@ export default function NovaPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button href="#pricing" variant="premium" size="lg" glow className="shadow-xl shadow-amber-500/30">
+                <Button href="#pricing" size="lg" className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold hover:shadow-lg hover:shadow-amber-500/40">
                   Try Nova Free
                   <ArrowRight className="w-4 h-4" />
                 </Button>
@@ -252,14 +251,16 @@ export default function NovaPage() {
           <StaggerChildren className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {providers.map((provider) => (
               <ScrollReveal key={provider.name}>
-                <Card padding="md" className="card-elevated text-center hover:border-amber-500/30 transition-colors">
-                  <div className="text-2xl mb-2">{provider.icon}</div>
+                <div className="p-6 border border-foreground/10 hover:border-foreground/30 rounded-lg transition-all text-center">
+                  <div className="w-8 h-8 mx-auto mb-2">
+                    <provider.icon className={`w-full h-full ${provider.status === "Available" ? "text-green-500" : "text-yellow-500"}`} />
+                  </div>
                   <div className="text-[14px] font-bold text-fg mb-1">{provider.name}</div>
                   <div className="text-[11px] text-grey-500 mb-2">{provider.provider}</div>
-                  <span className={`inline-block px-2 py-0.5 rounded text-[9px] font-mono font-bold uppercase ${provider.status === "Available" ? "bg-green-500/10 text-green-600 border border-green-500/20" : "bg-grey-500/10 text-grey-500 border border-grey-500/20"}`}>
+                  <span className={`inline-block px-2 py-0.5 rounded text-[9px] font-mono font-bold uppercase ${provider.status === "Available" ? "bg-green-500/10 text-green-600 border border-green-500/20" : "bg-yellow-500/10 text-yellow-600 border border-yellow-500/20"}`}>
                     {provider.status}
                   </span>
-                </Card>
+                </div>
               </ScrollReveal>
             ))}
           </StaggerChildren>
@@ -282,13 +283,13 @@ export default function NovaPage() {
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
               <ScrollReveal key={feature.title} delay={index * 50}>
-                <Card hover padding="lg" className="card-elevated h-full">
+                <div className="p-6 border border-foreground/10 hover:border-foreground/30 rounded-lg transition-all h-full">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white mb-6 shadow-lg shadow-amber-500/25">
                     <feature.icon className="w-6 h-6" strokeWidth={1.5} />
                   </div>
                   <h3 className="text-[17px] font-bold text-fg mb-3">{feature.title}</h3>
                   <p className="text-[14px] text-grey-600 dark:text-grey-400 leading-relaxed">{feature.desc}</p>
-                </Card>
+                </div>
               </ScrollReveal>
             ))}
           </StaggerChildren>
@@ -310,13 +311,13 @@ export default function NovaPage() {
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {useCases.map((useCase, index) => (
               <ScrollReveal key={useCase.title} delay={index * 100}>
-                <Card hover padding="lg" className="card-elevated text-center group">
+                <div className="p-6 border border-foreground/10 hover:border-foreground/30 rounded-lg transition-all text-center group">
                   <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${useCase.color} flex items-center justify-center text-white mx-auto mb-6 shadow-xl group-hover:scale-110 transition-transform duration-300`}>
                     <useCase.icon className="w-8 h-8" strokeWidth={1.5} />
                   </div>
                   <h3 className="text-[18px] font-bold text-fg mb-3">{useCase.title}</h3>
                   <p className="text-[14px] text-grey-600 dark:text-grey-400 leading-relaxed">{useCase.desc}</p>
-                </Card>
+                </div>
               </ScrollReveal>
             ))}
           </StaggerChildren>
@@ -381,7 +382,7 @@ export default function NovaPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {pricing.map((tier, index) => (
               <ScrollReveal key={tier.name} delay={index * 100}>
-                <Card variant={tier.popular ? "premium" : "standard"} padding="lg" className={`card-elevated text-center relative ${tier.popular ? 'scale-105 shadow-xl shadow-amber-500/20' : ''}`}>
+                <div className={`p-6 border border-foreground/10 hover:border-foreground/30 rounded-lg transition-all text-center relative ${tier.popular ? 'scale-105 shadow-xl border-amber-500/30 bg-gradient-to-b from-amber-500/5 to-transparent' : ''}`}>
                   {tier.popular && (
                     <div className="absolute top-4 right-4 px-2 py-1 rounded bg-amber-500/20 text-amber-700 text-[10px] font-mono font-bold uppercase">Popular</div>
                   )}
@@ -399,10 +400,10 @@ export default function NovaPage() {
                       </li>
                     ))}
                   </ul>
-                  <Button href="/contact" variant={tier.popular ? "premium" : "outline"} className="w-full">
+                  <Button href="/contact" variant={tier.popular ? "default" : "outline"} className={tier.popular ? 'w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold hover:shadow-lg hover:shadow-amber-500/40' : 'w-full'}>
                     {tier.name === "Free" ? "Get Started" : "Start Free Trial"}
                   </Button>
-                </Card>
+                </div>
               </ScrollReveal>
             ))}
           </div>
@@ -426,7 +427,10 @@ export default function NovaPage() {
             <p className="text-[18px] text-white/60 leading-relaxed mb-10 max-w-2xl mx-auto">Join thousands of developers using Nova to build sovereign AI workflows. No credit card required.</p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button href="/contact" variant="premium" size="lg" glow className="shadow-xl shadow-amber-500/30">Start Free →</Button>
+              <Button href="/contact" size="lg" className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold hover:shadow-lg hover:shadow-amber-500/40">
+                Start Free
+                <ArrowRight className="w-4 h-4" />
+              </Button>
               <Link href="/projects/aitlas" className="inline-flex items-center justify-center gap-2 text-[14px] font-semibold no-underline px-6 py-3 rounded-lg border border-white/20 text-white hover:bg-white/10 transition-all">Back to Aitlas</Link>
             </div>
           </ScrollReveal>

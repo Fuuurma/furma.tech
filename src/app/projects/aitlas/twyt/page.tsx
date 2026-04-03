@@ -2,8 +2,8 @@ import { constructMetadata } from "@/lib/metadata";
 import { ProjectHero } from "@/components/ui/ProjectHero";
 import { FeaturesGrid } from "@/components/ui/FeaturesGrid";
 import { Section, Container } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
 import { Globe, Search, BarChart3, CheckCircle2 } from "lucide-react";
 
@@ -102,7 +102,7 @@ export default function TwytPage() {
 
             <ScrollReveal delay={200}>
               <div className="relative py-20 lg:py-32">
-                <Card padding="none" className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 shadow-2xl overflow-hidden rotate-1">
+                <Card className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 shadow-2xl overflow-hidden rotate-1">
                   <div className="flex items-center gap-2 px-4 py-3 bg-blue-500/5 border-b border-blue-500/10">
                     <Globe className="w-4 h-4 text-blue-500" />
                     <span className="font-mono text-[10px] text-blue-600/60 uppercase font-bold tracking-widest">Query: Semantic</span>
@@ -139,7 +139,7 @@ export default function TwytPage() {
 
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {useCases.map((useCase) => (
-              <Card key={useCase.title} padding="lg" hover className="bg-white dark:bg-grey-900 text-center">
+              <Card key={useCase.title} className="bg-white dark:bg-grey-900 text-center p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                 <div className="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 mx-auto mb-6">
                   <useCase.icon className="w-8 h-8" strokeWidth={1.5} />
                 </div>
@@ -164,7 +164,7 @@ export default function TwytPage() {
             </div>
           </ScrollReveal>
 
-          <Card padding="lg" className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800">
+          <Card className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 p-6 sm:p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div>
                 <h3 className="text-[18px] font-bold mb-6">Credit Costs</h3>

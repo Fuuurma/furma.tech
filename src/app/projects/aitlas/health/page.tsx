@@ -3,8 +3,8 @@ import { ProjectHero } from "@/components/ui/ProjectHero";
 import { FeaturesGrid } from "@/components/ui/FeaturesGrid";
 import { PricingSection } from "@/components/ui/PricingSection";
 import { Section, Container } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Activity, Apple, Zap, Moon, TrendingUp } from "lucide-react";
 
@@ -124,7 +124,7 @@ export default function HealthPage() {
 
             <ScrollReveal delay={200}>
               <div className="relative py-20 lg:py-32">
-                <Card padding="lg" className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 shadow-2xl rotate-1">
+                <Card className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 shadow-2xl rotate-1 p-6 sm:p-8">
                   <div className="font-mono text-[10px] text-grey-400 mb-6 uppercase tracking-widest font-bold">AI Correlation Found</div>
                   <div className="space-y-6">
                     <div className="p-4 bg-green-500/5 rounded-xl border border-green-500/10">
@@ -163,7 +163,7 @@ export default function HealthPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {sources.map((s) => (
-              <Card key={s.name} padding="lg" hover className="bg-white dark:bg-grey-900 text-center">
+              <Card key={s.name} className="bg-white dark:bg-grey-900 text-center p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                 <div className="w-12 h-12 rounded-xl bg-grey-50 dark:bg-grey-800 flex items-center justify-center mx-auto mb-6">
                   <s.icon className="w-6 h-6 text-foreground dark:text-white" />
                 </div>

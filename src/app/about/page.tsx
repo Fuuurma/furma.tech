@@ -1,8 +1,8 @@
 import { constructMetadata } from "@/lib/metadata";
 import { ProjectHero } from "@/components/ui/ProjectHero";
 import { Section, Container } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
 import { Shield, Zap, TrendingUp, BarChart3 } from "lucide-react";
 
@@ -104,7 +104,7 @@ export default function AboutPage() {
 
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {pillars.map((p) => (
-              <Card key={p.title} padding="lg" hover className="bg-white dark:bg-grey-900">
+              <Card key={p.title} className="bg-white dark:bg-grey-900 p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                 <div className="flex items-start gap-6">
                   <div className="w-12 h-12 rounded-xl bg-grey-50 dark:bg-grey-800 flex items-center justify-center shrink-0">
                     <p.icon className="w-6 h-6 text-foreground dark:text-white" />
@@ -138,7 +138,7 @@ export default function AboutPage() {
 
             <StaggerChildren className="grid grid-cols-2 gap-4">
               {studioStack.map((s) => (
-                <Card key={s.name} padding="md" className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800">
+                <Card key={s.name} className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 p-4 sm:p-6">
                   <div className="font-mono text-[9px] font-bold uppercase text-amber-600 mb-2">{s.category}</div>
                   <div className="font-bold text-[16px] mb-1">{s.name}</div>
                   <p className="text-[12px] text-grey-500">{s.desc}</p>

@@ -1,5 +1,5 @@
 import { Container, SectionHeader } from "./Section";
-import { Card } from "./Card";
+import { Card } from "@/components/ui/card";
 import { StaggerChildren } from "./ScrollReveal";
 
 interface Feature {
@@ -39,11 +39,9 @@ export function FeaturesGrid({
           className={`grid grid-cols-1 ${columnStyles[columns]} gap-6`}
         >
           {features.map((feature) => (
-            <Card 
-              key={feature.title} 
-              padding="lg" 
-              className="bg-white dark:bg-grey-900"
-              hover
+            <Card
+              key={feature.title}
+              className="bg-white dark:bg-grey-900 p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500"
             >
               <h3 className="text-[17px] font-bold text-fg mb-3">{feature.title}</h3>
               <p className="text-[14px] leading-[1.6] text-grey-600 dark:text-grey-400">{feature.desc}</p>

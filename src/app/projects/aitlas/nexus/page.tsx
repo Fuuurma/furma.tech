@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { Brain, Zap, Shield, Database, ArrowRight, CheckCircle2, Server, Code2, RefreshCcw, Workflow, Clock, Search, Mail, Terminal, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
 import { getOgImageUrl } from "@/lib/metadata";
 
@@ -317,7 +317,7 @@ export default function NexusPage() {
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
               <ScrollReveal key={feature.title} delay={index * 50}>
-                <Card hover padding="lg" className="card-elevated h-full">
+                <Card className="card-elevated h-full p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white mb-6 shadow-lg shadow-purple-500/25">
                     <feature.icon className="w-6 h-6" strokeWidth={1.5} />
                   </div>
@@ -381,7 +381,7 @@ export default function NexusPage() {
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {useCases.map((useCase, index) => (
               <ScrollReveal key={useCase.title} delay={index * 100}>
-                <Card hover padding="lg" className="card-elevated">
+                <Card className="card-elevated p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                   <div className="flex items-start gap-4">
                     <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white flex-shrink-0 shadow-lg">
                       <useCase.icon className="w-7 h-7" strokeWidth={1.5} />
@@ -417,7 +417,7 @@ export default function NexusPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {pricing.map((tier, index) => (
               <ScrollReveal key={tier.name} delay={index * 100}>
-                <Card variant={tier.popular ? "premium" : "standard"} padding="lg" className={`card-elevated text-center relative ${tier.popular ? 'scale-105 shadow-xl shadow-purple-500/20' : ''}`}>
+                <Card className={`card-elevated text-center relative p-6 sm:p-8 ${tier.popular ? 'border-foreground/20 scale-105 shadow-xl shadow-purple-500/20' : ''}`}>
                   {tier.popular && (
                     <div className="absolute top-4 right-4 px-2 py-1 rounded bg-purple-500/20 text-purple-700 text-[10px] font-mono font-bold uppercase">Popular</div>
                   )}

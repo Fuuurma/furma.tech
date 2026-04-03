@@ -3,8 +3,8 @@ import { ProjectHero } from "@/components/ui/ProjectHero";
 import { FeaturesGrid } from "@/components/ui/FeaturesGrid";
 import { PricingSection } from "@/components/ui/PricingSection";
 import { Section, Container } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { CheckCircle2 } from "lucide-react";
 
@@ -110,7 +110,7 @@ export default function RsrxPage() {
 
             <ScrollReveal delay={200}>
               <div className="relative py-20 lg:py-32">
-                <Card padding="lg" className="bg-foreground text-background shadow-2xl rotate-1 border-white/10">
+                <Card className="bg-foreground text-background border-foreground shadow-2xl rotate-1 p-6 sm:p-8">
                   <div className="font-mono text-[10px] text-white/30 mb-6 uppercase tracking-widest font-bold">Research Agent Active</div>
                   <div className="space-y-6">
                     <div>
@@ -156,7 +156,7 @@ export default function RsrxPage() {
             </div>
           </ScrollReveal>
 
-          <Card padding="lg" className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800">
+          <Card className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 p-6 sm:p-8">
             <div className="space-y-4">
               {creditSystem.map((item) => (
                 <div key={item.action} className="flex justify-between items-center text-[14px] pb-4 border-b border-grey-50 dark:border-grey-800 last:border-0 last:pb-0">

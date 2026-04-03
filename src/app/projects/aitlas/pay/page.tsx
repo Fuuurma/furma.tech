@@ -3,8 +3,8 @@ import { ProjectHero } from "@/components/ui/ProjectHero";
 import { FeaturesGrid } from "@/components/ui/FeaturesGrid";
 import { PricingSection } from "@/components/ui/PricingSection";
 import { Section, Container } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { CreditCard, Bitcoin } from "lucide-react";
 
@@ -118,7 +118,7 @@ export default function PayPage() {
 
             <ScrollReveal delay={200}>
               <div className="relative py-20 lg:py-32">
-                <Card padding="none" className="bg-[#0d0d0d] border-white/10 shadow-2xl overflow-hidden font-mono text-[13px] leading-relaxed">
+                <Card className="bg-[#0d0d0d] border-white/10 shadow-2xl overflow-hidden font-mono text-[13px] leading-relaxed">
                   <div className="flex items-center gap-2 px-4 py-3 bg-white/5 border-b border-white/10">
                     <div className="flex gap-1.5">
                       <div className="w-2 h-2 rounded-full bg-red-500/50"></div>
@@ -154,7 +154,7 @@ export default function PayPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {providers.map((p) => (
-              <Card key={p.name} padding="lg" hover className="bg-white dark:bg-grey-900">
+              <Card key={p.name} className="bg-white dark:bg-grey-900 p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                 <div className="flex items-center justify-between mb-6">
                   <div className="w-12 h-12 rounded-xl bg-grey-50 dark:bg-grey-800 flex items-center justify-center">
                     <p.icon className="w-6 h-6 text-foreground dark:text-white" />

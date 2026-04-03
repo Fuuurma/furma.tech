@@ -2,10 +2,9 @@ import { constructMetadata } from "@/lib/metadata";
 import { ProjectHero } from "@/components/ui/ProjectHero";
 import { FeaturesGrid } from "@/components/ui/FeaturesGrid";
 import { Section, Container } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
-import { BookOpen, Search, Upload, Database, FileText } from "lucide-react";
+import { BookOpen, Search, Upload, Database, FileText, FileJson, BookMarked, Globe, Settings, ArrowRight } from "lucide-react";
 
 export const metadata = constructMetadata({
   title: "f.library — Vector Knowledge Base | Furma.tech",
@@ -58,12 +57,12 @@ const useCases = [
 ];
 
 const supportedFormats = [
-  { format: "PDF", icon: "📄" },
-  { format: "DOCX", icon: "📝" },
-  { format: "TXT", icon: "📃" },
-  { format: "MD", icon: "📑" },
-  { format: "HTML", icon: "🌐" },
-  { format: "JSON", icon: "⚙" },
+  { format: "PDF", icon: FileText },
+  { format: "DOCX", icon: FileText },
+  { format: "TXT", icon: FileJson },
+  { format: "MD", icon: BookMarked },
+  { format: "HTML", icon: Globe },
+  { format: "JSON", icon: Settings },
 ];
 
 export default function LibraryPage() {
@@ -92,8 +91,9 @@ export default function LibraryPage() {
                   f.library indexes your data so your AI can find exactly what you need.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Button href="/contact" variant="premium" size="lg" glow>
-                    Start Building Library →
+                  <Button href="/contact" size="lg">
+                    Start Building Library
+                    <ArrowRight className="w-4 h-4" />
                   </Button>
                   <Button href="/docs" variant="outline" size="lg">
                     Read Docs
@@ -104,7 +104,7 @@ export default function LibraryPage() {
 
             <ScrollReveal delay={200}>
               <div className="relative py-20 lg:py-32">
-                <Card padding="none" className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 shadow-2xl overflow-hidden -rotate-1">
+                <div className="relative p-6 border border-foreground/10 hover:border-foreground/30 rounded-lg transition-all bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 shadow-2xl overflow-hidden -rotate-1">
                   <div className="flex items-center gap-2 px-4 py-3 bg-purple-500/5 border-b border-purple-500/10">
                     <BookOpen className="w-4 h-4 text-purple-500" />
                     <span className="font-mono text-[10px] text-purple-600/60 uppercase font-bold tracking-widest">Aitlas Knowledge</span>
@@ -125,7 +125,7 @@ export default function LibraryPage() {
                       </div>
                     </div>
                   </div>
-                </Card>
+                </div>
               </div>
             </ScrollReveal>
           </div>
@@ -137,12 +137,12 @@ export default function LibraryPage() {
         <Container size="full">
           <StaggerChildren className="flex flex-wrap justify-center gap-4">
             {supportedFormats.map((f) => (
-              <Card key={f.format} padding="sm" className="bg-white dark:bg-grey-900" hover>
-                <div className="flex items-center gap-3 px-2">
-                  <span>{f.icon}</span>
+              <div key={f.format} className="p-3 px-4 bg-white dark:bg-grey-900 border border-foreground/10 hover:border-foreground/30 rounded-lg transition-all hover:shadow-md">
+                <div className="flex items-center gap-3">
+                  <f.icon className="w-4 h-4 text-grey-600 dark:text-grey-400" />
                   <span className="font-mono text-[12px] font-bold text-grey-600 dark:text-grey-400">{f.format}</span>
                 </div>
-              </Card>
+              </div>
             ))}
           </StaggerChildren>
         </Container>
@@ -162,13 +162,13 @@ export default function LibraryPage() {
 
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {useCases.map((useCase) => (
-              <Card key={useCase.title} padding="lg" hover className="bg-white dark:bg-grey-900 text-center">
+              <div key={useCase.title} className="p-6 border border-foreground/10 hover:border-foreground/30 rounded-lg transition-all bg-white dark:bg-grey-900 text-center hover:shadow-md">
                 <div className="w-16 h-16 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-500 mx-auto mb-6">
                   <useCase.icon className="w-8 h-8" strokeWidth={1.5} />
                 </div>
                 <h3 className="text-[18px] font-bold text-foreground mb-3">{useCase.title}</h3>
                 <p className="text-[14px] text-grey-600 dark:text-grey-400 leading-relaxed">{useCase.desc}</p>
-              </Card>
+              </div>
             ))}
           </StaggerChildren>
         </Container>
@@ -187,7 +187,7 @@ export default function LibraryPage() {
             </div>
           </ScrollReveal>
 
-          <Card padding="lg" className="bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800">
+          <div className="p-6 border border-foreground/10 hover:border-foreground/30 rounded-lg transition-all bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
               <div>
                 <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500 mx-auto mb-4">
@@ -214,7 +214,7 @@ export default function LibraryPage() {
                 <p className="text-[12px] text-grey-400 uppercase font-bold tracking-wider">unlimited</p>
               </div>
             </div>
-          </Card>
+          </div>
         </Container>
       </Section>
 
@@ -229,10 +229,11 @@ export default function LibraryPage() {
             Connect f.library to your Nova workspace today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button href="/contact" variant="premium" size="lg" glow>
-              Try f.library →
+            <Button href="/contact" size="lg" className="bg-amber-500 hover:bg-amber-600 text-white border-0">
+              Try f.library
+              <ArrowRight className="w-4 h-4" />
             </Button>
-            <Button href="/projects/aitlas" variant="dark" size="lg" className="border-white/10 bg-white/5">
+            <Button href="/projects/aitlas" size="lg" className="border-white/20 text-white hover:bg-white/10">
               Back to Aitlas
             </Button>
           </div>

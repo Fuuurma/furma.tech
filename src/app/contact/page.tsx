@@ -1,12 +1,10 @@
 import { constructMetadata } from "@/lib/metadata";
-import { ProjectHero } from "@/components/ui/ProjectHero";
 import { Section, Container } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
 import { ContactForm } from "@/components/ui/ContactForm";
 import { WaitlistForm } from "@/components/ui/WaitlistForm";
 import { submitContactForm, submitWaitlistSignup } from "@/lib/actions";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { Mail, MapPin, Building2, MessageSquare, Users, Globe, ArrowRight } from "lucide-react";
+import { Mail, MessageSquare, Users, ArrowRight } from "lucide-react";
 
 export const metadata = constructMetadata({
   title: "Contact the Studio — Furma.tech",
@@ -40,59 +38,72 @@ const contactCards = [
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <ProjectHero
-        label="Get in touch"
-        title="Let's work together."
-        description="Whether you're a business looking for software or a developer building the future of AI, we'd love to hear from you."
-        status="Online"
-        tags={["Response within 48h", "Sitges / Estonia"]}
-      />
+      {/* Hero Section - Minimal */}
+      <section className="relative min-h-[60vh] flex items-center overflow-hidden pt-24 sm:pt-32">
+        {/* Clean gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-foreground/5"></div>
+        <div className="absolute top-0 right-0 w-[600px] h-[400px] rounded-full bg-gradient-to-bl from-foreground/8 to-transparent blur-3xl pointer-events-none"></div>
 
-      {/* Primary Contact Flow */}
-      <Section variant="default" className="py-0 md:py-0 overflow-hidden">
+        <Container size="full" className="relative z-10">
+          <ScrollReveal>
+            <div className="max-w-3xl">
+              <h1 className="font-serif text-[clamp(40px,6vw,64px)] font-semibold leading-[0.95] tracking-tight text-foreground mb-6 sm:mb-8">
+                Get in touch.
+              </h1>
+              <p className="text-[18px] sm:text-[20px] leading-[1.6] text-grey-600 dark:text-grey-400 max-w-[550px]">
+                Quick response, direct conversation. Tell us what you need and we&apos;ll get back to you within 48 hours.
+              </p>
+            </div>
+          </ScrollReveal>
+        </Container>
+      </section>
+
+      {/* Main Contact Section - Simple Two Column */}
+      <Section variant="default" className="py-20 sm:py-32">
         <Container size="full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 sm:gap-24">
+            {/* Form */}
             <ScrollReveal>
-              <div className="py-20">
-                <h2 className="font-serif text-[clamp(32px,4vw,48px)] font-semibold mb-8">Send us a message.</h2>
-                <p className="text-[17px] text-grey-600 dark:text-grey-400 mb-10 max-w-md">
-                  Tell us about your needs and we&apos;ll get back to you within 48 hours.
-                  Whether it&apos;s a product demo or partnership, we&apos;re here to help.
-                </p>
+              <div>
+                <h2 className="font-serif text-[28px] sm:text-[32px] font-semibold mb-8">Send a message</h2>
                 <ContactForm action={submitContactForm} />
               </div>
             </ScrollReveal>
 
+            {/* Quick Options */}
             <ScrollReveal delay={200}>
-              <div className="py-20 lg:pt-32">
-                <div className="grid gap-4">
+              <div>
+                <h2 className="font-serif text-[28px] sm:text-[32px] font-semibold mb-8">Quick options</h2>
+                <div className="space-y-3">
                   {contactCards.map((card) => (
                     <a
                       key={card.title}
                       href={card.href}
                       className="group no-underline block"
                     >
-                      <Card padding="md" hover className="bg-white dark:bg-grey-900 flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-lg bg-grey-50 dark:bg-grey-800 flex items-center justify-center">
-                            <card.icon className="w-5 h-5 text-foreground dark:text-white" />
+                      <div className="p-5 sm:p-6 border border-foreground/10 hover:border-foreground/30 rounded-lg transition-all duration-300 hover:bg-foreground/5">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex items-start gap-4 flex-1">
+                            <div className="w-10 h-10 rounded flex items-center justify-center flex-shrink-0 mt-0.5 bg-foreground/5">
+                              <card.icon className="w-5 h-5 text-foreground" />
+                            </div>
+                            <div>
+                              <div className="font-semibold text-[15px] text-foreground">{card.title}</div>
+                              <p className="text-[13px] text-grey-500 mt-1">{card.desc}</p>
+                            </div>
                           </div>
-                          <div>
-                            <div className="font-bold text-[15px] mb-0.5">{card.title}</div>
-                            <p className="text-[12px] text-grey-500">{card.desc}</p>
-                          </div>
+                          <ArrowRight className="w-4 h-4 text-foreground/30 group-hover:text-foreground/70 transition-colors mt-1 flex-shrink-0" />
                         </div>
-                        <ArrowRight className="w-4 h-4 text-grey-300 group-hover:text-amber-600 transition-colors mr-2" />
-                      </Card>
+                      </div>
                     </a>
                   ))}
                 </div>
 
-                {/* Quick Waitlist */}
-                <div className="mt-12 pt-12 border-t border-grey-200 dark:border-grey-800">
-                  <h3 className="font-bold text-[18px] mb-4">Quick Waitlist Signup</h3>
-                  <p className="text-[14px] text-grey-600 dark:text-grey-400 mb-6">
-                    Join our waitlist for early access to new products.
+                {/* Waitlist */}
+                <div className="mt-12 pt-12 border-t border-foreground/10">
+                  <h3 className="font-semibold text-[18px] mb-3">Early access</h3>
+                  <p className="text-[14px] text-grey-500 mb-6">
+                    Join our waitlist for new products and features.
                   </p>
                   <WaitlistForm action={submitWaitlistSignup} variant="inline" />
                 </div>
@@ -102,65 +113,47 @@ export default function ContactPage() {
         </Container>
       </Section>
 
-      {/* Location Section */}
-      <Section variant="grey" className="border-y border-grey-100 dark:border-grey-800">
+      {/* Location & Info Section */}
+      <Section variant="default" className="border-t border-foreground/10">
         <Container size="full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 sm:gap-24 items-start">
             <ScrollReveal>
-              <div className="relative aspect-video rounded-3xl overflow-hidden border border-grey-200 dark:border-grey-800 bg-grey-100 dark:bg-grey-800 flex items-center justify-center group">
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?q=80&w=2000')] bg-cover bg-center grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"></div>
-                <div className="relative z-10 p-8 text-center bg-white/90 dark:bg-grey-900/90 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl">
-                  <MapPin className="w-8 h-8 mx-auto mb-4 text-amber-600" />
-                  <div className="font-bold text-[18px] mb-1">Sitges, Barcelona</div>
-                  <p className="text-[13px] text-grey-500">Operating Base</p>
+              <div>
+                <h2 className="font-serif text-[28px] sm:text-[32px] font-semibold mb-8">Based in Sitges,<br />operate globally</h2>
+                <p className="text-[16px] sm:text-[18px] text-grey-600 dark:text-grey-400 leading-relaxed mb-8">
+                  We&apos;re a small, focused team in Catalonia running a lean, digital-first operation. This gives us the ability to stay close to our local clients while serving global markets.
+                </p>
+                <div className="space-y-6">
+                  <div>
+                    <div className="font-mono text-[10px] font-bold tracking-[0.15em] uppercase text-grey-500 mb-2">Legal Entity</div>
+                    <div className="text-[15px] font-medium">Furma.tech OÜ (EE102894502)</div>
+                    <div className="text-[13px] text-grey-500">Tallinn, Estonia</div>
+                  </div>
+                  <div>
+                    <div className="font-mono text-[10px] font-bold tracking-[0.15em] uppercase text-grey-500 mb-2">Operating Base</div>
+                    <div className="text-[15px] font-medium">Sitges, Barcelona</div>
+                    <div className="text-[13px] text-grey-500">Catalonia, Spain</div>
+                  </div>
                 </div>
               </div>
             </ScrollReveal>
 
             <ScrollReveal delay={200}>
-              <div>
-                <div className="font-mono text-[11px] font-bold tracking-[0.2em] uppercase text-grey-400 mb-6">Our Location</div>
-                <h2 className="font-serif text-[clamp(32px,4vw,48px)] font-semibold mb-8">Mediterranean spirit,<br />global execution.</h2>
-                <p className="text-[17px] text-grey-600 dark:text-grey-400 mb-8 leading-relaxed">
-                  We are based in Sitges, Catalonia, and operate as an Estonian OÜ. 
-                  This dual setup allows us to stay close to our local SaaS clients while 
-                  maintaining a lean, digital-first infrastructure for the Aitlas ecosystem.
-                </p>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <Building2 className="w-5 h-5 text-amber-600" />
-                    <span className="text-[14px] font-medium">Furma.tech OÜ (EE102894502)</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Globe className="w-5 h-5 text-amber-600" />
-                    <span className="text-[14px] font-medium">Remote-first studio</span>
-                  </div>
+              <div className="space-y-4">
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-[16px]">Response time?</h3>
+                  <p className="text-[14px] text-grey-600 dark:text-grey-400 leading-relaxed">24-48 business hours typically. We&apos;re small and prioritize deep work over constant interruptions.</p>
+                </div>
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-[16px]">Hiring?</h3>
+                  <p className="text-[14px] text-grey-600 dark:text-grey-400 leading-relaxed">We prefer long-term specialists and contractors. Check our careers page for current opportunities.</p>
+                </div>
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-[16px]">Investments?</h3>
+                  <p className="text-[14px] text-grey-600 dark:text-grey-400 leading-relaxed">100% bootstrapped. We&apos;re not seeking VC funding—independence is non-negotiable.</p>
                 </div>
               </div>
             </ScrollReveal>
-          </div>
-        </Container>
-      </Section>
-
-      {/* FAQ/Quick Info */}
-      <Section>
-        <Container size="full">
-          <div className="text-center mb-16">
-            <h2 className="font-serif text-[clamp(28px,3vw,40px)] font-semibold">Common Questions</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div className="space-y-3">
-              <h3 className="font-bold text-[16px]">Response time?</h3>
-              <p className="text-[14px] text-grey-600 dark:text-grey-400">We typically respond within 24-48 business hours. We are a small team and prioritize focused work.</p>
-            </div>
-            <div className="space-y-3">
-              <h3 className="font-bold text-[16px]">Hiring?</h3>
-              <p className="text-[14px] text-grey-600 dark:text-grey-400">Check our careers page. We prefer long-term contractors and specialists over large headcounts.</p>
-            </div>
-            <div className="space-y-3">
-              <h3 className="font-bold text-[16px]">Investment?</h3>
-              <p className="text-[14px] text-grey-600 dark:text-grey-400">We are 100% bootstrapped and not looking for VC funding. We value independence above all else.</p>
-            </div>
           </div>
         </Container>
       </Section>
