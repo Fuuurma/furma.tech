@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import ThemeToggle from './ThemeToggle';
-import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
   NavigationMenuList,

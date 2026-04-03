@@ -70,7 +70,16 @@ function Button({
 
   if (href) {
     // Filter out button-specific attributes that Link doesn't support
-    const { type, form, formAction, formEnctype, formMethod, formNoValidate, formTarget, ...linkProps } = props as any
+    const {
+      type: _type,
+      form: _form,
+      formAction: _formAction,
+      formEnctype: _formEnctype,
+      formMethod: _formMethod,
+      formNoValidate: _formNoValidate,
+      formTarget: _formTarget,
+      ...linkProps
+    } = props as Record<string, unknown>
     return (
       <Link
         href={href}
