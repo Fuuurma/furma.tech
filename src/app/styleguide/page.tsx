@@ -79,7 +79,7 @@ import {
   ArrowRight, Zap, Settings, LogOut, User, Bold, Italic, Underline,
   Search, Bell, AlertCircle, Info, ChevronDown, ExternalLink, CreditCard,
   Calendar as CalendarIcon, Mail, Trash2, Star, Smile,
-  ChevronLeft, Check, X, FileText, Download, Share2, Eye, MessageSquare, Heart,
+  FileText, Download, Share2, Eye, MessageSquare, Heart,
   Play, Pause, SkipBack, SkipForward, Mic, Phone, Video, MapPin, Globe,
   Lock, KeyRound, ShieldCheck, Fingerprint, ScanFace, Rocket,
 } from "lucide-react";
@@ -119,7 +119,7 @@ export default function StyleguidePage() {
               <span className="italic font-normal opacity-50">Styleguide.</span>
             </h1>
             <p className="text-[18px] sm:text-[20px] text-background/60 max-w-2xl leading-relaxed">
-              Complete component library — 56 shadcn primitives, customised for the Furma monochrome design system.
+              Complete component library — 50+ shadcn primitives, customised for the Furma monochrome design system. All variants, sizes, and states documented.
             </p>
           </ScrollReveal>
         </Container>
@@ -899,6 +899,93 @@ export default function StyleguidePage() {
               {[1, 2, 3].map(i => (<div key={i} className="p-12 border border-border text-center font-serif text-2xl italic opacity-30">Item {i}</div>))}
             </StaggerChildren>
             <p className="text-[11px] text-grey-500 uppercase tracking-widest text-center mt-4">Refresh the page to see the stagger animation.</p>
+          </div>
+        </Container>
+      </Section>
+
+      {/* ════ 20 / COMPONENT REFERENCE ════ */}
+      <Section>
+        <Container size="full">
+          <SectionHeader label="20 / Reference" title="All Components" description="Complete component inventory with variants and use cases." />
+          <div className="space-y-8 mt-12">
+            {/* Component Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                { name: "Button", variants: ["default", "secondary", "outline", "ghost", "premium", "dark", "destructive", "link"], sizes: ["sm", "default", "md", "lg"], icons: true },
+                { name: "Badge", variants: ["default", "secondary", "outline", "inverted", "destructive", "ghost", "link"] },
+                { name: "Alert", variants: ["default", "destructive"] },
+                { name: "Card", variants: ["default", "highlighted", "dark", "ghost"] },
+                { name: "Input", types: ["text", "password", "email", "number", "disabled"] },
+                { name: "Textarea", states: ["default", "disabled", "focused"] },
+                { name: "Select", states: ["default", "disabled", "with groups"] },
+                { name: "Checkbox", states: ["unchecked", "checked", "disabled"] },
+                { name: "Radio", states: ["unchecked", "checked", "disabled"] },
+                { name: "Switch", states: ["off", "on", "disabled"] },
+                { name: "Slider", variants: ["single", "range", "disabled"] },
+                { name: "Toggle", states: ["inactive", "active", "disabled"] },
+                { name: "Label", states: ["default", "required", "disabled"] },
+                { name: "Progress", variants: ["default", "animated"] },
+                { name: "Separator", orientation: ["horizontal", "vertical"] },
+                { name: "Avatar", sizes: ["sm", "default", "lg"], states: ["with image", "fallback"] },
+                { name: "Kbd", variants: ["single key", "key combo"] },
+                { name: "Spinner", sizes: ["sm", "default", "lg"] },
+                { name: "Skeleton", shapes: ["rect", "circle"] },
+                { name: "Breadcrumb", states: ["with separators", "with links"] },
+                { name: "Pagination", states: ["first page", "middle", "last page", "disabled"] },
+                { name: "Table", variants: ["striped", "hover", "compact", "condensed"] },
+                { name: "Tabs", orientation: ["horizontal", "vertical"], align: ["left", "center", "right"] },
+                { name: "Accordion", states: ["expanded", "collapsed", "all expanded"] },
+                { name: "Tooltip", position: ["top", "right", "bottom", "left"] },
+                { name: "Dialog", sizes: ["default", "lg", "full"] },
+                { name: "Alert Dialog", use: ["confirmation", "destructive action"] },
+                { name: "Sheet", direction: ["left", "right", "top", "bottom"] },
+                { name: "Drawer", position: ["bottom"] },
+                { name: "Popover", position: ["top", "right", "bottom", "left"] },
+                { name: "Hover Card", trigger: ["hover"] },
+                { name: "Dropdown Menu", variants: ["icon menu", "action menu"] },
+                { name: "Context Menu", use: ["right-click menu"] },
+                { name: "Menubar", layout: ["horizontal"] },
+                { name: "Carousel", orientation: ["horizontal", "vertical"] },
+                { name: "Calendar", views: ["month", "year", "range"] },
+                { name: "Command", use: ["search", "cmdk"] },
+                { name: "Combobox", states: ["open", "closed", "loading"] },
+                { name: "Toggle Group", variant: ["single", "multiple"], orientation: ["horizontal", "vertical"] },
+                { name: "Input OTP", length: ["4", "6", "8 digits"] },
+                { name: "Input Group", addon: ["leading", "trailing", "both"] },
+                { name: "Field", validation: ["default", "with error", "with description"] },
+                { name: "Native Select", size: ["default", "sm", "lg"] },
+                { name: "ScrollArea", orientation: ["horizontal", "vertical", "both"] },
+                { name: "Collapsible", state: ["expanded", "collapsed"] },
+                { name: "Empty State", variant: ["no results", "error", "blank slate"] },
+                { name: "Item", layout: ["with media", "with description"] },
+              ].map((comp, i) => (
+                <div key={i} className="p-4 border border-border hover:border-foreground/30 transition-colors">
+                  <div className="font-bold text-sm mb-2">{comp.name}</div>
+                  <div className="text-[11px] text-grey-500 space-y-1">
+                    {comp.variants && <div>Variants: {comp.variants.join(", ")}</div>}
+                    {comp.sizes && <div>Sizes: {comp.sizes.join(", ")}</div>}
+                    {comp.states && <div>States: {comp.states.join(", ")}</div>}
+                    {comp.types && <div>Types: {comp.types.join(", ")}</div>}
+                    {comp.orientation && <div>Orientation: {comp.orientation.join(", ")}</div>}
+                    {comp.position && <div>Position: {comp.position.join(", ")}</div>}
+                    {comp.align && <div>Align: {comp.align.join(", ")}</div>}
+                    {comp.direction && <div>Direction: {comp.direction.join(", ")}</div>}
+                    {comp.addon && <div>Addon: {comp.addon.join(", ")}</div>}
+                    {comp.validation && <div>Validation: {comp.validation.join(", ")}</div>}
+                    {comp.views && <div>Views: {comp.views.join(", ")}</div>}
+                    {comp.length && <div>Length: {comp.length.join(", ")}</div>}
+                    {comp.variant && <div>Variant: {comp.variant.join(", ")}</div>}
+                    {comp.trigger && <div>Trigger: {comp.trigger.join(", ")}</div>}
+                    {comp.use && <div>Use: {comp.use.join(", ")}</div>}
+                    {comp.layout && <div>Layout: {comp.layout.join(", ")}</div>}
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                    {(comp as any).shape && <div>Shape: {(comp as any).shape.join(", ")}</div>}
+                    {comp.shapes && <div>Shapes: {comp.shapes.join(", ")}</div>}
+                    {comp.icons && <div>With Icons: Yes</div>}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </Container>
       </Section>

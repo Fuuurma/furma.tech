@@ -155,13 +155,23 @@ export default function Navigation() {
             >
               Updates
             </Link>
+            <Link
+              href="/styleguide"
+              className={`px-4 py-2 text-[12px] font-bold uppercase tracking-widest transition-all no-underline ${
+                isActive('/styleguide')
+                  ? 'text-foreground underline underline-offset-8 decoration-2'
+                  : 'text-grey-500 hover:text-foreground'
+              }`}
+            >
+              Styleguide
+            </Link>
           </div>
 
           {/* CTA */}
           <div className="hidden md:flex items-center gap-6">
             <ThemeToggle />
-            <Link 
-              href="/contact" 
+            <Link
+              href="/contact"
               className="text-[12px] font-bold uppercase tracking-[0.2em] text-foreground flex items-center gap-2 group"
             >
               Contact <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
@@ -225,6 +235,12 @@ export default function Navigation() {
                         className={`text-[20px] font-serif font-bold ${isActive('/updates') ? 'text-foreground' : 'text-grey-500'}`}
                       >
                         Updates
+                      </Link>
+                      <Link
+                        href="/styleguide"
+                        className={`text-[20px] font-serif font-bold ${isActive('/styleguide') ? 'text-foreground' : 'text-grey-500'}`}
+                      >
+                        Styleguide
                       </Link>
                       <Link
                         href="/contact"

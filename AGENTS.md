@@ -2,9 +2,20 @@
 
 **Purpose:** Instructions for AI coding assistants working in this codebase.
 
-**Context:** Furma.tech is a bootstrapped venture studio (Estonian OÜ, Sitges, Catalonia). Two verticals:
-- **Industry SaaS** — B2B tools for restaurants/tourism (restauManager, GuideTours)
-- **Aitlas** — Sovereign AI ecosystem (BYOK model, MCP-first, 34+ Actions)
+**Context:** Furma.tech is a bootstrapped venture studio (Estonian OÜ, Sitges, Catalonia). 11 products across games, SaaS, AI, finance, and civic tech:
+
+**Products:**
+- **Tic-Tac-Toe Disappear** — Vanishing-move strategy game (In Dev)
+- **QArt** — AI-generated QR codes that look like art (Roadmap)
+- **SailingMate** — Real-time sailing navigation with GPS routing (Paused)
+- **TourManager** — Tour operator platform with Viator sync (In Dev)
+- **RestaurantManager** — Restaurant management with TheFork integration (In Dev)
+- **FinanceHub** — Market data & portfolio monitoring (Paused)
+- **OneToMany** — Goal setting & habit tracking (Paused)
+- **OpenGovern** — Direct democracy tooling for municipalities (Paused)
+- **LinkUp** — Short-video professional matching (Paused)
+- **PicksTracker** — Sports pick tracking with social predictions (Roadmap)
+- **Aitlas** — Sovereign AI ecosystem: Nova workspace, Nexus runtime, 34+ Actions (In Dev)
 
 Core ethos: 0% VC, profitable before flashy, "build software that works."
 

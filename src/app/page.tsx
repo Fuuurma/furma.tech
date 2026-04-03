@@ -67,12 +67,12 @@ export default function Home() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
-              <Button href="/projects/aitlas" variant="default" size="lg" className="sm:w-auto">
-                Explore Aitlas
+              <Button href="/products" variant="default" size="lg" className="sm:w-auto">
+                Products
                 <ArrowRight className="w-4 h-4" />
               </Button>
-              <Button href="/projects/saas" variant="outline" size="lg" className="sm:w-auto">
-                Industry Tools
+              <Button href="/products/aitlas" variant="outline" size="lg" className="sm:w-auto">
+                Aitlas AI
               </Button>
             </div>
 
@@ -152,8 +152,8 @@ export default function Home() {
                 <div className="text-sm font-medium">GuideTours — Tourism operator platform</div>
                 <div className="text-sm font-medium">TheFork, Viator integrations</div>
               </div>
-              <Button href="/projects/saas" variant="outline" className="w-full">
-                Explore Tools
+              <Button href="/products/aitlas" variant="outline" className="w-full">
+                View Products
               </Button>
             </div>
 
@@ -171,8 +171,8 @@ export default function Home() {
                 <div className="text-sm font-medium">Nexus — Durable runtime</div>
                 <div className="text-sm font-medium">Actions — Specialized tools</div>
               </div>
-              <Button href="/projects/aitlas" variant="outline" className="w-full border-background text-background hover:bg-background hover:text-foreground">
-                Discover Aitlas
+              <Button href="/products" variant="outline" className="w-full border-background text-background hover:bg-background hover:text-foreground">
+                View Aitlas
               </Button>
             </div>
           </div>
@@ -193,7 +193,7 @@ export default function Home() {
             {testimonials.map((t, i) => (
               <div key={i} className="space-y-6 pb-6 border-b border-border last:border-b-0 md:last:border-b md:pb-0">
                 <p className="text-base leading-relaxed italic">
-                  "{t.quote}"
+                  &ldquo;{t.quote}&rdquo;
                 </p>
                 <div className="flex items-center gap-3 pt-2">
                   <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center font-bold text-xs rounded">

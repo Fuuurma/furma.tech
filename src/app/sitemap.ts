@@ -53,83 +53,137 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Product pages - Aitlas ecosystem
-  const aitlasPages = [
+  // Product pages - unified products
+  const productsPages = [
     {
-      url: `${baseUrl}/projects/aitlas`,
+      url: `${baseUrl}/products`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/projects/aitlas/nova`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/projects/aitlas/nexus`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/projects/aitlas/agents`,
+      url: `${baseUrl}/products/tic-tac-toe-disappear`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/projects/aitlas/twyt`,
+      url: `${baseUrl}/products/qart`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/projects/aitlas/library`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/projects/aitlas/rsrx`,
+      url: `${baseUrl}/products/sailingmate`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     },
     {
-      url: `${baseUrl}/projects/aitlas/health`,
+      url: `${baseUrl}/products/tourmanager`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
     },
     {
-      url: `${baseUrl}/projects/aitlas/pay`,
+      url: `${baseUrl}/products/restaurantmanager`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/products/financehub`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
-      priority: 0.5,
+      priority: 0.6,
     },
-  ];
-
-  // Industry SaaS pages
-  const saasPages = [
     {
-      url: `${baseUrl}/projects/saas`,
+      url: `${baseUrl}/products/onetomany`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/products/opengovern`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/products/linkup`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/products/pickstracker`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/products/aitlas`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/projects/saas/restauramanager`,
+      url: `${baseUrl}/products/aitlas/nova`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/projects/saas/guidetours`,
+      url: `${baseUrl}/products/aitlas/nexus`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/products/aitlas/agents`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/products/aitlas/twyt`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/products/aitlas/library`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+  ];
+
+  // Legacy redirects (keep for SEO continuity)
+  const legacyPages = [
+    {
+      url: `${baseUrl}/projects/saas`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/projects/saas/restauramanager`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/projects/saas/guidetours`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/projects/aitlas`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
     },
   ];
 
@@ -175,8 +229,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...staticPages,
-    ...aitlasPages,
-    ...saasPages,
+    ...productsPages,
+    ...legacyPages,
     ...updatePosts,
   ];
 }
