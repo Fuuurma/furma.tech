@@ -112,7 +112,6 @@ export function checkRateLimit(
   // Simple in-memory rate limiting
   // In production, use Redis or similar
   const now = Date.now();
-  const key = `rate_limit:${identifier}`;
   
   // This is a simplified version - use Upstash Redis in production
   return {

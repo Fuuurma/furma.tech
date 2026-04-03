@@ -4,7 +4,7 @@ import { Section, Container } from "@/components/ui/Section";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StaggerChildren, ScrollReveal } from "@/components/ui/ScrollReveal";
-import { Coins, Shield, Bot, Microscope, CheckCircle2, Sparkles, Zap, TrendingUp } from "lucide-react";
+import { Coins, Shield, Bot, Microscope, CheckCircle2 } from "lucide-react";
 
 export const metadata = constructMetadata({
   title: "Agents Store — AI Agent Marketplace",
@@ -89,7 +89,7 @@ export default function AgentsPage() {
                 Pre-built agents,<br /><em className="italic font-normal gradient-text">coming soon.</em>
               </h2>
               <p className="text-[17px] text-grey-600 dark:text-grey-400 mt-6 max-w-2xl">
-                We're building a curated marketplace of specialized AI agents. Each agent will be 
+                We&apos;re building a curated marketplace of specialized AI agents. Each agent will be 
                 MCP-native, version-locked, and available for trial before purchase.
               </p>
             </div>
@@ -170,7 +170,7 @@ export default function AgentsPage() {
                 
                 <div className="mt-6 pt-6 border-t border-white/10">
                   <p className="text-[12px] text-white/40">
-                    * Example calculation. Actual revenue depends on your agent's value and market demand.
+                    * Example calculation. Actual revenue depends on your agent&apos;s value and market demand.
                   </p>
                 </div>
               </Card>

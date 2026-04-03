@@ -28,11 +28,11 @@ export function useAgentNavigation() {
     const transitionType = options?.transition || 'default';
     
     // Next.js 16.2: View Transition API support
-    if (typeof document !== 'undefined' && 
-        'startViewTransition' in document && 
+    if (typeof document !== 'undefined' &&
+        'startViewTransition' in document &&
         transitionType !== 'none') {
-      
-      (document as any).startViewTransition(() => {
+
+      (document as Document & { startViewTransition: (cb: () => void) => void }).startViewTransition(() => {
         router.push(href);
       });
     } else {

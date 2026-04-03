@@ -1,12 +1,10 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Section, Container, SectionHeader } from '@/components/ui/Section';
-import { ScrollReveal, StaggerChildren } from '@/components/ui/ScrollReveal';
+import { Container } from '@/components/ui/Section';
 import { LogoBar } from '@/components/ui/LogoBar';
 import { WaitlistForm } from '@/components/ui/WaitlistForm';
 import { submitWaitlistSignup } from '@/lib/actions';
-import { Package, Globe, Shield, Zap, TrendingUp, BarChart3, ArrowRight } from 'lucide-react';
+import { Shield, TrendingUp, ArrowRight } from 'lucide-react';
 
 const testimonials = [
   {
@@ -34,456 +32,249 @@ const updates = [
     slug: "nova-workspace-launch",
     date: "Mar 2026",
     title: "Nova Workspace Development",
-    description: "Our unified AI workspace is in active development. BYOK architecture with multi-provider support.",
+    description: "Unified AI workspace in active development. BYOK architecture with multi-provider support.",
   },
   {
     slug: "f-twyt-production",
     date: "Feb 2026",
     title: "f.twyt In Development",
-    description: "Twitter intelligence tool in development. Advanced search and semantic analysis for social listening.",
+    description: "Twitter intelligence tool. Advanced search and semantic analysis for social listening.",
   },
   {
     slug: "restauManager-alpha",
     date: "Jan 2026",
     title: "restauManager Development",
-    description: "Restaurant management platform in development. TheFork integration and reservation management.",
+    description: "Restaurant management platform. TheFork integration and reservation management.",
   },
 ];
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-foreground selection:text-background">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center overflow-hidden pt-16 sm:pt-20">
-        {/* Dynamic Background Layer */}
-        <div className="absolute inset-0 bg-dots [mask-image:radial-gradient(ellipse_at_center,black_70%,transparent_100%)] opacity-[0.03] dark:opacity-[0.07]"></div>
-        
-        {/* Clean gradient background elements */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-foreground/5"></div>
-        <div className="absolute top-0 right-0 w-[800px] h-[600px] rounded-full bg-gradient-to-bl from-foreground/10 to-transparent blur-3xl pointer-events-none opacity-40"></div>
-        <div className="absolute -bottom-40 left-0 w-[600px] h-[600px] rounded-full bg-foreground/5 blur-3xl pointer-events-none opacity-30"></div>
+      <section className="pt-32 pb-24 sm:pt-40 sm:pb-32 md:pt-48 md:pb-40 px-4">
+        <Container size="lg" className="max-w-3xl">
+          <div className="space-y-8 sm:space-y-12">
+            {/* Headline */}
+            <div className="space-y-4">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-serif font-semibold leading-tight tracking-tight">
+                Software that works.
+              </h1>
+              <p className="text-lg sm:text-xl leading-relaxed text-grey-600 dark:text-grey-400 max-w-2xl">
+                Bootstrapped, profitable, and built to last. We create industry-specific SaaS and AI infrastructure for teams that value control over hype.
+              </p>
+            </div>
 
-        <Container size="full" className="relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-24 items-center">
-            <ScrollReveal>
-              <div className="max-w-[700px]">
-                {/* Headline - Clean typography with reveal */}
-                <h1 className="font-serif text-[clamp(44px,8vw,64px)] sm:text-[clamp(52px,8vw,80px)] md:text-[clamp(52px,8vw,96px)] font-semibold leading-[0.92] tracking-tighter text-foreground mb-6 sm:mb-8">
-                  <span className="inline-block animate-fade-up">Software that</span><br />
-                  <span className="opacity-60 inline-block animate-fade-up delay-1 italic font-normal">works.</span>
-                </h1>
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 pt-4">
+              <Button href="/projects/aitlas" variant="default" size="lg" className="sm:w-auto">
+                Explore Aitlas
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+              <Button href="/projects/saas" variant="outline" size="lg" className="sm:w-auto">
+                Industry Tools
+              </Button>
+            </div>
 
-                <p className="text-[17px] sm:text-[18px] md:text-[20px] leading-[1.6] text-grey-600 dark:text-grey-400 max-w-[550px] mb-8 sm:mb-10 md:mb-12 animate-fade-up delay-2">
-                  Bootstrapped, profitable, and built to last. We create industry-specific SaaS and AI infrastructure for teams that value control and clarity over hype.
-                </p>
-
-                {/* Clean CTA buttons */}
-                <div className="flex gap-4 flex-wrap animate-fade-up delay-3">
-                  <Button href="/projects/aitlas" variant="default" size="lg" glow className="flex-1 sm:flex-none h-14 px-8">
-                    Explore Aitlas
-                    <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
-                  <Button href="/projects/saas" variant="outline" size="lg" className="flex-1 sm:flex-none h-14 px-8">
-                    Industry Tools
-                  </Button>
-                </div>
-
-                {/* Trust indicators - Simplified */}
-                <div className="flex flex-wrap items-center gap-8 sm:gap-12 mt-12 sm:mt-16 md:mt-20 pt-8 border-t border-border animate-fade-up delay-4">
-                  <div>
-                    <div className="font-serif text-[24px] sm:text-[28px] font-bold text-foreground leading-none">0%</div>
-                    <div className="text-[9px] font-mono text-grey-500 uppercase tracking-[0.2em] mt-2">VC Funding</div>
-                  </div>
-                  <div>
-                    <div className="font-serif text-[24px] sm:text-[28px] font-bold text-foreground leading-none">10+</div>
-                    <div className="text-[9px] font-mono text-grey-500 uppercase tracking-[0.2em] mt-2">Products</div>
-                  </div>
-                  <div>
-                    <div className="font-serif text-[24px] sm:text-[28px] font-bold text-foreground leading-none">EU</div>
-                    <div className="text-[9px] font-mono text-grey-500 uppercase tracking-[0.2em] mt-2">Catalonia</div>
-                  </div>
-                </div>
+            {/* Trust Indicators */}
+            <div className="grid grid-cols-3 gap-8 pt-12 border-t border-border">
+              <div>
+                <div className="text-3xl font-bold font-serif">0%</div>
+                <div className="text-xs font-mono text-grey-500 uppercase tracking-wider mt-2">VC Funding</div>
               </div>
-            </ScrollReveal>
-
-            {/* Right side - Product cards - Enhanced Glassmorphism */}
-            <ScrollReveal delay={200}>
-              <div className="relative">
-                <div className="relative space-y-4 sm:space-y-6">
-                  {/* Aitlas Card */}
-                  <div className="animate-float">
-                    <Link href="/projects/aitlas" className="block group">
-                      <Card className="glass glow-mono relative overflow-hidden transition-spring hover:border-foreground/30 p-8 sm:p-10 border-foreground/5 shadow-2xl shadow-foreground/[0.02]">
-                        <div className="flex items-center justify-between mb-8 sm:mb-10">
-                          <div className="flex items-center gap-5">
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-none border border-foreground/10 bg-foreground text-background flex items-center justify-center font-bold text-xl sm:text-2xl transition-spring group-hover:scale-105">
-                              A
-                            </div>
-                            <div>
-                              <div className="text-[18px] sm:text-[20px] font-bold text-foreground tracking-tight">Aitlas</div>
-                              <div className="text-[10px] text-grey-500 font-mono uppercase tracking-[0.2em] mt-1">Sovereign AI</div>
-                            </div>
-                          </div>
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none text-[9px] font-mono font-bold bg-foreground text-background uppercase tracking-[0.1em]">
-                            Dev
-                          </span>
-                        </div>
-                        <p className="text-[15px] sm:text-[16px] text-grey-600 dark:text-grey-400 mb-8 leading-relaxed max-w-[400px]">
-                          Unified AI workspace with Nova, Nexus runtime, and specialized Actions.
-                          Sovereign compute with zero vendor lock-in.
-                        </p>
-                        <div className="flex flex-wrap gap-2.5">
-                          {['MCP', 'BYOK', 'Nexus'].map(tag => (
-                            <span key={tag} className="px-2.5 py-1 bg-foreground/[0.03] text-[9px] font-mono text-grey-500 border border-foreground/5 uppercase tracking-[0.05em]">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </Card>
-                    </Link>
-                  </div>
-
-                  {/* Industry SaaS Card */}
-                  <div className="animate-float [animation-delay:1s]">
-                    <Link href="/projects/saas" className="block group">
-                      <Card className="glass glow-mono transition-spring hover:border-foreground/30 p-8 sm:p-10 border-foreground/5 shadow-2xl shadow-foreground/[0.02]">
-                        <div className="flex items-center justify-between mb-8 sm:mb-10">
-                          <div className="flex items-center gap-5">
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-none border border-foreground/10 bg-transparent text-foreground flex items-center justify-center font-bold text-xl sm:text-2xl transition-spring group-hover:scale-105">
-                              B
-                            </div>
-                            <div>
-                              <div className="text-[18px] sm:text-[20px] font-bold text-foreground tracking-tight">Industry SaaS</div>
-                              <div className="text-[10px] text-grey-500 font-mono uppercase tracking-[0.2em] mt-1">B2B Tools</div>
-                            </div>
-                          </div>
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none text-[9px] font-mono font-bold border border-foreground/20 text-foreground uppercase tracking-[0.1em]">
-                            Live
-                          </span>
-                        </div>
-                        <p className="text-[15px] sm:text-[16px] text-grey-600 dark:text-grey-400 mb-8 leading-relaxed max-w-[400px]">
-                          High-margin tools for traditional sectors. Built for Catalonia,
-                          designed to scale across Europe.
-                        </p>
-                        <div className="flex flex-wrap gap-2.5">
-                          {['TheFork', 'Viator', 'REST'].map(tag => (
-                            <span key={tag} className="px-2.5 py-1 bg-foreground/[0.03] text-[9px] font-mono text-grey-500 border border-foreground/5 uppercase tracking-[0.05em]">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </Card>
-                    </Link>
-                  </div>
-                </div>
+              <div>
+                <div className="text-3xl font-bold font-serif">10+</div>
+                <div className="text-xs font-mono text-grey-500 uppercase tracking-wider mt-2">Products</div>
               </div>
-            </ScrollReveal>
+              <div>
+                <div className="text-3xl font-bold font-serif">EU</div>
+                <div className="text-xs font-mono text-grey-500 uppercase tracking-wider mt-2">Catalonia</div>
+              </div>
+            </div>
           </div>
         </Container>
       </section>
 
-      {/* Social Proof - Logos should be monochrome */}
+      {/* Social Proof */}
       <LogoBar />
 
-      {/* The Studio Section - Clean Monochrome */}
-      <Section variant="default" className="border-y border-border">
-        <Container size="full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 sm:gap-24 items-center">
-            <ScrollReveal>
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-foreground text-background mb-8">
-                  <span className="font-mono text-[9px] font-bold uppercase tracking-[0.2em]">The Studio Model</span>
-                </div>
-                <h2 className="font-serif text-[clamp(32px,5vw,64px)] font-semibold leading-[1.05] text-foreground mb-8">
-                  Build. Own. Fund.<br />
-                  <span className="italic font-normal opacity-50">Independence by design.</span>
-                </h2>
-                <p className="text-[16px] sm:text-[18px] leading-[1.7] text-grey-600 dark:text-grey-400 mb-10">
-                  Furma.tech is a digital venture studio.
-                  We build high-margin SaaS tools to fund our
-                  long-term vision for a sovereign AI ecosystem. 100% bootstrapped.
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3">
-                      <Shield className="w-5 h-5 text-foreground" />
-                      <span className="font-bold text-[15px] tracking-tight">0% VC Pressure</span>
-                    </div>
-                    <p className="text-[13px] text-grey-500 leading-relaxed">We answer to our customers, not a board of investors. 100% equity retained.</p>
-                  </div>
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3">
-                      <TrendingUp className="w-5 h-5 text-foreground" />
-                      <span className="font-bold text-[15px] tracking-tight">Sustainable Growth</span>
-                    </div>
-                    <p className="text-[13px] text-grey-500 leading-relaxed">B2B profits directly fuel AI research. A closed-loop innovation cycle.</p>
-                  </div>
-                </div>
+      {/* Studio Model */}
+      <section className="py-24 sm:py-32 md:py-40 px-4 border-y border-border">
+        <Container size="lg" className="max-w-3xl">
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <div className="inline-block px-3 py-1 bg-foreground text-background text-xs font-mono font-bold uppercase tracking-wider">
+                The Studio
               </div>
-            </ScrollReveal>
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-semibold leading-tight">
+                Build. Own. Fund.
+              </h2>
+              <p className="text-lg text-grey-600 dark:text-grey-400">
+                A digital venture studio. High-margin SaaS tools fund sovereign AI development. 100% bootstrapped, 0% VC pressure.
+              </p>
+            </div>
 
-            <ScrollReveal delay={200}>
-              <div className="relative">
-                <div className="grid grid-cols-2 gap-4 relative">
-                  {[
-                    { icon: Package, label: 'Build', sub: 'Industry Tools' },
-                    { icon: Globe, label: 'Own', sub: '100% Equity' },
-                    { icon: Zap, label: 'Fund', sub: 'R&D Profits' },
-                    { icon: BarChart3, label: 'Scale', sub: 'Sustainable' },
-                  ].map((item, i) => (
-                    <Card key={i} className={`bg-transparent border-foreground/10 flex flex-col items-center text-center group hover:border-foreground/30 transition-colors p-6 sm:p-8 ${i % 2 === 1 ? 'mt-8' : ''}`}>
-                      <item.icon className="w-6 h-6 mb-4 text-foreground/40 group-hover:text-foreground transition-colors" />
-                      <div className="font-bold text-[14px] mb-1">{item.label}</div>
-                      <p className="text-[10px] font-mono text-grey-400 uppercase tracking-tighter">{item.sub}</p>
-                    </Card>
-                  ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Shield className="w-5 h-5" />
+                  <span className="font-bold">No VC Pressure</span>
                 </div>
+                <p className="text-sm text-grey-500">We answer to customers, not investors. 100% equity retained.</p>
               </div>
-            </ScrollReveal>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5" />
+                  <span className="font-bold">Sustainable Growth</span>
+                </div>
+                <p className="text-sm text-grey-500">B2B profits directly fund AI R&D. Closed-loop innovation.</p>
+              </div>
+            </div>
           </div>
         </Container>
-      </Section>
+      </section>
 
-      {/* Dual Verticals - Refined */}
-      <Section variant="default">
-        <Container size="full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 sm:gap-24">
-            {/* B2B SaaS */}
-            <ScrollReveal>
-              <div className="max-w-xl">
-                <div className="flex items-center gap-3 mb-8">
-                  <span className="px-3 py-1 border border-foreground/20 text-[10px] font-mono font-bold tracking-widest uppercase">
-                    Cash Engine
-                  </span>
+      {/* Product Verticals */}
+      <section className="py-24 sm:py-32 md:py-40 px-4">
+        <Container size="lg">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+            {/* Industry SaaS */}
+            <div className="space-y-6 border border-border p-8">
+              <div className="space-y-3">
+                <div className="inline-block px-3 py-1 bg-foreground text-background text-xs font-mono font-bold uppercase tracking-wider">
+                  B2B Tools
                 </div>
-                <h2 className="font-serif text-[clamp(32px,5vw,56px)] font-semibold leading-[1.1] text-foreground mb-8">
-                  Industry SaaS
-                </h2>
-                <p className="text-[16px] sm:text-[18px] text-grey-600 dark:text-grey-400 leading-relaxed mb-10">
-                  Profitable products for traditional industries. These fund our AI R&D while maintaining complete independence.
-                </p>
-                <div className="space-y-6 mb-12">
-                  {[
-                    { name: 'restauManager', desc: 'Restaurant management platform' },
-                    { name: 'GuideTours', desc: 'Tour operator booking aggregation' }
-                  ].map(p => (
-                    <div key={p.name} className="flex items-start gap-4 group">
-                      <div className="w-1 h-1 rounded-full bg-foreground mt-2.5 transition-transform group-hover:scale-150"></div>
-                      <div>
-                        <div className="font-bold text-[17px] text-foreground mb-1">{p.name}</div>
-                        <div className="text-sm text-grey-500">{p.desc}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <Button href="/projects/saas" variant="outline" className="h-12 px-6">
-                  Explore products
-                  <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
+                <h3 className="text-3xl sm:text-4xl font-serif font-semibold">Industry SaaS</h3>
+                <p className="text-grey-600 dark:text-grey-400">High-margin tools for traditional sectors. Built for Catalonia, scaling across Europe.</p>
               </div>
-            </ScrollReveal>
+              <div className="space-y-2 py-4">
+                <div className="text-sm font-medium">restauManager — Restaurant management</div>
+                <div className="text-sm font-medium">GuideTours — Tourism operator platform</div>
+                <div className="text-sm font-medium">TheFork, Viator integrations</div>
+              </div>
+              <Button href="/projects/saas" variant="outline" className="w-full">
+                Explore Tools
+              </Button>
+            </div>
 
             {/* Aitlas */}
-            <ScrollReveal delay={100}>
-              <div className="max-w-xl p-8 sm:p-12 bg-foreground text-background relative overflow-hidden group">
-                <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-8">
-                    <span className="px-3 py-1 bg-background text-foreground text-[10px] font-mono font-bold tracking-widest uppercase">
-                      Growth Engine
-                    </span>
-                  </div>
-                  <h2 className="font-serif text-[clamp(32px,5vw,56px)] font-semibold leading-[1.1] mb-8">
-                    Aitlas Ecosystem
-                  </h2>
-                  <p className="text-[16px] sm:text-[18px] text-background/70 leading-relaxed mb-10">
-                    A sovereign platform for autonomous agents. Users bring their own keys,
-                    run agents via Nexus, and access 34+ specialized tools.
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 mb-12">
-                    {['Nova', 'Nexus', 'Agents', 'Actions'].map(feat => (
-                      <div key={feat} className="flex items-center gap-3">
-                        <div className="w-1 h-1 bg-background"></div>
-                        <span className="font-bold text-[16px]">{feat}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <Button href="/projects/aitlas" variant="outline" className="h-12 px-6 border-background text-background hover:bg-background hover:text-foreground">
-                    Discover Aitlas
-                    <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
+            <div className="space-y-6 border border-border p-8 bg-foreground text-background">
+              <div className="space-y-3">
+                <div className="inline-block px-3 py-1 bg-background text-foreground text-xs font-mono font-bold uppercase tracking-wider">
+                  Sovereign AI
                 </div>
+                <h3 className="text-3xl sm:text-4xl font-serif font-semibold">Aitlas Ecosystem</h3>
+                <p className="text-background/70">Autonomous agents platform. BYOK architecture, Nexus runtime, 34+ specialized tools.</p>
               </div>
-            </ScrollReveal>
-          </div>
-        </Container>
-      </Section>
-
-      {/* Actions Showcase - Clean Grid */}
-      <Section variant="default" className="border-t border-border">
-        <Container size="full">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 mb-20">
-            <ScrollReveal>
-              <SectionHeader 
-                label="Aitlas Actions"
-                title="Sovereign Tools."
-                description="Specialized Super Agents and MCP tools for specific workflows."
-              />
-            </ScrollReveal>
-            <ScrollReveal delay={200}>
-              <Button href="/projects/aitlas#actions" variant="outline">
-                View all actions
-                <ArrowRight className="ml-2 w-4 h-4" />
+              <div className="space-y-2 py-4">
+                <div className="text-sm font-medium">Nova — AI workspace</div>
+                <div className="text-sm font-medium">Nexus — Durable runtime</div>
+                <div className="text-sm font-medium">Actions — Specialized tools</div>
+              </div>
+              <Button href="/projects/aitlas" variant="outline" className="w-full border-background text-background hover:bg-background hover:text-foreground">
+                Discover Aitlas
               </Button>
-            </ScrollReveal>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-24 sm:py-32 md:py-40 px-4 bg-grey-50 dark:bg-grey-950/50 border-y border-border">
+        <Container size="lg">
+          <div className="text-center mb-16 space-y-3">
+            <div className="inline-block px-3 py-1 border border-foreground/10 text-xs font-mono font-bold uppercase tracking-wider">
+              Customer Voices
+            </div>
+            <h2 className="text-4xl sm:text-5xl font-serif font-semibold">Trusted by professionals</h2>
           </div>
 
-          <StaggerChildren staggerDelay={50} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-px bg-border border border-border">
-            {[
-              { id: 'N', name: 'Nova', desc: 'AI workspace BYOK.' },
-              { id: 'T', name: 'f.twyt', desc: 'Twitter intelligence.' },
-              { id: 'L', name: 'f.library', desc: 'Vector knowledge base.' },
-              { id: 'R', name: 'f.rsrx', desc: 'Deep research tool.' },
-              { id: '$', name: 'f.pay', desc: 'Payments & approval.' },
-              { id: 'X', name: 'Nexus', desc: 'Durable runtime.' },
-            ].map(tool => (
-              <Link key={tool.name} href={`/projects/aitlas/${tool.name.toLowerCase().replace('f.', '')}`} className="block group">
-                <div className="h-full p-8 bg-background hover:bg-foreground/[0.02] transition-colors">
-                  <div className="flex items-center justify-between mb-8">
-                    <div className="text-[10px] font-mono font-bold text-grey-400 uppercase tracking-widest">
-                      In Dev
-                    </div>
-                    <div className="w-10 h-10 border border-foreground/10 flex items-center justify-center font-bold text-sm group-hover:bg-foreground group-hover:text-background transition-colors">
-                      {tool.id}
-                    </div>
-                  </div>
-                  <h3 className="font-serif text-lg font-bold mb-2">{tool.name}</h3>
-                  <p className="text-[12px] text-grey-500 leading-relaxed mb-6">
-                    {tool.desc}
-                  </p>
-                  <div className="text-[9px] font-mono text-grey-400 uppercase tracking-widest">
-                    MCP Ready
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </StaggerChildren>
-        </Container>
-      </Section>
-
-      {/* Testimonials - Monochrome */}
-      <Section variant="grey" className="border-y border-border">
-        <Container size="full">
-          <ScrollReveal>
-            <div className="text-center mb-20">
-              <div className="inline-flex items-center gap-2 px-4 py-2 border border-foreground/10 mb-8">
-                <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase">Early Feedback</span>
-              </div>
-              <h2 className="font-serif text-[clamp(40px,5vw,72px)] font-semibold leading-[1.05] tracking-tight text-foreground">
-                Trusted by<br /><span className="italic font-normal opacity-50">professionals.</span>
-              </h2>
-            </div>
-          </ScrollReveal>
-
-          <StaggerChildren className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((t, i) => (
-              <div key={i} className="flex flex-col">
-                <p className="text-[18px] leading-[1.6] text-foreground mb-8 font-serif">
-                  &ldquo;{t.quote}&rdquo;
+              <div key={i} className="space-y-6 pb-6 border-b border-border last:border-b-0 md:last:border-b md:pb-0">
+                <p className="text-base leading-relaxed italic">
+                  "{t.quote}"
                 </p>
-                <div className="mt-auto pt-6 border-t border-border flex items-center gap-4">
-                  <div className="w-10 h-10 bg-foreground text-background flex items-center justify-center font-bold text-xs">
+                <div className="flex items-center gap-3 pt-2">
+                  <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center font-bold text-xs rounded">
                     {t.author.charAt(0)}
                   </div>
-                  <div>
-                    <div className="font-bold text-[14px]">{t.author}</div>
-                    <div className="text-[11px] font-mono text-grey-500 uppercase tracking-widest">{t.role}, {t.company}</div>
+                  <div className="text-sm">
+                    <div className="font-bold">{t.author}</div>
+                    <div className="text-xs text-grey-500">{t.role}, {t.company}</div>
                   </div>
                 </div>
               </div>
             ))}
-          </StaggerChildren>
+          </div>
         </Container>
-      </Section>
+      </section>
 
       {/* Latest Updates */}
-      <Section variant="default">
-        <Container size="full">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 mb-20">
-            <ScrollReveal>
-              <SectionHeader
-                label="Latest Updates"
-                title="Log."
-              />
-            </ScrollReveal>
-            <ScrollReveal delay={200}>
-              <Button href="/updates" variant="outline" className="h-12 px-6">
-                View all updates
-              </Button>
-            </ScrollReveal>
+      <section className="py-24 sm:py-32 md:py-40 px-4">
+        <Container size="lg">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8 mb-12">
+            <div className="space-y-2">
+              <div className="inline-block px-3 py-1 bg-foreground text-background text-xs font-mono font-bold uppercase tracking-wider">
+                Latest
+              </div>
+              <h2 className="text-4xl sm:text-5xl font-serif font-semibold">Development Log</h2>
+            </div>
+            <Button href="/updates" variant="outline">
+              View All
+            </Button>
           </div>
 
-          <StaggerChildren className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border border border-border">
-            {updates.map((update, index) => (
-              <Link key={index} href={`/updates/${update.slug}`} className="group block bg-background hover:bg-foreground/[0.02] transition-colors">
-                <div className="p-8 h-full flex flex-col">
-                  <div className="font-mono text-[10px] font-bold text-grey-400 uppercase tracking-[0.2em] mb-6">
-                    {update.date}
-                  </div>
-                  <h3 className="text-[20px] font-bold text-foreground mb-4 group-hover:underline underline-offset-8 decoration-foreground/20">{update.title}</h3>
-                  <p className="text-[14px] text-grey-500 leading-relaxed mb-8 flex-1">{update.description}</p>
-                  <div className="flex items-center gap-2 text-[12px] font-bold text-foreground opacity-40 group-hover:opacity-100 transition-opacity">
-                    Entry Details <ArrowRight className="w-3 h-3" />
-                  </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {updates.map((u, i) => (
+              <Link key={i} href={`/updates/${u.slug}`} className="group space-y-4 p-6 border border-border hover:border-foreground/50 transition-colors">
+                <div className="text-xs font-mono text-grey-500 uppercase tracking-wider">{u.date}</div>
+                <h3 className="text-lg font-bold group-hover:underline underline-offset-4">{u.title}</h3>
+                <p className="text-sm text-grey-600 dark:text-grey-400">{u.description}</p>
+                <div className="text-xs font-bold text-foreground/40 group-hover:text-foreground transition-colors">
+                  Learn more →
                 </div>
               </Link>
             ))}
-          </StaggerChildren>
+          </div>
         </Container>
-      </Section>
+      </section>
 
-      {/* CTA Section - Black Background */}
-      <section className="relative py-32 sm:py-48 overflow-hidden bg-foreground text-background">
-        <div className="absolute inset-0 bg-dots opacity-10"></div>
-        
-        <Container size="md" className="relative text-center">
-          <ScrollReveal>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-background text-foreground mb-12">
-              <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase">Early Access</span>
+      {/* CTA Section */}
+      <section className="py-24 sm:py-32 md:py-40 px-4 bg-foreground text-background">
+        <Container size="md" className="max-w-2xl">
+          <div className="text-center space-y-8">
+            <div className="space-y-3">
+              <div className="inline-block px-3 py-1 bg-background text-foreground text-xs font-mono font-bold uppercase tracking-wider">
+                Early Access
+              </div>
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-semibold leading-tight">
+                Sovereign AI starts here
+              </h2>
+              <p className="text-lg text-background/70">
+                Join the waitlist for Aitlas. Control your data, own your keys, automate everything.
+              </p>
             </div>
-            
-            <h2 className="font-serif text-[clamp(40px,6vw,80px)] font-semibold leading-[1] tracking-tighter mb-12">
-              Sovereign AI<br />
-              <span className="italic font-normal opacity-50">starts here.</span>
-            </h2>
-            
-            <p className="text-[18px] sm:text-[20px] text-background/60 leading-relaxed mb-16 max-w-xl mx-auto">
-              Join the waitlist for early access to Aitlas. Control your data,
-              own your keys, automate everything.
-            </p>
-            
-            {/* Waitlist Form - Dark variant */}
-            <div className="max-w-md mx-auto mb-16">
+
+            <div className="max-w-sm mx-auto">
               <WaitlistForm action={submitWaitlistSignup} />
             </div>
-            
-            {/* Simple social proof */}
-            <div className="grid grid-cols-3 gap-8 pt-12 border-t border-background/10">
+
+            <div className="grid grid-cols-3 gap-6 pt-8 border-t border-background/10 text-sm">
               <div>
-                <div className="font-serif text-[24px] font-bold mb-1">100%</div>
-                <div className="text-[10px] font-mono opacity-40 uppercase tracking-widest">Bootstrapped</div>
+                <div className="font-bold text-lg font-serif mb-1">100%</div>
+                <div className="text-xs opacity-50 font-mono uppercase">Bootstrapped</div>
               </div>
               <div>
-                <div className="font-serif text-[24px] font-bold mb-1">EU</div>
-                <div className="text-[10px] font-mono opacity-40 uppercase tracking-widest">Based</div>
+                <div className="font-bold text-lg font-serif mb-1">EU</div>
+                <div className="text-xs opacity-50 font-mono uppercase">Based</div>
               </div>
-              <div>
-                <a href="https://github.com/Fuuurma" target="_blank" rel="noopener noreferrer" className="block hover:opacity-60 transition-opacity">
-                  <div className="font-serif text-[24px] font-bold mb-1">GitHub</div>
-                  <div className="text-[10px] font-mono opacity-40 uppercase tracking-widest">Open Source</div>
-                </a>
-              </div>
+              <a href="https://github.com/Fuuurma" target="_blank" rel="noopener noreferrer" className="hover:opacity-70">
+                <div className="font-bold text-lg font-serif mb-1">Open</div>
+                <div className="text-xs opacity-50 font-mono uppercase">Source</div>
+              </a>
             </div>
-          </ScrollReveal>
+          </div>
         </Container>
       </section>
     </div>

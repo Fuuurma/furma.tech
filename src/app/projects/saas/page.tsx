@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Utensils, Map, Square, TrendingUp, CircleDot, Hexagon, Building2, ArrowRight, BarChart3, Users, Clock, Target, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
 import Breadcrumbs from "@/components/ui/breadcrumb";
 import { getOgImageUrl } from "@/lib/metadata";

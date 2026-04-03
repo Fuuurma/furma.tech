@@ -9,8 +9,8 @@ interface PricingCalculatorProps {
 export default function PricingCalculator({ className = "" }: PricingCalculatorProps) {
   const [tweets, setTweets] = useState(10);
   const [documents, setDocuments] = useState(50);
-  const [searches, setSearches] = useState(20);
-  const [agentsHired, setAgentsHired] = useState(0);
+  const [searches] = useState(20);
+  const [agentsHired] = useState(0);
 
   // Pricing
   const F_TWYT_COST = 1; // per query

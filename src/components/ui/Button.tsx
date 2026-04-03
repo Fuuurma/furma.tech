@@ -69,17 +69,8 @@ function Button({
   )
 
   if (href) {
-    // Filter out button-specific attributes that Link doesn't support
-    const {
-      type: _type,
-      form: _form,
-      formAction: _formAction,
-      formEnctype: _formEnctype,
-      formMethod: _formMethod,
-      formNoValidate: _formNoValidate,
-      formTarget: _formTarget,
-      ...linkProps
-    } = props as Record<string, unknown>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { type: _, form: __, formAction: ___, formEnctype: ____, formMethod: _____, formNoValidate: ______, formTarget: _______, ...linkProps } = props as Record<string, unknown>
     return (
       <Link
         href={href}
