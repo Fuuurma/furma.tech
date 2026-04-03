@@ -222,7 +222,7 @@ export async function submitContactForm(
 
     // Validate
     const validation = validateForm(contactFormSchema, data);
-    if (!validation.success) {
+    if (validation.errors) {
       return { success: false, error: 'Validation failed' };
     }
 
@@ -255,7 +255,7 @@ export async function submitWaitlistSignup(
     };
 
     const validation = validateForm(waitlistSchema, data);
-    if (!validation.success) {
+    if (validation.errors) {
       return { success: false, error: 'Invalid email address' };
     }
 
@@ -289,7 +289,7 @@ export async function submitBookingRequest(
     };
 
     const validation = validateForm(bookingSchema, data);
-    if (!validation.success) {
+    if (validation.errors) {
       return { success: false, error: 'Please fill in all required fields correctly' };
     }
 

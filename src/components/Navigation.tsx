@@ -14,65 +14,33 @@ import {
 } from '@/components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
+  Gamepad2,
+  QrCode,
+  Compass,
+  Map,
+  Utensils,
+  TrendingUp,
+  Target,
+  Building2,
+  Users,
+  Trophy,
   Sparkles,
-  BookOpen,
-  Zap,
-  Brain,
-  MessageSquare,
-  Store,
-  Plane,
   Menu,
   ArrowRight
 } from 'lucide-react';
 
-// Aitlas products
-const aitlasProducts = [
-  {
-    title: 'Nova',
-    href: '/projects/aitlas/nova',
-    description: 'AI workspace with BYOK architecture',
-    icon: Sparkles,
-  },
-  {
-    title: 'Nexus',
-    href: '/projects/aitlas/nexus',
-    description: 'Durable background compute runtime',
-    icon: Zap,
-  },
-  {
-    title: 'Agents',
-    href: '/projects/aitlas/agents',
-    description: 'Agents marketplace',
-    icon: Brain,
-  },
-  {
-    title: 'Library',
-    href: '/projects/aitlas/library',
-    description: 'Vector knowledge base',
-    icon: BookOpen,
-  },
-  {
-    title: 'Twyt',
-    href: '/projects/aitlas/twyt',
-    description: 'Twitter intelligence platform',
-    icon: MessageSquare,
-  },
-];
-
-// SaaS products
-const saasProducts = [
-  {
-    title: 'RestauManager',
-    href: '/projects/saas/restauramanager',
-    description: 'Restaurant management system',
-    icon: Store,
-  },
-  {
-    title: 'GuideTours',
-    href: '/projects/saas/guidetours',
-    description: 'Tour operator booking sync',
-    icon: Plane,
-  },
+const allProducts = [
+  { title: 'Tic-Tac-Toe Disappear', href: '/products/tic-tac-toe-disappear', description: 'Vanishing-move strategy game', icon: Gamepad2 },
+  { title: 'QArt', href: '/products/qart', description: 'AI-generated QR art', icon: QrCode },
+  { title: 'SailingMate', href: '/products/sailingmate', description: 'Real-time sailing navigation', icon: Compass },
+  { title: 'TourManager', href: '/products/tourmanager', description: 'Tour operator platform', icon: Map },
+  { title: 'RestaurantManager', href: '/products/restaurantmanager', description: 'Restaurant management', icon: Utensils },
+  { title: 'FinanceHub', href: '/products/financehub', description: 'Market data & portfolio', icon: TrendingUp },
+  { title: 'OneToMany', href: '/products/onetomany', description: 'Goal setting & habits', icon: Target },
+  { title: 'OpenGovern', href: '/products/opengovern', description: 'Direct democracy tooling', icon: Building2 },
+  { title: 'LinkUp', href: '/products/linkup', description: 'Short-video professional matching', icon: Users },
+  { title: 'PicksTracker', href: '/products/pickstracker', description: 'Sports pick tracking', icon: Trophy },
+  { title: 'Aitlas', href: '/products/aitlas', description: 'Sovereign AI ecosystem', icon: Sparkles },
 ];
 
 export default function Navigation() {
@@ -129,55 +97,18 @@ export default function Navigation() {
           <div className="hidden md:flex items-center gap-1">
             <NavigationMenu>
               <NavigationMenuList>
-                {/* Aitlas Dropdown */}
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="text-[12px] font-bold uppercase tracking-widest px-4">
-                    Aitlas
+                    Products
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid gap-1 p-4 md:w-[400px] lg:w-[450px] bg-background">
+                    <div className="grid gap-1 p-4 md:w-[450px] lg:w-[500px] bg-background">
                       <div className="mb-4 px-3">
-                        <h4 className="font-serif text-lg font-bold text-foreground mb-1">Aitlas Ecosystem</h4>
-                        <p className="text-xs text-grey-500">Sovereign AI workspace and autonomous agents.</p>
+                        <h4 className="font-serif text-lg font-bold text-foreground mb-1">All Products</h4>
+                        <p className="text-xs text-grey-500">11 products across games, SaaS, AI, finance, and civic tech.</p>
                       </div>
-                      <div className="grid grid-cols-1 gap-1">
-                        {aitlasProducts.map((product) => (
-                          <Link
-                            key={product.title}
-                            href={product.href}
-                            className="flex items-center gap-4 p-3 rounded-none transition-colors hover:bg-foreground hover:text-background group"
-                          >
-                            <div className="flex items-center justify-center w-8 h-8 border border-border group-hover:border-background transition-colors">
-                              <product.icon className="h-4 w-4" />
-                            </div>
-                            <div className="flex-1">
-                              <div className="text-sm font-bold leading-none">
-                                {product.title}
-                              </div>
-                              <p className="mt-1 text-xs leading-relaxed opacity-60">
-                                {product.description}
-                              </p>
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-
-                {/* SaaS Dropdown */}
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-[12px] font-bold uppercase tracking-widest px-4">
-                    SaaS
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="grid gap-1 p-4 md:w-[350px] bg-background">
-                      <div className="mb-4 px-3">
-                        <h4 className="font-serif text-lg font-bold text-foreground mb-1">Industry SaaS</h4>
-                        <p className="text-xs text-grey-500">B2B tools for traditional sectors.</p>
-                      </div>
-                      <div className="grid grid-cols-1 gap-1">
-                        {saasProducts.map((product) => (
+                      <div className="grid grid-cols-1 gap-1 max-h-[400px] overflow-y-auto">
+                        {allProducts.map((product) => (
                           <Link
                             key={product.title}
                             href={product.href}
@@ -261,11 +192,10 @@ export default function Navigation() {
                 
                 <div className="flex-1 overflow-y-auto px-8">
                   <div className="flex flex-col gap-10">
-                    {/* Aitlas Mobile Submenu */}
                     <div>
-                      <h4 className="text-[10px] font-bold text-grey-400 uppercase tracking-[0.3em] mb-4">Aitlas AI</h4>
+                      <h4 className="text-[10px] font-bold text-grey-400 uppercase tracking-[0.3em] mb-4">Products</h4>
                       <div className="flex flex-col gap-1 border-l border-border">
-                        {aitlasProducts.map((product) => (
+                        {allProducts.map((product) => (
                           <Link
                             key={product.title}
                             href={product.href}
@@ -275,26 +205,7 @@ export default function Navigation() {
                                 : 'text-grey-500 hover:text-foreground'
                             }`}
                           >
-                            <span className="font-medium">{product.title}</span>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* SaaS Mobile Submenu */}
-                    <div>
-                      <h4 className="text-[10px] font-bold text-grey-400 uppercase tracking-[0.3em] mb-4">Industry SaaS</h4>
-                      <div className="flex flex-col gap-1 border-l border-border">
-                        {saasProducts.map((product) => (
-                          <Link
-                            key={product.title}
-                            href={product.href}
-                            className={`flex items-center gap-4 px-4 py-3 text-[15px] font-bold transition-all ${
-                              isActive(product.href)
-                                ? 'text-foreground bg-foreground/5'
-                                : 'text-grey-500 hover:text-foreground'
-                            }`}
-                          >
+                            <product.icon className="w-4 h-4" strokeWidth={1} />
                             <span className="font-medium">{product.title}</span>
                           </Link>
                         ))}
