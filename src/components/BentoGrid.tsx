@@ -19,7 +19,6 @@ import {
 import { ScrollReveal, StaggerChildren } from '@/components/ui/ScrollReveal';
 
 type ProductStatus = 'In Dev' | 'Roadmap' | 'Paused';
-type CardSize = 'hero' | 'tall' | 'wide' | 'small';
 
 interface Product {
   name: string;
@@ -30,7 +29,9 @@ interface Product {
   href: string;
   icon: LucideIcon;
   tags: readonly string[];
-  size: CardSize;
+  colSpan: number;
+  rowSpan: number;
+  accentColor?: 'amber' | 'purple' | 'blue' | 'green' | 'pink' | 'none';
 }
 
 const products: Product[] = [
@@ -43,7 +44,9 @@ const products: Product[] = [
     href: '/products/aitlas',
     icon: Sparkles,
     tags: ['BYOK', 'MCP', 'Agents'],
-    size: 'hero',
+    colSpan: 3,
+    rowSpan: 2,
+    accentColor: 'none',
   },
   {
     name: 'TourManager',
@@ -54,7 +57,9 @@ const products: Product[] = [
     href: '/products/tourmanager',
     icon: Map,
     tags: ['Viator', 'Bookings'],
-    size: 'tall',
+    colSpan: 1,
+    rowSpan: 3,
+    accentColor: 'amber',
   },
   {
     name: 'RestaurantManager',
@@ -65,7 +70,9 @@ const products: Product[] = [
     href: '/products/restaurantmanager',
     icon: Utensils,
     tags: ['TheFork', 'Reservations'],
-    size: 'tall',
+    colSpan: 2,
+    rowSpan: 1,
+    accentColor: 'amber',
   },
   {
     name: 'Tic-Tac-Toe Disappear',
@@ -76,7 +83,9 @@ const products: Product[] = [
     href: '/products/tic-tac-toe-disappear',
     icon: Gamepad2,
     tags: ['Strategy', 'Mobile'],
-    size: 'wide',
+    colSpan: 3,
+    rowSpan: 1,
+    accentColor: 'purple',
   },
   {
     name: 'QArt',
@@ -87,7 +96,9 @@ const products: Product[] = [
     href: '/products/qart',
     icon: QrCode,
     tags: ['AI', 'Design'],
-    size: 'small',
+    colSpan: 1,
+    rowSpan: 1,
+    accentColor: 'pink',
   },
   {
     name: 'PicksTracker',
@@ -98,7 +109,9 @@ const products: Product[] = [
     href: '/products/pickstracker',
     icon: Trophy,
     tags: ['Social', 'Analytics'],
-    size: 'small',
+    colSpan: 1,
+    rowSpan: 2,
+    accentColor: 'blue',
   },
   {
     name: 'SailingMate',
@@ -109,7 +122,9 @@ const products: Product[] = [
     href: '/products/sailingmate',
     icon: Compass,
     tags: ['GPS', 'Navigation'],
-    size: 'small',
+    colSpan: 2,
+    rowSpan: 1,
+    accentColor: 'blue',
   },
   {
     name: 'LinkUp',
@@ -120,7 +135,9 @@ const products: Product[] = [
     href: '/products/linkup',
     icon: Users,
     tags: ['Video', 'Networking'],
-    size: 'small',
+    colSpan: 1,
+    rowSpan: 1,
+    accentColor: 'green',
   },
   {
     name: 'FinanceHub',
@@ -131,7 +148,9 @@ const products: Product[] = [
     href: '/products/financehub',
     icon: TrendingUp,
     tags: ['Portfolio', 'Analytics'],
-    size: 'wide',
+    colSpan: 2,
+    rowSpan: 2,
+    accentColor: 'green',
   },
   {
     name: 'OneToMany',
@@ -142,7 +161,9 @@ const products: Product[] = [
     href: '/products/onetomany',
     icon: Target,
     tags: ['Goals', 'Habits'],
-    size: 'small',
+    colSpan: 1,
+    rowSpan: 1,
+    accentColor: 'purple',
   },
   {
     name: 'OpenGovern',
@@ -153,7 +174,9 @@ const products: Product[] = [
     href: '/products/opengovern',
     icon: Building2,
     tags: ['Democracy', 'Civic'],
-    size: 'wide',
+    colSpan: 2,
+    rowSpan: 1,
+    accentColor: 'pink',
   },
 ];
 
@@ -186,165 +209,132 @@ function StatusBadge({ status, inverted = false }: StatusBadgeProps) {
   );
 }
 
-// Hero Card - 2x2 span for Aitlas (dark gradient)
-function HeroCard({ product }: { product: Product }) {
+// Dynamic Card Component - adapts based on colSpan, rowSpan, and accentColor
+function BentoCard({ product }: { product: Product }) {
   const Icon = product.icon;
+  const isHero = product.colSpan >= 3 && product.rowSpan >= 2;
+  const isLarge = product.colSpan >= 2 && product.rowSpan >= 2;
+  const isTall = product.rowSpan >= 2 && product.colSpan === 1;
+  const isWide = product.colSpan >= 2 && product.rowSpan === 1;
 
+  const accentColors = {
+    amber: {
+      bg: 'bg-amber-50 dark:bg-amber-950/20',
+      border: 'hover:border-amber-400 dark:hover:border-amber-600',
+      text: 'text-amber-700 dark:text-amber-400',
+      icon: 'group-hover:text-amber-600 dark:group-hover:text-amber-400',
+    },
+    purple: {
+      bg: 'bg-purple-50 dark:bg-purple-950/20',
+      border: 'hover:border-purple-400 dark:hover:border-purple-600',
+      text: 'text-purple-700 dark:text-purple-400',
+      icon: 'group-hover:text-purple-600 dark:group-hover:text-purple-400',
+    },
+    blue: {
+      bg: 'bg-blue-50 dark:bg-blue-950/20',
+      border: 'hover:border-blue-400 dark:hover:border-blue-600',
+      text: 'text-blue-700 dark:text-blue-400',
+      icon: 'group-hover:text-blue-600 dark:group-hover:text-blue-400',
+    },
+    green: {
+      bg: 'bg-green-50 dark:bg-green-950/20',
+      border: 'hover:border-green-400 dark:hover:border-green-600',
+      text: 'text-green-700 dark:text-green-400',
+      icon: 'group-hover:text-green-600 dark:group-hover:text-green-400',
+    },
+    pink: {
+      bg: 'bg-pink-50 dark:bg-pink-950/20',
+      border: 'hover:border-pink-400 dark:hover:border-pink-600',
+      text: 'text-pink-700 dark:text-pink-400',
+      icon: 'group-hover:text-pink-600 dark:group-hover:text-pink-400',
+    },
+    none: {
+      bg: 'bg-foreground text-background',
+      border: 'hover:border-foreground/80',
+      text: 'text-background/70',
+      icon: 'group-hover:text-background',
+    },
+  };
+
+  const colors = accentColors[product.accentColor || 'none'];
+
+  // Hero card (Aitlas)
+  if (isHero) {
+    return (
+      <Link
+        href={product.href}
+        style={{ gridColumn: `span ${product.colSpan}`, gridRow: `span ${product.rowSpan}` }}
+        className={`group relative ${colors.bg} border-2 border-border overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${colors.border} hover:shadow-lg flex flex-col`}
+      >
+        <div className="absolute inset-0 bg-dots opacity-10" />
+
+        <div className="relative z-10 p-6 lg:p-8 h-full flex flex-col">
+          <div className="flex items-start justify-between mb-auto">
+            <div className={`flex items-center justify-center w-14 h-14 border ${product.accentColor === 'none' ? 'border-background/20' : 'border-foreground/20'}`}>
+              <Icon className="w-6 h-6" strokeWidth={1.5} />
+            </div>
+            <StatusBadge status={product.status} inverted={product.accentColor === 'none'} />
+          </div>
+
+          <div className="mt-auto">
+            <h3 className={`font-serif ${isLarge ? 'text-[32px] md:text-[40px]' : 'text-[24px] md:text-[28px]'} font-bold leading-tight mb-2`}>
+              {product.name}
+            </h3>
+            <p className={`text-[14px] md:text-[16px] ${colors.text} leading-relaxed max-w-md`}>
+              {product.description}
+            </p>
+
+            <div className="flex flex-wrap gap-2 mt-4 mb-6">
+              {product.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className={`px-2.5 py-0.5 ${product.accentColor === 'none' ? 'bg-background/10 text-background/60' : 'bg-foreground/10 text-foreground/60'} text-[10px] font-mono uppercase tracking-wider`}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            <div className={`flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest ${product.accentColor === 'none' ? 'text-background/60 group-hover:text-background/80' : 'text-foreground/60 group-hover:text-foreground'} group-hover:gap-4 transition-all duration-500`}>
+              Explore
+              <ArrowRight className="w-4 h-4" />
+            </div>
+          </div>
+        </div>
+      </Link>
+    );
+  }
+
+  // All other cards
   return (
     <Link
       href={product.href}
-      className="group relative col-span-1 row-span-2 md:col-span-2 md:row-span-2 lg:col-span-2 lg:row-span-2 bg-foreground text-background border-2 border-border overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-foreground/80 hover:shadow-lg flex flex-col min-h-[400px] md:min-h-[480px]"
-    >
-      <div className="absolute inset-0 bg-dots" />
-
-      <div className="relative z-10 p-6 lg:p-8 h-full flex flex-col">
-        <div className="flex items-start justify-between mb-auto">
-          <div className="flex items-center justify-center w-14 h-14 border border-background/20">
-            <Icon className="w-6 h-6" strokeWidth={1.5} />
-          </div>
-          <StatusBadge status={product.status} inverted />
-        </div>
-
-        <div className="mt-auto">
-          <h3 className="font-serif text-[32px] md:text-[40px] font-bold leading-tight mb-2">
-            {product.name}
-          </h3>
-          <p className="text-[14px] md:text-[16px] text-background/70 leading-relaxed max-w-md">
-            {product.description}
-          </p>
-
-          <p className="text-[13px] md:text-[14px] text-background/50 leading-relaxed max-w-md mt-3 max-h-0 overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:max-h-24 group-hover:opacity-100 opacity-0">
-            {product.longDescription}
-          </p>
-
-          <div className="flex flex-wrap gap-2 mt-5 mb-6">
-            {product.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-2.5 py-0.5 bg-background/10 text-[10px] font-mono uppercase tracking-wider text-background/60"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest text-background/60 group-hover:text-background/80 group-hover:gap-4 transition-all duration-500">
-            Explore
-            <ArrowRight className="w-4 h-4" />
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-// Tall Card - 1x2 span (amber accent)
-function TallCard({ product }: { product: Product }) {
-  const Icon = product.icon;
-
-  return (
-    <Link
-      href={product.href}
-      className="group relative col-span-1 row-span-2 md:col-span-1 md:row-span-2 lg:col-span-1 lg:row-span-2 border-2 border-border bg-amber-50 dark:bg-amber-950/20 overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-amber-400 dark:hover:border-amber-600 hover:-translate-y-0.5 flex flex-col min-h-[400px] md:min-h-[480px]"
+      style={{ gridColumn: `span ${product.colSpan}`, gridRow: `span ${product.rowSpan}` }}
+      className={`group relative border-2 border-border ${colors.bg} overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${colors.border} hover:-translate-y-0.5 flex flex-col`}
     >
       <div className="p-6 h-full flex flex-col relative z-10">
         <div className="flex items-start justify-between mb-4">
           <Icon
-            className="w-6 h-6 text-foreground/40 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors duration-300"
+            className={`w-6 h-6 text-foreground/40 ${colors.icon} transition-colors duration-300`}
             strokeWidth={1}
           />
           <StatusBadge status={product.status} />
         </div>
 
-        <h3 className="text-[20px] font-bold mb-1">{product.name}</h3>
-        <p className="text-[11px] text-amber-700 dark:text-amber-400 mb-3 font-mono uppercase tracking-wider">
+        <h3 className={`font-bold mb-1 ${isWide || isLarge ? 'text-[20px]' : 'text-[17px]'}`}>
+          {product.name}
+        </h3>
+        <p className={`text-[11px] ${product.accentColor === 'none' ? 'text-grey-500' : colors.text} mb-3 font-mono uppercase tracking-wider`}>
           {product.category}
         </p>
 
-        <p className="text-[14px] text-foreground/60 leading-relaxed flex-1">
+        <p className={`text-foreground/60 leading-relaxed flex-1 ${isTall ? 'text-[14px]' : 'text-[13px]'}`}>
           {product.description}
         </p>
 
-        <div className="mt-auto pt-4 border-t border-amber-200 dark:border-amber-800/30">
-          <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-foreground/40 group-hover:text-amber-600 dark:group-hover:text-amber-400 group-hover:gap-3 transition-all duration-300">
-            Learn more
-            <ArrowRight className="w-3.5 h-3.5" />
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-// Wide Card - 2x1 span (grey subtle)
-function WideCard({ product }: { product: Product }) {
-  const Icon = product.icon;
-
-  return (
-    <Link
-      href={product.href}
-      className="group relative col-span-1 row-span-1 md:col-span-2 lg:col-span-2 border border-border bg-grey-50 dark:bg-grey-900/20 overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-foreground hover:-translate-y-0.5 flex flex-col min-h-[200px] md:min-h-[220px]"
-    >
-      <div className="p-6 h-full flex flex-col relative z-10">
-        <div className="flex items-start justify-between mb-3">
-          <Icon
-            className="w-5 h-5 text-foreground/40 group-hover:text-foreground transition-colors duration-300"
-            strokeWidth={1}
-          />
-          <StatusBadge status={product.status} />
-        </div>
-
-        <h3 className="text-[18px] font-bold mb-0.5">{product.name}</h3>
-        <p className="text-[11px] text-grey-500 mb-2 font-mono uppercase tracking-wider">
-          {product.category}
-        </p>
-
-        <p className="text-[13px] text-foreground/60 leading-relaxed flex-1">
-          {product.description}
-        </p>
-
-        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-foreground/30 group-hover:text-foreground group-hover:gap-3 transition-all duration-300">
+        <div className={`flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-foreground/30 group-hover:text-foreground group-hover:gap-3 transition-all duration-300 ${isTall ? 'mt-auto pt-4 border-t border-foreground/10' : ''}`}>
           Learn more
           <ArrowRight className="w-3.5 h-3.5" />
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-// Small Card - 1x1 span (minimal)
-function SmallCard({ product }: { product: Product }) {
-  const Icon = product.icon;
-  const isPaused = product.status === 'Paused';
-
-  return (
-    <Link
-      href={product.href}
-      className={`group relative col-span-1 row-span-1 border border-border overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-foreground hover:-translate-y-0.5 flex flex-col min-h-[200px] md:min-h-[220px] ${
-        isPaused ? 'bg-grey-50/50 dark:bg-grey-900/20' : 'bg-background'
-      }`}
-    >
-      <div className="p-5 h-full flex flex-col relative z-10">
-        <div className="flex items-start justify-between mb-3">
-          <Icon
-            className="w-5 h-5 text-foreground/40 group-hover:text-foreground transition-colors duration-300"
-            strokeWidth={1}
-          />
-          <StatusBadge status={product.status} />
-        </div>
-
-        <h3 className="text-[16px] font-bold mb-0.5 leading-tight">{product.name}</h3>
-        <p className="text-[10px] text-grey-500 mb-2 font-mono uppercase tracking-wider">
-          {product.category}
-        </p>
-
-        <p className="text-[12px] text-foreground/60 leading-relaxed flex-1 line-clamp-2">
-          {product.description}
-        </p>
-
-        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-foreground/30 group-hover:text-foreground group-hover:gap-3 transition-all duration-300 mt-auto">
-          View
-          <ArrowRight className="w-3 h-3" />
         </div>
       </div>
     </Link>
@@ -367,21 +357,9 @@ export default function BentoGrid() {
 
       <StaggerChildren staggerDelay={80} direction="up">
         <div className="grid grid-cols-1 auto-rows-[200px] md:grid-cols-2 md:auto-rows-[220px] lg:grid-cols-4 lg:auto-rows-[220px] gap-4 grid-auto-flow: dense">
-          {products.map((product) => {
-            if (product.size === 'hero') {
-              return <HeroCard key={product.name} product={product} />;
-            }
-
-            if (product.size === 'tall') {
-              return <TallCard key={product.name} product={product} />;
-            }
-
-            if (product.size === 'wide') {
-              return <WideCard key={product.name} product={product} />;
-            }
-
-            return <SmallCard key={product.name} product={product} />;
-          })}
+          {products.map((product) => (
+            <BentoCard key={product.name} product={product} />
+          ))}
         </div>
       </StaggerChildren>
     </>

@@ -64,20 +64,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Developers */}
-          <div>
-            <h3 className="font-mono text-[10px] font-bold tracking-[0.25em] uppercase text-grey-400 mb-6">
-              Developers
-            </h3>
-            <ul className="space-y-3">
-              <li><Link href="/docs" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">Documentation</Link></li>
-              <li><Link href="/projects/aitlas/nexus" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">Nexus Runtime</Link></li>
-              <li><Link href="/projects/aitlas/agents" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">Agents Store</Link></li>
-              <li><Link href="/projects/aitlas/twyt" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">f.twyt</Link></li>
-              <li><Link href="/projects/aitlas/library" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">f.library</Link></li>
-            </ul>
-          </div>
-
           {/* Company */}
           <div>
             <h3 className="font-mono text-[10px] font-bold tracking-[0.25em] uppercase text-grey-400 mb-6">

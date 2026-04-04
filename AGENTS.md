@@ -219,7 +219,39 @@ try {
 
 ---
 
-## 8. Before Committing
+## 8. Testing Guidelines
+
+No test framework is configured yet. When adding tests:
+
+**Framework:** Vitest + React Testing Library
+**Running tests:**
+```bash
+pnpm test           # Run tests in watch mode
+pnpm test:run      # Run tests once (CI mode)
+pnpm test:coverage # Generate coverage report
+```
+
+**Test file naming:**
+- Unit tests: `ComponentName.test.tsx`
+- Integration tests: `api.endpoint.test.ts`
+- E2E tests: `*.e2e.test.ts`
+
+**Test patterns:**
+```typescript
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+
+describe("ComponentName", () => {
+  it("renders correctly", () => {
+    render(<ComponentName />);
+    expect(screen.getByText("Expected")).toBeInTheDocument();
+  });
+});
+```
+
+---
+
+## 9. Before Committing
 
 ```bash
 pnpm lint   # ESLint check
@@ -228,7 +260,45 @@ pnpm build  # Production build
 
 ---
 
-## 9. Prohibited Patterns
+## 10. Commit & Pull Request Guidelines
+
+### Commit Messages
+Follow conventional commits format:
+```
+<type>(<scope>): <description>
+
+Types: feat, fix, docs, style, refactor, test, chore
+Scope: optional, e.g., auth, products, ui
+```
+
+**Examples:**
+```bash
+git commit -m "feat(products): add product listing page"
+git commit -m "fix(ui): correct button hover state"
+git commit -m "docs: update API documentation"
+```
+
+### Pull Requests
+1. Create a feature branch from `master`
+2. Use descriptive PR titles: `feat: add new feature` or `fix: resolve issue`
+3. Include in PR description:
+   - What changed and why
+   - Screenshots for UI changes
+   - Linked issues (e.g., "Closes #123")
+4. Ensure all checks pass before requesting review
+5. Request review from at least one team member
+
+### Branch Naming
+```
+feat/<short-description>    # New features
+fix/<short-description>     # Bug fixes
+docs/<short-description>    # Documentation
+refactor/<short-description> # Code improvements
+```
+
+---
+
+## 11. Prohibited Patterns
 
 - ❌ `any` type
 - ❌ `console.log` in production code
@@ -238,7 +308,7 @@ pnpm build  # Production build
 
 ---
 
-## 10. Key Files
+## 12. Key Files
 
 | File | Purpose |
 |------|---------|

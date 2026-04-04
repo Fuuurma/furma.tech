@@ -28,23 +28,23 @@ import { Brain } from 'lucide-react';
 
 const allProducts = [
   // Aitlas Ecosystem (Featured First)
-  { title: 'Aitlas', href: '/products/aitlas', description: 'Sovereign AI ecosystem', icon: Sparkles, category: 'AI', featured: true },
-  { title: 'Nova', href: '/products/aitlas/nova', description: 'AI workspace with BYOK', icon: Hexagon, category: 'AI' },
-  { title: 'Nexus', href: '/products/aitlas/nexus', description: 'Durable agent runtime', icon: Brain, category: 'AI' },
+  { title: 'Aitlas', href: '/projects/aitlas', description: 'Sovereign AI ecosystem', icon: Sparkles, category: 'AI', featured: true },
+  { title: 'Nova', href: '/projects/aitlas/nova', description: 'AI workspace with BYOK', icon: Hexagon, category: 'AI' },
+  { title: 'Nexus', href: '/projects/aitlas/nexus', description: 'Durable agent runtime', icon: Brain, category: 'AI' },
   { title: 'f.twyt', href: '/projects/aitlas/twyt', description: 'Twitter intelligence', icon: Zap, category: 'AI' },
   { title: 'f.library', href: '/projects/aitlas/library', description: 'Vector knowledge base', icon: Zap, category: 'AI' },
   // Industry SaaS
-  { title: 'RestaurantManager', href: '/products/restaurantmanager', description: 'Restaurant management', icon: Utensils, category: 'SaaS' },
-  { title: 'TourManager', href: '/products/tourmanager', description: 'Tour operator platform', icon: Map, category: 'SaaS' },
+  { title: 'RestaurantManager', href: '/projects/saas/restauramanager', description: 'Restaurant management', icon: Utensils, category: 'SaaS' },
+  { title: 'TourManager', href: '/projects/saas/guidetours', description: 'Tour operator platform', icon: Map, category: 'SaaS' },
   // Other Products
-  { title: 'Tic-Tac-Toe', href: '/products/tic-tac-toe-disappear', description: 'Vanishing-move game', icon: Gamepad2, category: 'Games' },
-  { title: 'QArt', href: '/products/qart', description: 'AI-generated QR art', icon: QrCode, category: 'Marketing' },
-  { title: 'PicksTracker', href: '/products/pickstracker', description: 'Sports pick tracking', icon: Trophy, category: 'Sports' },
-  { title: 'SailingMate', href: '/products/sailingmate', description: 'Sailing navigation', icon: Compass, category: 'Maritime' },
-  { title: 'LinkUp', href: '/products/linkup', description: 'Professional matching', icon: Users, category: 'Social' },
-  { title: 'FinanceHub', href: '/products/financehub', description: 'Market data tracking', icon: TrendingUp, category: 'Finance' },
-  { title: 'OneToMany', href: '/products/onetomany', description: 'Goal & habit tracking', icon: Target, category: 'Productivity' },
-  { title: 'OpenGovern', href: '/products/opengovern', description: 'Direct democracy tooling', icon: Building2, category: 'Civic' },
+  { title: 'Tic-Tac-Toe', href: '/products', description: 'Vanishing-move game', icon: Gamepad2, category: 'Games' },
+  { title: 'QArt', href: '/products', description: 'AI-generated QR art', icon: QrCode, category: 'Marketing' },
+  { title: 'PicksTracker', href: '/products', description: 'Sports pick tracking', icon: Trophy, category: 'Sports' },
+  { title: 'SailingMate', href: '/products', description: 'Sailing navigation', icon: Compass, category: 'Maritime' },
+  { title: 'LinkUp', href: '/products', description: 'Professional matching', icon: Users, category: 'Social' },
+  { title: 'FinanceHub', href: '/products', description: 'Market data tracking', icon: TrendingUp, category: 'Finance' },
+  { title: 'OneToMany', href: '/products', description: 'Goal & habit tracking', icon: Target, category: 'Productivity' },
+  { title: 'OpenGovern', href: '/products', description: 'Direct democracy tooling', icon: Building2, category: 'Civic' },
 ];
 
 export default function Navigation() {
@@ -100,7 +100,7 @@ export default function Navigation() {
             </div>
           </Link>
 
-          {/* Desktop Navigation with Dropdowns */}
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
             <ProductsDropdown products={allProducts} />
 
@@ -123,16 +123,6 @@ export default function Navigation() {
               }`}
             >
               Updates
-            </Link>
-            <Link
-              href="/docs"
-              className={`px-3 py-2 text-[11px] font-bold uppercase tracking-[0.15em] transition-all no-underline rounded ${
-                isActive('/docs')
-                  ? 'bg-foreground/5 text-foreground'
-                  : 'text-grey-500 hover:text-foreground hover:bg-foreground/5'
-              }`}
-            >
-              Docs
             </Link>
           </div>
 
@@ -172,7 +162,6 @@ export default function Navigation() {
                       {[
                         { href: '/about', label: 'About' },
                         { href: '/updates', label: 'Updates' },
-                        { href: '/docs', label: 'Documentation' },
                         { href: '/contact', label: 'Contact' },
                       ].map((item) => (
                         <Link
