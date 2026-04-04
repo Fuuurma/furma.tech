@@ -69,8 +69,7 @@ function Button({
   )
 
   if (href) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { type: _, form: __, formAction: ___, formEnctype: ____, formMethod: _____, formNoValidate: ______, formTarget: _______, ...linkProps } = props as Record<string, unknown>
+    const linkProps = props as Record<string, unknown>
     return (
       <Link
         href={href}

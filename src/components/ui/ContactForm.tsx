@@ -6,8 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
+import { FieldGroup, Field, FieldLabel, FieldDescription } from '@/components/ui/field';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Spinner } from '@/components/ui/spinner';
 import { trackEvent } from '@/components/Analytics';
+import { CheckCircle, XCircle, Send } from 'lucide-react';
 
 interface ContactFormProps {
   action: (formData: FormData) => Promise<{
@@ -49,126 +52,138 @@ export function ContactForm({ action }: ContactFormProps) {
   }
 
   return (
-    <form id="contact-form" action={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Name */}
-        <div className="space-y-2">
-          <Label htmlFor="name" className="text-[12px] font-semibold uppercase tracking-wide">
-            Full Name
-          </Label>
-          <Input
-            id="name"
-            name="name"
+    <form id="contact-form" action={handleSubmit} className="w-full">
+      <FieldGroup>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Name */}
+          <Field>
+            <FieldLabel htmlFor="name">Full Name</FieldLabel>
+            <Input
+              id="name"
+              name="name"
+              required
+              disabled={isPending || status === 'success'}
+              placeholder="John Doe"
+            />
+          </Field>
+
+          {/* Email */}
+          <Field>
+            <FieldLabel htmlFor="email">Email Address</FieldLabel>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              required
+              disabled={isPending || status === 'success'}
+              placeholder="john@company.com"
+            />
+          </Field>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Company */}
+          <Field>
+            <FieldLabel htmlFor="company">Organization</FieldLabel>
+            <Input
+              id="company"
+              name="company"
+              disabled={isPending || status === 'success'}
+              placeholder="Your company"
+            />
+          </Field>
+
+          {/* Subject */}
+          <Field>
+            <FieldLabel htmlFor="subject">Subject</FieldLabel>
+            <Select name="subject" disabled={isPending || status === 'success'} required>
+              <SelectTrigger id="subject">
+                <SelectValue placeholder="Select a subject" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="product_demo">Product Demo Request</SelectItem>
+                <SelectItem value="aitlas_access">Aitlas Early Access</SelectItem>
+                <SelectItem value="partnership">Partnership Inquiry</SelectItem>
+                <SelectItem value="general">General Inquiry</SelectItem>
+              </SelectContent>
+            </Select>
+          </Field>
+        </div>
+
+        {/* Message */}
+        <Field>
+          <FieldLabel htmlFor="message">Detailed Request</FieldLabel>
+          <Textarea
+            id="message"
+            name="message"
             required
+            rows={6}
             disabled={isPending || status === 'success'}
-            placeholder="John Doe"
+            placeholder="Tell us about your needs..."
           />
-        </div>
+        </Field>
 
-        {/* Email */}
-        <div className="space-y-2">
-          <Label htmlFor="email" className="text-[12px] font-semibold uppercase tracking-wide">
-            Email Address
-          </Label>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            required
+        {/* Newsletter */}
+        <Field className="flex-row items-center gap-3">
+          <Checkbox
+            id="newsletter"
+            name="newsletter"
             disabled={isPending || status === 'success'}
-            placeholder="john@company.com"
           />
-        </div>
-      </div>
+          <FieldDescription className="font-normal cursor-pointer">
+            I want to receive product updates and engineering logs. No spam.
+          </FieldDescription>
+        </Field>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Company */}
-        <div className="space-y-2">
-          <Label htmlFor="company" className="text-[12px] font-semibold uppercase tracking-wide">
-            Organization
-          </Label>
-          <Input
-            id="company"
-            name="company"
-            disabled={isPending || status === 'success'}
-            placeholder="Your company"
-          />
-        </div>
-
-        {/* Subject */}
-        <div className="space-y-2">
-          <Label htmlFor="subject" className="text-[12px] font-semibold uppercase tracking-wide">
-            Subject
-          </Label>
-          <Select name="subject" disabled={isPending || status === 'success'} required>
-            <SelectTrigger id="subject">
-              <SelectValue placeholder="Select a subject" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="product_demo">Product Demo Request</SelectItem>
-              <SelectItem value="aitlas_access">Aitlas Early Access</SelectItem>
-              <SelectItem value="partnership">Partnership Inquiry</SelectItem>
-              <SelectItem value="general">General Inquiry</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      {/* Message */}
-      <div className="space-y-2">
-        <Label htmlFor="message" className="text-[12px] font-semibold uppercase tracking-wide">
-          Detailed Request
-        </Label>
-        <Textarea
-          id="message"
-          name="message"
-          required
-          rows={6}
-          disabled={isPending || status === 'success'}
-          placeholder="Tell us about your needs..."
-        />
-      </div>
-
-      {/* Newsletter */}
-      <div className="flex items-start gap-3">
-        <Checkbox
-          id="newsletter"
-          name="newsletter"
-          disabled={isPending || status === 'success'}
-          className="mt-1"
-        />
-        <Label htmlFor="newsletter" className="text-[13px] text-grey-600 dark:text-grey-400 leading-relaxed font-normal cursor-pointer">
-          I want to receive product updates and engineering logs. No spam.
-        </Label>
-      </div>
-
-      {/* Status Messages */}
-      {status === 'success' && (
-        <div className="p-4 border border-green-600/30 bg-green-600/5 rounded-lg">
-          <p className="text-[13px] font-medium text-foreground">✓ {message}</p>
-        </div>
-      )}
-
-      {status === 'error' && (
-        <div className="p-4 border border-destructive/30 bg-destructive/5 rounded-lg">
-          <p className="text-[13px] font-medium text-foreground">✕ {message}</p>
-        </div>
-      )}
-
-      {/* Submit Button */}
-      <div className="flex flex-col sm:flex-row items-start gap-4 pt-2">
-        <Button
-          type="submit"
-          disabled={isPending || status === 'success'}
-          className="min-w-[200px]"
-        >
-          {isPending ? 'Processing...' : status === 'success' ? 'Sent Successfully' : 'Send Message'}
-        </Button>
-        
-        {isPending && (
-          <p className="text-[11px] font-mono text-grey-500 uppercase tracking-wider mt-3">Sending...</p>
+        {/* Status Messages */}
+        {status === 'success' && (
+          <Alert variant="default" className="border-green-600/30 bg-green-600/5">
+            <CheckCircle className="size-4 text-green-600" />
+            <AlertDescription className="text-[13px] font-medium">
+              ✓ {message}
+            </AlertDescription>
+          </Alert>
         )}
-      </div>
+
+        {status === 'error' && (
+          <Alert variant="destructive">
+            <XCircle className="size-4" />
+            <AlertDescription className="text-[13px] font-medium">
+              ✕ {message}
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {/* Submit Button */}
+        <div className="flex flex-col sm:flex-row items-start gap-4 pt-2">
+          <Button
+            type="submit"
+            disabled={isPending || status === 'success'}
+            className="min-w-[200px]"
+          >
+            {isPending ? (
+              <>
+                <Spinner className="size-4" />
+                Processing...
+              </>
+            ) : status === 'success' ? (
+              <>
+                <CheckCircle data-icon="inline-start" />
+                Sent Successfully
+              </>
+            ) : (
+              <>
+                <Send data-icon="inline-start" />
+                Send Message
+              </>
+            )}
+          </Button>
+
+          {isPending && (
+            <p className="text-[11px] font-mono text-grey-500 uppercase tracking-wider">Sending...</p>
+          )}
+        </div>
+      </FieldGroup>
     </form>
   );
 }
