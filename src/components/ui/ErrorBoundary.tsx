@@ -21,7 +21,7 @@ export function ErrorBoundary({ error, reset }: ErrorBoundaryProps) {
           </svg>
         </div>
 
-        <h2 className="font-serif text-[28px] font-semibold text-fg mb-4">
+        <h2 className="font-serif text-[28px] font-semibold text-foreground mb-4">
           Something went wrong
         </h2>
 

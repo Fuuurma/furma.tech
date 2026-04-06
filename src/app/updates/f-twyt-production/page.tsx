@@ -12,7 +12,7 @@ export const metadata = constructMetadata({
 
 export default function FTwytProductionPost() {
   return (
-    <div className="min-h-screen bg-bg text-fg">
+    <div className="min-h-screen bg-background text-foreground">
       <ProjectHero 
         label="In Development"
         title="Introducing f.twyt"
@@ -33,7 +33,7 @@ export default function FTwytProductionPost() {
               ingest, and semantically search tweets without worrying about rate limits.
             </p>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">What f.twyt Will Do</h2>
+            <h2 className="text-[28px] font-bold text-foreground mt-12 mb-6">What f.twyt Will Do</h2>
             <p className="text-[17px] leading-[1.8] mb-6">
               f.twyt will wrap the Twitter API with intelligent rate limit handling and add semantic search
               capabilities on top. You will be able to:
@@ -57,19 +57,19 @@ export default function FTwytProductionPost() {
               </li>
             </ul>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">Planned Pricing</h2>
+            <h2 className="text-[28px] font-bold text-foreground mt-12 mb-6">Planned Pricing</h2>
             <p className="text-[17px] leading-[1.8] mb-6">
               Each search query will cost 1 credit. Ingesting tweets will cost 2 credits per tweet.
               Compare this to Twitter&apos;s API pricing which starts at $100/month for basic access.
             </p>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">Getting Started</h2>
+            <h2 className="text-[28px] font-bold text-foreground mt-12 mb-6">Getting Started</h2>
             <p className="text-[17px] leading-[1.8] mb-6">
               Once ready, you&apos;ll be able to sign up for a free account, add credits, and connect your Twitter API keys
               (or use ours if you don&apos;t have access). The choice is yours — that&apos;s the BYOK way.
             </p>
 
-            <Button href="/projects/aitlas/twyt" variant="outline">Learn more about f.twyt →</Button>
+            <Button href="/portfolio/aitlas/twyt" variant="outline">Learn more about f.twyt →</Button>
           </div>
         </Container>
       </Section>

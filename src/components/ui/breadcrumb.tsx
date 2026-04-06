@@ -140,9 +140,8 @@ interface BreadcrumbsProps {
 }
 
 const routeLabels: Record<string, string> = {
-  projects: "Projects",
+  portfolio: "Portfolio",
   aitlas: "Aitlas",
-  saas: "Industry SaaS",
   about: "About",
   careers: "Careers",
   contact: "Contact",
@@ -159,6 +158,15 @@ const routeLabels: Record<string, string> = {
   health: "f.health",
   restauramanager: "restauManager",
   guidetours: "GuideTours",
+  qart: "QArt",
+  "tic-tac-toe": "Tic-Tac-Toe",
+  "tic-tac-toe-disappear": "Tic-Tac-Toe",
+  sailingmate: "SailingMate",
+  financehub: "FinanceHub",
+  linkup: "LinkUp",
+  pickstracker: "PicksTracker",
+  onetomany: "OneToMany",
+  opengovern: "OpenGovern",
 }
 
 export default function Breadcrumbs({ items, className = "" }: BreadcrumbsProps) {

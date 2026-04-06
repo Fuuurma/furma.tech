@@ -55,21 +55,22 @@ export function ContactForm({ action }: ContactFormProps) {
     <form id="contact-form" action={handleSubmit} className="w-full">
       <FieldGroup>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Name */}
+          {/* Name - Optional */}
           <Field>
-            <FieldLabel htmlFor="name">Full Name</FieldLabel>
+            <FieldLabel htmlFor="name">
+              Full Name <span className="text-grey-400 font-normal">(optional)</span>
+            </FieldLabel>
             <Input
               id="name"
               name="name"
-              required
               disabled={isPending || status === 'success'}
               placeholder="John Doe"
             />
           </Field>
 
-          {/* Email */}
+          {/* Email - Required */}
           <Field>
-            <FieldLabel htmlFor="email">Email Address</FieldLabel>
+            <FieldLabel htmlFor="email">Email Address *</FieldLabel>
             <Input
               id="email"
               name="email"
@@ -110,14 +111,15 @@ export function ContactForm({ action }: ContactFormProps) {
           </Field>
         </div>
 
-        {/* Message */}
+        {/* Message - Optional */}
         <Field>
-          <FieldLabel htmlFor="message">Detailed Request</FieldLabel>
+          <FieldLabel htmlFor="message">
+            Message <span className="text-grey-400 font-normal">(optional)</span>
+          </FieldLabel>
           <Textarea
             id="message"
             name="message"
-            required
-            rows={6}
+            rows={4}
             disabled={isPending || status === 'success'}
             placeholder="Tell us about your needs..."
           />
@@ -131,45 +133,53 @@ export function ContactForm({ action }: ContactFormProps) {
             disabled={isPending || status === 'success'}
           />
           <FieldDescription className="font-normal cursor-pointer">
-            I want to receive product updates and engineering logs. No spam.
+            Subscribe to product updates and engineering logs
           </FieldDescription>
         </Field>
 
-        {/* Status Messages */}
-        {status === 'success' && (
-          <Alert variant="default" className="border-green-600/30 bg-green-600/5">
-            <CheckCircle className="size-4 text-green-600" />
-            <AlertDescription className="text-[13px] font-medium">
-              ✓ {message}
-            </AlertDescription>
-          </Alert>
-        )}
-
-        {status === 'error' && (
-          <Alert variant="destructive">
-            <XCircle className="size-4" />
-            <AlertDescription className="text-[13px] font-medium">
-              ✕ {message}
-            </AlertDescription>
-          </Alert>
-        )}
-
-        {/* Submit Button */}
+        {/* Subscribe Button */}
         <div className="flex flex-col sm:flex-row items-start gap-4 pt-2">
           <Button
             type="submit"
+            name="action"
+            value="subscribe"
+            disabled={isPending || status === 'success'}
+            variant="outline"
+            className="min-w-[200px]"
+          >
+            {isPending ? (
+              <>
+                <Spinner className="size-4" />
+                Subscribing...
+              </>
+            ) : status === 'success' ? (
+              <>
+                <CheckCircle data-icon="inline-start" />
+                Subscribed!
+              </>
+            ) : (
+              <>
+                Subscribe for Updates
+              </>
+            )}
+          </Button>
+
+          <Button
+            type="submit"
+            name="action"
+            value="contact"
             disabled={isPending || status === 'success'}
             className="min-w-[200px]"
           >
             {isPending ? (
               <>
                 <Spinner className="size-4" />
-                Processing...
+                Sending...
               </>
             ) : status === 'success' ? (
               <>
                 <CheckCircle data-icon="inline-start" />
-                Sent Successfully
+                Sent!
               </>
             ) : (
               <>
@@ -178,10 +188,6 @@ export function ContactForm({ action }: ContactFormProps) {
               </>
             )}
           </Button>
-
-          {isPending && (
-            <p className="text-[11px] font-mono text-grey-500 uppercase tracking-wider">Sending...</p>
-          )}
         </div>
       </FieldGroup>
     </form>

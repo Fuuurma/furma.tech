@@ -19,7 +19,7 @@ const logos = [
   {
     name: "Logo Minimal",
     file: "/logo-minimal.svg",
-    bg: "bg-white dark:bg-grey-900",
+    bg: "bg-background",
     desc: "Primary mark - geometric F structure.",
   },
   {
@@ -31,13 +31,13 @@ const logos = [
   {
     name: "Logo Clean",
     file: "/logo-clean.svg",
-    bg: "bg-white dark:bg-grey-900",
+    bg: "bg-background",
     desc: "Legacy mark with structural dot.",
   },
   {
     name: "Favicon",
     file: "/favicon.svg",
-    bg: "bg-white dark:bg-grey-900",
+    bg: "bg-background",
     desc: "Standard 32x32 browser icon.",
   },
 ];
@@ -90,7 +90,7 @@ export default function LogoPage() {
             {logos.map((logo, index) => (
               <Card
                 key={logo.name}
-                className="flex flex-col gap-4 p-6 bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 hover:border-foreground/30 transition-all duration-300 reveal-up visible"
+                className="flex flex-col gap-4 p-6 bg-background border-grey-200 dark:border-grey-800 hover:border-foreground/30 transition-all duration-300 reveal-up visible"
                 style={{ transitionDelay: `${index * 50}ms` }}
               >
                 <div className={`aspect-square border border-grey-200 dark:border-grey-800 ${logo.bg} flex items-center justify-center p-8 transition-transform group-hover:scale-[0.98] duration-300`}>
@@ -210,7 +210,7 @@ export default function LogoPage() {
                 </div>
               </div>
 
-              <div className="mt-8 p-5 bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800">
+              <div className="mt-8 p-5 bg-background border border-grey-200 dark:border-grey-800">
                 <div className="flex items-start gap-3">
                   <div className="size-8 rounded bg-grey-100 dark:bg-grey-800 flex items-center justify-center shrink-0">
                     <Copy className="size-4 text-grey-600" />
@@ -242,7 +242,7 @@ export default function LogoPage() {
           </ScrollReveal>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <Card className="lg:col-span-2 p-8 bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800">
+            <Card className="lg:col-span-2 p-8 bg-background border-grey-200 dark:border-grey-800">
               <CardContent className="flex flex-col gap-6 p-0">
                 <div>
                   <div className="font-mono text-[10px] font-bold uppercase text-grey-400 mb-2">Syne — Headlines</div>

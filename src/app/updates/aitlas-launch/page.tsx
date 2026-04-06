@@ -12,7 +12,7 @@ export const metadata = constructMetadata({
 
 export default function AitlasLaunchPost() {
   return (
-    <div className="min-h-screen bg-bg text-fg">
+    <div className="min-h-screen bg-background text-foreground">
       <ProjectHero 
         label="In Development"
         title="Introducing Aitlas"
@@ -33,48 +33,48 @@ export default function AitlasLaunchPost() {
               your keys, your data, and your agents.
             </p>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">The Problem with AI Today</h2>
+            <h2 className="text-[28px] font-bold text-foreground mt-12 mb-6">The Problem with AI Today</h2>
             <p className="text-[17px] leading-[1.8] mb-6">
               Every AI platform locks you in. They store your data, control your API access, and take a cut of
               every token. We think there&apos;s a better way.
             </p>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">Aitlas Components</h2>
+            <h2 className="text-[28px] font-bold text-foreground mt-12 mb-6">Aitlas Components</h2>
             <p className="text-[17px] leading-[1.8] mb-6">
               Aitlas is a modular AI operating system with four core components:
             </p>
             <ul className="space-y-4 mb-6 list-none pl-0">
               <li className="flex gap-4">
                 <span className="text-amber-600 font-mono font-bold">→</span>
-                <span><strong className="text-fg">Nova</strong> — AI workspace where you bring your own API keys</span>
+                <span><strong className="text-foreground">Nova</strong> — AI workspace where you bring your own API keys</span>
               </li>
               <li className="flex gap-4">
                 <span className="text-amber-600 font-mono font-bold">→</span>
-                <span><strong className="text-fg">Nexus runtime</strong> — Background execution for long-running agent tasks</span>
+                <span><strong className="text-foreground">Nexus runtime</strong> — Background execution for long-running agent tasks</span>
               </li>
               <li className="flex gap-4">
                 <span className="text-amber-600 font-mono font-bold">→</span>
-                <span><strong className="text-fg">Agents Store</strong> — Marketplace for pre-built AI agents</span>
+                <span><strong className="text-foreground">Agents Store</strong> — Marketplace for pre-built AI agents</span>
               </li>
               <li className="flex gap-4">
                 <span className="text-amber-600 font-mono font-bold">→</span>
-                <span><strong className="text-fg">Actions</strong> — MCP-powered micro-tools (f.twyt, f.library, f.rsrx)</span>
+                <span><strong className="text-foreground">Actions</strong> — MCP-powered micro-tools (f.twyt, f.library, f.rsrx)</span>
               </li>
             </ul>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">Zero Token Liability</h2>
+            <h2 className="text-[28px] font-bold text-foreground mt-12 mb-6">Zero Token Liability</h2>
             <p className="text-[17px] leading-[1.8] mb-6">
               With Aitlas, you bring your own API keys. You pay OpenAI or Anthropic directly. We&apos;ll never
               touch your tokens and never profit from your API spend. We make money on compute credits
               for Actions, not on markups.
             </p>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">What&apos;s Next</h2>
+            <h2 className="text-[28px] font-bold text-foreground mt-12 mb-6">What&apos;s Next</h2>
             <p className="text-[17px] leading-[1.8] mb-8">
               All components are currently in development. Join the waitlist to get early access when ready.
             </p>
 
-            <Button href="/projects/aitlas" variant="outline">Discover Aitlas →</Button>
+            <Button href="/portfolio/aitlas" variant="outline">Discover Aitlas →</Button>
           </div>
         </Container>
       </Section>

@@ -21,30 +21,38 @@ import {
   Menu,
 } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
-import { ProductsDropdown, MobileProductsMenu } from './ProductsMenu';
+import { ProductsDropdown, MobilePortfolioMenu } from './PortfolioMenu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Brain } from 'lucide-react';
 
 const allProducts = [
-  // Aitlas Ecosystem (Featured First)
-  { title: 'Aitlas', href: '/projects/aitlas', description: 'Sovereign AI ecosystem', icon: Sparkles, category: 'AI', featured: true },
-  { title: 'Nova', href: '/projects/aitlas/nova', description: 'AI workspace with BYOK', icon: Hexagon, category: 'AI' },
-  { title: 'Nexus', href: '/projects/aitlas/nexus', description: 'Durable agent runtime', icon: Brain, category: 'AI' },
-  { title: 'f.twyt', href: '/projects/aitlas/twyt', description: 'Twitter intelligence', icon: Zap, category: 'AI' },
-  { title: 'f.library', href: '/projects/aitlas/library', description: 'Vector knowledge base', icon: Zap, category: 'AI' },
-  // Industry SaaS
-  { title: 'RestaurantManager', href: '/projects/saas/restauramanager', description: 'Restaurant management', icon: Utensils, category: 'SaaS' },
-  { title: 'TourManager', href: '/projects/saas/guidetours', description: 'Tour operator platform', icon: Map, category: 'SaaS' },
-  // Other Products
-  { title: 'Tic-Tac-Toe', href: '/products', description: 'Vanishing-move game', icon: Gamepad2, category: 'Games' },
-  { title: 'QArt', href: '/products', description: 'AI-generated QR art', icon: QrCode, category: 'Marketing' },
-  { title: 'PicksTracker', href: '/products', description: 'Sports pick tracking', icon: Trophy, category: 'Sports' },
-  { title: 'SailingMate', href: '/products', description: 'Sailing navigation', icon: Compass, category: 'Maritime' },
-  { title: 'LinkUp', href: '/products', description: 'Professional matching', icon: Users, category: 'Social' },
-  { title: 'FinanceHub', href: '/products', description: 'Market data tracking', icon: TrendingUp, category: 'Finance' },
-  { title: 'OneToMany', href: '/products', description: 'Goal & habit tracking', icon: Target, category: 'Productivity' },
-  { title: 'OpenGovern', href: '/products', description: 'Direct democracy tooling', icon: Building2, category: 'Civic' },
+  // Aitlas Ecosystem (with children)
+  { 
+    title: 'Aitlas', 
+    href: '/portfolio/aitlas', 
+    description: 'Sovereign AI ecosystem', 
+    icon: Sparkles, 
+    category: 'AI', 
+    featured: true,
+    children: [
+      { title: 'Nova', href: '/portfolio/aitlas/nova', description: 'AI workspace with BYOK', icon: Hexagon, category: 'AI' },
+      { title: 'Nexus', href: '/portfolio/aitlas/nexus', description: 'Durable agent runtime', icon: Brain, category: 'AI' },
+      { title: 'f.twyt', href: '/portfolio/aitlas/twyt', description: 'Twitter intelligence', icon: Zap, category: 'AI' },
+      { title: 'f.library', href: '/portfolio/aitlas/library', description: 'Vector knowledge base', icon: Zap, category: 'AI' },
+    ]
+  },
+  // Standalone Products
+  { title: 'restauManager', href: '/portfolio/restauramanager', description: 'Restaurant management', icon: Utensils, category: 'SaaS' },
+  { title: 'GuideTours', href: '/portfolio/guidetours', description: 'Tour operator platform', icon: Map, category: 'SaaS' },
+  { title: 'Tic-Tac-Toe', href: '/portfolio/tic-tac-toe', description: 'Vanishing-move game', icon: Gamepad2, category: 'Games' },
+  { title: 'QArt', href: '/portfolio/qart', description: 'AI-generated QR art', icon: QrCode, category: 'Marketing' },
+  { title: 'PicksTracker', href: '/portfolio/pickstracker', description: 'Sports pick tracking', icon: Trophy, category: 'Sports' },
+  { title: 'SailingMate', href: '/portfolio/sailingmate', description: 'Sailing navigation', icon: Compass, category: 'Maritime' },
+  { title: 'LinkUp', href: '/portfolio/linkup', description: 'Professional matching', icon: Users, category: 'Social' },
+  { title: 'FinanceHub', href: '/portfolio/financehub', description: 'Market data tracking', icon: TrendingUp, category: 'Finance' },
+  { title: 'OneToMany', href: '/portfolio/onetomany', description: 'Goal & habit tracking', icon: Target, category: 'Productivity' },
+  { title: 'OpenGovern', href: '/portfolio/opengovern', description: 'Direct democracy tooling', icon: Building2, category: 'Civic' },
 ];
 
 export default function Navigation() {
@@ -154,7 +162,7 @@ export default function Navigation() {
 
                 <div className="flex-1 overflow-y-auto px-6">
                   <div className="flex flex-col gap-8">
-                    <MobileProductsMenu products={allProducts} pathname={pathname} />
+                    <MobilePortfolioMenu products={allProducts} pathname={pathname} />
 
                     {/* Other Links */}
                     <div className="flex flex-col gap-1 pt-6 border-t border-border">

@@ -80,7 +80,7 @@ export default function CareersPage() {
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {benefits.map((benefit) => (
               <ScrollReveal key={benefit.title}>
-                <Card className="flex flex-col gap-4 p-6 bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 hover:border-foreground/30 transition-all duration-300">
+                <Card className="flex flex-col gap-4 p-6 bg-background border-grey-200 dark:border-grey-800 hover:border-foreground/30 transition-all duration-300">
                   <CardHeader className="flex flex-row items-start gap-4 p-0 mb-0">
                     <div className="size-10 rounded-lg bg-grey-50 dark:bg-grey-800 flex items-center justify-center group-hover:bg-foreground group-hover:text-background transition-colors shrink-0">
                       <benefit.icon className="size-5" strokeWidth={1.5} />
@@ -116,7 +116,7 @@ export default function CareersPage() {
                 href={`/careers/${job.title.toLowerCase().replace(/\s+/g, '-')}`}
                 className="group block"
               >
-                <Card className="p-6 sm:p-8 bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 hover:border-foreground/40 transition-all duration-300">
+                <Card className="p-6 sm:p-8 bg-background border-grey-200 dark:border-grey-800 hover:border-foreground/40 transition-all duration-300">
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6 mb-6">
                     <div className="flex-1">
                       <h3 className="text-[20px] font-bold text-foreground mb-2 group-hover:underline underline-offset-4">
@@ -225,7 +225,7 @@ export default function CareersPage() {
               <h2 className="font-serif text-[clamp(32px,4vw,48px)] font-semibold leading-[1.1] tracking-tight">
                 Ready to build with us?
               </h2>
-              <p className="text-[16px] text-white/60 leading-relaxed">
+              <p className="text-[16px] text-background/60 leading-relaxed">
                 We&apos;re looking for people who care about shipping useful software,
                 not chasing trends. If that sounds like you, get in touch.
               </p>
