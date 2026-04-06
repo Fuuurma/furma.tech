@@ -4,7 +4,7 @@ import { ArrowRight, Home, MessageSquare, Search, Compass } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen relative flex items-center justify-center bg-bg px-6 overflow-hidden">
+    <div className="min-h-screen relative flex items-center justify-center bg-background px-6 overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 bg-gradient-radial pointer-events-none"></div>
       <div className="absolute top-1/4 right-[-10%] w-[600px] h-[600px] bg-gradient-radial-blue pointer-events-none opacity-40 blur-[100px] animate-pulse-glow"></div>
@@ -18,7 +18,7 @@ export default function NotFound() {
         </div>
 
         {/* Headline */}
-        <h1 className="font-serif text-[clamp(64px,10vw,128px)] font-semibold leading-[0.85] tracking-tighter text-fg mb-8">
+        <h1 className="font-serif text-[clamp(64px,10vw,128px)] font-semibold leading-[0.85] tracking-tighter text-foreground mb-8">
           Lost in the<br />
           <span className="gradient-text italic">ecosystem.</span>
         </h1>
@@ -48,27 +48,27 @@ export default function NotFound() {
 
         {/* Quick Navigation */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-          <Link href="/projects/aitlas" className="group no-underline">
-            <div className="p-4 rounded-xl bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 card-elevated hover:border-amber-500/30 transition-all">
-              <div className="text-[13px] font-bold text-fg mb-1 group-hover:text-amber-600 transition-colors">Aitlas</div>
+          <Link href="/portfolio/aitlas" className="group no-underline">
+            <div className="p-4 rounded-xl bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 card-elevated hover:border-foreground/30 transition-all">
+              <div className="text-[13px] font-bold text-foreground mb-1 group-hover:text-amber-600 transition-colors">Aitlas</div>
               <div className="text-[11px] text-grey-500">AI Ecosystem</div>
             </div>
           </Link>
-          <Link href="/projects/saas" className="group no-underline">
-            <div className="p-4 rounded-xl bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 card-elevated hover:border-blue-500/30 transition-all">
-              <div className="text-[13px] font-bold text-fg mb-1 group-hover:text-blue-600 transition-colors">Products</div>
+          <Link href="/products" className="group no-underline">
+            <div className="p-4 rounded-xl bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 card-elevated hover:border-foreground/30 transition-all">
+              <div className="text-[13px] font-bold text-foreground mb-1 group-hover:text-blue-600 transition-colors">Products</div>
               <div className="text-[11px] text-grey-500">Industry SaaS</div>
             </div>
           </Link>
           <Link href="/about" className="group no-underline">
-            <div className="p-4 rounded-xl bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 card-elevated hover:border-purple-500/30 transition-all">
-              <div className="text-[13px] font-bold text-fg mb-1 group-hover:text-purple-600 transition-colors">About</div>
+            <div className="p-4 rounded-xl bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 card-elevated hover:border-foreground/30 transition-all">
+              <div className="text-[13px] font-bold text-foreground mb-1 group-hover:text-purple-600 transition-colors">About</div>
               <div className="text-[11px] text-grey-500">Our Story</div>
             </div>
           </Link>
           <Link href="/contact" className="group no-underline">
-            <div className="p-4 rounded-xl bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 card-elevated hover:border-green-500/30 transition-all">
-              <div className="text-[13px] font-bold text-fg mb-1 group-hover:text-green-600 transition-colors">Contact</div>
+            <div className="p-4 rounded-xl bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 card-elevated hover:border-foreground/30 transition-all">
+              <div className="text-[13px] font-bold text-foreground mb-1 group-hover:text-green-600 transition-colors">Contact</div>
               <div className="text-[11px] text-grey-500">Get in Touch</div>
             </div>
           </Link>
@@ -88,7 +88,7 @@ export default function NotFound() {
 
       {/* Decorative Background Logo */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 opacity-[0.02] pointer-events-none select-none">
-        <span className="font-serif text-[25vw] font-bold text-fg">FURMA</span>
+        <span className="font-serif text-[25vw] font-bold text-foreground">FURMA</span>
       </div>
     </div>
   );

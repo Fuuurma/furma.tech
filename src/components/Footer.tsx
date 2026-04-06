@@ -57,10 +57,10 @@ export default function Footer() {
                   <ArrowRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                 </Link>
               </li>
-              <li><Link href="/products/aitlas" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">Aitlas</Link></li>
-              <li><Link href="/products/aitlas/nova" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">Nova</Link></li>
-              <li><Link href="/products/restaurantmanager" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">restauManager</Link></li>
-              <li><Link href="/products/tourmanager" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">TourManager</Link></li>
+              <li><Link href="/portfolio/aitlas" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">Aitlas</Link></li>
+              <li><Link href="/portfolio/aitlas/nova" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">Nova</Link></li>
+              <li><Link href="/portfolio/restaurantmanager" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">restauManager</Link></li>
+              <li><Link href="/portfolio/tourmanager" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">TourManager</Link></li>
             </ul>
           </div>
 

@@ -66,18 +66,18 @@ export default function AboutPage() {
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-white/20 mb-6">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-white/60">Our Mission</span>
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-background/60">Our Mission</span>
               </div>
-              <p className="font-serif text-[clamp(24px,3vw,36px)] font-medium leading-[1.4] text-white/90 mb-10">
+              <p className="font-serif text-[clamp(24px,3vw,36px)] font-medium leading-[1.4] text-background/90 mb-10">
                 &quot;We operate on a simple principle: if it can&apos;t sustain itself, it doesn&apos;t get built.
                 No venture capital. No burn rate anxiety. Just software that solves real problems.&quot;
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8 border-t border-white/10">
                 {stats.map((stat) => (
                   <div key={stat.label} className="text-center">
-                    <div className="font-serif text-[28px] sm:text-[32px] font-bold text-white mb-2">{stat.value}</div>
-                    <div className="text-[10px] font-mono uppercase tracking-wider text-white/50 mb-1">{stat.label}</div>
-                    <div className="text-[11px] text-white/40">{stat.desc}</div>
+                    <div className="font-serif text-[28px] sm:text-[32px] font-bold text-background mb-2">{stat.value}</div>
+                    <div className="text-[10px] font-mono uppercase tracking-wider text-background/50 mb-1">{stat.label}</div>
+                    <div className="text-[11px] text-background/40">{stat.desc}</div>
                   </div>
                 ))}
               </div>
@@ -102,11 +102,11 @@ export default function AboutPage() {
             {pillars.map((p) => (
               <div
                 key={p.title}
-                className="group p-6 bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 hover:border-foreground/30 transition-all duration-300"
+                className="group p-6 bg-background border border-grey-200 dark:border-grey-800 hover:border-foreground/30 transition-all duration-300"
               >
                 <div className="flex items-start gap-5">
                   <div className={`w-11 h-11 rounded-lg ${p.color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
-                    <p.icon className="w-5 h-5 text-white" strokeWidth={1.5} />
+                    <p.icon className="w-5 h-5 text-background" strokeWidth={1.5} />
                   </div>
                   <div>
                     <h3 className="text-[17px] font-bold text-foreground mb-2">{p.title}</h3>
@@ -150,7 +150,7 @@ export default function AboutPage() {
               ].map((s) => (
                 <div
                   key={s.name}
-                  className="group p-5 bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 hover:border-foreground/30 transition-all duration-300"
+                  className="group p-5 bg-background border border-grey-200 dark:border-grey-800 hover:border-foreground/30 transition-all duration-300"
                 >
                   <div className="font-mono text-[9px] font-bold uppercase text-grey-400 mb-2">{s.category}</div>
                   <div className="font-bold text-[15px] mb-1">{s.name}</div>
@@ -184,7 +184,7 @@ export default function AboutPage() {
               ].map((item, i) => (
                 <ScrollReveal key={i}>
                   <div className="relative pl-14">
-                    <div className="absolute left-0 top-1 w-[40px] h-[40px] rounded-full bg-white dark:bg-grey-900 border-2 border-grey-200 dark:border-grey-800 flex items-center justify-center z-10">
+                    <div className="absolute left-0 top-1 w-[40px] h-[40px] rounded-full bg-background border-2 border-grey-200 dark:border-grey-800 flex items-center justify-center z-10">
                       <div className="w-2.5 h-2.5 rounded-full bg-foreground dark:bg-white"></div>
                     </div>
                     <div className="font-mono text-[10px] font-bold uppercase text-grey-500 mb-2">{item.year}</div>
@@ -229,7 +229,7 @@ export default function AboutPage() {
               },
             ].map((item) => (
               <ScrollReveal key={item.title}>
-                <div className="p-6 bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 text-center">
+                <div className="p-6 bg-background border border-grey-200 dark:border-grey-800 text-center">
                   <div className="w-12 h-12 rounded-xl bg-grey-100 dark:bg-grey-800 flex items-center justify-center mx-auto mb-4">
                     <item.icon className="w-6 h-6 text-foreground" strokeWidth={1.5} />
                   </div>
@@ -250,7 +250,7 @@ export default function AboutPage() {
               <h2 className="font-serif text-[clamp(32px,4vw,48px)] font-semibold leading-[1.1] tracking-tight mb-6">
                 Let&apos;s build the future
               </h2>
-              <p className="text-[16px] text-white/60 mb-8 leading-relaxed">
+              <p className="text-[16px] text-background/60 mb-8 leading-relaxed">
                 Whether you&apos;re a local business or a developer building on Aitlas,
                 we want to hear from you.
               </p>

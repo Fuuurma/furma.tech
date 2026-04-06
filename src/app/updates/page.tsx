@@ -103,7 +103,7 @@ export default function UpdatesPage() {
             {posts.map((post) => (
               <ScrollReveal key={post.slug}>
                 <Link href={`/updates/${post.slug}`} className="group no-underline block h-full">
-                  <Card className="h-full flex flex-col bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-800 p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
+                  <Card className="h-full flex flex-col bg-background border-grey-200 dark:border-grey-800 p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                     <div className="flex items-center gap-4 mb-6">
                       <div className="flex items-center gap-1.5 font-mono text-[10px] font-bold text-amber-600 uppercase tracking-widest">
                         <Calendar className="w-3 h-3" />

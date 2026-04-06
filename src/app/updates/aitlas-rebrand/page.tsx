@@ -11,7 +11,7 @@ export const metadata = constructMetadata({
 
 export default function AitlasRebrandPost() {
   return (
-    <div className="min-h-screen bg-bg text-fg">
+    <div className="min-h-screen bg-background text-foreground">
       <ProjectHero 
         label="Product Update"
         title="Aitlas Rebrand"
@@ -33,23 +33,23 @@ export default function AitlasRebrandPost() {
               product names to better communicate what each piece does.
             </p>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">What Changed</h2>
+            <h2 className="text-[28px] font-bold text-foreground mt-12 mb-6">What Changed</h2>
             <ul className="space-y-4 mb-6 list-none pl-0">
               <li className="flex gap-4">
                 <span className="text-amber-600 font-mono font-bold">→</span>
-                <span><strong className="text-fg">Nexus</strong> is now <strong className="text-fg">Nova</strong> — our AI workspace where users bring their own keys and chat with agents</span>
+                <span><strong className="text-foreground">Nexus</strong> is now <strong className="text-foreground">Nova</strong> — our AI workspace where users bring their own keys and chat with agents</span>
               </li>
               <li className="flex gap-4">
                 <span className="text-amber-600 font-mono font-bold">→</span>
-                <span><strong className="text-fg">f.loop</strong> is now <strong className="text-fg">Nexus runtime</strong> — the durable execution engine behind the scenes</span>
+                <span><strong className="text-foreground">f.loop</strong> is now <strong className="text-foreground">Nexus runtime</strong> — the durable execution engine behind the scenes</span>
               </li>
               <li className="flex gap-4">
                 <span className="text-amber-600 font-mono font-bold">→</span>
-                <span><strong className="text-fg">f.xyz Actions</strong> remain the same — our suite of MCP-powered micro-tools</span>
+                <span><strong className="text-foreground">f.xyz Actions</strong> remain the same — our suite of MCP-powered micro-tools</span>
               </li>
             </ul>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">Why the Change</h2>
+            <h2 className="text-[28px] font-bold text-foreground mt-12 mb-6">Why the Change</h2>
             <p className="text-[17px] leading-[1.8] mb-6">
               Users kept confusing &quot;Nexus&quot; (the hub) with &quot;Nexus runtime&quot; (the worker). By renaming
               the hub to Nova, we create a clear distinction: Nova is where you interact, Nexus is
@@ -61,7 +61,7 @@ export default function AitlasRebrandPost() {
               includes the worker process, state persistence, and the entire durable execution model.
             </p>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">What This Means for You</h2>
+            <h2 className="text-[28px] font-bold text-foreground mt-12 mb-6">What This Means for You</h2>
             <p className="text-[17px] leading-[1.8] mb-6">
               If you&apos;re already using our tools, nothing changes operationally. The APIs remain the
               same, the credit system is unchanged, and all your existing integrations will continue

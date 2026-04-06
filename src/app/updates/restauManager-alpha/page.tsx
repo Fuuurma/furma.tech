@@ -12,7 +12,7 @@ export const metadata = constructMetadata({
 
 export default function RestauManagerAlphaPost() {
   return (
-    <div className="min-h-screen bg-bg text-fg">
+    <div className="min-h-screen bg-background text-foreground">
       <ProjectHero 
         label="In Development"
         title="restauManager Development"
@@ -33,35 +33,35 @@ export default function RestauManagerAlphaPost() {
               reservation management problem with TheFork integration.
             </p>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">What We&apos;re Building</h2>
+            <h2 className="text-[28px] font-bold text-foreground mt-12 mb-6">What We&apos;re Building</h2>
             <p className="text-[17px] leading-[1.8] mb-6">
               The TheFork integration is the core focus. Restaurants manage bookings through
               TheFork and need real-time sync with their floor plans. That&apos;s the pain point we&apos;re solving.
             </p>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">Planned Features</h2>
+            <h2 className="text-[28px] font-bold text-foreground mt-12 mb-6">Planned Features</h2>
             <ul className="space-y-4 mb-6 list-none pl-0">
               <li className="flex gap-4">
                 <span className="text-amber-600 font-mono font-bold">→</span>
-                <span><strong className="text-fg">Floor plan editor</strong> — Intuitive visual editor</span>
+                <span><strong className="text-foreground">Floor plan editor</strong> — Intuitive visual editor</span>
               </li>
               <li className="flex gap-4">
                 <span className="text-amber-600 font-mono font-bold">→</span>
-                <span><strong className="text-fg">TheFork sync</strong> — Real-time booking sync</span>
+                <span><strong className="text-foreground">TheFork sync</strong> — Real-time booking sync</span>
               </li>
               <li className="flex gap-4">
                 <span className="text-amber-600 font-mono font-bold">→</span>
-                <span><strong className="text-fg">Mobile view</strong> — Floor plan access on phones</span>
+                <span><strong className="text-foreground">Mobile view</strong> — Floor plan access on phones</span>
               </li>
             </ul>
 
-            <h2 className="text-[28px] font-bold text-fg mt-12 mb-6">Timeline</h2>
+            <h2 className="text-[28px] font-bold text-foreground mt-12 mb-6">Timeline</h2>
             <p className="text-[17px] leading-[1.8] mb-8">
               Currently in active development. Targeting initial release for restaurants in Catalonia.
               If you know a restaurant that needs better reservation management, get in touch.
             </p>
 
-            <Button href="/projects/saas/restauramanager" variant="outline">Learn about restauManager →</Button>
+            <Button href="/portfolio/restauramanager" variant="outline">Learn about restauManager →</Button>
           </div>
         </Container>
       </Section>

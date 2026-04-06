@@ -3,7 +3,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { Section, Container } from "@/components/ui/Section";
 import { ContactForm } from "@/components/ui/ContactForm";
 import { WaitlistForm } from "@/components/ui/WaitlistForm";
-import { submitContactForm, submitWaitlistSignup } from "@/lib/actions";
+import { submitContactForm, submitWaitlistSignup } from "@/lib/server-actions";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
@@ -88,10 +88,10 @@ export default function ContactPage() {
                       href={option.href}
                       className="group block"
                     >
-                      <div className="p-5 bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 hover:border-foreground/40 transition-all duration-300">
+                      <div className="p-5 bg-background border border-grey-200 dark:border-grey-800 hover:border-foreground/40 transition-all duration-300">
                         <div className="flex items-start gap-4">
                           <div className={`w-10 h-10 rounded-lg ${option.color} flex items-center justify-center shrink-0`}>
-                            <option.icon className="w-5 h-5 text-white" strokeWidth={1.5} />
+                            <option.icon className="w-5 h-5 text-background" strokeWidth={1.5} />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-4 mb-1">
@@ -146,7 +146,7 @@ export default function ContactPage() {
                   This gives us the ability to stay close to our local clients while serving global markets.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="p-5 bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 rounded-lg">
+                  <div className="p-5 bg-background border border-grey-200 dark:border-grey-800 rounded-lg">
                     <div className="flex items-center gap-3 mb-3">
                       <MapPin className="w-5 h-5 text-foreground" strokeWidth={1.5} />
                       <span className="text-[11px] font-mono uppercase tracking-wider text-grey-500">Legal Entity</span>
@@ -154,7 +154,7 @@ export default function ContactPage() {
                     <div className="text-[15px] font-bold text-foreground">Furma.tech OÜ</div>
                     <div className="text-[13px] text-grey-500">EE102894502 • Tallinn, Estonia</div>
                   </div>
-                  <div className="p-5 bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 rounded-lg">
+                  <div className="p-5 bg-background border border-grey-200 dark:border-grey-800 rounded-lg">
                     <div className="flex items-center gap-3 mb-3">
                       <MapPin className="w-5 h-5 text-foreground" strokeWidth={1.5} />
                       <span className="text-[11px] font-mono uppercase tracking-wider text-grey-500">Operating Base</span>

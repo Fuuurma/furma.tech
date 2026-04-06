@@ -20,18 +20,18 @@ export function CTA({
   variant = "light",
 }: CTAProps) {
   const variantStyles = {
-    light: "bg-bg text-fg",
-    dark: "bg-fg text-bg dark:bg-white dark:text-fg",
+    light: "bg-background text-foreground",
+    dark: "bg-fg text-bg dark:bg-white dark:text-foreground",
   };
 
   const buttonStyles = {
     light: {
-      primary: "bg-fg text-bg hover:bg-grey-800 dark:bg-white dark:text-fg dark:hover:bg-grey-200",
-      secondary: "border-grey-200 text-fg hover:border-grey-400 hover:bg-grey-50 dark:border-grey-800 dark:text-white dark:hover:border-grey-600 dark:hover:bg-grey-800",
+      primary: "bg-fg text-bg hover:bg-grey-800 dark:bg-white dark:text-foreground dark:hover:bg-grey-200",
+      secondary: "border-grey-200 text-foreground hover:border-grey-400 hover:bg-grey-50 dark:border-grey-800 dark:text-white dark:hover:border-grey-600 dark:hover:bg-grey-800",
     },
     dark: {
       primary: "bg-white text-black hover:bg-gray-100 dark:bg-fg dark:text-white dark:hover:bg-grey-800",
-      secondary: "border-white/20 text-white hover:border-white/40 hover:bg-white/10 dark:border-fg/20 dark:text-fg dark:hover:border-fg/40 dark:hover:bg-fg/10",
+      secondary: "border-white/20 text-white hover:border-white/40 hover:bg-white/10 dark:border-fg/20 dark:text-foreground dark:hover:border-fg/40 dark:hover:bg-fg/10",
     },
   };
 

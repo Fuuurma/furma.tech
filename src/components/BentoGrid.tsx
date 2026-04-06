@@ -1,367 +1,179 @@
 'use client';
 
 import Link from 'next/link';
-import {
-  type LucideIcon,
-  Gamepad2,
-  QrCode,
-  Compass,
-  Map,
-  Utensils,
-  TrendingUp,
-  Target,
-  Building2,
-  Users,
-  Trophy,
-  Sparkles,
-  ArrowRight,
-} from 'lucide-react';
-import { ScrollReveal, StaggerChildren } from '@/components/ui/ScrollReveal';
 
 type ProductStatus = 'In Dev' | 'Roadmap' | 'Paused';
 
 interface Product {
   name: string;
   description: string;
-  longDescription: string;
   category: string;
-  status: ProductStatus;
   href: string;
-  icon: LucideIcon;
-  tags: readonly string[];
-  colSpan: number;
-  rowSpan: number;
-  accentColor?: 'amber' | 'purple' | 'blue' | 'green' | 'pink' | 'none';
+  status: ProductStatus;
+  accent: 'dark' | 'light' | 'muted';
 }
 
 const products: Product[] = [
   {
     name: 'Aitlas',
-    description: 'Sovereign AI ecosystem',
-    longDescription: 'Nova workspace, Nexus runtime, 34+ specialized Actions. BYOK architecture with multi-provider support.',
+    description: 'Sovereign AI ecosystem. Nova workspace, Nexus runtime, 34+ Actions.',
     category: 'AI',
+    href: '/portfolio/aitlas',
     status: 'In Dev',
-    href: '/products/aitlas',
-    icon: Sparkles,
-    tags: ['BYOK', 'MCP', 'Agents'],
-    colSpan: 3,
-    rowSpan: 2,
-    accentColor: 'none',
+    accent: 'dark',
   },
   {
     name: 'TourManager',
-    description: 'Tour operator platform with Viator sync',
-    longDescription: 'End-to-end tour operator platform with booking management, scheduling, and Viator marketplace synchronization.',
+    description: 'Tour operator platform with Viator sync for bookings and scheduling.',
     category: 'Tourism',
+    href: '/portfolio/tourmanager',
     status: 'In Dev',
-    href: '/products/tourmanager',
-    icon: Map,
-    tags: ['Viator', 'Bookings'],
-    colSpan: 1,
-    rowSpan: 3,
-    accentColor: 'amber',
+    accent: 'light',
   },
   {
     name: 'RestaurantManager',
-    description: 'Restaurant management with TheFork integration',
-    longDescription: 'Full restaurant management platform with reservation sync, table management, and TheFork integration.',
+    description: 'Restaurant management with TheFork integration.',
     category: 'Hospitality',
+    href: '/portfolio/restaurantmanager',
     status: 'In Dev',
-    href: '/products/restaurantmanager',
-    icon: Utensils,
-    tags: ['TheFork', 'Reservations'],
-    colSpan: 2,
-    rowSpan: 1,
-    accentColor: 'amber',
+    accent: 'light',
   },
   {
     name: 'Tic-Tac-Toe Disappear',
-    description: 'Vanishing-move strategy game',
-    longDescription: 'A strategic twist on the classic game where moves vanish after a set number of turns, creating dynamic gameplay.',
+    description: 'Vanishing-move strategy game.',
     category: 'Games',
+    href: '/portfolio/tic-tac-toe-disappear',
     status: 'In Dev',
-    href: '/products/tic-tac-toe-disappear',
-    icon: Gamepad2,
-    tags: ['Strategy', 'Mobile'],
-    colSpan: 3,
-    rowSpan: 1,
-    accentColor: 'purple',
+    accent: 'muted',
   },
   {
     name: 'QArt',
-    description: 'AI-generated QR codes that look like art',
-    longDescription: 'Transform any QR code into stunning visual art while maintaining full scannability. AI-powered design generation.',
+    description: 'AI-generated QR codes that look like art.',
     category: 'Marketing',
+    href: '/portfolio/qart',
     status: 'Roadmap',
-    href: '/products/qart',
-    icon: QrCode,
-    tags: ['AI', 'Design'],
-    colSpan: 1,
-    rowSpan: 1,
-    accentColor: 'pink',
+    accent: 'muted',
   },
   {
     name: 'PicksTracker',
-    description: 'Sports pick tracking with social predictions',
-    longDescription: 'Track your sports predictions, compete with friends, and build your track record with social leaderboards.',
+    description: 'Sports pick tracking with social predictions.',
     category: 'Sports',
+    href: '/portfolio/pickstracker',
     status: 'Roadmap',
-    href: '/products/pickstracker',
-    icon: Trophy,
-    tags: ['Social', 'Analytics'],
-    colSpan: 1,
-    rowSpan: 2,
-    accentColor: 'blue',
+    accent: 'muted',
   },
   {
     name: 'SailingMate',
-    description: 'Real-time sailing navigation with GPS routing',
-    longDescription: 'GPS-powered sailing navigation with real-time weather, route optimization, and maritime safety features.',
+    description: 'Real-time sailing navigation with GPS routing.',
     category: 'Maritime',
+    href: '/portfolio/sailingmate',
     status: 'Paused',
-    href: '/products/sailingmate',
-    icon: Compass,
-    tags: ['GPS', 'Navigation'],
-    colSpan: 2,
-    rowSpan: 1,
-    accentColor: 'blue',
+    accent: 'light',
   },
   {
     name: 'LinkUp',
-    description: 'Short-video professional matching',
-    longDescription: 'Swipe-based professional networking using short video profiles. Match with collaborators, hires, and mentors.',
+    description: 'Short-video professional matching platform.',
     category: 'Social',
+    href: '/portfolio/linkup',
     status: 'Paused',
-    href: '/products/linkup',
-    icon: Users,
-    tags: ['Video', 'Networking'],
-    colSpan: 1,
-    rowSpan: 1,
-    accentColor: 'green',
+    accent: 'muted',
   },
   {
     name: 'FinanceHub',
-    description: 'Market data & portfolio monitoring',
-    longDescription: 'Real-time market data, portfolio tracking, and financial analytics for informed investment decisions.',
+    description: 'Market data & portfolio monitoring.',
     category: 'Finance',
+    href: '/portfolio/financehub',
     status: 'Paused',
-    href: '/products/financehub',
-    icon: TrendingUp,
-    tags: ['Portfolio', 'Analytics'],
-    colSpan: 2,
-    rowSpan: 2,
-    accentColor: 'green',
+    accent: 'light',
   },
   {
     name: 'OneToMany',
-    description: 'Goal setting & habit tracking',
-    longDescription: 'Set meaningful goals, build lasting habits, and track progress with data-driven insights and accountability tools.',
+    description: 'Goal setting & habit tracking.',
     category: 'Productivity',
+    href: '/portfolio/onetomany',
     status: 'Paused',
-    href: '/products/onetomany',
-    icon: Target,
-    tags: ['Goals', 'Habits'],
-    colSpan: 1,
-    rowSpan: 1,
-    accentColor: 'purple',
+    accent: 'muted',
   },
   {
     name: 'OpenGovern',
-    description: 'Direct democracy tooling for municipalities',
-    longDescription: 'Participatory governance platform enabling citizen engagement, transparent voting, and collaborative policy-making.',
+    description: 'Direct democracy tooling for municipalities.',
     category: 'Civic Tech',
+    href: '/portfolio/opengovern',
     status: 'Paused',
-    href: '/products/opengovern',
-    icon: Building2,
-    tags: ['Democracy', 'Civic'],
-    colSpan: 2,
-    rowSpan: 1,
-    accentColor: 'pink',
+    accent: 'muted',
   },
 ];
 
-interface StatusBadgeProps {
-  status: ProductStatus;
-  inverted?: boolean;
-}
+const statusBadge: Record<ProductStatus, string> = {
+  'In Dev': 'bg-green-500/20 text-green-600 dark:text-green-400 border-green-500/30',
+  'Roadmap': 'bg-foreground/10 text-foreground/60 border-foreground/20',
+  'Paused': 'bg-foreground/5 text-foreground/30 border-foreground/10',
+};
 
-function StatusBadge({ status, inverted = false }: StatusBadgeProps) {
-  if (inverted) {
-    return (
-      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-background text-foreground text-[10px] font-mono font-semibold uppercase tracking-wider">
-        <span className="w-1 h-1 rounded-full bg-foreground" />
-        {status === 'In Dev' ? 'Dev' : status}
-      </span>
-    );
-  }
+const cardBg: Record<string, string> = {
+  dark: 'bg-foreground text-background border-foreground',
+  light: 'bg-grey-50 dark:bg-grey-900/50 border-grey-200 dark:border-grey-800',
+  muted: 'bg-grey-100 dark:bg-grey-900/30 border-grey-200 dark:border-grey-800/50',
+};
 
-  const variants: Record<ProductStatus, string> = {
-    'In Dev': 'border border-foreground/10 text-foreground/60',
-    'Roadmap': 'border border-foreground/20 bg-foreground/5 text-foreground/70',
-    'Paused': 'border border-foreground/10 bg-foreground/5 text-foreground/40',
-  };
+const categoryStyle: Record<string, string> = {
+  dark: 'text-background/50',
+  light: 'text-foreground/40',
+  muted: 'text-foreground/40',
+};
 
+function StatusBadge({ status }: { status: ProductStatus }) {
   return (
-    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-[10px] font-mono font-semibold uppercase tracking-wider ${variants[status]}`}>
+    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm text-[9px] font-mono uppercase tracking-wider border ${statusBadge[status]}`}>
       <span className="w-1 h-1 rounded-full bg-current" />
       {status}
     </span>
   );
 }
 
-// Dynamic Card Component - adapts based on colSpan, rowSpan, and accentColor
-function BentoCard({ product }: { product: Product }) {
-  const Icon = product.icon;
-  const isHero = product.colSpan >= 3 && product.rowSpan >= 2;
-  const isLarge = product.colSpan >= 2 && product.rowSpan >= 2;
-  const isTall = product.rowSpan >= 2 && product.colSpan === 1;
-  const isWide = product.colSpan >= 2 && product.rowSpan === 1;
+export default function BentoGrid() {
+  return (
+    <div className="w-full">
+      {/* Big Portfolio Title */}
+      <div className="mb-8">
+        <h2 className="text-[clamp(3rem,8vw,7rem)] font-serif font-bold tracking-tight leading-[0.9] -ml-1">
+          Portfolio
+        </h2>
+      </div>
 
-  const accentColors = {
-    amber: {
-      bg: 'bg-amber-50 dark:bg-amber-950/20',
-      border: 'hover:border-amber-400 dark:hover:border-amber-600',
-      text: 'text-amber-700 dark:text-amber-400',
-      icon: 'group-hover:text-amber-600 dark:group-hover:text-amber-400',
-    },
-    purple: {
-      bg: 'bg-purple-50 dark:bg-purple-950/20',
-      border: 'hover:border-purple-400 dark:hover:border-purple-600',
-      text: 'text-purple-700 dark:text-purple-400',
-      icon: 'group-hover:text-purple-600 dark:group-hover:text-purple-400',
-    },
-    blue: {
-      bg: 'bg-blue-50 dark:bg-blue-950/20',
-      border: 'hover:border-blue-400 dark:hover:border-blue-600',
-      text: 'text-blue-700 dark:text-blue-400',
-      icon: 'group-hover:text-blue-600 dark:group-hover:text-blue-400',
-    },
-    green: {
-      bg: 'bg-green-50 dark:bg-green-950/20',
-      border: 'hover:border-green-400 dark:hover:border-green-600',
-      text: 'text-green-700 dark:text-green-400',
-      icon: 'group-hover:text-green-600 dark:group-hover:text-green-400',
-    },
-    pink: {
-      bg: 'bg-pink-50 dark:bg-pink-950/20',
-      border: 'hover:border-pink-400 dark:hover:border-pink-600',
-      text: 'text-pink-700 dark:text-pink-400',
-      icon: 'group-hover:text-pink-600 dark:group-hover:text-pink-400',
-    },
-    none: {
-      bg: 'bg-foreground text-background',
-      border: 'hover:border-foreground/80',
-      text: 'text-background/70',
-      icon: 'group-hover:text-background',
-    },
-  };
-
-  const colors = accentColors[product.accentColor || 'none'];
-
-  // Hero card (Aitlas)
-  if (isHero) {
-    return (
-      <Link
-        href={product.href}
-        style={{ gridColumn: `span ${product.colSpan}`, gridRow: `span ${product.rowSpan}` }}
-        className={`group relative ${colors.bg} border-2 border-border overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${colors.border} hover:shadow-lg flex flex-col`}
-      >
-        <div className="absolute inset-0 bg-dots opacity-10" />
-
-        <div className="relative z-10 p-6 lg:p-8 h-full flex flex-col">
-          <div className="flex items-start justify-between mb-auto">
-            <div className={`flex items-center justify-center w-14 h-14 border ${product.accentColor === 'none' ? 'border-background/20' : 'border-foreground/20'}`}>
-              <Icon className="w-6 h-6" strokeWidth={1.5} />
+      {/* Products Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {products.map((product) => (
+          <Link
+            key={product.name}
+            href={product.href}
+            className={`group flex flex-col p-6 transition-all duration-200 hover:-translate-y-1 ${cardBg[product.accent]} border rounded-lg`}
+          >
+            {/* Top row: category + status */}
+            <div className="flex items-center justify-between mb-4">
+              <span className={`text-[10px] font-mono uppercase tracking-widest ${categoryStyle[product.accent]}`}>
+                {product.category}
+              </span>
+              <StatusBadge status={product.status} />
             </div>
-            <StatusBadge status={product.status} inverted={product.accentColor === 'none'} />
-          </div>
 
-          <div className="mt-auto">
-            <h3 className={`font-serif ${isLarge ? 'text-[32px] md:text-[40px]' : 'text-[24px] md:text-[28px]'} font-bold leading-tight mb-2`}>
+            {/* Product name */}
+            <h3 className={`font-serif font-bold text-2xl mb-2 ${product.accent === 'dark' ? 'text-background' : 'text-foreground'} group-hover:text-foreground/80 transition-colors`}>
               {product.name}
             </h3>
-            <p className={`text-[14px] md:text-[16px] ${colors.text} leading-relaxed max-w-md`}>
+
+            {/* Description */}
+            <p className={`text-sm leading-relaxed mb-4 ${product.accent === 'dark' ? 'text-background/60' : 'text-foreground/60'}`}>
               {product.description}
             </p>
 
-            <div className="flex flex-wrap gap-2 mt-4 mb-6">
-              {product.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className={`px-2.5 py-0.5 ${product.accentColor === 'none' ? 'bg-background/10 text-background/60' : 'bg-foreground/10 text-foreground/60'} text-[10px] font-mono uppercase tracking-wider`}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            <div className={`flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest ${product.accentColor === 'none' ? 'text-background/60 group-hover:text-background/80' : 'text-foreground/60 group-hover:text-foreground'} group-hover:gap-4 transition-all duration-500`}>
-              Explore
-              <ArrowRight className="w-4 h-4" />
-            </div>
-          </div>
-        </div>
-      </Link>
-    );
-  }
-
-  // All other cards
-  return (
-    <Link
-      href={product.href}
-      style={{ gridColumn: `span ${product.colSpan}`, gridRow: `span ${product.rowSpan}` }}
-      className={`group relative border-2 border-border ${colors.bg} overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${colors.border} hover:-translate-y-0.5 flex flex-col`}
-    >
-      <div className="p-6 h-full flex flex-col relative z-10">
-        <div className="flex items-start justify-between mb-4">
-          <Icon
-            className={`w-6 h-6 text-foreground/40 ${colors.icon} transition-colors duration-300`}
-            strokeWidth={1}
-          />
-          <StatusBadge status={product.status} />
-        </div>
-
-        <h3 className={`font-bold mb-1 ${isWide || isLarge ? 'text-[20px]' : 'text-[17px]'}`}>
-          {product.name}
-        </h3>
-        <p className={`text-[11px] ${product.accentColor === 'none' ? 'text-grey-500' : colors.text} mb-3 font-mono uppercase tracking-wider`}>
-          {product.category}
-        </p>
-
-        <p className={`text-foreground/60 leading-relaxed flex-1 ${isTall ? 'text-[14px]' : 'text-[13px]'}`}>
-          {product.description}
-        </p>
-
-        <div className={`flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-foreground/30 group-hover:text-foreground group-hover:gap-3 transition-all duration-300 ${isTall ? 'mt-auto pt-4 border-t border-foreground/10' : ''}`}>
-          Learn more
-          <ArrowRight className="w-3.5 h-3.5" />
-        </div>
+            {/* View link */}
+            <span className={`mt-auto text-xs font-medium ${product.accent === 'dark' ? 'text-background/40 group-hover:text-background/70' : 'text-foreground/30 group-hover:text-foreground/60'} transition-colors`}>
+              View project →
+            </span>
+          </Link>
+        ))}
       </div>
-    </Link>
-  );
-}
-
-export default function BentoGrid() {
-  return (
-    <>
-      <ScrollReveal>
-        <div className="mb-12">
-          <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-foreground/40 mb-3">
-            Portfolio
-          </p>
-          <h2 className="font-serif text-[clamp(32px,4vw,48px)] font-bold leading-tight">
-            The Bento.
-          </h2>
-        </div>
-      </ScrollReveal>
-
-      <StaggerChildren staggerDelay={80} direction="up">
-        <div className="grid grid-cols-1 auto-rows-[200px] md:grid-cols-2 md:auto-rows-[220px] lg:grid-cols-4 lg:auto-rows-[220px] gap-4 grid-auto-flow: dense">
-          {products.map((product) => (
-            <BentoCard key={product.name} product={product} />
-          ))}
-        </div>
-      </StaggerChildren>
-    </>
+    </div>
   );
 }
