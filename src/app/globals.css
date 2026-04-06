@@ -2,6 +2,34 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Accessibility: Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal,
+  .reveal-up,
+  .reveal-down,
+  .reveal-left,
+  .reveal-right,
+  .reveal-fade,
+  .reveal.visible,
+  .reveal-up.visible,
+  .reveal-down.visible,
+  .reveal-left.visible,
+  .reveal-right.visible,
+  .reveal-fade.visible {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 @theme inline {
   --font-serif: var(--font-cormorant);
   --font-sans: var(--font-syne);

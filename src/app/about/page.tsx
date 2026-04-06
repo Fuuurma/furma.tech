@@ -40,7 +40,7 @@ const pillars = [
 const stats = [
   { value: "0%", label: "VC Funding", desc: "No investor pressure" },
   { value: "100%", label: "Ownership", desc: "Full control retained" },
-  { value: "11+", label: "Products", desc: "Across 6 verticals" },
+  { value: "13+", label: "Products", desc: "Across 6 verticals" },
   { value: "EU", label: "Based", desc: "Sitges, Catalonia" },
 ];
 
@@ -102,7 +102,7 @@ export default function AboutPage() {
             {pillars.map((p) => (
               <div
                 key={p.title}
-                className="group p-6 bg-background border border-grey-200 dark:border-grey-800 hover:border-foreground/30 transition-all duration-300"
+                className="group p-6 bg-background border border-grey-200 dark:border-grey-800 hover:border-foreground/30 transition-all duration-300 cursor-pointer"
               >
                 <div className="flex items-start gap-5">
                   <div className={`w-11 h-11 rounded-lg ${p.color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
@@ -150,7 +150,7 @@ export default function AboutPage() {
               ].map((s) => (
                 <div
                   key={s.name}
-                  className="group p-5 bg-background border border-grey-200 dark:border-grey-800 hover:border-foreground/30 transition-all duration-300"
+                  className="group p-5 bg-background border border-grey-200 dark:border-grey-800 hover:border-foreground/30 transition-all duration-300 cursor-pointer"
                 >
                   <div className="font-mono text-[9px] font-bold uppercase text-grey-400 mb-2">{s.category}</div>
                   <div className="font-bold text-[15px] mb-1">{s.name}</div>
@@ -259,7 +259,7 @@ export default function AboutPage() {
                   Get in touch
                   <ArrowRight className="w-4 h-4" />
                 </Button>
-                <Button href="/products" variant="dark" size="lg" className="border-white/10">
+                <Button href="/portfolio" variant="dark" size="lg" className="border-white/10">
                   Explore products
                 </Button>
               </div>

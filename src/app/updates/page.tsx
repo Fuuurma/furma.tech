@@ -93,7 +93,7 @@ export default function UpdatesPage() {
 
           <div className="flex flex-wrap gap-2 mb-10">
             {categories.map((cat) => (
-              <Badge key={cat} variant={cat === "All" ? "default" : "outline"} className="text-[11px] uppercase tracking-wider">
+              <Badge key={cat} variant={cat === "All" ? "default" : "outline"} className="text-[11px] uppercase tracking-wider cursor-pointer">
                 {cat}
               </Badge>
             ))}

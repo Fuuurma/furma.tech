@@ -91,11 +91,11 @@ export function HeroSection() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-24">
-            <Button href="/products" variant="default" size="lg" className="text-sm px-6 h-12 group">
+            <Button href="/portfolio" variant="default" size="lg" className="text-sm px-6 h-12 group">
               View all products
               <ArrowRight data-icon="inline-end" className="transition-transform group-hover:translate-x-1" />
             </Button>
-            <Button href="/projects/aitlas" variant="outline" size="lg" className="text-sm px-6 h-12 border-2">
+            <Button href="/portfolio/aitlas" variant="outline" size="lg" className="text-sm px-6 h-12 border-2">
               Explore Aitlas
               <ArrowRight data-icon="inline-end" className="transition-transform group-hover:translate-x-1" />
             </Button>

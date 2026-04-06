@@ -52,7 +52,7 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/products" className="text-[14px] font-medium text-grey-600 hover:text-foreground transition-colors inline-flex items-center gap-2 group">
+                <Link href="/portfolio" className="text-[14px] font-medium text-grey-600 hover:text-foreground transition-colors inline-flex items-center gap-2 group">
                   All Products
                   <ArrowRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                 </Link>

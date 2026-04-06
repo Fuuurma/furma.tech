@@ -53,7 +53,7 @@ interface Product {
 const products: Product[] = [
   {
     name: 'Aitlas',
-    href: '/portfolio/aitlas',
+    href: '/projects/aitlas',
     category: 'AI',
     description: 'Sovereign AI ecosystem with BYOK architecture, Nexus runtime, and 34+ MCP Actions.',
     longDescription: 'Nova workspace, Nexus runtime, 34+ specialized Actions. BYOK architecture with multi-provider support.',
@@ -67,7 +67,7 @@ const products: Product[] = [
   },
   {
     name: 'TourManager',
-    href: '/portfolio/guidetours',
+    href: '/projects/saas/guidetours',
     category: 'Tourism',
     description: 'Tour operator platform with Viator sync.',
     longDescription: 'End-to-end tour operator platform with booking management, scheduling, and Viator marketplace synchronization.',
@@ -80,7 +80,7 @@ const products: Product[] = [
   },
   {
     name: 'RestaurantManager',
-    href: '/portfolio/restauramanager',
+    href: '/projects/saas/restauramanager',
     category: 'Hospitality',
     description: 'Complete restaurant management with TheFork integration.',
     longDescription: 'Full restaurant management platform with reservation sync, table management, and TheFork integration.',
@@ -93,7 +93,7 @@ const products: Product[] = [
   },
   {
     name: 'Tic-Tac-Toe Disappear',
-    href: '/portfolio/tic-tac-toe-disappear',
+    href: '/products/tic-tac-toe-disappear',
     category: 'Games',
     description: 'Vanishing-move strategy game.',
     longDescription: 'A strategic twist on the classic game where moves vanish after a set number of turns, creating dynamic gameplay.',
@@ -106,7 +106,7 @@ const products: Product[] = [
   },
   {
     name: 'QArt',
-    href: '/portfolio/qart',
+    href: '/products/qart',
     category: 'Marketing',
     description: 'AI-generated QR codes that look like art.',
     longDescription: 'Transform any QR code into stunning visual art while maintaining full scannability. AI-powered design generation.',
@@ -119,7 +119,7 @@ const products: Product[] = [
   },
   {
     name: 'PicksTracker',
-    href: '/portfolio/pickstracker',
+    href: '/products/pickstracker',
     category: 'Sports',
     description: 'Sports pick tracking with social predictions.',
     longDescription: 'Track your sports predictions, compete with friends, and build your track record with social leaderboards.',
@@ -132,7 +132,7 @@ const products: Product[] = [
   },
   {
     name: 'Nova',
-    href: '/portfolio/aitlas/nova',
+    href: '/projects/aitlas/nova',
     category: 'AI',
     description: 'AI workspace with multi-provider support.',
     longDescription: 'AI workspace with multi-provider support and agent orchestration.',
@@ -145,7 +145,7 @@ const products: Product[] = [
   },
   {
     name: 'SailingMate',
-    href: '/portfolio/sailingmate',
+    href: '/products/sailingmate',
     category: 'Maritime',
     description: 'Real-time sailing navigation with GPS routing.',
     longDescription: 'GPS-powered sailing navigation with real-time weather, route optimization, and maritime safety features.',
@@ -158,7 +158,7 @@ const products: Product[] = [
   },
   {
     name: 'LinkUp',
-    href: '/portfolio/linkup',
+    href: '/products/linkup',
     category: 'Social',
     description: 'Short-video professional matching.',
     longDescription: 'Swipe-based professional networking using short video profiles. Match with collaborators, hires, and mentors.',
@@ -171,7 +171,7 @@ const products: Product[] = [
   },
   {
     name: 'FinanceHub',
-    href: '/portfolio/financehub',
+    href: '/products/financehub',
     category: 'Finance',
     description: 'Market data tracking and portfolio monitoring.',
     longDescription: 'Real-time market data, portfolio tracking, and financial analytics for informed investment decisions.',
@@ -184,7 +184,7 @@ const products: Product[] = [
   },
   {
     name: 'OneToMany',
-    href: '/portfolio/onetomany',
+    href: '/products/onetomany',
     category: 'Productivity',
     description: 'Goal setting and habit tracking.',
     longDescription: 'Set meaningful goals, build lasting habits, and track progress with data-driven insights and accountability tools.',
@@ -197,7 +197,7 @@ const products: Product[] = [
   },
   {
     name: 'OpenGovern',
-    href: '/portfolio/opengovern',
+    href: '/products/opengovern',
     category: 'Civic Tech',
     description: 'Direct democracy tooling for municipalities.',
     longDescription: 'Participatory governance platform enabling citizen engagement, transparent voting, and collaborative policy-making.',

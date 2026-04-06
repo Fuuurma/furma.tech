@@ -54,7 +54,7 @@ export default function NotFound() {
               <div className="text-[11px] text-grey-500">AI Ecosystem</div>
             </div>
           </Link>
-          <Link href="/products" className="group no-underline">
+          <Link href="/portfolio" className="group no-underline">
             <div className="p-4 rounded-xl bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 card-elevated hover:border-foreground/30 transition-all">
               <div className="text-[13px] font-bold text-foreground mb-1 group-hover:text-blue-600 transition-colors">Products</div>
               <div className="text-[11px] text-grey-500">Industry SaaS</div>

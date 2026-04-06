@@ -86,7 +86,7 @@ export default function ContactPage() {
                     <a
                       key={option.title}
                       href={option.href}
-                      className="group block"
+                      className="group block no-underline cursor-pointer"
                     >
                       <div className="p-5 bg-background border border-grey-200 dark:border-grey-800 hover:border-foreground/40 transition-all duration-300">
                         <div className="flex items-start gap-4">
