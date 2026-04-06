@@ -287,7 +287,7 @@ export default function PrivacyPage() {
               <p className="text-[15px] leading-[1.6] text-grey-600 dark:text-grey-400 mb-6 max-w-md mx-auto">
                 If you have any questions about our privacy practices, we&apos;d love to hear from you.
               </p>
-              <Button href="/contact" variant="default" size="lg">
+              <Button href="/#contact" variant="default" size="lg">
                 Contact us
                 <ArrowRight className="w-4 h-4" />
               </Button>

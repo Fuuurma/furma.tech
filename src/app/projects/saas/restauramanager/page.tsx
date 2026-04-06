@@ -349,7 +349,7 @@ export default function RestauManagerPage() {
             <p className="text-[18px] text-background/60 leading-relaxed mb-10 max-w-2xl mx-auto">Book a personalized demo. See how restauManager can save you 10+ hours per week and increase your revenue by 15%.</p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button href="/contact" variant="premium" size="lg" glow className="shadow-xl shadow-amber-500/30">Book Your Demo →</Button>
+              <Button href="/#contact" variant="premium" size="lg" glow className="shadow-xl shadow-amber-500/30">Book Your Demo →</Button>
               <Link href="/portfolio" className="inline-flex items-center justify-center gap-2 text-[14px] font-semibold no-underline px-6 py-3 rounded-lg border border-background/20 text-background hover:bg-background/10 transition-all">Back to Products</Link>
             </div>
           </ScrollReveal>

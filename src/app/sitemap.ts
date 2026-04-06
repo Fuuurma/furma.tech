@@ -16,27 +16,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/careers`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/updates`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
@@ -44,12 +26,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'yearly' as const,
       priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/docs`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.6,
     },
   ];
 
@@ -121,50 +97,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Blog/update posts
-  const updatePosts = [
-    {
-      url: `${baseUrl}/updates/aitlas-rebrand`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly' as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/updates/f-twyt-production`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly' as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/updates/restauManager-alpha`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly' as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/updates/aitlas-launch`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly' as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/updates/mcp-first-design`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly' as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/updates/why-bootstrapped`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly' as const,
-      priority: 0.6,
-    },
-  ];
-
   return [
     ...staticPages,
     ...productsPages,
     ...legacyPages,
-    ...updatePosts,
   ];
 }

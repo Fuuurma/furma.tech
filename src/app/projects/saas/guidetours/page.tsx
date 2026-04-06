@@ -384,7 +384,7 @@ export default function GuideToursPage() {
             <p className="text-[18px] text-background/60 leading-relaxed mb-10 max-w-2xl mx-auto">Book a personalized demo. See how GuideTours can save you 8+ hours per week and increase your bookings by 20%.</p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button href="/contact" size="lg" className="bg-foreground text-background hover:bg-foreground/90">
+              <Button href="/#contact" size="lg" className="bg-foreground text-background hover:bg-foreground/90">
                 Book Your Demo
                 <ArrowRight className="w-4 h-4" />
               </Button>

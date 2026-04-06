@@ -245,7 +245,7 @@ export default function AitlasPage() {
             <p className="text-[20px] text-background/60 leading-relaxed max-w-xl">Join the waitlist for the sovereign AI beta. Control your nodes, connect your tools, automate with zero compromises.</p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button href="/contact" variant="default" size="lg" className="bg-background text-foreground hover:bg-background/90 min-w-[220px]">
+              <Button href="/#contact" variant="default" size="lg" className="bg-background text-foreground hover:bg-background/90 min-w-[220px]">
                 Join Beta Access
               </Button>
               <Button href="https://github.com/Fuuurma" variant="outline" size="lg" className="border-background text-background hover:bg-background hover:text-foreground min-w-[220px]">

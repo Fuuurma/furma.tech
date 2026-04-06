@@ -102,7 +102,7 @@ export default function RsrxPage() {
                   f.rsrx handle the searching, scraping, and synthesis.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Button href="/contact" variant="premium" size="lg" glow>
+                  <Button href="/#contact" variant="premium" size="lg" glow>
                     Join Waitlist →
                   </Button>
                   <Button href="/docs" variant="outline" size="lg">
@@ -184,7 +184,7 @@ export default function RsrxPage() {
             to Nova Pro users first.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button href="/contact" variant="premium" size="lg" glow>
+            <Button href="/#contact" variant="premium" size="lg" glow>
               Join the waitlist →
             </Button>
             <Button href="/portfolio/aitlas" variant="dark" size="lg" className="border-background/10 bg-background/5">

@@ -660,7 +660,7 @@ export default function Home() {
               </span>
             </div>
 
-            <div className="grid grid-cols-12 gap-0.5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-0.5">
               {PRODUCTS.map((p, i) => (
                 <ProductCard key={p.id} p={p} delay={`${(i % 3) * 0.1}s`} />
               ))}

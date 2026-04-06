@@ -400,7 +400,7 @@ export default function NovaPage() {
                       </li>
                     ))}
                   </ul>
-                  <Button href="/contact" variant={tier.popular ? "default" : "outline"} className={tier.popular ? 'w-full bg-foreground text-background hover:shadow-lg' : 'w-full'}>
+                  <Button href="/#contact" variant={tier.popular ? "default" : "outline"} className={tier.popular ? 'w-full bg-foreground text-background hover:shadow-lg' : 'w-full'}>
                     {tier.name === "Free" ? "Get Started" : "Start Free Trial"}
                   </Button>
                 </div>
@@ -427,7 +427,7 @@ export default function NovaPage() {
             <p className="text-[18px] text-background/60 leading-relaxed mb-10 max-w-2xl mx-auto">Join thousands of developers using Nova to build sovereign AI workflows. No credit card required.</p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button href="/contact" size="lg" className="inline-flex items-center gap-2 bg-foreground text-background hover:shadow-lg">
+              <Button href="/#contact" size="lg" className="inline-flex items-center gap-2 bg-foreground text-background hover:shadow-lg">
                 Start Free
                 <ArrowRight className="w-4 h-4" />
               </Button>

@@ -429,7 +429,7 @@ export default function ProductsPage() {
                 We build specialized software for specific industries. Let&apos;s talk.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button href="/contact" variant="premium" size="lg">
+                <Button href="/#contact" variant="premium" size="lg">
                   Request Access
                 </Button>
                 <Button href="mailto:hello@furma.tech" variant="dark" size="lg" className="border-white/10">

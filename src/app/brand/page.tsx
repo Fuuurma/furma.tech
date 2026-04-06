@@ -284,7 +284,7 @@ export default function LogoPage() {
                   <ArrowLeft data-icon="inline-start" />
                   Back to Furma.tech
                 </Button>
-                <Button href="/contact" variant="outline" size="lg">
+                <Button href="/#contact" variant="outline" size="lg">
                   Contact us
                 </Button>
               </div>

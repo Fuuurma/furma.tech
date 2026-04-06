@@ -94,7 +94,7 @@ export default function TwytPage() {
                   global conversation. Build your own intelligence feed.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Button href="/contact" variant="premium" size="lg" glow>
+                  <Button href="/#contact" variant="premium" size="lg" glow>
                     Try f.twyt →
                   </Button>
                   <Button href="/docs" variant="outline" size="lg">
@@ -191,7 +191,7 @@ export default function TwytPage() {
                     </li>
                   ))}
                 </ul>
-                <Button href="/contact" variant="dark" className="w-full mt-8">Purchase Credits →</Button>
+                <Button href="/#contact" variant="dark" className="w-full mt-8">Purchase Credits →</Button>
               </div>
             </div>
           </Card>
@@ -208,7 +208,7 @@ export default function TwytPage() {
             Start searching Twitter with f.twyt. Join the waitlist for private beta access.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button href="/contact" variant="premium" size="lg" glow>
+            <Button href="/#contact" variant="premium" size="lg" glow>
               Join the waitlist →
             </Button>
             <Button href="/portfolio/aitlas" variant="dark" size="lg" className="border-background/10 bg-background/5">
