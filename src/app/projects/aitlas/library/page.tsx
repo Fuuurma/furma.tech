@@ -95,7 +95,7 @@ export default function LibraryPage() {
                   f.library indexes your data so your AI can find exactly what you need.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Button href="/contact" size="lg">
+                  <Button href="/#contact" size="lg">
                     Start Building Library
                     <ArrowRight className="w-4 h-4" />
                   </Button>
@@ -233,7 +233,7 @@ export default function LibraryPage() {
             Connect f.library to your Nova workspace today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button href="/contact" size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-0">
+            <Button href="/#contact" size="lg" className="bg-foreground text-background hover:bg-foreground/90 border-0">
               Try f.library
               <ArrowRight className="w-4 h-4" />
             </Button>

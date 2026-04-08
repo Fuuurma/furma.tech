@@ -227,7 +227,7 @@ export default function StyleguidePage() {
                 <Button disabled>Disabled</Button>
                 <Button variant="default">With Icon <ArrowRight className="w-3 h-3" /></Button>
                 <Button variant="outline"><Zap className="w-3 h-3" /> Icon Left</Button>
-                <Button href="/contact">As Link (href)</Button>
+                <Button href="/#contact">As Link (href)</Button>
               </div>
             </SectionRow>
           </div>
@@ -996,7 +996,7 @@ export default function StyleguidePage() {
           <h2 className="font-serif text-5xl font-bold mb-8 italic">Ready to build?</h2>
           <div className="flex justify-center gap-4">
             <Button href="/" variant="outline" className="border-background text-background hover:bg-background hover:text-foreground">Return Home</Button>
-            <Button href="/contact" variant="default">Contact Us</Button>
+            <Button href="/#contact" variant="default">Contact Us</Button>
           </div>
         </Container>
       </Section>

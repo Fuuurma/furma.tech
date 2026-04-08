@@ -4,11 +4,48 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu } from 'lucide-react';
-import { GitHubLogoIcon } from '@radix-ui/react-icons';
+import {
+  Gamepad2,
+  QrCode,
+  Compass,
+  Map,
+  Utensils,
+  TrendingUp,
+  Target,
+  Building2,
+  Users,
+  Trophy,
+  Sparkles,
+  Hexagon,
+  Zap,
+  Menu,
+} from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import { ProductsDropdown, MobileProductsMenu } from './ProductsMenu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
+import { Brain } from 'lucide-react';
+
+const allProducts = [
+  // Aitlas Ecosystem (Featured First)
+  { title: 'Aitlas', href: '/projects/aitlas', description: 'Sovereign AI ecosystem', icon: Sparkles, category: 'AI', featured: true },
+  { title: 'Nova', href: '/projects/aitlas/nova', description: 'AI workspace with BYOK', icon: Hexagon, category: 'AI' },
+  { title: 'Nexus', href: '/projects/aitlas/nexus', description: 'Durable agent runtime', icon: Brain, category: 'AI' },
+  { title: 'f.twyt', href: '/projects/aitlas/twyt', description: 'Twitter intelligence', icon: Zap, category: 'AI' },
+  { title: 'f.library', href: '/projects/aitlas/library', description: 'Vector knowledge base', icon: Zap, category: 'AI' },
+  // Industry SaaS
+  { title: 'RestaurantManager', href: '/projects/saas/restauramanager', description: 'Restaurant management', icon: Utensils, category: 'SaaS' },
+  { title: 'TourManager', href: '/projects/saas/guidetours', description: 'Tour operator platform', icon: Map, category: 'SaaS' },
+  // Other Products
+  { title: 'Tic-Tac-Toe', href: '/products', description: 'Vanishing-move game', icon: Gamepad2, category: 'Games' },
+  { title: 'QArt', href: '/products', description: 'AI-generated QR art', icon: QrCode, category: 'Marketing' },
+  { title: 'PicksTracker', href: '/products', description: 'Sports pick tracking', icon: Trophy, category: 'Sports' },
+  { title: 'SailingMate', href: '/products', description: 'Sailing navigation', icon: Compass, category: 'Maritime' },
+  { title: 'LinkUp', href: '/products', description: 'Professional matching', icon: Users, category: 'Social' },
+  { title: 'FinanceHub', href: '/products', description: 'Market data tracking', icon: TrendingUp, category: 'Finance' },
+  { title: 'OneToMany', href: '/products', description: 'Goal & habit tracking', icon: Target, category: 'Productivity' },
+  { title: 'OpenGovern', href: '/products', description: 'Direct democracy tooling', icon: Building2, category: 'Civic' },
+];
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -23,6 +60,7 @@ export default function Navigation() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -31,8 +69,8 @@ export default function Navigation() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/95 dark:bg-background/95 backdrop-blur-xl border-b border-border/50 shadow-sm'
-          : 'bg-white dark:bg-background border-b border-transparent'
+          ? 'bg-background/95 backdrop-blur-xl border-b border-border/50'
+          : 'bg-background border-b border-transparent'
       }`}
       aria-label="Main navigation"
     >
@@ -64,43 +102,39 @@ export default function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
+            <ProductsDropdown products={allProducts} />
+
             <Link
-              href="/portfolio"
+              href="/about"
               className={`px-3 py-2 text-[11px] font-bold uppercase tracking-[0.15em] transition-all no-underline rounded ${
-                isActive('/portfolio')
-                  ? 'bg-foreground text-white dark:text-background'
-                  : 'text-grey-600 dark:text-grey-400 hover:text-foreground hover:bg-grey-100 dark:hover:bg-foreground/5'
+                isActive('/about')
+                  ? 'bg-foreground/5 text-foreground'
+                  : 'text-grey-500 hover:text-foreground hover:bg-foreground/5'
               }`}
             >
-              Portfolio
+              About
             </Link>
             <Link
-              href="/contact"
+              href="/updates"
               className={`px-3 py-2 text-[11px] font-bold uppercase tracking-[0.15em] transition-all no-underline rounded ${
-                isActive('/contact')
-                  ? 'bg-foreground text-white dark:text-background'
-                  : 'text-grey-600 dark:text-grey-400 hover:text-foreground hover:bg-grey-100 dark:hover:bg-foreground/5'
+                isActive('/updates')
+                  ? 'bg-foreground/5 text-foreground'
+                  : 'text-grey-500 hover:text-foreground hover:bg-foreground/5'
               }`}
             >
-              Contact
+              Updates
             </Link>
-            <a
-              href="https://github.com/Fuuurma"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-3 py-2 text-[11px] font-bold uppercase tracking-[0.15em] transition-all no-underline rounded text-grey-600 dark:text-grey-400 hover:text-foreground hover:bg-grey-100 dark:hover:bg-foreground/5 flex items-center gap-2"
-            >
-              <GitHubLogoIcon className="w-4 h-4" />
-              GitHub
-            </a>
           </div>
 
           {/* CTA */}
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
+            <Button href="/contact" variant="default" size="sm" className="h-9 px-4 text-[11px] font-medium uppercase tracking-[0.1em]">
+              Contact
+            </Button>
           </div>
 
-          {/* Mobile menu */}
+          {/* Mobile menu - Sheet */}
           <Sheet>
             <SheetTrigger className="md:hidden" render={<Button variant="ghost" size="icon" className="p-2 hover:bg-muted/50 transition-colors rounded-md" />}>
               <Menu className="size-5" />
@@ -119,30 +153,38 @@ export default function Navigation() {
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-6">
-                  <div className="flex flex-col gap-1">
-                    {[
-                      { href: '/portfolio', label: 'Portfolio' },
-                      { href: '/contact', label: 'Contact' },
-                      { href: 'https://github.com/Fuuurma', label: 'GitHub', external: true },
-                    ].map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                        className={`px-3 py-2.5 text-[15px] font-serif font-semibold transition-all rounded ${
-                          isActive(item.href)
-                            ? 'text-foreground bg-foreground/5'
-                            : 'text-grey-500 hover:text-foreground hover:bg-foreground/5'
-                        }`}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
+                  <div className="flex flex-col gap-8">
+                    <MobileProductsMenu products={allProducts} pathname={pathname} />
+
+                    {/* Other Links */}
+                    <div className="flex flex-col gap-1 pt-6 border-t border-border">
+                      <h4 className="text-[9px] font-bold text-grey-400 uppercase tracking-[0.2em] mb-2">Navigation</h4>
+                      {[
+                        { href: '/about', label: 'About' },
+                        { href: '/updates', label: 'Updates' },
+                        { href: '/contact', label: 'Contact' },
+                      ].map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className={`px-3 py-2.5 text-[15px] font-serif font-semibold transition-all rounded ${
+                            isActive(item.href)
+                              ? 'text-foreground bg-foreground/5'
+                              : 'text-grey-500 hover:text-foreground hover:bg-foreground/5'
+                          }`}
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-4 mt-auto px-6 py-5 border-t border-border">
                   <ThemeToggle />
+                  <Button href="/contact" variant="default" size="sm" className="flex-1 text-[11px] font-medium uppercase tracking-[0.1em]">
+                    Start a project
+                  </Button>
                 </div>
               </div>
             </SheetContent>

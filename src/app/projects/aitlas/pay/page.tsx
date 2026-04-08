@@ -110,7 +110,7 @@ export default function PayPage() {
                   strict control. Human-in-the-loop approvals for high-value transactions.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Button href="/contact" variant="premium" size="lg" glow>
+                  <Button href="/#contact" variant="premium" size="lg" glow>
                     Get API Access →
                   </Button>
                   <Button href="/docs" variant="outline" size="lg">
@@ -190,7 +190,7 @@ export default function PayPage() {
             Aitlas workspace instantly.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button href="/contact" variant="premium" size="lg" glow>
+            <Button href="/#contact" variant="premium" size="lg" glow>
               Contact Sales →
             </Button>
             <Button href="/portfolio/aitlas" variant="dark" size="lg" className="border-background/10 bg-background/5">

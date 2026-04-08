@@ -143,7 +143,7 @@ export default function AgentsPage() {
                     </div>
                   ))}
                 </div>
-                <Button href="/contact" variant="dark">Apply as Creator →</Button>
+                <Button href="/#contact" variant="dark">Apply as Creator →</Button>
               </div>
             </ScrollReveal>
 
@@ -215,10 +215,10 @@ export default function AgentsPage() {
             featured at launch.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button href="/contact" variant="premium" size="lg" glow>
+            <Button href="/#contact" variant="premium" size="lg" glow>
               Join the waitlist →
             </Button>
-            <Button href="/contact" variant="dark" size="lg" className="border-background/10 bg-background/5">
+            <Button href="/#contact" variant="dark" size="lg" className="border-background/10 bg-background/5">
               Apply as Creator
             </Button>
           </div>

@@ -438,7 +438,7 @@ export default function NexusPage() {
                       </li>
                     ))}
                   </ul>
-                  <Button href="/contact" variant={tier.popular ? "premium" : "outline"} className="w-full">
+                  <Button href="/#contact" variant={tier.popular ? "premium" : "outline"} className="w-full">
                     {tier.name === "Hobby" ? "Get Started" : "Start Free Trial"}
                   </Button>
                 </Card>
@@ -465,7 +465,7 @@ export default function NexusPage() {
             <p className="text-[18px] text-background/60 leading-relaxed mb-10 max-w-2xl mx-auto">Join the waitlist for Nexus. Get early access and 500 free credits when we launch.</p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button href="/contact" variant="premium" size="lg" glow className="shadow-xl shadow-foreground/10">Join Waitlist →</Button>
+              <Button href="/#contact" variant="premium" size="lg" glow className="shadow-xl shadow-foreground/10">Join Waitlist →</Button>
               <Link href="/portfolio/aitlas" className="inline-flex items-center justify-center gap-2 text-[14px] font-semibold no-underline px-6 py-3 rounded-lg border border-background/20 text-background hover:bg-background/10 transition-all">Back to Aitlas</Link>
             </div>
           </ScrollReveal>

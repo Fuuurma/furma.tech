@@ -38,7 +38,7 @@ export default function NotFound() {
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </Link>
-          <Link href="/contact" className="no-underline">
+          <Link href="/#contact" className="no-underline">
             <Button variant="outline" size="lg" className="card-elevated min-w-[180px]">
               <MessageSquare className="w-4 h-4 mr-2" />
               Report Issue
@@ -66,7 +66,7 @@ export default function NotFound() {
               <div className="text-[11px] text-grey-500">Our Story</div>
             </div>
           </Link>
-          <Link href="/contact" className="group no-underline">
+          <Link href="/#contact" className="group no-underline">
             <div className="p-4 rounded-xl bg-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 card-elevated hover:border-foreground/30 transition-all">
               <div className="text-[13px] font-bold text-foreground mb-1 group-hover:text-green-600 transition-colors">Contact</div>
               <div className="text-[11px] text-grey-500">Get in Touch</div>
