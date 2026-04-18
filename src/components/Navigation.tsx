@@ -126,7 +126,7 @@ export default function Navigation() {
           {/* CTA */}
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
-            <Button href="/contact" variant="default" size="sm" className="h-9 px-4 text-[11px] font-medium uppercase tracking-[0.1em]">
+            <Button href="/#contact" variant="default" size="sm" className="h-9 px-4 text-[11px] font-medium uppercase tracking-[0.1em]">
               Contact
             </Button>
           </div>
@@ -159,7 +159,7 @@ export default function Navigation() {
                       {[
                         { href: '/about', label: 'About' },
                         { href: '/updates', label: 'Updates' },
-                        { href: '/contact', label: 'Contact' },
+                        { href: '/#contact', label: 'Contact' },
                       ].map((item) => (
                         <Link
                           key={item.href}
@@ -179,7 +179,7 @@ export default function Navigation() {
 
                 <div className="flex items-center gap-4 mt-auto px-6 py-5 border-t border-border">
                   <ThemeToggle />
-                  <Button href="/contact" variant="default" size="sm" className="flex-1 text-[11px] font-medium uppercase tracking-[0.1em]">
+                  <Button href="/#contact" variant="default" size="sm" className="flex-1 text-[11px] font-medium uppercase tracking-[0.1em]">
                     Start a project
                   </Button>
                 </div>
