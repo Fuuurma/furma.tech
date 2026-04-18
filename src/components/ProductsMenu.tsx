@@ -25,7 +25,7 @@ interface ProductsDropdownProps {
 }
 
 const isActive = (pathname: string, href: string) => {
-  if (href === "/products") return pathname === "/products";
+  if (href === "/portfolio") return pathname === "/portfolio";
   return pathname.startsWith(href);
 };
 
@@ -37,18 +37,18 @@ export function ProductsDropdown({ products }: ProductsDropdownProps) {
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger className="text-[11px] font-bold uppercase tracking-[0.15em] px-4 h-9 hover:bg-foreground/5 transition-colors">
-            Products
+            Portfolio
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <div className="p-5 lg:w-[800px] bg-background border border-border shadow-2xl">
+            <div className="p-5 lg:w-[800px] bg-background border border-border shadow-2xl dark:shadow-black/20">
               {/* Header */}
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-foreground" strokeWidth={1.5} />
-                  <h4 className="font-serif text-base font-bold text-foreground">All Products</h4>
+                  <h4 className="font-serif text-base font-bold text-foreground">All Portfolio</h4>
                 </div>
                 <Link
-                  href="/products"
+                  href="/portfolio"
                   className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-grey-600 hover:text-foreground transition-colors group"
                 >
                   View all

@@ -17,34 +17,31 @@ import {
   Trophy,
   Sparkles,
   Hexagon,
-  Zap,
   Menu,
+  Brain,
 } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import { ProductsDropdown, MobileProductsMenu } from './ProductsMenu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Brain } from 'lucide-react';
 
 const allProducts = [
-  // Aitlas Ecosystem (Featured First)
-  { title: 'Aitlas', href: '/projects/aitlas', description: 'Sovereign AI ecosystem', icon: Sparkles, category: 'AI', featured: true },
-  { title: 'Nova', href: '/projects/aitlas/nova', description: 'AI workspace with BYOK', icon: Hexagon, category: 'AI' },
-  { title: 'Nexus', href: '/projects/aitlas/nexus', description: 'Durable agent runtime', icon: Brain, category: 'AI' },
-  { title: 'f.twyt', href: '/projects/aitlas/twyt', description: 'Twitter intelligence', icon: Zap, category: 'AI' },
-  { title: 'f.library', href: '/projects/aitlas/library', description: 'Vector knowledge base', icon: Zap, category: 'AI' },
+  // Aitlas Ecosystem
+  { title: 'Nova', href: '/portfolio/aitlas/nova', description: 'AI workspace with BYOK', icon: Hexagon, category: 'AI' },
+  { title: 'Nexus', href: '/portfolio/aitlas/nexus', description: 'Durable agent runtime', icon: Brain, category: 'AI' },
+  { title: 'Agents Store', href: '/portfolio/aitlas/agents', description: 'AI agents marketplace', icon: Sparkles, category: 'AI' },
   // Industry SaaS
-  { title: 'RestaurantManager', href: '/projects/saas/restauramanager', description: 'Restaurant management', icon: Utensils, category: 'SaaS' },
-  { title: 'TourManager', href: '/projects/saas/guidetours', description: 'Tour operator platform', icon: Map, category: 'SaaS' },
+  { title: 'RestaurantManager', href: '/portfolio/restauramanager', description: 'Restaurant management', icon: Utensils, category: 'SaaS' },
+  { title: 'TourManager', href: '/portfolio/guidetours', description: 'Tour operator platform', icon: Map, category: 'SaaS' },
   // Other Products
-  { title: 'Tic-Tac-Toe', href: '/products', description: 'Vanishing-move game', icon: Gamepad2, category: 'Games' },
-  { title: 'QArt', href: '/products', description: 'AI-generated QR art', icon: QrCode, category: 'Marketing' },
-  { title: 'PicksTracker', href: '/products', description: 'Sports pick tracking', icon: Trophy, category: 'Sports' },
-  { title: 'SailingMate', href: '/products', description: 'Sailing navigation', icon: Compass, category: 'Maritime' },
-  { title: 'LinkUp', href: '/products', description: 'Professional matching', icon: Users, category: 'Social' },
-  { title: 'FinanceHub', href: '/products', description: 'Market data tracking', icon: TrendingUp, category: 'Finance' },
-  { title: 'OneToMany', href: '/products', description: 'Goal & habit tracking', icon: Target, category: 'Productivity' },
-  { title: 'OpenGovern', href: '/products', description: 'Direct democracy tooling', icon: Building2, category: 'Civic' },
+  { title: 'Tic-Tac-Toe', href: '/portfolio/tic-tac-toe-disappear', description: 'Vanishing-move game', icon: Gamepad2, category: 'Games' },
+  { title: 'QArt', href: '/portfolio/qart', description: 'AI-generated QR art', icon: QrCode, category: 'Marketing' },
+  { title: 'PicksTracker', href: '/portfolio/pickstracker', description: 'Sports pick tracking', icon: Trophy, category: 'Sports' },
+  { title: 'SailingMate', href: '/portfolio/sailingmate', description: 'Sailing navigation', icon: Compass, category: 'Maritime' },
+  { title: 'LinkUp', href: '/portfolio/linkup', description: 'Professional matching', icon: Users, category: 'Social' },
+  { title: 'FinanceHub', href: '/portfolio/financehub', description: 'Market data tracking', icon: TrendingUp, category: 'Finance' },
+  { title: 'OneToMany', href: '/portfolio/onetomany', description: 'Goal & habit tracking', icon: Target, category: 'Productivity' },
+  { title: 'OpenGovern', href: '/portfolio/opengovern', description: 'Direct democracy tooling', icon: Building2, category: 'Civic' },
 ];
 
 export default function Navigation() {
@@ -69,8 +66,8 @@ export default function Navigation() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-background/95 backdrop-blur-xl border-b border-border/50'
-          : 'bg-background border-b border-transparent'
+          ? 'bg-background/95 backdrop-blur-xl border-b border-border/50 shadow-sm'
+          : 'bg-background/80 border-b border-transparent'
       }`}
       aria-label="Main navigation"
     >
@@ -106,20 +103,20 @@ export default function Navigation() {
 
             <Link
               href="/about"
-              className={`px-3 py-2 text-[11px] font-bold uppercase tracking-[0.15em] transition-all no-underline rounded ${
+              className={`px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] transition-all no-underline rounded ${
                 isActive('/about')
-                  ? 'bg-foreground/5 text-foreground'
-                  : 'text-grey-500 hover:text-foreground hover:bg-foreground/5'
+                  ? 'bg-foreground text-background'
+                  : 'text-foreground/70 hover:text-foreground hover:bg-foreground/5'
               }`}
             >
               About
             </Link>
             <Link
               href="/updates"
-              className={`px-3 py-2 text-[11px] font-bold uppercase tracking-[0.15em] transition-all no-underline rounded ${
+              className={`px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] transition-all no-underline rounded ${
                 isActive('/updates')
-                  ? 'bg-foreground/5 text-foreground'
-                  : 'text-grey-500 hover:text-foreground hover:bg-foreground/5'
+                  ? 'bg-foreground text-background'
+                  : 'text-foreground/70 hover:text-foreground hover:bg-foreground/5'
               }`}
             >
               Updates

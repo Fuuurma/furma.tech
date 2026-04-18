@@ -390,21 +390,21 @@ function useSpotlight() {
 // ─── Product Card ─────────────────────────────────────────────────────────────
 function getProductUrl(id: string): string {
   const urlMap: Record<string, string> = {
-    aitlas: "/projects/aitlas",
-    nova: "/projects/aitlas/nova",
-    nexus: "/projects/aitlas/nexus",
-    restauramanager: "/projects/saas/restauramanager",
-    guidetours: "/projects/saas/guidetours",
-    "tic-tac-toe": "/products/tic-tac-toe-disappear",
-    qart: "/products/qart",
-    pickstracker: "/products/pickstracker",
-    sailingmate: "/products/sailingmate",
-    linkup: "/products/linkup",
-    financehub: "/products/financehub",
-    onetomany: "/products/onetomany",
-    opengovern: "/products/opengovern",
+    aitlas: "/portfolio/aitlas",
+    nova: "/portfolio/aitlas/nova",
+    nexus: "/portfolio/aitlas/nexus",
+    restauramanager: "/portfolio/restauramanager",
+    guidetours: "/portfolio/guidetours",
+    "tic-tac-toe": "/portfolio/tic-tac-toe-disappear",
+    qart: "/portfolio/qart",
+    pickstracker: "/portfolio/pickstracker",
+    sailingmate: "/portfolio/sailingmate",
+    linkup: "/portfolio/linkup",
+    financehub: "/portfolio/financehub",
+    onetomany: "/portfolio/onetomany",
+    opengovern: "/portfolio/opengovern",
   };
-  return urlMap[id] || `/projects/${id}`;
+  return urlMap[id] || `/portfolio/${id}`;
 }
 
 function ProductCard({ p, delay }: { p: Product; delay: string }) {
@@ -585,7 +585,7 @@ export default function Home() {
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                   </a>
                   <a
-                    href="/projects/aitlas"
+                    href="/portfolio/aitlas"
                     className="inline-flex items-center gap-2 rounded-none border border-white/[.08] bg-transparent font-['JetBrains_Mono'] text-[11px] uppercase tracking-[.1em] px-7 h-12 text-zinc-100 hover:bg-white/[.04] hover:border-white/[.18] transition-all cursor-pointer"
                   >
                     Aitlas AI
@@ -671,20 +671,20 @@ export default function Home() {
         {/* ── CONTACT ──────────────────────────────── */}
         <section
           id="contact"
-          className="border-t border-white/[.05] px-12 py-40"
+          className="border-t border-white/[.05] px-12 py-32"
         >
           <div className="max-w-[1280px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
               {/* Left */}
-              <div className="reveal">
+              <div className="reveal lg:pt-2">
                 <Badge
                   variant="outline"
-                  className="mb-8 rounded-none border-white/[.08] bg-transparent font-['JetBrains_Mono'] text-[10px] uppercase tracking-[.14em] text-zinc-600"
+                  className="mb-6 rounded-none border-white/[.08] bg-transparent font-['JetBrains_Mono'] text-[10px] uppercase tracking-[.14em] text-zinc-600"
                 >
                   Contact
                 </Badge>
                 <h2
-                  className="mb-10 font-['Cormorant_Garamond'] text-[clamp(60px,8vw,108px)] font-light leading-[.9]"
+                  className="mb-8 font-['Cormorant_Garamond'] text-[clamp(52px,7vw,88px)] font-light leading-[.9]"
                   style={{ letterSpacing: "-.03em" }}
                 >
                   Let&apos;s
@@ -693,11 +693,11 @@ export default function Home() {
                   <br />
                   <em className="italic text-zinc-600">something</em>
                 </h2>
-                <p className="max-w-sm font-['JetBrains_Mono'] text-[13px] font-light leading-[1.8] text-zinc-500">
+                <p className="max-w-sm font-['JetBrains_Mono'] text-[13px] font-light leading-[1.8] text-zinc-500 mb-10">
                   Interested in our products, a collaboration, or integrating
                   sovereign AI? We read every message.
                 </p>
-                <div className="mt-12 flex gap-10">
+                <div className="flex gap-10">
                   {[
                     ["Email", "hello@furma.tech", "mailto:hello@furma.tech"],
                     ["GitHub", "@Fuuurma", "https://github.com/Fuuurma"],
@@ -722,11 +722,11 @@ export default function Home() {
               </div>
 
               {/* Right – form */}
-              <div className="reveal" style={{ transitionDelay: ".2s" }}>
+              <div className="reveal lg:pt-10" style={{ transitionDelay: ".2s" }}>
                 <form
                   ref={formRef}
                   onSubmit={handleSubmit}
-                  className="flex flex-col gap-7"
+                  className="flex flex-col gap-6"
                 >
                   {[
                     {

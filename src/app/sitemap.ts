@@ -1,13 +1,8 @@
 import { MetadataRoute } from 'next';
 
-/**
- * Sitemap for Furma.tech
- * Generated statically - update when adding new pages
- */
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://furma.tech';
-  
-  // Static pages with priority and change frequency
+
   const staticPages = [
     {
       url: baseUrl,
@@ -16,10 +11,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: `${baseUrl}/portfolio`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/brand`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.4,
     },
     {
       url: `${baseUrl}/privacy`,
@@ -29,77 +36,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Product pages - unified products
-  const productsPages = [
-    {
-      url: `${baseUrl}/products`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/projects/saas/restauramanager`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/projects/saas/guidetours`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/projects/aitlas`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/projects/aitlas/nova`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/projects/aitlas/nexus`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/projects/aitlas/agents`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/projects/aitlas/twyt`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/projects/aitlas/library`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-  ];
+  const productPages = [
+    `${baseUrl}/portfolio/aitlas`,
+    `${baseUrl}/portfolio/aitlas/nova`,
+    `${baseUrl}/portfolio/aitlas/nexus`,
+    `${baseUrl}/portfolio/aitlas/agents`,
+    `${baseUrl}/portfolio/aitlas/twyt`,
+    `${baseUrl}/portfolio/aitlas/library`,
+    `${baseUrl}/portfolio/aitlas/rsrx`,
+    `${baseUrl}/portfolio/aitlas/health`,
+    `${baseUrl}/portfolio/aitlas/pay`,
+    `${baseUrl}/portfolio/restauramanager`,
+    `${baseUrl}/portfolio/guidetours`,
+    `${baseUrl}/portfolio/tic-tac-toe-disappear`,
+    `${baseUrl}/portfolio/qart`,
+    `${baseUrl}/portfolio/pickstracker`,
+    `${baseUrl}/portfolio/sailingmate`,
+    `${baseUrl}/portfolio/linkup`,
+    `${baseUrl}/portfolio/financehub`,
+    `${baseUrl}/portfolio/onetomany`,
+    `${baseUrl}/portfolio/opengovern`,
+  ].map((url) => ({
+    url,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: url.includes('/aitlas') ? 0.8 : 0.7,
+  }));
 
-  // Legacy redirects (keep for SEO continuity)
-  const legacyPages = [
-    {
-      url: `${baseUrl}/products`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
-    },
-  ];
-
-  return [
-    ...staticPages,
-    ...productsPages,
-    ...legacyPages,
-  ];
+  return [...staticPages, ...productPages];
 }
