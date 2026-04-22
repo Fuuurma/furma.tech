@@ -16,9 +16,21 @@ const STYLES = `
     --accent:  #c9b99a;
     --accent2: #8a7a6a;
     --glow:    rgba(201,185,154,0.10);
+    --accent-rgb: 201, 185, 154;
+    --card-texture-opacity: 0.12;
+    --card-texture-opacity-hover: 0.22;
+    --noise-opacity: 0.025;
   }
 
-  body { cursor: none; }
+  .dark {
+    --accent:  #c9b99a;
+    --accent2: #8a7a6a;
+    --glow:    rgba(201,185,154,0.10);
+    --accent-rgb: 201, 185, 154;
+    --card-texture-opacity: 0.12;
+    --card-texture-opacity-hover: 0.22;
+    --noise-opacity: 0.025;
+  }
 
   @keyframes slideUp   { from { transform:translateY(110%); } to { transform:translateY(0); } }
   @keyframes fadeUp    { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
@@ -67,7 +79,7 @@ const STYLES = `
 
   .card-spotlight::before {
     content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
-    background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%), rgba(201,185,154,.07), transparent 40%);
+    background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%), rgba(var(--accent-rgb),.07), transparent 40%);
     opacity:0; transition:opacity .3s;
   }
   .card-spotlight:hover::before { opacity:1; }
@@ -78,7 +90,7 @@ const STYLES = `
   .noise {
     position:fixed; inset:0; z-index:9990; pointer-events:none;
     background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-    opacity:.025;
+    opacity:var(--noise-opacity);
   }
 `;
 
@@ -239,79 +251,13 @@ const STATUS_STYLE: Record<CardStatus, string> = {
 };
 
 const VISUAL_CLASS: Record<"grid" | "lines" | "dots", string> = {
-  grid: "[background-image:repeating-linear-gradient(0deg,transparent,transparent_39px,rgba(201,185,154,.18)_39px,rgba(201,185,154,.18)_40px),repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(201,185,154,.18)_39px,rgba(201,185,154,.18)_40px)]",
+  grid: "[background-image:repeating-linear-gradient(0deg,transparent,transparent_39px,rgba(var(--accent-rgb),.18)_39px,rgba(var(--accent-rgb),.18)_40px),repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(var(--accent-rgb),.18)_39px,rgba(var(--accent-rgb),.18)_40px)]",
   lines:
-    "[background-image:repeating-linear-gradient(0deg,transparent,transparent_28px,rgba(201,185,154,.22)_28px,rgba(201,185,154,.22)_29px)]",
-  dots: "[background-image:radial-gradient(circle,rgba(201,185,154,.35)_1px,transparent_1px)] [background-size:20px_20px]",
+    "[background-image:repeating-linear-gradient(0deg,transparent,transparent_28px,rgba(var(--accent-rgb),.22)_28px,rgba(var(--accent-rgb),.22)_29px)]",
+  dots: "[background-image:radial-gradient(circle,rgba(var(--accent-rgb),.35)_1px,transparent_1px)] [background-size:20px_20px]",
 };
 
-// ─── Sub-components ───────────────────────────────────────────────────────────
-
-function Cursor() {
-  const dot = useRef<HTMLDivElement>(null);
-  const ring = useRef<HTMLDivElement>(null);
-  const pos = useRef({ rx: 0, ry: 0, dx: 0, dy: 0 });
-
-  useEffect(() => {
-    const move = (e: MouseEvent) => {
-      pos.current.dx = e.clientX;
-      pos.current.dy = e.clientY;
-    };
-    document.addEventListener("mousemove", move);
-
-    let raf: number;
-    const tick = () => {
-      const p = pos.current;
-      p.rx += (p.dx - p.rx) * 0.12;
-      p.ry += (p.dy - p.ry) * 0.12;
-      if (dot.current) {
-        dot.current.style.left = p.dx + "px";
-        dot.current.style.top = p.dy + "px";
-      }
-      if (ring.current) {
-        ring.current.style.left = p.rx + "px";
-        ring.current.style.top = p.ry + "px";
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-
-    const over = () =>
-      ring.current?.classList.add(
-        "scale-[1.7]",
-        "border-[var(--accent)]",
-        "opacity-80",
-      );
-    const out = () =>
-      ring.current?.classList.remove(
-        "scale-[1.7]",
-        "border-[var(--accent)]",
-        "opacity-80",
-      );
-    document.querySelectorAll("a,button,[data-hover]").forEach((el) => {
-      el.addEventListener("mouseenter", over);
-      el.addEventListener("mouseleave", out);
-    });
-
-    return () => {
-      document.removeEventListener("mousemove", move);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-
-  return (
-    <>
-      <div
-        ref={dot}
-        className="fixed z-[9999] w-[6px] h-[6px] rounded-full bg-[var(--accent)] pointer-events-none -translate-x-1/2 -translate-y-1/2"
-      />
-      <div
-        ref={ring}
-        className="fixed z-[9998] w-9 h-9 rounded-full border border-[rgba(201,185,154,.35)] pointer-events-none -translate-x-1/2 -translate-y-1/2 transition-[transform,border-color,opacity] duration-300"
-      />
-    </>
-  );
-}
+// ─── Hooks ────────────────────────────────────────────────────────────────────
 
 function useReveal() {
   useEffect(() => {
@@ -411,18 +357,18 @@ function ProductCard({ p, delay }: { p: Product; delay: string }) {
   return (
     <Link
       href={getProductUrl(p.id)}
-      className={`reveal group card-spotlight relative overflow-hidden border border-white/[.05] bg-zinc-950 p-8 transition-all duration-300 hover:border-white/[.11] hover:bg-[#111] hover:shadow-lg hover:shadow-black/20 no-underline block ${p.col}`}
+      className={`reveal group card-spotlight relative overflow-hidden border border-border bg-card p-8 transition-all duration-300 hover:border-foreground/20 hover:bg-secondary no-underline block ${p.col}`}
       style={{ transitionDelay: delay }}
       data-hover
     >
       {/* background texture */}
       <div
-        className={`absolute inset-0 opacity-[.12] transition-opacity duration-300 group-hover:opacity-[.22] ${VISUAL_CLASS[p.visual]}`}
+        className={`absolute inset-0 transition-opacity duration-300 group-hover:opacity-[.22] opacity-[var(--card-texture-opacity)] ${VISUAL_CLASS[p.visual]}`}
       />
 
       {/* ghost number */}
       <span
-        className="pointer-events-none absolute bottom-[-12px] right-5 select-none font-['Cormorant_Garamond'] text-[96px] font-light leading-none text-white/[.04]"
+        className="pointer-events-none absolute bottom-[-12px] right-5 select-none font-['Cormorant_Garamond'] text-[96px] font-light leading-none text-foreground/5"
         style={{ letterSpacing: "-.04em" }}
       >
         {p.num}
@@ -432,29 +378,29 @@ function ProductCard({ p, delay }: { p: Product; delay: string }) {
         {/* tag */}
         <div className="mb-5 flex items-center gap-2">
           <span className="h-[5px] w-[5px] rounded-full bg-[var(--accent)]" />
-          <span className="font-['JetBrains_Mono'] text-[10px] uppercase tracking-[.14em] text-zinc-600">
+          <span className="font-['JetBrains_Mono'] text-[10px] uppercase tracking-[.14em] text-muted-foreground">
             {p.tag}
           </span>
         </div>
 
         {/* name */}
         <h3
-          className="mb-3 font-['Cormorant_Garamond'] text-[clamp(26px,2.8vw,38px)] font-light leading-[1.05]"
+          className="mb-3 font-['Cormorant_Garamond'] text-[clamp(26px,2.8vw,38px)] font-light leading-[1.05] text-foreground"
           style={{ letterSpacing: "-.01em" }}
         >
           {p.name}
         </h3>
 
         {/* desc */}
-        <p className="font-['JetBrains_Mono'] text-[12px] font-light leading-[1.75] text-zinc-500 max-w-sm">
+        <p className="font-['JetBrains_Mono'] text-[12px] font-light leading-[1.75] text-muted-foreground max-w-sm">
           {p.desc}
         </p>
 
         {/* status badge */}
         <div
-          className={`mt-5 inline-flex items-center gap-[6px] border border-white/[.06] px-[10px] py-[5px] before:h-[5px] before:w-[5px] before:rounded-full before:animate-[pulse-dot_2s_infinite] ${STATUS_STYLE[p.status]}`}
+          className={`mt-5 inline-flex items-center gap-[6px] border border-border px-[10px] py-[5px] before:h-[5px] before:w-[5px] before:rounded-full before:animate-[pulse-dot_2s_infinite] ${STATUS_STYLE[p.status]}`}
         >
-          <span className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-[.13em] text-zinc-600 ml-1">
+          <span className="font-['JetBrains_Mono'] text-[9px] uppercase tracking-[.13em] text-muted-foreground ml-1">
             {p.status}
           </span>
         </div>
@@ -462,7 +408,7 @@ function ProductCard({ p, delay }: { p: Product; delay: string }) {
 
       {/* arrow */}
       <ArrowUpRight
-        className="card-arrow absolute bottom-7 right-7 h-5 w-5 rotate-0 text-zinc-700 transition-transform duration-300 group-hover:text-[var(--accent)] group-hover:scale-110"
+        className="card-arrow absolute bottom-7 right-7 h-5 w-5 rotate-0 text-muted-foreground transition-transform duration-300 group-hover:text-[var(--accent)] group-hover:scale-110"
         style={{ transform: "rotate(-45deg)" }}
       />
     </Link>
@@ -475,7 +421,6 @@ export default function Home() {
   const formRef = useRef<HTMLFormElement>(null);
 
   useReveal();
-  useStatCounters();
   useSpotlight();
 
   async function handleSubmit(e: React.FormEvent) {
@@ -494,119 +439,91 @@ export default function Home() {
       {/* injected keyframes */}
       <style>{STYLES}</style>
 
-      <div className="min-h-screen bg-[#060606] text-zinc-100 overflow-x-hidden font-['JetBrains_Mono']">
-        {/* noise overlay */}
-        <div className="noise" />
-
-        {/* cursor */}
-        <Cursor />
+      <div className="min-h-screen bg-background text-foreground overflow-x-hidden relative">
+        {/* subtle gradient background */}
+        <div className="fixed inset-0 bg-gradient-to-br from-background via-background to-grey-50 dark:to-grey-950 pointer-events-none" />
 
         {/* ── NAV ─────────────────────────────────── */}
         <Navigation />
 
         {/* ── HERO ─────────────────────────────────── */}
-        <section className="relative flex min-h-screen items-end pb-20 pt-24 px-12">
-          <div className="w-full max-w-[1280px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-0 items-end">
+        <section className="relative flex min-h-[85vh] items-center pb-20 pt-28 px-6 md:px-12 overflow-hidden">
+          {/* Background Effects */}
+          <div className="absolute inset-0 -z-10">
+            {/* Radial gradient orbs */}
+            <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(201,185,154,0.15),transparent_70%)] dark:bg-[radial-gradient(circle,rgba(201,185,154,0.1),transparent_70%)] blur-3xl" />
+            <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(201,185,154,0.1),transparent_70%)] dark:bg-[radial-gradient(circle,rgba(201,185,154,0.05),transparent_70%)] blur-3xl" />
+            {/* Subtle grid */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:80px_80px]" />
+          </div>
+
+          <div className="w-full max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-center">
               {/* Left */}
-              <div>
-                {/* trust bar */}
-                <div className="hero-meta mb-14 flex items-center gap-6">
-                  <span className="h-[7px] w-[7px] rounded-full bg-emerald-400 shadow-[0_0_8px_#4ade80,0_0_16px_rgba(74,222,128,.3)] animate-[pulse-dot_2s_infinite]" />
-                  <span className="text-[10px] uppercase tracking-[.14em] text-zinc-600">
-                    Bootstrapped
-                  </span>
-                  <span className="h-4 w-px bg-zinc-800" />
-                  <span className="text-[10px] uppercase tracking-[.14em] text-zinc-600">
-                    Est. Catalonia, EU
-                  </span>
-                  <span className="h-4 w-px bg-zinc-800" />
-                  <span className="text-[10px] uppercase tracking-[.14em] text-zinc-600">
-                    13 Products
+              <div className="space-y-6">
+                {/* Tagline */}
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="h-px w-8 bg-foreground/20" />
+                  <span className="text-[11px] font-medium uppercase tracking-[0.1em] text-muted-foreground">
+                    Bootstrapped venture studio
                   </span>
                 </div>
 
                 {/* headline */}
-                <h1
-                  className="font-['Cormorant_Garamond'] text-[clamp(80px,12.5vw,168px)] font-light leading-[.88]"
-                  style={{ letterSpacing: "-.03em" }}
-                >
-                  <span className="hero-line">
+                <h1 className="font-serif text-[clamp(52px,8vw,96px)] font-semibold leading-[0.88] tracking-tight">
+                  <span className="hero-line block">
                     <span className="inner">Software</span>
                   </span>
-                  <span className="hero-line">
-                    <span className="inner">that</span>
+                  <span className="hero-line block">
+                    <span className="inner text-foreground/25">that</span>
                   </span>
-                  <span className="hero-line">
+                  <span className="hero-line block">
                     <span className="inner">works.</span>
                   </span>
                 </h1>
 
-                {/* stats */}
-                <div className="stats-bar hero-stats mt-20 flex gap-16 border-t border-white/[.06] pt-10">
-                  {[
-                    ["0", "%", "VC Funding"],
-                    ["13", "", "Products"],
-                    ["100", "%", "Owned"],
-                  ].map(([n, s, l]) => (
-                    <div key={l}>
-                      <div
-                        className="font-['Cormorant_Garamond'] text-[52px] font-light leading-none text-zinc-100"
-                        style={{ letterSpacing: "-.02em" }}
-                        data-count={n}
-                        data-suffix={s}
-                      >
-                        {n}
-                        {s}
-                      </div>
-                      <div className="mt-[6px] text-[10px] uppercase tracking-[.16em] text-zinc-600">
-                        {l}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right */}
-              <div className="hero-right flex flex-col items-start lg:items-end justify-end gap-10 pb-3 mt-12 lg:mt-0">
-                <p className="font-['JetBrains_Mono'] text-sm font-light leading-[1.8] text-zinc-500 lg:text-right max-w-xs">
-                  Industry-specific SaaS and sovereign AI infrastructure.{" "}
-                  <span className="font-normal text-zinc-100">
-                    Control your data.
-                  </span>{" "}
-                  Own your keys. No VC pressure.
+                {/* Description */}
+                <p className="text-[15px] md:text-[17px] text-muted-foreground leading-relaxed max-w-md pt-2">
+                  Industry-specific SaaS and sovereign AI infrastructure. <span className="text-foreground">Control your data.</span> Own your keys.
                 </p>
-                <div className="flex gap-3">
+
+                {/* CTAs */}
+                <div className="flex flex-wrap gap-3 pt-4">
                   <a
                     href="#portfolio"
-                    className="inline-flex items-center gap-2 bg-zinc-100 text-[#060606] font-['JetBrains_Mono'] text-[11px] uppercase tracking-[.1em] px-7 h-12 hover:bg-[var(--accent)] transition-colors group cursor-pointer"
+                    className="inline-flex items-center gap-2 bg-foreground text-background text-[13px] font-medium px-6 h-11 hover:bg-foreground/90 transition-colors"
                   >
                     Explore
-                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="h-4 w-4" />
                   </a>
                   <a
                     href="/portfolio/aitlas"
-                    className="inline-flex items-center gap-2 rounded-none border border-white/[.08] bg-transparent font-['JetBrains_Mono'] text-[11px] uppercase tracking-[.1em] px-7 h-12 text-zinc-100 hover:bg-white/[.04] hover:border-white/[.18] transition-all cursor-pointer"
+                    className="inline-flex items-center gap-2 border border-border bg-transparent text-[13px] font-medium px-6 h-11 text-foreground hover:bg-foreground/5 transition-colors"
                   >
                     Aitlas AI
-                    <Sparkles className="h-3.5 w-3.5" />
+                    <Sparkles className="h-4 w-4" />
                   </a>
+                </div>
+              </div>
+
+              {/* Right - Simple decorative element */}
+              <div className="hidden lg:flex flex-col items-end gap-6">
+                <div className="text-right space-y-1">
+                  <div className="text-[48px] font-serif font-semibold leading-none text-foreground">13</div>
+                  <div className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground">Products</div>
+                </div>
+                <div className="w-px h-20 bg-gradient-to-b from-border to-transparent" />
+                <div className="text-right space-y-1">
+                  <div className="text-[48px] font-serif font-semibold leading-none text-foreground">0%</div>
+                  <div className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground">VC Funding</div>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* scroll indicator */}
-          <div className="hero-scroll absolute bottom-12 right-12 flex items-center gap-3">
-            <span className="text-[10px] uppercase tracking-[.14em] text-zinc-600">
-              Scroll
-            </span>
-            <div className="scroll-bar relative h-px w-10 overflow-hidden bg-zinc-800" />
-          </div>
         </section>
 
         {/* ── MARQUEE ──────────────────────────────── */}
-        <div className="border-y border-white/[.05] py-12 overflow-hidden">
+        <div className="border-y border-border/50 py-12 overflow-hidden">
           <div className="marquee-track flex gap-20 whitespace-nowrap w-max">
             {[...Array(2)].flatMap(() =>
               [
@@ -621,7 +538,7 @@ export default function Home() {
               ].map((t) => (
                 <span
                   key={t + Math.random()}
-                  className="flex items-center gap-6 font-['Cormorant_Garamond'] text-[30px] font-light text-zinc-700"
+                  className="flex items-center gap-6 font-['Cormorant_Garamond'] text-[30px] font-light text-muted-foreground"
                   style={{ letterSpacing: "-.01em" }}
                 >
                   {t}
@@ -635,29 +552,13 @@ export default function Home() {
         {/* ── PORTFOLIO ────────────────────────────── */}
         <section
           id="portfolio"
-          className="border-t border-white/[.05] px-12 py-40"
+          className="border-t border-border/50 px-12 py-40"
         >
           <div className="max-w-[1280px] mx-auto">
-            <div className="reveal mb-[72px] flex items-end justify-between">
-              <div>
-                <p className="mb-4 text-[10px] uppercase tracking-[.18em] text-zinc-600">
-                  Portfolio
-                </p>
-                <h2
-                  className="font-['Cormorant_Garamond'] text-[clamp(48px,6vw,80px)] font-light leading-[.92]"
-                  style={{ letterSpacing: "-.02em" }}
-                >
-                  What we
-                  <br />
-                  build
-                </h2>
-              </div>
-              <span
-                className="font-['Cormorant_Garamond'] text-[96px] font-light leading-none text-zinc-800"
-                style={{ letterSpacing: "-.04em" }}
-              >
-                13
-              </span>
+            <div className="reveal mb-16">
+              <h2 className="font-serif text-[clamp(64px,8vw,120px)] font-semibold leading-[0.9] tracking-tight">
+                Portfolio
+              </h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-0.5">
@@ -671,7 +572,7 @@ export default function Home() {
         {/* ── CONTACT ──────────────────────────────── */}
         <section
           id="contact"
-          className="border-t border-white/[.05] px-12 py-32"
+          className="border-t border-border/50 px-12 py-32"
         >
           <div className="max-w-[1280px] mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
@@ -679,7 +580,7 @@ export default function Home() {
               <div className="reveal lg:pt-2">
                 <Badge
                   variant="outline"
-                  className="mb-6 rounded-none border-white/[.08] bg-transparent font-['JetBrains_Mono'] text-[10px] uppercase tracking-[.14em] text-zinc-600"
+                  className="mb-6 rounded-none border-border/50 bg-transparent font-['JetBrains_Mono'] text-[10px] uppercase tracking-[.14em] text-muted-foreground"
                 >
                   Contact
                 </Badge>
@@ -691,9 +592,9 @@ export default function Home() {
                   <br />
                   build
                   <br />
-                  <em className="italic text-zinc-600">something</em>
+                  <em className="italic text-muted-foreground">something</em>
                 </h2>
-                <p className="max-w-sm font-['JetBrains_Mono'] text-[13px] font-light leading-[1.8] text-zinc-500 mb-10">
+                <p className="max-w-sm font-['JetBrains_Mono'] text-[13px] font-light leading-[1.8] text-muted-foreground mb-10">
                   Interested in our products, a collaboration, or integrating
                   sovereign AI? We read every message.
                 </p>
@@ -703,7 +604,7 @@ export default function Home() {
                     ["GitHub", "@Fuuurma", "https://github.com/Fuuurma"],
                   ].map(([label, text, href]) => (
                     <div key={label} className="flex flex-col gap-1">
-                      <span className="text-[10px] uppercase tracking-[.14em] text-zinc-600">
+                      <span className="text-[10px] uppercase tracking-[.14em] text-muted-foreground">
                         {label}
                       </span>
                       <a
@@ -712,7 +613,7 @@ export default function Home() {
                         rel={
                           label === "GitHub" ? "noopener noreferrer" : undefined
                         }
-                        className="border-b border-white/[.06] pb-0.5 text-[13px] font-light text-zinc-100 no-underline transition-colors duration-200 hover:text-[var(--accent)] hover:border-[var(--accent)]"
+                        className="border-b border-border/50 pb-0.5 text-[13px] font-light text-foreground no-underline transition-colors duration-200 hover:text-[var(--accent)] hover:border-[var(--accent)]"
                       >
                         {text}
                       </a>
@@ -745,7 +646,7 @@ export default function Home() {
                     <div key={f.id}>
                       <label
                         htmlFor={f.id}
-                        className="mb-2.5 block text-[10px] uppercase tracking-[.14em] text-zinc-600"
+                        className="mb-2.5 block text-[10px] uppercase tracking-[.14em] text-muted-foreground"
                       >
                         {f.label}
                       </label>
@@ -754,7 +655,7 @@ export default function Home() {
                         name={f.id}
                         type={f.type}
                         placeholder={f.placeholder}
-                        className="w-full border-b border-white/[.06] bg-transparent pb-3 pt-1 font-['JetBrains_Mono'] text-[13px] font-light text-zinc-100 placeholder-zinc-700 outline-none transition-colors duration-200 focus:border-[var(--accent)] caret-[var(--accent)]"
+                        className="w-full border-b border-border/50 bg-transparent pb-3 pt-1 font-['JetBrains_Mono'] text-[13px] font-light text-foreground placeholder-muted-foreground/50 outline-none transition-colors duration-200 focus:border-[var(--accent)] caret-[var(--accent)]"
                         required
                       />
                     </div>
@@ -762,7 +663,7 @@ export default function Home() {
                   <div>
                     <label
                       htmlFor="message"
-                      className="mb-2.5 block text-[10px] uppercase tracking-[.14em] text-zinc-600"
+                      className="mb-2.5 block text-[10px] uppercase tracking-[.14em] text-muted-foreground"
                     >
                       Message
                     </label>
@@ -771,13 +672,13 @@ export default function Home() {
                       name="message"
                       rows={4}
                       placeholder="Tell us what you're building…"
-                      className="w-full resize-none border-b border-white/[.06] bg-transparent pb-3 pt-1 font-['JetBrains_Mono'] text-[13px] font-light text-zinc-100 placeholder-zinc-700 outline-none transition-colors duration-200 focus:border-[var(--accent)] caret-[var(--accent)]"
+                      className="w-full resize-none border-b border-border/50 bg-transparent pb-3 pt-1 font-['JetBrains_Mono'] text-[13px] font-light text-foreground placeholder-muted-foreground/50 outline-none transition-colors duration-200 focus:border-[var(--accent)] caret-[var(--accent)]"
                       required
                     />
                   </div>
                   <Button
                     type="submit"
-                    className={`mt-2 h-14 w-full rounded-none font-['JetBrains_Mono'] text-[11px] uppercase tracking-[.12em] transition-all duration-300 ${submitted ? "bg-emerald-400 text-black" : "bg-zinc-100 text-[#060606] hover:bg-[var(--accent)]"}`}
+                    className={`mt-2 h-14 w-full rounded-none font-['JetBrains_Mono'] text-[11px] uppercase tracking-[.12em] transition-all duration-300 ${submitted ? "bg-emerald-400 text-black" : "bg-foreground text-background hover:bg-[var(--accent)]"}`}
                   >
                     {submitted ? "Sent ✓" : "Send Message →"}
                   </Button>
@@ -788,12 +689,12 @@ export default function Home() {
         </section>
 
         {/* ── FOOTER ───────────────────────────────── */}
-        <footer className="border-t border-white/[.05] px-12 py-9">
+        <footer className="border-t border-border/50 px-12 py-9">
           <div className="max-w-[1280px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-[11px] font-light text-zinc-600">
+            <p className="text-[11px] font-light text-muted-foreground">
               © 2025 Furma — Catalonia, EU
             </p>
-            <p className="text-[11px] font-light text-zinc-600 flex items-center gap-2">
+            <p className="text-[11px] font-light text-muted-foreground flex items-center gap-2">
               Built without VC money{" "}
               <span className="text-[var(--accent)]">✦</span> Bootstrapped
             </p>
