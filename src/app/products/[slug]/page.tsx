@@ -45,20 +45,6 @@ const productData: Record<string, {
     ],
     href: '/products',
   },
-  sailingmate: {
-    name: 'SailingMate',
-    icon: '⛵',
-    category: 'Maritime',
-    status: 'paused',
-    tagline: 'Real-time sailing navigation with GPS.',
-    description: 'Real-time sailing navigation with GPS routing. Weather integration, route planning, and safety features for sailors. Built for Mediterranean waters.',
-    features: [
-      { title: 'GPS Navigation', desc: 'Real-time position with nautical charts.' },
-      { title: 'Weather Integration', desc: 'Live wind forecasts and weather updates.' },
-      { title: 'Route Planning', desc: 'Smart routing with tide predictions.' },
-    ],
-    href: '/products',
-  },
   financehub: {
     name: 'FinanceHub',
     icon: '📈',

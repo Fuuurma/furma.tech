@@ -5,10 +5,16 @@ import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { Button } from '@/components/ui/button';
 import Breadcrumbs from '@/components/ui/breadcrumb';
 import { TrendingUp } from 'lucide-react';
+import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
   title: 'FinanceHub — Furma.tech',
   description: 'Market data tracking and portfolio monitoring. Real-time market data, portfolio tracking, and financial analytics.',
+  openGraph: {
+    title: 'FinanceHub',
+    description: 'Market data tracking and portfolio monitoring.',
+    images: [getOgImageUrl({ title: 'FinanceHub', subtitle: 'Market Data', variant: 'aitlas' })],
+  },
 };
 
 export default function FinanceHubPage() {

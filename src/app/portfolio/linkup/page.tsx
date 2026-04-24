@@ -4,10 +4,16 @@ import { Section, Container } from '@/components/ui/Section';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { Button } from '@/components/ui/button';
 import Breadcrumbs from '@/components/ui/breadcrumb';
+import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
   title: 'LinkUp — Furma.tech',
   description: 'Short-video professional matching. Swipe-based professional networking using short video profiles.',
+  openGraph: {
+    title: 'LinkUp',
+    description: 'Short-video professional matching.',
+    images: [getOgImageUrl({ title: 'LinkUp', subtitle: 'Professional Network', variant: 'aitlas' })],
+  },
 };
 
 export default function LinkUpPage() {

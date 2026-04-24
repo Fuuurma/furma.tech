@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { Hexagon, Store, Zap, Brain, ArrowRight, Shield, Key, Cloud, Cpu, X, BookOpen, Search, ShieldCheck, Headset, Rocket } from "lucide-react";
+import { Hexagon, Store, Zap, Brain, ArrowRight, Shield, Key, Cloud, Cpu, X, BookOpen, Search, ShieldCheck, Headset, Rocket, Heart, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
 import Breadcrumbs from "@/components/ui/breadcrumb";
 import { getOgImageUrl } from "@/lib/metadata";
@@ -61,6 +61,8 @@ const actions = [
   { name: "f.twyt", desc: "X intelligence", status: "dev", icon: X },
   { name: "f.library", desc: "Vector knowledge base", status: "dev", icon: BookOpen },
   { name: "f.rsrx", desc: "Deep web research", status: "dev", icon: Search },
+  { name: "f.health", desc: "Wearable data integration", status: "dev", icon: Heart },
+  { name: "f.pay", desc: "Payment processing", status: "dev", icon: CreditCard },
   { name: "f.guard", desc: "AI code reviewer", status: "dev", icon: ShieldCheck },
   { name: "f.support", desc: "Autonomous helpdesk", status: "roadmap", icon: Headset },
   { name: "f.deploy", desc: "Infra deployer", status: "roadmap", icon: Rocket },

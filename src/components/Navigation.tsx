@@ -7,7 +7,6 @@ import { usePathname } from 'next/navigation';
 import {
   Gamepad2,
   QrCode,
-  Compass,
   Map,
   Utensils,
   TrendingUp,
@@ -26,10 +25,19 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 
 const allProducts = [
-  // Aitlas Ecosystem
-  { title: 'Nova', href: '/portfolio/aitlas/nova', description: 'AI workspace with BYOK', icon: Hexagon, category: 'AI' },
-  { title: 'Nexus', href: '/portfolio/aitlas/nexus', description: 'Durable agent runtime', icon: Brain, category: 'AI' },
-  { title: 'Agents Store', href: '/portfolio/aitlas/agents', description: 'AI agents marketplace', icon: Sparkles, category: 'AI' },
+  // Aitlas Ecosystem (with children)
+  {
+    title: 'Aitlas',
+    href: '/portfolio/aitlas',
+    description: 'Sovereign AI ecosystem',
+    icon: Hexagon,
+    category: 'AI',
+    children: [
+      { title: 'Nova', href: '/portfolio/aitlas/nova', description: 'AI workspace with BYOK', icon: Hexagon, category: 'AI' },
+      { title: 'Nexus', href: '/portfolio/aitlas/nexus', description: 'Durable agent runtime', icon: Brain, category: 'AI' },
+      { title: 'Agents Store', href: '/portfolio/aitlas/agents', description: 'AI agents marketplace', icon: Sparkles, category: 'AI' },
+    ],
+  },
   // Industry SaaS
   { title: 'RestaurantManager', href: '/portfolio/restauramanager', description: 'Restaurant management', icon: Utensils, category: 'SaaS' },
   { title: 'TourManager', href: '/portfolio/guidetours', description: 'Tour operator platform', icon: Map, category: 'SaaS' },
@@ -37,7 +45,6 @@ const allProducts = [
   { title: 'Tic-Tac-Toe', href: '/portfolio/tic-tac-toe-disappear', description: 'Vanishing-move game', icon: Gamepad2, category: 'Games' },
   { title: 'QArt', href: '/portfolio/qart', description: 'AI-generated QR art', icon: QrCode, category: 'Marketing' },
   { title: 'PicksTracker', href: '/portfolio/pickstracker', description: 'Sports pick tracking', icon: Trophy, category: 'Sports' },
-  { title: 'SailingMate', href: '/portfolio/sailingmate', description: 'Sailing navigation', icon: Compass, category: 'Maritime' },
   { title: 'LinkUp', href: '/portfolio/linkup', description: 'Professional matching', icon: Users, category: 'Social' },
   { title: 'FinanceHub', href: '/portfolio/financehub', description: 'Market data tracking', icon: TrendingUp, category: 'Finance' },
   { title: 'OneToMany', href: '/portfolio/onetomany', description: 'Goal & habit tracking', icon: Target, category: 'Productivity' },

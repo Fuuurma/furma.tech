@@ -8,7 +8,7 @@ import { getOgImageUrl } from "@/lib/metadata";
 import Breadcrumbs from "@/components/ui/breadcrumb";
 
 export const metadata: Metadata = {
-  title: "Nexus — Durable Agent Runtime | Furma.tech",
+  title: "Nexus — Durable Agent Runtime | Aitlas | Furma.tech",
   description: "Execute long-running autonomous AI tasks without server timeouts. Built for reliable, production-grade workflows.",
   openGraph: {
     title: "Nexus — Agent Runtime",
@@ -141,29 +141,29 @@ export default function NexusPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <ScrollReveal>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-8 backdrop-blur-sm">
+              <div className="inline-flex items-center gap-2 px-4 py-2 border border-amber-500/20 mb-8 bg-amber-500/10">
                 <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
                 <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-amber-600">In Development</span>
               </div>
 
               <h1 className="font-serif text-[clamp(42px,7vw,64px)] font-semibold leading-[0.95] tracking-tight text-foreground mb-6">Nexus Runtime</h1>
-              
+
               <p className="text-[40px] md:text-[56px] font-serif font-bold text-foreground leading-[0.95] mb-8">
                 Agents that don&apos;t<br />
                 <span className="gradient-text italic">sleep.</span>
               </p>
 
               <p className="text-[18px] leading-[1.7] text-grey-600 dark:text-grey-400 max-w-[540px] mb-10">
-                Durable execution for autonomous AI agents. Run long-running tasks without 
+                Durable execution for autonomous AI agents. Run long-running tasks without
                 server timeouts. Built for production-grade reliability.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button href="#pricing" variant="premium" size="lg" glow className="shadow-xl shadow-amber-500/30">
+                <Button href="/contact" variant="default" size="lg" className="min-w-[200px]">
                   Join Waitlist
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
-                <Button href="#how-it-works" variant="outline" size="lg" className="card-elevated">
+                <Button href="#how-it-works" variant="outline" size="lg" className="min-w-[200px]">
                   How It Works
                 </Button>
               </div>
@@ -188,29 +188,29 @@ export default function NexusPage() {
             <ScrollReveal delay={200}>
               <div className="relative">
                 <div className="absolute -inset-8 bg-foreground/10 blur-3xl rounded-full pointer-events-none"></div>
-                
-                <div className="relative bg-background rounded-2xl border border-grey-200 dark:border-grey-800 shadow-2xl overflow-hidden card-elevated p-8">
+
+                <div className="relative bg-background border border-grey-200 dark:border-grey-800 shadow-2xl overflow-hidden p-8">
                   <h3 className="font-bold text-foreground mb-6 text-center">Architecture Flow</h3>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="text-center p-4 rounded-xl bg-blue-500/5 border border-blue-500/20">
-                      <div className="w-14 h-14 rounded-full bg-foreground text-background flex items-center justify-center mx-auto mb-3">
+                    <div className="text-center p-4 border border-foreground/10 hover:border-foreground/30 transition-all">
+                      <div className="w-14 h-14 mx-auto mb-3 bg-foreground text-background flex items-center justify-center shadow-lg">
                         <Code2 className="w-7 h-7" />
                       </div>
                       <div className="font-bold text-foreground text-sm">Your App</div>
                       <div className="text-xs text-grey-500">Next.js / API</div>
                     </div>
 
-                    <div className="text-center p-4 rounded-xl bg-amber-500/10 border-2 border-foreground/30">
-                      <div className="w-16 h-16 rounded-full bg-foreground text-background flex items-center justify-center mx-auto mb-3 shadow-lg">
+                    <div className="text-center p-4 border-2 border-foreground/30 bg-foreground/5">
+                      <div className="w-16 h-16 mx-auto mb-3 bg-foreground text-background flex items-center justify-center shadow-lg">
                         <Brain className="w-8 h-8" />
                       </div>
                       <div className="font-bold text-foreground text-sm">Nexus Worker</div>
                       <div className="text-xs text-grey-500">24/7 Bun Runtime</div>
                     </div>
 
-                    <div className="text-center p-4 rounded-xl bg-green-500/5 border border-green-500/20">
-                      <div className="w-14 h-14 rounded-full bg-foreground text-background flex items-center justify-center mx-auto mb-3">
+                    <div className="text-center p-4 border border-foreground/10 hover:border-foreground/30 transition-all">
+                      <div className="w-14 h-14 mx-auto mb-3 bg-foreground text-background flex items-center justify-center shadow-lg">
                         <Database className="w-7 h-7" />
                       </div>
                       <div className="font-bold text-foreground text-sm">PostgreSQL</div>
@@ -219,22 +219,22 @@ export default function NexusPage() {
                   </div>
 
                   <div className="flex items-center justify-center gap-3 mt-6 pt-6 border-t border-grey-100 dark:border-grey-800">
-                    <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-green-500/10 text-green-600 text-[10px] font-mono">
+                    <span className="inline-flex items-center gap-1.5 px-2 py-1 bg-green-500/10 text-green-600 text-[10px] font-mono">
                       <CheckCircle2 className="w-3 h-3" /> Durable
                     </span>
-                    <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-blue-500/10 text-blue-600 text-[10px] font-mono">
+                    <span className="inline-flex items-center gap-1.5 px-2 py-1 bg-blue-500/10 text-blue-600 text-[10px] font-mono">
                       <CheckCircle2 className="w-3 h-3" /> Async
                     </span>
-                    <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-purple-500/10 text-purple-600 text-[10px] font-mono">
+                    <span className="inline-flex items-center gap-1.5 px-2 py-1 bg-purple-500/10 text-purple-600 text-[10px] font-mono">
                       <CheckCircle2 className="w-3 h-3" /> MCP
                     </span>
                   </div>
                 </div>
 
-                <div className="absolute -top-4 -right-4 w-16 h-16 bg-foreground text-background rounded-xl flex items-center justify-center shadow-xl animate-float">
+                <div className="absolute -top-4 -right-4 w-16 h-16 bg-foreground text-background flex items-center justify-center shadow-xl animate-float">
                   <Server className="w-8 h-8" />
                 </div>
-                <div className="absolute -bottom-4 -left-4 w-14 h-14 bg-foreground text-background rounded-lg flex items-center justify-center shadow-xl animate-float" style={{ animationDelay: '1.5s' }}>
+                <div className="absolute -bottom-4 -left-4 w-14 h-14 bg-foreground text-background flex items-center justify-center shadow-xl animate-float" style={{ animationDelay: '1.5s' }}>
                   <RefreshCcw className="w-7 h-7" />
                 </div>
               </div>
@@ -243,73 +243,12 @@ export default function NexusPage() {
         </div>
       </section>
 
-      {/* Problem/Solution */}
-      <section className="section bg-background">
-        <div className="max-w-6xl mx-auto px-6 md:px-12">
-          <ScrollReveal>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 mb-6">
-                  <span className="font-mono text-[10px] font-bold tracking-[0.1em] uppercase text-red-600">The Problem</span>
-                </div>
-                <h2 className="font-serif text-[clamp(28px,4vw,36px)] font-semibold leading-[1.1] text-foreground mb-6">Serverless timeouts kill AI agents</h2>
-                <p className="text-[15px] leading-[1.7] text-grey-600 dark:text-grey-400 mb-6">
-                  Vercel, AWS Lambda, and Cloudflare Workers all have strict timeout limits 
-                  (60s max on Vercel). AI agents that need to research, browse, or execute 
-                  multi-step workflows get killed mid-task.
-                </p>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3 text-[14px] text-grey-600 dark:text-grey-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 flex-shrink-0"></span>
-                    Lost context and progress
-                  </li>
-                  <li className="flex items-start gap-3 text-[14px] text-grey-600 dark:text-grey-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 flex-shrink-0"></span>
-                    Wasted API costs on incomplete tasks
-                  </li>
-                  <li className="flex items-start gap-3 text-[14px] text-grey-600 dark:text-grey-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 flex-shrink-0"></span>
-                    Complex workarounds with external queues
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 mb-6">
-                  <span className="font-mono text-[10px] font-bold tracking-[0.1em] uppercase text-green-600">The Solution</span>
-                </div>
-                <h2 className="font-serif text-[clamp(28px,4vw,36px)] font-semibold leading-[1.1] text-foreground mb-6">Durable execution, built in</h2>
-                <p className="text-[15px] leading-[1.7] text-grey-600 dark:text-grey-400 mb-6">
-                  Nexus runs 24/7 on dedicated infrastructure (Railway, Render). Tasks persist 
-                  to PostgreSQL and survive restarts. Your agents run to completion, no matter 
-                  how long they take.
-                </p>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3 text-[14px] text-grey-600 dark:text-grey-400">
-                    <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                    State persists automatically
-                  </li>
-                  <li className="flex items-start gap-3 text-[14px] text-grey-600 dark:text-grey-400">
-                    <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                    No infrastructure to manage
-                  </li>
-                  <li className="flex items-start gap-3 text-[14px] text-grey-600 dark:text-grey-400">
-                    <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                    Credit-based pricing, pay per use
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
       {/* Features */}
-      <section className="section bg-grey-50 dark:bg-grey-900/50">
+      <section className="py-32 bg-grey-50 dark:bg-grey-900/50">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <ScrollReveal>
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 border border-purple-500/20 mb-6 bg-purple-500/10">
                 <Sparkles className="w-4 h-4 text-purple-500" />
                 <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-purple-600">Features</span>
               </div>
@@ -321,7 +260,7 @@ export default function NexusPage() {
             {features.map((feature, index) => (
               <ScrollReveal key={feature.title} delay={index * 50}>
                 <Card className="card-elevated h-full p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
-                  <div className="w-12 h-12 rounded-xl bg-foreground text-background flex items-center justify-center mb-6 shadow-lg shadow-foreground/10">
+                  <div className="w-12 h-12 bg-foreground text-background flex items-center justify-center mb-6 shadow-lg shadow-foreground/10">
                     <feature.icon className="w-6 h-6" strokeWidth={1.5} />
                   </div>
                   <h3 className="text-[17px] font-bold text-foreground mb-3">{feature.title}</h3>
@@ -334,11 +273,11 @@ export default function NexusPage() {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="section bg-background">
+      <section id="how-it-works" className="py-32">
         <div className="max-w-6xl mx-auto px-6 md:px-12">
           <ScrollReveal>
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-grey-100 dark:bg-grey-800 border border-grey-200 dark:border-grey-700 mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 border border-grey-200 dark:border-grey-700 mb-6 bg-grey-100 dark:bg-grey-800">
                 <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-600 dark:text-grey-400">How It Works</span>
               </div>
               <h2 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.08] tracking-tight text-foreground">Simple architecture</h2>
@@ -350,13 +289,13 @@ export default function NexusPage() {
               <ScrollReveal key={step.step} delay={index * 100}>
                 <div className="relative">
                   {index < howItWorks.length - 1 && (
-                    <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-foreground/10 -translate-y-1/2"></div>
+                    <div className="hidden lg:block absolute top-8 left-full w-full h-0 border-t border-foreground/10"></div>
                   )}
                   <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-foreground text-background font-serif text-2xl font-bold mb-6 shadow-xl shadow-foreground/10">
+                    <div className="w-16 h-16 mx-auto mb-6 bg-foreground text-background font-serif text-2xl font-bold flex items-center justify-center shadow-xl shadow-foreground/10">
                       {step.step}
                     </div>
-                    <div className="w-12 h-12 rounded-xl bg-grey-100 dark:bg-grey-800 flex items-center justify-center mx-auto mb-4">
+                    <div className="w-12 h-12 mx-auto mb-4 bg-grey-100 dark:bg-grey-800 flex items-center justify-center">
                       <step.icon className="w-6 h-6 text-foreground" strokeWidth={1.5} />
                     </div>
                     <h3 className="text-[17px] font-bold text-foreground mb-3">{step.title}</h3>
@@ -370,11 +309,11 @@ export default function NexusPage() {
       </section>
 
       {/* Use Cases */}
-      <section className="section bg-grey-50 dark:bg-grey-900/50">
+      <section className="py-32 bg-grey-50 dark:bg-grey-900/50">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <ScrollReveal>
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-grey-100 dark:bg-grey-800 border border-grey-200 dark:border-grey-700 mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 border border-grey-200 dark:border-grey-700 mb-6 bg-grey-100 dark:bg-grey-800">
                 <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-600 dark:text-grey-400">Use Cases</span>
               </div>
               <h2 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.08] tracking-tight text-foreground">What you can build</h2>
@@ -386,13 +325,13 @@ export default function NexusPage() {
               <ScrollReveal key={useCase.title} delay={index * 100}>
                 <Card className="card-elevated p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                   <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-foreground text-background flex items-center justify-center flex-shrink-0 shadow-lg">
+                    <div className="w-14 h-14 bg-foreground text-background flex items-center justify-center flex-shrink-0 shadow-lg">
                       <useCase.icon className="w-7 h-7" strokeWidth={1.5} />
                     </div>
                     <div className="flex-1">
                       <h3 className="text-[18px] font-bold text-foreground mb-2">{useCase.title}</h3>
                       <p className="text-[14px] text-grey-600 dark:text-grey-400 leading-relaxed mb-3">{useCase.desc}</p>
-                      <span className="inline-block px-2 py-1 rounded bg-grey-100 dark:bg-grey-800 text-[11px] font-mono text-grey-600 dark:text-grey-400">
+                      <span className="inline-block px-2 py-1 bg-grey-100 dark:bg-grey-800 text-[11px] font-mono text-grey-600 dark:text-grey-400">
                         {useCase.creditCost}
                       </span>
                     </div>
@@ -405,11 +344,11 @@ export default function NexusPage() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="section bg-background">
+      <section id="pricing" className="py-32">
         <div className="max-w-6xl mx-auto px-6 md:px-12">
           <ScrollReveal>
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-grey-100 dark:bg-grey-800 border border-grey-200 dark:border-grey-700 mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 border border-grey-200 dark:border-grey-700 mb-6 bg-grey-100 dark:bg-grey-800">
                 <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-600 dark:text-grey-400">Pricing</span>
               </div>
               <h2 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.08] tracking-tight text-foreground">Credit-based pricing</h2>
@@ -420,9 +359,9 @@ export default function NexusPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {pricing.map((tier, index) => (
               <ScrollReveal key={tier.name} delay={index * 100}>
-                <Card className={`card-elevated text-center relative p-6 sm:p-8 ${tier.popular ? 'border-foreground/20 scale-105 shadow-xl shadow-purple-500/20' : ''}`}>
+                <Card className={`card-elevated text-center relative p-6 sm:p-8 ${tier.popular ? 'border-foreground/20 scale-105 shadow-xl' : ''}`}>
                   {tier.popular && (
-                    <div className="absolute top-4 right-4 px-2 py-1 rounded bg-purple-500/20 text-purple-700 text-[10px] font-mono font-bold uppercase">Popular</div>
+                    <div className="absolute top-4 right-4 px-2 py-1 bg-purple-500/20 text-purple-700 text-[10px] font-mono font-bold uppercase">Popular</div>
                   )}
                   <h3 className="text-[18px] font-bold text-foreground mb-2">{tier.name}</h3>
                   <p className="text-sm text-grey-500 mb-6">{tier.desc}</p>
@@ -438,7 +377,7 @@ export default function NexusPage() {
                       </li>
                     ))}
                   </ul>
-                  <Button href="/#contact" variant={tier.popular ? "premium" : "outline"} className="w-full">
+                  <Button href="/contact" variant={tier.popular ? "default" : "outline"} className="w-full">
                     {tier.name === "Hobby" ? "Get Started" : "Start Free Trial"}
                   </Button>
                 </Card>
@@ -449,24 +388,29 @@ export default function NexusPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-32 overflow-hidden bg-grey-900 dark:bg-grey-50 text-white dark:text-grey-900">
+      <section className="relative py-32 overflow-hidden bg-grey-900 dark:bg-grey-50 text-white dark:text-grey-900 text-center">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/10 dark:to-black/5 pointer-events-none"></div>
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[300px] bg-gradient-radial from-black/20 dark:from-black/10 to-transparent pointer-events-none opacity-60 animate-pulse-glow"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[300px] bg-gradient-radial pointer-events-none opacity-60 animate-pulse-glow"></div>
 
-        <div className="relative z-10 max-w-3xl mx-auto px-6 md:px-12 text-center">
+        <div className="relative z-10 max-w-3xl mx-auto px-6 md:px-12">
           <ScrollReveal>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/10 dark:bg-black/5 border border-black/20 dark:border-black/10 mb-10 backdrop-blur-sm">
-              <span className="w-2 h-2 rounded-full bg-amber-400 dark:bg-amber-500 animate-pulse"></span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 dark:border-black/20 mb-10">
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
               <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-400 dark:text-grey-500">Waitlist Open</span>
             </div>
-            
-            <h2 className="font-serif text-[clamp(36px,5vw,64px)] font-semibold leading-[1] tracking-tight text-white dark:text-grey-900 mb-8">Ready to run forever?</h2>
-            
+
+            <h2 className="font-serif text-[clamp(36px,5vw,64px)] font-semibold leading-[1] tracking-tight mb-8">Ready to run forever?</h2>
+
             <p className="text-[18px] text-grey-300 dark:text-grey-600 leading-relaxed mb-10 max-w-2xl mx-auto">Join the waitlist for Nexus. Get early access and 500 free credits when we launch.</p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button href="/#contact" variant="premium" size="lg" glow className="shadow-xl shadow-black/20 dark:shadow-black/40">Join Waitlist →</Button>
-              <Link href="/portfolio/aitlas" className="inline-flex items-center justify-center gap-2 text-[14px] font-semibold no-underline px-6 py-3 rounded-lg border border-white/20 dark:border-black/20 text-white dark:text-grey-900 hover:bg-white/10 dark:hover:bg-black/5 transition-all">Back to Aitlas</Link>
+              <Button href="/contact" variant="premium" size="lg" glow className="shadow-xl shadow-black/20 dark:shadow-black/40">
+                Join Waitlist
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+              <Link href="/portfolio/aitlas" className="inline-flex items-center justify-center gap-2 text-[14px] font-semibold no-underline px-6 py-3 border border-white/20 dark:border-black/20 text-white dark:text-grey-900 hover:bg-white/10 dark:hover:bg-black/5 transition-all">
+                Back to Aitlas
+              </Link>
             </div>
           </ScrollReveal>
         </div>

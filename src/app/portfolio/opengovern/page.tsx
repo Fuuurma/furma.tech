@@ -4,10 +4,16 @@ import { Section, Container } from '@/components/ui/Section';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { Button } from '@/components/ui/button';
 import Breadcrumbs from '@/components/ui/breadcrumb';
+import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
   title: 'OpenGovern — Furma.tech',
   description: 'Direct democracy tooling for municipalities. Participatory governance and transparent voting.',
+  openGraph: {
+    title: 'OpenGovern',
+    description: 'Direct democracy tooling for municipalities.',
+    images: [getOgImageUrl({ title: 'OpenGovern', subtitle: 'Direct Democracy', variant: 'aitlas' })],
+  },
 };
 
 export default function OpenGovernPage() {

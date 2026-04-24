@@ -169,7 +169,7 @@ export default function HealthPage() {
             {sources.map((s) => (
               <Card key={s.name} className="bg-background text-center p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                 <div className="w-12 h-12 rounded-xl bg-grey-50 dark:bg-grey-800 flex items-center justify-center mx-auto mb-6">
-                  <s.icon className="w-6 h-6 text-foreground text-foreground" />
+                  <s.icon className="w-6 h-6 text-foreground" />
                 </div>
                 <h3 className="text-[18px] font-bold mb-2">{s.name}</h3>
                 <p className="text-[14px] text-grey-600 dark:text-grey-400 mb-4">{s.desc}</p>

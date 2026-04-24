@@ -4,10 +4,16 @@ import { Section, Container } from '@/components/ui/Section';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { Button } from '@/components/ui/button';
 import Breadcrumbs from '@/components/ui/breadcrumb';
+import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
   title: 'OneToMany — Furma.tech',
   description: 'Goal setting and habit tracking. Set meaningful goals and build lasting habits.',
+  openGraph: {
+    title: 'OneToMany',
+    description: 'Goal setting and habit tracking.',
+    images: [getOgImageUrl({ title: 'OneToMany', subtitle: 'Habit Tracking', variant: 'aitlas' })],
+  },
 };
 
 export default function OneToManyPage() {

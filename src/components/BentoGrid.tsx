@@ -63,14 +63,6 @@ const products: Product[] = [
     accent: 'muted',
   },
   {
-    name: 'SailingMate',
-    description: 'Real-time sailing navigation with GPS routing.',
-    category: 'Maritime',
-    href: '/portfolio/sailingmate',
-    status: 'Paused',
-    accent: 'light',
-  },
-  {
     name: 'LinkUp',
     description: 'Short-video professional matching platform.',
     category: 'Social',

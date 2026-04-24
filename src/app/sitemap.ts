@@ -51,7 +51,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     `${baseUrl}/portfolio/tic-tac-toe-disappear`,
     `${baseUrl}/portfolio/qart`,
     `${baseUrl}/portfolio/pickstracker`,
-    `${baseUrl}/portfolio/sailingmate`,
     `${baseUrl}/portfolio/linkup`,
     `${baseUrl}/portfolio/financehub`,
     `${baseUrl}/portfolio/onetomany`,

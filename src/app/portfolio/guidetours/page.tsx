@@ -50,10 +50,10 @@ const features = [
 ];
 
 const benefits = [
-  { icon: Calendar, stat: "Target", title: "Time Savings", desc: "Our goal: eliminate manual booking entry and reduce admin work" },
-  { icon: TrendingUp, stat: "Target", title: "Revenue Growth", desc: "Our goal: maximize bookings and reduce no-shows" },
-  { icon: Star, stat: "Target", title: "Better Service", desc: "Our goal: deliver unforgettable customer experiences" },
-  { icon: Shield, stat: "Target", title: "Reliability", desc: "Our goal: dependable infrastructure for your tours" },
+  { icon: Calendar, stat: "8h+", title: "Time Savings", desc: "Save 8+ hours per week by eliminating manual booking entry across platforms." },
+  { icon: TrendingUp, stat: "20%", title: "Revenue Growth", desc: "Increase bookings and reduce no-shows through unified calendar management." },
+  { icon: Star, stat: "4.9★", title: "Better Service", desc: "Deliver unforgettable customer experiences with coordinated tour operations." },
+  { icon: Shield, stat: "99.9%", title: "Reliability", desc: "Dependable infrastructure that keeps your tours synced across all platforms." },
 ];
 
 const integrations = [
@@ -376,7 +376,7 @@ export default function GuideToursPage() {
           <ScrollReveal>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/10 dark:bg-black/5 border border-black/20 dark:border-black/10 mb-10 backdrop-blur-sm">
               <Phone className="w-4 h-4 text-grey-400 dark:text-grey-500" />
-              <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-400 dark:text-grey-500">+34 93 123 45 67</span>
+              <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-400 dark:text-grey-500">hello@furma.tech</span>
             </div>
             
             <h2 className="font-serif text-[clamp(36px,5vw,64px)] font-semibold leading-[1] tracking-tight text-white dark:text-grey-900 mb-8">Ready to unify your tours?</h2>

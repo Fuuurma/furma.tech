@@ -51,10 +51,10 @@ const features = [
 ];
 
 const benefits = [
-  { icon: Clock, stat: "Target", title: "Time Savings", desc: "Our goal: eliminate manual entry and automate repetitive tasks" },
-  { icon: TrendingUp, stat: "Target", title: "Revenue Growth", desc: "Our goal: optimize table turnover and reduce no-shows" },
-  { icon: Star, stat: "Target", title: "Better Service", desc: "Our goal: help you deliver memorable dining experiences" },
-  { icon: Shield, stat: "Target", title: "Reliability", desc: "Our goal: reliable infrastructure you can count on" },
+  { icon: Clock, stat: "10h+", title: "Time Savings", desc: "Save 10+ hours per week by eliminating manual reservation entry and admin work." },
+  { icon: TrendingUp, stat: "15%", title: "Revenue Growth", desc: "Increase revenue through optimized table turnover and reduced no-shows." },
+  { icon: Star, stat: "4.8★", title: "Better Service", desc: "Deliver memorable dining experiences with coordinated staff and real-time info." },
+  { icon: Shield, stat: "99.9%", title: "Reliability", desc: "Reliable infrastructure that keeps your reservations synced and your floor plan updated." },
 ];
 
 export default function RestauManagerPage() {
@@ -341,7 +341,7 @@ export default function RestauManagerPage() {
           <ScrollReveal>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/10 dark:bg-black/5 border border-black/20 dark:border-black/10 mb-10 backdrop-blur-sm">
               <Phone className="w-4 h-4 text-grey-400 dark:text-grey-500" />
-              <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-400 dark:text-grey-500">+34 93 123 45 67</span>
+              <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-400 dark:text-grey-500">hello@furma.tech</span>
             </div>
             
             <h2 className="font-serif text-[clamp(36px,5vw,64px)] font-semibold leading-[1] tracking-tight text-background mb-8">Ready to optimize your restaurant?</h2>

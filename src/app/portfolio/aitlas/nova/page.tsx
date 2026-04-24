@@ -7,7 +7,7 @@ import { getOgImageUrl } from "@/lib/metadata";
 import Breadcrumbs from "@/components/ui/breadcrumb";
 
 export const metadata: Metadata = {
-  title: "Nova — AI Workspace | Furma.tech",
+  title: "Nova — AI Workspace | Aitlas | Furma.tech",
   description: "Your AI command center. Bring your own API keys and access multiple LLM providers without vendor lock-in.",
   openGraph: {
     title: "Nova — AI Workspace",
@@ -74,30 +74,6 @@ const useCases = [
   },
 ];
 
-const pricing = [
-  {
-    name: "Free",
-    price: "€0",
-    desc: "For individuals exploring AI",
-    features: ["BYOK integration", "Basic chat mode", "5 conversation threads", "Community support", "Standard response time"],
-  },
-  {
-    name: "Pro",
-    price: "€19",
-    period: "/mo",
-    desc: "For power users & developers",
-    popular: true,
-    features: ["Everything in Free", "Agentic mode", "Unlimited threads", "Priority support", "MCP Actions integration", "100 Action credits/month"],
-  },
-  {
-    name: "Team",
-    price: "€49",
-    period: "/mo",
-    desc: "For small teams",
-    features: ["Everything in Pro", "Team collaboration", "Shared threads", "Admin dashboard", "500 Action credits/month", "API access"],
-  },
-];
-
 export default function NovaPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -109,10 +85,10 @@ export default function NovaPage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
           <Breadcrumbs className="mb-4" />
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <ScrollReveal>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-8 backdrop-blur-sm card-elevated">
+              <div className="inline-flex items-center gap-2 px-4 py-2 border border-amber-500/20 mb-8 bg-amber-500/10">
                 <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
                 <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-amber-600">Public Beta</span>
               </div>
@@ -120,23 +96,23 @@ export default function NovaPage() {
               <h1 className="font-serif text-[clamp(42px,7vw,64px)] font-semibold leading-[0.95] tracking-tight text-foreground mb-6">
                 Nova Workspace
               </h1>
-              
+
               <p className="text-[40px] md:text-[56px] font-serif font-bold text-foreground leading-[0.95] mb-8">
                 Your AI,<br />
-                <span className="gradient-text italic">your rules.</span>
+                <span className="text-grey-400 italic">your rules.</span>
               </p>
 
               <p className="text-[18px] leading-[1.7] text-grey-600 dark:text-grey-400 max-w-[540px] mb-10">
-                The unified AI workspace where you bring your own API keys and access multiple 
+                The unified AI workspace where you bring your own API keys and access multiple
                 LLM providers without vendor lock-in. One interface, infinite possibilities.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button href="#pricing" size="lg" className="inline-flex items-center gap-2 bg-foreground text-background hover:shadow-lg">
+                <Button href="/contact" size="lg" className="inline-flex items-center gap-2 min-w-[200px]">
                   Try Nova Free
                   <ArrowRight className="w-4 h-4" />
                 </Button>
-                <Button href="#features" variant="outline" size="lg" className="card-elevated">
+                <Button href="#features" variant="outline" size="lg" className="min-w-[200px]">
                   See Features
                 </Button>
               </div>
@@ -161,75 +137,73 @@ export default function NovaPage() {
             <ScrollReveal delay={200}>
               <div className="relative">
                 <div className="absolute -inset-8 bg-foreground/10 blur-3xl rounded-full pointer-events-none"></div>
-                
-                <div className="relative bg-background rounded-2xl border border-grey-200 dark:border-grey-800 shadow-2xl overflow-hidden card-elevated">
-                  <div className="flex items-center gap-2 px-4 py-3 bg-grey-50 dark:bg-grey-800 border-b border-grey-200 dark:border-grey-700">
+
+                <div className="relative bg-background border border-grey-200 dark:border-grey-800 shadow-2xl overflow-hidden p-8">
+                  <div className="flex items-center gap-2 px-4 py-3 bg-grey-50 dark:bg-grey-800 border-b border-grey-200 dark:border-grey-700 -mx-8 -mt-8 mb-6">
                     <div className="flex gap-1.5">
                       <div className="w-3 h-3 rounded-full bg-red-400"></div>
                       <div className="w-3 h-3 rounded-full bg-amber-400"></div>
                       <div className="w-3 h-3 rounded-full bg-green-400"></div>
                     </div>
                     <div className="flex-1 text-center">
-                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white dark:bg-grey-700 text-[11px] text-grey-500">
+                      <div className="inline-flex items-center gap-2 px-3 py-1 bg-white dark:bg-grey-700 text-[11px] text-grey-500">
                         <Shield className="w-3 h-3" />
                         nova.aitlas.xyz
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-foreground text-background flex items-center justify-center shadow-lg">
-                          <Hexagon className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <div className="font-bold text-foreground">Nova</div>
-                          <div className="text-[11px] text-grey-500">AI Workspace</div>
-                        </div>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-foreground text-background flex items-center justify-center shadow-lg">
+                        <Hexagon className="w-5 h-5" />
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className="px-2 py-1 rounded bg-green-500/10 text-green-600 text-[10px] font-mono">Online</span>
+                      <div>
+                        <div className="font-bold text-foreground">Nova</div>
+                        <div className="text-[11px] text-grey-500">AI Workspace</div>
                       </div>
                     </div>
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-1 bg-green-500/10 text-green-600 text-[10px] font-mono">Online</span>
+                    </div>
+                  </div>
 
-                    <div className="space-y-4 mb-6">
-                      <div className="flex gap-3">
-                        <div className="w-8 h-8 rounded-full bg-foreground flex-shrink-0"></div>
-                        <div className="flex-1 bg-grey-50 dark:bg-grey-800 rounded-xl rounded-tl-none p-3">
-                          <div className="h-3 bg-grey-200 dark:bg-grey-700 rounded w-3/4 mb-2"></div>
-                          <div className="h-3 bg-grey-200 dark:bg-grey-700 rounded w-1/2"></div>
-                        </div>
-                      </div>
-                      <div className="flex gap-3 flex-row-reverse">
-                        <div className="w-8 h-8 rounded-full bg-foreground flex-shrink-0"></div>
-                        <div className="flex-1 bg-amber-500/10 rounded-xl rounded-tr-none p-3">
-                          <div className="h-3 bg-amber-200/50 dark:bg-amber-800/30 rounded w-full mb-2"></div>
-                          <div className="h-3 bg-amber-200/50 dark:bg-amber-800/30 rounded w-5/6"></div>
-                          <div className="h-3 bg-amber-200/50 dark:bg-amber-800/30 rounded w-2/3"></div>
-                        </div>
+                  <div className="space-y-4 mb-6">
+                    <div className="flex gap-3">
+                      <div className="w-8 h-8 bg-foreground flex-shrink-0"></div>
+                      <div className="flex-1 bg-grey-50 dark:bg-grey-800 p-3">
+                        <div className="h-3 bg-grey-200 dark:bg-grey-700 w-3/4 mb-2"></div>
+                        <div className="h-3 bg-grey-200 dark:bg-grey-700 w-1/2"></div>
                       </div>
                     </div>
+                    <div className="flex gap-3 flex-row-reverse">
+                      <div className="w-8 h-8 bg-foreground flex-shrink-0"></div>
+                      <div className="flex-1 bg-amber-500/10 p-3">
+                        <div className="h-3 bg-amber-200/50 dark:bg-amber-800/30 w-full mb-2"></div>
+                        <div className="h-3 bg-amber-200/50 dark:bg-amber-800/30 w-5/6"></div>
+                        <div className="h-3 bg-amber-200/50 dark:bg-amber-800/30 w-2/3"></div>
+                      </div>
+                    </div>
+                  </div>
 
-                    <div className="flex items-center gap-3 p-3 bg-grey-50 dark:bg-grey-800 rounded-xl border border-grey-200 dark:border-grey-700">
-                      <div className="flex-1 h-10 bg-white dark:bg-grey-700 rounded-lg"></div>
-                      <div className="w-10 h-10 rounded-lg bg-amber-500 flex items-center justify-center">
-                        <ArrowRight className="w-5 h-5 text-background" />
-                      </div>
+                  <div className="flex items-center gap-3 p-3 bg-grey-50 dark:bg-grey-800 border border-grey-200 dark:border-grey-700">
+                    <div className="flex-1 h-10 bg-white dark:bg-grey-700"></div>
+                    <div className="w-10 h-10 bg-amber-500 flex items-center justify-center">
+                      <ArrowRight className="w-5 h-5 text-background" />
                     </div>
+                  </div>
 
-                    <div className="flex items-center justify-center gap-3 mt-6 pt-4 border-t border-grey-100 dark:border-grey-800">
-                      <span className="px-2 py-1 rounded bg-grey-100 dark:bg-grey-800 text-[10px] font-mono text-grey-500">GPT-4</span>
-                      <span className="px-2 py-1 rounded bg-grey-100 dark:bg-grey-800 text-[10px] font-mono text-grey-500">Claude</span>
-                      <span className="px-2 py-1 rounded bg-grey-100 dark:bg-grey-800 text-[10px] font-mono text-grey-500">DeepSeek</span>
-                    </div>
+                  <div className="flex items-center justify-center gap-3 mt-6 pt-4 border-t border-grey-100 dark:border-grey-800">
+                    <span className="px-2 py-1 bg-grey-100 dark:bg-grey-800 text-[10px] font-mono text-grey-500">GPT-4</span>
+                    <span className="px-2 py-1 bg-grey-100 dark:bg-grey-800 text-[10px] font-mono text-grey-500">Claude</span>
+                    <span className="px-2 py-1 bg-grey-100 dark:bg-grey-800 text-[10px] font-mono text-grey-500">DeepSeek</span>
                   </div>
                 </div>
 
-                <div className="absolute -top-4 -right-4 w-16 h-16 bg-foreground text-background rounded-xl flex items-center justify-center shadow-xl animate-float">
+                <div className="absolute -top-4 -right-4 w-16 h-16 bg-foreground text-background flex items-center justify-center shadow-xl animate-float">
                   <Brain className="w-8 h-8" />
                 </div>
-                <div className="absolute -bottom-4 -left-4 w-14 h-14 bg-foreground text-background rounded-lg flex items-center justify-center shadow-xl animate-float" style={{ animationDelay: '1s' }}>
+                <div className="absolute -bottom-4 -left-4 w-14 h-14 bg-foreground text-background flex items-center justify-center shadow-xl animate-float" style={{ animationDelay: '1s' }}>
                   <Zap className="w-7 h-7" />
                 </div>
               </div>
@@ -239,7 +213,7 @@ export default function NovaPage() {
       </section>
 
       {/* Supported Providers */}
-      <section className="section bg-background border-y border-grey-200 dark:border-grey-800">
+      <section className="py-24 bg-grey-50 dark:bg-grey-900/20 border-y border-border">
         <div className="max-w-6xl mx-auto px-6 md:px-12">
           <ScrollReveal>
             <div className="text-center mb-12">
@@ -251,13 +225,13 @@ export default function NovaPage() {
           <StaggerChildren className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {providers.map((provider) => (
               <ScrollReveal key={provider.name}>
-                <div className="p-6 border border-foreground/10 hover:border-foreground/30 rounded-lg transition-all text-center">
+                <div className="p-6 border border-foreground/10 hover:border-foreground/30 transition-all text-center bg-background">
                   <div className="w-8 h-8 mx-auto mb-2">
                     <provider.icon className={`w-full h-full ${provider.status === "Available" ? "text-green-500" : "text-yellow-500"}`} />
                   </div>
                   <div className="text-[14px] font-bold text-foreground mb-1">{provider.name}</div>
                   <div className="text-[11px] text-grey-500 mb-2">{provider.provider}</div>
-                  <span className={`inline-block px-2 py-0.5 rounded text-[9px] font-mono font-bold uppercase ${provider.status === "Available" ? "bg-green-500/10 text-green-600 border border-green-500/20" : "bg-yellow-500/10 text-yellow-600 border border-yellow-500/20"}`}>
+                  <span className={`inline-block px-2 py-0.5 text-[9px] font-mono font-bold uppercase border ${provider.status === "Available" ? "bg-green-500/10 text-green-600 border-green-500/20" : "bg-yellow-500/10 text-yellow-600 border-yellow-500/20"}`}>
                     {provider.status}
                   </span>
                 </div>
@@ -268,11 +242,11 @@ export default function NovaPage() {
       </section>
 
       {/* Features Grid */}
-      <section id="features" className="section bg-grey-50 dark:bg-grey-900/50">
+      <section id="features" className="py-32">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <ScrollReveal>
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 border border-amber-500/20 mb-6 bg-amber-500/10">
                 <Sparkles className="w-4 h-4 text-amber-500" />
                 <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-amber-600">Features</span>
               </div>
@@ -283,8 +257,8 @@ export default function NovaPage() {
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
               <ScrollReveal key={feature.title} delay={index * 50}>
-                <div className="p-6 border border-foreground/10 hover:border-foreground/30 rounded-lg transition-all h-full">
-                  <div className="w-12 h-12 rounded-xl bg-foreground text-background flex items-center justify-center mb-6 shadow-lg shadow-foreground/10">
+                <div className="p-6 border border-foreground/10 hover:border-foreground/30 transition-all h-full bg-background">
+                  <div className="w-12 h-12 bg-foreground text-background flex items-center justify-center mb-6 shadow-lg">
                     <feature.icon className="w-6 h-6" strokeWidth={1.5} />
                   </div>
                   <h3 className="text-[17px] font-bold text-foreground mb-3">{feature.title}</h3>
@@ -297,11 +271,11 @@ export default function NovaPage() {
       </section>
 
       {/* Use Cases */}
-      <section className="section bg-background">
+      <section className="py-32 bg-grey-50 dark:bg-grey-900/20">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <ScrollReveal>
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-grey-100 dark:bg-grey-800 border border-grey-200 dark:border-grey-700 mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 border border-grey-200 dark:border-grey-700 mb-6 bg-grey-100 dark:bg-grey-800">
                 <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-600 dark:text-grey-400">Use Cases</span>
               </div>
               <h2 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.08] tracking-tight text-foreground">Built for every workflow</h2>
@@ -311,8 +285,8 @@ export default function NovaPage() {
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {useCases.map((useCase, index) => (
               <ScrollReveal key={useCase.title} delay={index * 100}>
-                <div className="p-6 border border-foreground/10 hover:border-foreground/30 rounded-lg transition-all text-center group">
-                  <div className="w-16 h-16 rounded-2xl bg-foreground text-background flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:scale-110 transition-transform duration-300">
+                <div className="p-6 border border-foreground/10 hover:border-foreground/30 transition-all text-center group bg-background">
+                  <div className="w-16 h-16 bg-foreground text-background flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:-translate-y-1 transition-transform duration-300">
                     <useCase.icon className="w-8 h-8" strokeWidth={1.5} />
                   </div>
                   <h3 className="text-[18px] font-bold text-foreground mb-3">{useCase.title}</h3>
@@ -325,7 +299,7 @@ export default function NovaPage() {
       </section>
 
       {/* Device Support */}
-      <section className="section bg-grey-50 dark:bg-grey-900/50">
+      <section className="py-24">
         <div className="max-w-6xl mx-auto px-6 md:px-12">
           <ScrollReveal>
             <div className="text-center mb-12">
@@ -337,7 +311,7 @@ export default function NovaPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <ScrollReveal delay={0}>
               <div className="text-center p-6">
-                <div className="w-20 h-20 mx-auto mb-4 bg-foreground text-background rounded-2xl flex items-center justify-center shadow-xl">
+                <div className="w-20 h-20 mx-auto mb-4 bg-foreground text-background flex items-center justify-center shadow-xl">
                   <Monitor className="w-10 h-10" />
                 </div>
                 <h3 className="font-bold text-foreground mb-2">Desktop</h3>
@@ -346,7 +320,7 @@ export default function NovaPage() {
             </ScrollReveal>
             <ScrollReveal delay={100}>
               <div className="text-center p-6">
-                <div className="w-20 h-20 mx-auto mb-4 bg-foreground text-background rounded-2xl flex items-center justify-center shadow-xl">
+                <div className="w-20 h-20 mx-auto mb-4 bg-foreground text-background flex items-center justify-center shadow-xl">
                   <Smartphone className="w-10 h-10" />
                 </div>
                 <h3 className="font-bold text-foreground mb-2">Mobile</h3>
@@ -355,7 +329,7 @@ export default function NovaPage() {
             </ScrollReveal>
             <ScrollReveal delay={200}>
               <div className="text-center p-6">
-                <div className="w-20 h-20 mx-auto mb-4 bg-foreground text-background rounded-2xl flex items-center justify-center shadow-xl">
+                <div className="w-20 h-20 mx-auto mb-4 bg-foreground text-background flex items-center justify-center shadow-xl">
                   <Globe className="w-10 h-10" />
                 </div>
                 <h3 className="font-bold text-foreground mb-2">Any Browser</h3>
@@ -366,72 +340,30 @@ export default function NovaPage() {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section id="pricing" className="section bg-background">
-        <div className="max-w-6xl mx-auto px-6 md:px-12">
-          <ScrollReveal>
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-grey-100 dark:bg-grey-800 border border-grey-200 dark:border-grey-700 mb-6">
-                <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-600 dark:text-grey-400">Pricing</span>
-              </div>
-              <h2 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.08] tracking-tight text-foreground">Simple, transparent pricing</h2>
-              <p className="text-[16px] text-grey-600 dark:text-grey-400 mt-4 max-w-2xl mx-auto">You always pay your AI provider directly. Nova pricing is for the workspace only.</p>
-            </div>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {pricing.map((tier, index) => (
-              <ScrollReveal key={tier.name} delay={index * 100}>
-                <div className={`p-6 border border-foreground/10 hover:border-foreground/30 rounded-lg transition-all text-center relative ${tier.popular ? 'scale-105 shadow-xl border-foreground/30 bg-foreground/5' : ''}`}>
-                  {tier.popular && (
-                    <div className="absolute top-4 right-4 px-2 py-1 rounded bg-amber-500/20 text-amber-700 text-[10px] font-mono font-bold uppercase">Popular</div>
-                  )}
-                  <h3 className="text-[18px] font-bold text-foreground mb-2">{tier.name}</h3>
-                  <p className="text-sm text-grey-500 mb-6">{tier.desc}</p>
-                  <div className="text-[42px] font-serif font-bold text-foreground mb-2">
-                    {tier.price}
-                    {tier.period && <span className="text-[16px] font-sans text-grey-500">{tier.period}</span>}
-                  </div>
-                  <ul className="space-y-3 mb-8 text-left">
-                    {tier.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2 text-[14px] text-grey-600 dark:text-grey-400">
-                        <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <Button href="/#contact" variant={tier.popular ? "default" : "outline"} className={tier.popular ? 'w-full bg-foreground text-background hover:shadow-lg' : 'w-full'}>
-                    {tier.name === "Free" ? "Get Started" : "Start Free Trial"}
-                  </Button>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
-      <section className="relative py-32 overflow-hidden bg-grey-900 dark:bg-grey-50 text-white dark:text-grey-900">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/10 dark:to-black/5 pointer-events-none"></div>
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[300px] bg-gradient-radial from-black/20 dark:from-black/10 to-transparent pointer-events-none opacity-60 animate-pulse-glow"></div>
+      <section className="relative py-32 overflow-hidden bg-foreground text-background text-center">
+        <div className="absolute inset-0 bg-dots opacity-10"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[300px] bg-gradient-radial pointer-events-none opacity-60 animate-pulse-glow"></div>
 
-        <div className="relative z-10 max-w-3xl mx-auto px-6 md:px-12 text-center">
+        <div className="relative z-10 max-w-3xl mx-auto px-6 md:px-12">
           <ScrollReveal>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/10 dark:bg-black/5 border border-black/20 dark:border-black/10 mb-10 backdrop-blur-sm">
-              <span className="w-2 h-2 rounded-full bg-green-400 dark:bg-green-500 animate-pulse"></span>
-              <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-400 dark:text-grey-500">Free to start</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 border border-background/20 mb-10 bg-background/5">
+              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+              <span className="font-mono text-[11px] font-bold tracking-[0.12em] uppercase text-grey-400">Free to start</span>
             </div>
-            
-            <h2 className="font-serif text-[clamp(36px,5vw,64px)] font-semibold leading-[1] tracking-tight text-white dark:text-grey-900 mb-8">Ready to own your AI?</h2>
-            
-            <p className="text-[18px] text-grey-300 dark:text-grey-600 leading-relaxed mb-10 max-w-2xl mx-auto">Join thousands of developers using Nova to build sovereign AI workflows. No credit card required.</p>
-            
+
+            <h2 className="font-serif text-[clamp(36px,5vw,64px)] font-semibold leading-[1] tracking-tight mb-8">Ready to own your AI?</h2>
+
+            <p className="text-[18px] text-background/60 leading-relaxed mb-10 max-w-2xl mx-auto">Join the beta and start using Nova today. No credit card required.</p>
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button href="/#contact" size="lg" className="inline-flex items-center gap-2 bg-foreground text-background hover:shadow-lg">
+              <Button href="/contact" size="lg" className="inline-flex items-center gap-2 bg-background text-foreground hover:bg-background/90 min-w-[200px]">
                 Start Free
                 <ArrowRight className="w-4 h-4" />
               </Button>
-              <Link href="/portfolio/aitlas" className="inline-flex items-center justify-center gap-2 text-[14px] font-semibold no-underline px-6 py-3 rounded-lg border border-background/20 text-background hover:bg-background/10 transition-all">Back to Aitlas</Link>
+              <Link href="/portfolio/aitlas" className="inline-flex items-center justify-center gap-2 text-[14px] font-semibold no-underline px-6 py-3 border border-background/20 text-background hover:bg-background/10 transition-all min-w-[200px]">
+                Back to Aitlas
+              </Link>
             </div>
           </ScrollReveal>
         </div>

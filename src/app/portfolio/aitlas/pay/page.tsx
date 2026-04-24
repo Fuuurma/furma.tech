@@ -122,7 +122,7 @@ export default function PayPage() {
 
             <ScrollReveal delay={200}>
               <div className="relative py-20 lg:py-32">
-                <Card className="bg-[#0d0d0d] border-background/10 shadow-2xl overflow-hidden font-mono text-[13px] leading-relaxed">
+                <Card className="bg-grey-950 dark:bg-grey-900 border-background/10 shadow-2xl overflow-hidden font-mono text-[13px] leading-relaxed">
                   <div className="flex items-center gap-2 px-4 py-3 bg-background/5 border-b border-background/10">
                     <div className="flex gap-1.5">
                       <div className="w-2 h-2 rounded-full bg-red-500/50"></div>
@@ -161,7 +161,7 @@ export default function PayPage() {
               <Card key={p.name} className="bg-background p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
                 <div className="flex items-center justify-between mb-6">
                   <div className="w-12 h-12 rounded-xl bg-grey-50 dark:bg-grey-800 flex items-center justify-center">
-                    <p.icon className="w-6 h-6 text-foreground text-foreground" />
+                    <p.icon className="w-6 h-6 text-foreground" />
                   </div>
                   <span className="text-[10px] font-bold uppercase px-2 py-1 rounded bg-green-500/10 text-green-600">
                     {p.status}

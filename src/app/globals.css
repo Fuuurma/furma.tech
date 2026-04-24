@@ -502,3 +502,12 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--grey-500);
 }
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

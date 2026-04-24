@@ -1,16 +1,20 @@
-import { constructMetadata } from "@/lib/metadata";
-import { ProjectHero } from "@/components/ui/ProjectHero";
-import { Section, Container } from "@/components/ui/Section";
-import { Card } from "@/components/ui/card";
+import { Metadata } from "next";
+import { Coins, Shield, Bot, Microscope, CheckCircle2, Store, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { StaggerChildren, ScrollReveal } from "@/components/ui/ScrollReveal";
-import { Coins, Shield, Bot, Microscope, CheckCircle2 } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
+import { getOgImageUrl } from "@/lib/metadata";
 import Breadcrumbs from "@/components/ui/breadcrumb";
 
-export const metadata = constructMetadata({
-  title: "Agents Store — AI Agent Marketplace",
+export const metadata: Metadata = {
+  title: "Agents Store — AI Agent Marketplace | Aitlas | Furma.tech",
   description: "A marketplace for pre-built AI agents. Hire specialists or publish your own. 70% revenue share for creators.",
-});
+  openGraph: {
+    title: "Agents Store — AI Agent Marketplace",
+    description: "Hire pre-built AI agents or publish your own. 70% revenue share for creators.",
+    images: [getOgImageUrl({ title: "Agents Store", subtitle: "AI Agent Marketplace", variant: "aitlas" })],
+  },
+};
 
 const plannedAgents = [
   {
@@ -67,33 +71,57 @@ const creatorPerks = [
   "Automatic billing & payouts",
 ];
 
-export default function AgentsPage() {
+export default function AgentsStorePage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="pt-8 px-4 sm:px-6 md:px-12">
-        <Breadcrumbs className="max-w-7xl mx-auto" />
-      </div>
-      <ProjectHero
-        label="Aitlas — Marketplace"
-        title="Agents Store"
-        description="A marketplace for pre-built AI agents. Hire specialists to join your workspace or publish your own skills. 70% revenue share for creators."
-        status="In Development"
-        tags={["Agent Store", "70/30 Rev Share", "MCP Native"]}
-      />
+      {/* Hero */}
+      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden pt-20">
+        <div className="absolute inset-0 bg-gradient-radial pointer-events-none opacity-30"></div>
+        <div className="absolute top-20 right-[-5%] w-[500px] h-[500px] bg-gradient-radial pointer-events-none opacity-30 blur-[120px]"></div>
+
+        <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 text-center">
+          <Breadcrumbs className="mb-8 inline-block" />
+
+          <ScrollReveal>
+            <div className="inline-flex items-center gap-2 px-4 py-2 border border-amber-500/20 mb-12 bg-amber-500/10">
+              <Store className="w-4 h-4 text-amber-500" />
+              <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-amber-600">Marketplace</span>
+            </div>
+
+            <h1 className="font-serif text-[clamp(48px,8vw,80px)] font-semibold leading-[0.9] tracking-tight text-foreground mb-8">
+              Agents Store
+            </h1>
+
+            <p className="text-[20px] sm:text-[24px] leading-[1.6] text-grey-500 max-w-2xl mx-auto mb-12">
+              Hire pre-built AI agents for your workspace. Or build and publish your own — keep 70% of revenue.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button href="#agents" variant="default" size="lg" className="min-w-[240px]">
+                Browse Agents
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+              <Button href="#creators" variant="outline" size="lg" className="min-w-[240px]">
+                Become a Creator
+              </Button>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
 
       {/* Planned Agents */}
-      <Section variant="default">
-        <Container size="full">
+      <section id="agents" className="py-32 bg-grey-50 dark:bg-grey-900/20 border-y border-border">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
           <ScrollReveal>
-            <div className="max-w-4xl mb-12">
-              <div className="font-mono text-[11px] font-bold tracking-[0.2em] uppercase text-grey-400 mb-4">
-                Planned Agents
+            <div className="max-w-4xl mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-2 border border-foreground/10 mb-6">
+                <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-grey-500">Planned Agents</span>
               </div>
-              <h2 className="font-serif text-[clamp(28px,3vw,40px)] font-semibold leading-[1.1] tracking-tight text-foreground">
-                Pre-built agents,<br /><em className="italic font-normal gradient-text">coming soon.</em>
+              <h2 className="font-serif text-[clamp(32px,5vw,48px)] font-semibold leading-[1.1] tracking-tight text-foreground">
+                Pre-built specialists,<br /><em className="italic font-normal text-grey-400">coming soon.</em>
               </h2>
-              <p className="text-[17px] text-grey-600 dark:text-grey-400 mt-6 max-w-2xl">
-                We&apos;re building a curated marketplace of specialized AI agents. Each agent will be 
+              <p className="text-[17px] text-grey-600 dark:text-grey-400 mt-6 max-w-2xl leading-relaxed">
+                We&apos;re building a curated marketplace of specialized AI agents. Each agent will be
                 MCP-native, version-locked, and available for trial before purchase.
               </p>
             </div>
@@ -101,54 +129,55 @@ export default function AgentsPage() {
 
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {plannedAgents.map((agent) => (
-              <Card key={agent.name} className="bg-background border-grey-200 dark:border-grey-800 p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
+              <Card key={agent.name} className="p-6 sm:p-8 border-foreground/5 hover:border-foreground/20 hover:shadow-xl transition-all duration-500">
                 <div className="flex items-start justify-between mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-grey-50 dark:bg-grey-800 flex items-center justify-center text-foreground text-foreground border border-grey-100 dark:border-grey-700">
+                  <div className="w-12 h-12 bg-grey-100 dark:bg-grey-800 flex items-center justify-center text-foreground border border-grey-200 dark:border-grey-700">
                     <agent.icon className="w-6 h-6" strokeWidth={1.5} />
                   </div>
-                  <div className="px-3 py-1 rounded-full bg-amber-500/10 text-[10px] font-mono font-bold text-amber-600 uppercase tracking-wider">
+                  <div className="px-3 py-1 bg-amber-500/10 text-[10px] font-mono font-bold text-amber-600 uppercase tracking-wider">
                     Planned
                   </div>
                 </div>
                 <h3 className="text-[20px] font-bold text-foreground mb-2">{agent.name}</h3>
+                <p className="text-[14px] text-grey-500 uppercase tracking-wider mb-3">{agent.category}</p>
                 <p className="text-[14px] text-grey-600 dark:text-grey-400 leading-relaxed">{agent.desc}</p>
               </Card>
             ))}
           </StaggerChildren>
-        </Container>
-      </Section>
+        </div>
+      </section>
 
       {/* For Creators */}
-      <Section variant="grey" className="border-y border-grey-200 dark:border-grey-800">
-        <Container size="full">
+      <section id="creators" className="py-32">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <ScrollReveal>
               <div>
-                <div className="font-mono text-[11px] font-bold tracking-[0.2em] uppercase text-grey-400 mb-6">
-                  For Developers
+                <div className="inline-flex items-center gap-2 px-4 py-2 border border-foreground/10 mb-6">
+                  <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-grey-500">For Developers</span>
                 </div>
                 <h2 className="font-serif text-[clamp(32px,4vw,48px)] font-semibold leading-[1.1] text-foreground mb-8">
-                  Build agents.<br /><span className="italic font-normal gradient-text">Keep 70%.</span>
+                  Build agents.<br /><span className="italic font-normal text-grey-400">Keep 70%.</span>
                 </h2>
                 <p className="text-[17px] leading-[1.7] text-grey-600 dark:text-grey-400 mb-10">
                   Turn your expertise into passive income. Build a specialized agent —
-                  crypto trading, code review, or customer support — and earn recurring revenue 
+                  crypto trading, code review, or customer support — and earn recurring revenue
                   from the Aitlas community.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
                   {creatorPerks.map((perk) => (
                     <div key={perk} className="flex items-center gap-3">
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
                       <span className="text-[14px] text-grey-600 dark:text-grey-400">{perk}</span>
                     </div>
                   ))}
                 </div>
-                <Button href="/#contact" variant="dark">Apply as Creator →</Button>
+                <Button href="/contact" variant="default">Apply as Creator</Button>
               </div>
             </ScrollReveal>
 
             <ScrollReveal delay={200}>
-              <Card className="bg-foreground text-background border-foreground shadow-2xl scale-[1.05] p-6 sm:p-8">
+              <Card className="bg-foreground text-background border-foreground shadow-2xl p-8">
                 <div className="font-mono text-[11px] font-bold tracking-[0.2em] uppercase text-background/30 mb-6">
                   Example Revenue Projection
                 </div>
@@ -156,7 +185,7 @@ export default function AgentsPage() {
                 <div className="text-[15px] text-background/50 mb-8 pb-8 border-b border-background/10">
                   Example: 200 subscribers @ €25/mo
                 </div>
-                
+
                 <div className="space-y-4">
                   <div className="flex justify-between text-[15px]">
                     <span className="text-background/50">Gross Revenue</span>
@@ -171,7 +200,7 @@ export default function AgentsPage() {
                     <span className="text-amber-400 font-mono">€3,500/mo</span>
                   </div>
                 </div>
-                
+
                 <div className="mt-6 pt-6 border-t border-background/10">
                   <p className="text-[12px] text-background/40">
                     * Example calculation. Actual revenue depends on your agent&apos;s value and market demand.
@@ -180,50 +209,53 @@ export default function AgentsPage() {
               </Card>
             </ScrollReveal>
           </div>
-        </Container>
-      </Section>
+        </div>
+      </section>
 
       {/* Benefits Grid */}
-      <Section>
-        <Container size="full">
+      <section className="py-32 bg-grey-50 dark:bg-grey-900/20 border-y border-border">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
           <ScrollReveal>
             <div className="text-center mb-16">
-              <h2 className="font-serif text-[clamp(28px,3vw,40px)] font-semibold mb-4">Built for trust</h2>
+              <h2 className="font-serif text-[clamp(28px,4vw,40px)] font-semibold mb-4">Built for trust</h2>
               <p className="text-grey-600 dark:text-grey-400">Why creators and users will choose Agents Store.</p>
             </div>
           </ScrollReveal>
-          
+
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {benefits.map((benefit) => (
-              <Card key={benefit.title} className="bg-background border-grey-200 dark:border-grey-800 p-4 sm:p-6 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
+              <Card key={benefit.title} className="p-6 border-foreground/5 hover:border-foreground/20 hover:shadow-xl transition-all duration-500">
                 <h3 className="text-[16px] font-bold text-foreground mb-3">{benefit.title}</h3>
                 <p className="text-[13px] text-grey-600 dark:text-grey-400 leading-relaxed">{benefit.desc}</p>
               </Card>
             ))}
           </StaggerChildren>
-        </Container>
-      </Section>
+        </div>
+      </section>
 
       {/* Final CTA */}
-      <Section variant="dark" className="text-center py-32">
-        <Container size="md">
-          <h2 className="font-serif text-[clamp(36px,5vw,64px)] font-semibold leading-[1.1] mb-8">
-            Ready to build?
-          </h2>
-          <p className="text-[18px] text-background/60 mb-12 max-w-xl mx-auto">
-            Join the waitlist to get early access when we launch. Creators can apply now to be 
-            featured at launch.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button href="/#contact" variant="premium" size="lg" glow>
-              Join the waitlist →
-            </Button>
-            <Button href="/#contact" variant="dark" size="lg" className="border-background/10 bg-background/5">
-              Apply as Creator
-            </Button>
-          </div>
-        </Container>
-      </Section>
+      <section className="py-32 bg-foreground text-background text-center">
+        <div className="max-w-3xl mx-auto px-6 md:px-12">
+          <ScrollReveal>
+            <h2 className="font-serif text-[clamp(36px,5vw,64px)] font-semibold leading-[1.1] mb-8">
+              Ready to build?
+            </h2>
+            <p className="text-[18px] text-background/60 mb-12 max-w-xl mx-auto">
+              Join the waitlist to get early access when we launch. Creators can apply now to be
+              featured at launch.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button href="/contact" variant="default" size="lg" className="bg-background text-foreground hover:bg-background/90 min-w-[200px]">
+                Join the waitlist
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+              <Button href="/contact" variant="outline" size="lg" className="border-background/20 bg-background/5 min-w-[200px]">
+                Apply as Creator
+              </Button>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
     </div>
   );
 }

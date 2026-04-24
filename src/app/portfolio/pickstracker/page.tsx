@@ -4,10 +4,16 @@ import { Section, Container } from '@/components/ui/Section';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { Button } from '@/components/ui/button';
 import Breadcrumbs from '@/components/ui/breadcrumb';
+import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
   title: 'PicksTracker — Furma.tech',
   description: 'Sports pick tracking with social predictions. Track your sports predictions and compete with friends.',
+  openGraph: {
+    title: 'PicksTracker',
+    description: 'Sports pick tracking with social predictions.',
+    images: [getOgImageUrl({ title: 'PicksTracker', subtitle: 'Sports Predictions', variant: 'aitlas' })],
+  },
 };
 
 export default function PicksTrackerPage() {

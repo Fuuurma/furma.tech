@@ -57,9 +57,10 @@ export default function Footer() {
                   <ArrowRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                 </Link>
               </li>
-              <li><Link href="/portfolio/nova" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">Nova</Link></li>
-              <li><Link href="/portfolio/nexus" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">Nexus</Link></li>
-              <li><Link href="/portfolio/agents" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">Agents Store</Link></li>
+              <li><Link href="/portfolio/aitlas" className="text-[14px] font-medium text-grey-600 hover:text-foreground transition-colors">Aitlas</Link></li>
+              <li className="pl-4"><Link href="/portfolio/aitlas/nova" className="text-[13px] text-grey-500 hover:text-foreground transition-colors">Nova</Link></li>
+              <li className="pl-4"><Link href="/portfolio/aitlas/nexus" className="text-[13px] text-grey-500 hover:text-foreground transition-colors">Nexus</Link></li>
+              <li className="pl-4"><Link href="/portfolio/aitlas/agents" className="text-[13px] text-grey-500 hover:text-foreground transition-colors">Agents Store</Link></li>
               <li><Link href="/portfolio/restauramanager" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">restauManager</Link></li>
               <li><Link href="/portfolio/guidetours" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">TourManager</Link></li>
             </ul>
@@ -74,7 +75,6 @@ export default function Footer() {
               <li><Link href="/portfolio/tic-tac-toe-disappear" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">Tic-Tac-Toe</Link></li>
               <li><Link href="/portfolio/qart" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">QArt</Link></li>
               <li><Link href="/portfolio/pickstracker" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">PicksTracker</Link></li>
-              <li><Link href="/portfolio/sailingmate" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">SailingMate</Link></li>
               <li><Link href="/portfolio/linkup" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">LinkUp</Link></li>
               <li><Link href="/portfolio/financehub" className="text-[14px] text-grey-600 hover:text-foreground transition-colors">FinanceHub</Link></li>
             </ul>
