@@ -8,6 +8,7 @@ import {
   NavigationMenuItem,
   NavigationMenuTrigger,
   NavigationMenuContent,
+  NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
 import { ArrowRight, Sparkles } from "lucide-react";
 
@@ -47,19 +48,19 @@ export function ProductsDropdown({ products }: ProductsDropdownProps) {
                   <Sparkles className="w-4 h-4 text-foreground" strokeWidth={1.5} />
                   <h4 className="font-serif text-base font-bold text-foreground">All Portfolio</h4>
                 </div>
-                <Link
+                <NavigationMenuLink
                   href="/portfolio"
                   className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-grey-600 hover:text-foreground transition-colors group"
                 >
                   View all
                   <ArrowRight className="w-3.5 h-3.5 -translate-x-1 group-hover:translate-x-0 transition-transform" />
-                </Link>
+                </NavigationMenuLink>
               </div>
 
               {/* Products Grid - 3 Columns */}
               <div className="grid grid-cols-3 gap-x-6 gap-y-1">
                 {products.map((product) => (
-                  <Link
+                  <NavigationMenuLink
                     key={product.title}
                     href={product.href}
                     className={`flex items-center gap-3 p-3 rounded-lg transition-all group ${
@@ -92,7 +93,7 @@ export function ProductsDropdown({ products }: ProductsDropdownProps) {
                         {product.description}
                       </p>
                     </div>
-                  </Link>
+                  </NavigationMenuLink>
                 ))}
               </div>
             </div>

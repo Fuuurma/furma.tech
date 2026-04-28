@@ -1,45 +1,34 @@
 import { Metadata } from 'next';
-import { Badge } from '@/components/ui/badge';
-import { Section, Container } from '@/components/ui/Section';
-import { ScrollReveal } from '@/components/ui/ScrollReveal';
-import { Button } from '@/components/ui/button';
-import Breadcrumbs from '@/components/ui/breadcrumb';
+import { Target, Users, Trophy } from 'lucide-react';
+import { ProjectLayout, ProjectHero, ProjectStatusPlaceholder } from '@/components/ui/ProjectLayout';
 import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
   title: 'OneToMany — Furma.tech',
-  description: 'Goal setting and habit tracking. Set meaningful goals and build lasting habits.',
+  description: 'Goal-oriented social platform. Create missions with numeric targets, post evidence, community voting validates progress.',
   openGraph: {
     title: 'OneToMany',
-    description: 'Goal setting and habit tracking.',
-    images: [getOgImageUrl({ title: 'OneToMany', subtitle: 'Habit Tracking', variant: 'aitlas' })],
+    description: 'Goal-oriented social platform with numeric targets and community validation.',
+    images: [getOgImageUrl({ title: 'OneToMany', subtitle: 'Goal Tracking', variant: 'product' })],
   },
 };
 
+const highlights = [
+  { icon: Target, title: 'Numeric Goals', desc: 'Create missions with real targets — "Drink 100 Beers", "Complete 1000 Reps". Numbers don\'t lie.' },
+  { icon: Users, title: 'Community Validation', desc: 'Members verify progress through evidence posts and community voting. Social accountability.' },
+  { icon: Trophy, title: 'Achievement System', desc: 'Track milestones, earn badges, and celebrate reaching your targets together.' },
+];
+
 export default function OneToManyPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-foreground selection:text-background">
-      <div className="px-4 sm:px-6 md:px-12 pt-8 pb-16 sm:pb-20 border-b border-border">
-        <div className="max-w-4xl">
-          <Breadcrumbs className="mb-8" />
-          <Badge variant="outline" className="mb-6">Paused</Badge>
-          <h1 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.05] tracking-tight text-foreground mb-6">OneToMany</h1>
-          <p className="text-[18px] sm:text-[20px] leading-[1.6] text-grey-600 dark:text-grey-400 max-w-[650px]">
-            Goal setting and habit tracking. Set meaningful goals, build lasting habits, and track progress with data-driven insights.
-          </p>
-        </div>
-      </div>
-      <Section variant="grey">
-        <Container size="md">
-          <ScrollReveal>
-            <div className="text-center">
-              <Button href="/portfolio" variant="default" size="lg">
-                Back to Portfolio
-              </Button>
-            </div>
-          </ScrollReveal>
-        </Container>
-      </Section>
-    </div>
+    <ProjectLayout>
+      <ProjectHero
+        label="Productivity"
+        title="OneToMany"
+        description="A goal-oriented social platform where users create groups with numeric targets (e.g., 'Drink 100 Beers', 'Complete 1000 Reps'). Members contribute toward goals through validated posts with community voting and approval mechanisms."
+        status={{ label: 'Paused', variant: 'paused' }}
+      />
+      <ProjectStatusPlaceholder status="paused" highlights={highlights} />
+    </ProjectLayout>
   );
 }

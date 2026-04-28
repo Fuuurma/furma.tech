@@ -38,7 +38,7 @@ export function ProductsDropdown({ products }: ProductsDropdownProps) {
   const standaloneProducts = products.filter(p => p.title !== "Aitlas");
 
   return (
-    <NavigationMenu>
+    <NavigationMenu align="center">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger className="text-[11px] font-bold uppercase tracking-[0.15em] px-4 h-9 hover:bg-foreground/5 transition-colors">

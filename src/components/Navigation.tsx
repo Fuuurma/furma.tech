@@ -107,27 +107,6 @@ export default function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
             <ProductsDropdown products={allProducts} />
-
-            <Link
-              href="/about"
-              className={`px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] transition-all no-underline rounded ${
-                isActive('/about')
-                  ? 'bg-foreground text-background'
-                  : 'text-foreground/70 hover:text-foreground hover:bg-foreground/5'
-              }`}
-            >
-              About
-            </Link>
-            <Link
-              href="/updates"
-              className={`px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] transition-all no-underline rounded ${
-                isActive('/updates')
-                  ? 'bg-foreground text-background'
-                  : 'text-foreground/70 hover:text-foreground hover:bg-foreground/5'
-              }`}
-            >
-              Updates
-            </Link>
           </div>
 
           {/* CTA */}
@@ -157,31 +136,7 @@ export default function Navigation() {
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-6">
-                  <div className="flex flex-col gap-8">
-                    <MobileProductsMenu products={allProducts} pathname={pathname} />
-
-                    {/* Other Links */}
-                    <div className="flex flex-col gap-1 pt-6 border-t border-border">
-                      <h4 className="text-[9px] font-bold text-grey-400 uppercase tracking-[0.2em] mb-2">Navigation</h4>
-                      {[
-                        { href: '/about', label: 'About' },
-                        { href: '/updates', label: 'Updates' },
-                        { href: '/#contact', label: 'Contact' },
-                      ].map((item) => (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          className={`px-3 py-2.5 text-[15px] font-serif font-semibold transition-all rounded ${
-                            isActive(item.href)
-                              ? 'text-foreground bg-foreground/5'
-                              : 'text-grey-500 hover:text-foreground hover:bg-foreground/5'
-                          }`}
-                        >
-                          {item.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
+                  <MobileProductsMenu products={allProducts} pathname={pathname} />
                 </div>
 
                 <div className="flex items-center gap-4 mt-auto px-6 py-5 border-t border-border">

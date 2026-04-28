@@ -1,45 +1,34 @@
 import { Metadata } from 'next';
-import { Badge } from '@/components/ui/badge';
-import { Section, Container } from '@/components/ui/Section';
-import { ScrollReveal } from '@/components/ui/ScrollReveal';
-import { Button } from '@/components/ui/button';
-import Breadcrumbs from '@/components/ui/breadcrumb';
+import { Trophy, Users, TrendingUp } from 'lucide-react';
+import { ProjectLayout, ProjectHero, ProjectStatusPlaceholder } from '@/components/ui/ProjectLayout';
 import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
   title: 'PicksTracker — Furma.tech',
-  description: 'Sports pick tracking with social predictions. Track your sports predictions and compete with friends.',
+  description: 'Track your sports predictions, compete with friends, and build your track record with social prediction features.',
   openGraph: {
     title: 'PicksTracker',
-    description: 'Sports pick tracking with social predictions.',
-    images: [getOgImageUrl({ title: 'PicksTracker', subtitle: 'Sports Predictions', variant: 'aitlas' })],
+    description: 'Sports pick tracking with social predictions and competition.',
+    images: [getOgImageUrl({ title: 'PicksTracker', subtitle: 'Sports Predictions', variant: 'product' })],
   },
 };
 
+const highlights = [
+  { icon: Trophy, title: 'Pick Tracking', desc: 'Track predictions across NFL, NBA, football, and more with a detailed accuracy dashboard.' },
+  { icon: Users, title: 'Social Competition', desc: 'Compete with friends on prediction accuracy. Leaderboards, streaks, and bragging rights.' },
+  { icon: TrendingUp, title: 'Analytics Engine', desc: 'Detailed stats on your prediction history, win rate, and best-performing sports.' },
+];
+
 export default function PicksTrackerPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-foreground selection:text-background">
-      <div className="px-4 sm:px-6 md:px-12 pt-8 pb-16 sm:pb-20 border-b border-border">
-        <div className="max-w-4xl">
-          <Breadcrumbs className="mb-8" />
-          <Badge variant="outline" className="mb-6">Roadmap</Badge>
-          <h1 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.05] tracking-tight text-foreground mb-6">PicksTracker</h1>
-          <p className="text-[18px] sm:text-[20px] leading-[1.6] text-grey-600 dark:text-grey-400 max-w-[650px]">
-            Sports pick tracking with social predictions. Track your sports predictions, compete with friends, and build your track record.
-          </p>
-        </div>
-      </div>
-      <Section variant="grey">
-        <Container size="md">
-          <ScrollReveal>
-            <div className="text-center">
-              <Button href="/portfolio" variant="default" size="lg">
-                Back to Portfolio
-              </Button>
-            </div>
-          </ScrollReveal>
-        </Container>
-      </Section>
-    </div>
+    <ProjectLayout>
+      <ProjectHero
+        label="Sports"
+        title="PicksTracker"
+        description="Track your sports predictions across multiple sports, compete with friends, and build your track record with detailed analytics and social prediction features."
+        status={{ label: 'Roadmap', variant: 'roadmap' }}
+      />
+      <ProjectStatusPlaceholder status="roadmap" highlights={highlights} />
+    </ProjectLayout>
   );
 }
