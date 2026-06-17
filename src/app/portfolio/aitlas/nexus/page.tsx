@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { Brain, Zap, Shield, Database, ArrowRight, CheckCircle2, Server, Code2, RefreshCcw, Workflow, Clock, Search, Mail, Terminal } from 'lucide-react';
 import { ProjectLayout, ProjectHero, ProjectSection, ProjectSectionHeader, ProjectCTA } from '@/components/ui/ProjectLayout';
+import { getProjectCoverTint } from '@/lib/home-projects';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PricingSection } from '@/components/ui/PricingSection';
@@ -22,7 +23,7 @@ const features = [
   { icon: Database, title: 'State Persistence', desc: 'Full conversation history, tool states, and context persist across sessions automatically.' },
   { icon: Clock, title: 'No Timeouts', desc: 'Run tasks for hours or days. Vercel\'s 60s limit doesn\'t apply to Nexus workers.' },
   { icon: Shield, title: 'Production Ready', desc: 'Built for reliability. Automatic retries, error handling, and state recovery.' },
-  { icon: Zap, title: 'MCP Native', desc: 'Seamlessly integrates with Actions. Call f.twyt, f.library, and other tools from agents.' },
+  { icon: Zap, title: 'MCP Native', desc: 'Seamlessly integrates with Nova and Agents. Connect tools and data sources via MCP.' },
 ];
 
 const howItWorks = [
@@ -53,6 +54,7 @@ export default function NexusPage() {
         title="Nexus Runtime"
         description="Durable execution for autonomous AI agents. Run long-running tasks without server timeouts. Built for production-grade reliability."
         status={{ label: 'In Development', variant: 'beta' }}
+        coverTint={getProjectCoverTint('aitlas')}
       >
         <div className="flex flex-col sm:flex-row gap-4">
           <Button href="/#contact" variant="default" size="lg" className="min-w-[200px]">
@@ -87,21 +89,21 @@ export default function NexusPage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-6 border border-background/10 text-center">
-            <div className="w-12 h-12 bg-background text-foreground flex items-center justify-center mx-auto mb-4 shadow-lg">
+            <div className="w-12 h-12 bg-background text-foreground flex items-center justify-center mx-auto mb-4">
               <Code2 className="w-6 h-6" />
             </div>
             <div className="font-bold text-[14px]">Your App</div>
             <div className="text-[12px] text-background/40">Next.js / API</div>
           </div>
           <div className="p-6 border-2 border-background/30 bg-background/5 text-center">
-            <div className="w-14 h-14 bg-background text-foreground flex items-center justify-center mx-auto mb-4 shadow-lg">
+            <div className="w-14 h-14 bg-background text-foreground flex items-center justify-center mx-auto mb-4">
               <Brain className="w-7 h-7" />
             </div>
             <div className="font-bold text-[14px]">Nexus Worker</div>
             <div className="text-[12px] text-background/40">24/7 Bun Runtime</div>
           </div>
           <div className="p-6 border border-background/10 text-center">
-            <div className="w-12 h-12 bg-background text-foreground flex items-center justify-center mx-auto mb-4 shadow-lg">
+            <div className="w-12 h-12 bg-background text-foreground flex items-center justify-center mx-auto mb-4">
               <Database className="w-6 h-6" />
             </div>
             <div className="font-bold text-[14px]">PostgreSQL</div>

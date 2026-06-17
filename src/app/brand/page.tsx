@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Section, Container } from "@/components/ui/Section";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { StaggerReveal } from "@/components/motion/StaggerReveal";
 import { ArrowLeft, Download, CheckCircle2, XCircle, Copy } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -67,7 +68,7 @@ export default function LogoPage() {
         variant="default"
       >
         <div className="flex items-center gap-4">
-          <Link href="/" className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest text-grey-500 hover:text-foreground transition-colors">
+          <Link href="/" className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest text-grey-500 hover:text-foreground transition-colors motion-link-subtle">
             <ArrowLeft className="w-4 h-4" />
             Back to Home
           </Link>
@@ -86,12 +87,11 @@ export default function LogoPage() {
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {logos.map((logo, index) => (
+          <StaggerReveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {logos.map((logo) => (
               <Card
                 key={logo.name}
-                className="flex flex-col gap-4 p-6 bg-background border-grey-200 dark:border-grey-800 hover:border-foreground/30 transition-all duration-300 reveal-up visible"
-                style={{ transitionDelay: `${index * 50}ms` }}
+                className="motion-card flex flex-col gap-4 p-6 bg-background border-grey-200 dark:border-grey-800 hover:border-foreground/30 transition-all duration-300 h-full"
               >
                 <div className={`aspect-square border border-grey-200 dark:border-grey-800 ${logo.bg} flex items-center justify-center p-8 transition-transform group-hover:scale-[0.98] duration-300`}>
                   <Image
@@ -118,7 +118,7 @@ export default function LogoPage() {
                 </CardContent>
               </Card>
             ))}
-          </div>
+          </StaggerReveal>
         </Container>
       </Section>
 

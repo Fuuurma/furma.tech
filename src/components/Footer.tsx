@@ -10,7 +10,7 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="md:col-span-2">
             <Link href="/" className="inline-flex items-center gap-3 mb-6 group">
-              <div className="w-10 h-10 border border-foreground flex items-center justify-center font-serif font-bold text-xl transition-transform group-hover:scale-105">
+              <div className="w-10 h-10 border border-foreground flex items-center justify-center font-serif font-bold text-xl transition-colors group-hover:border-foreground/60">
                 F
               </div>
               <span className="font-bold text-[16px] tracking-tight text-foreground">Furma.tech</span>

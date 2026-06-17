@@ -14,7 +14,7 @@ import {
   Building2,
   Users,
   Trophy,
-  Sparkles,
+  Bot,
   Hexagon,
   Menu,
   Brain,
@@ -35,7 +35,7 @@ const allProducts = [
     children: [
       { title: 'Nova', href: '/portfolio/aitlas/nova', description: 'AI workspace with BYOK', icon: Hexagon, category: 'AI' },
       { title: 'Nexus', href: '/portfolio/aitlas/nexus', description: 'Durable agent runtime', icon: Brain, category: 'AI' },
-      { title: 'Agents Store', href: '/portfolio/aitlas/agents', description: 'AI agents marketplace', icon: Sparkles, category: 'AI' },
+      { title: 'Agents Store', href: '/portfolio/aitlas/agents', description: 'AI agents marketplace', icon: Bot, category: 'AI' },
     ],
   },
   // Industry SaaS
@@ -82,7 +82,7 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 no-underline group">
-            <div className="w-9 h-9 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+            <div className="w-9 h-9 flex items-center justify-center transition-opacity duration-300 group-hover:opacity-80">
               <Image
                 src="/logo-minimal.svg"
                 alt="Furma.tech"
@@ -119,7 +119,7 @@ export default function Navigation() {
 
           {/* Mobile menu - Sheet */}
           <Sheet>
-            <SheetTrigger className="md:hidden" render={<Button variant="ghost" size="icon" className="p-2 hover:bg-muted/50 transition-colors rounded-md" />}>
+            <SheetTrigger className="md:hidden" render={<Button variant="ghost" size="icon" className="p-2 hover:bg-muted/50 transition-colors" />}>
               <Menu className="size-5" />
               <span className="sr-only">Toggle menu</span>
             </SheetTrigger>

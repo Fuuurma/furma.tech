@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Syne, Cormorant, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import { LayoutChrome } from "@/components/LayoutChrome";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Analytics } from "@/components/Analytics";
 
@@ -64,11 +63,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <Navigation />
-        <main id="main-content" className="flex-1 pt-16">
-          {children}
-        </main>
-        <Footer />
+        <LayoutChrome>{children}</LayoutChrome>
         <Analytics />
         </ThemeProvider>
       </body>

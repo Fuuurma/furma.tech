@@ -616,7 +616,7 @@ export default function StyleguidePage() {
                 <TableBody>
                   <TableRow><TableCell className="font-medium">Nova</TableCell><TableCell><Badge variant="default">Active</Badge></TableCell><TableCell>AI Workspace</TableCell><TableCell className="text-right"><Button variant="ghost" size="sm"><ExternalLink className="w-3 h-3" /></Button></TableCell></TableRow>
                   <TableRow><TableCell className="font-medium">Nexus</TableCell><TableCell><Badge variant="outline">Dev</Badge></TableCell><TableCell>Runtime</TableCell><TableCell className="text-right"><Button variant="ghost" size="sm"><ExternalLink className="w-3 h-3" /></Button></TableCell></TableRow>
-                  <TableRow><TableCell className="font-medium">f.twyt</TableCell><TableCell><Badge variant="outline">Dev</Badge></TableCell><TableCell>Action</TableCell><TableCell className="text-right"><Button variant="ghost" size="sm"><ExternalLink className="w-3 h-3" /></Button></TableCell></TableRow>
+                  <TableRow><TableCell className="font-medium">Agents</TableCell><TableCell><Badge variant="outline">Dev</Badge></TableCell><TableCell>Marketplace</TableCell><TableCell className="text-right"><Button variant="ghost" size="sm"><ExternalLink className="w-3 h-3" /></Button></TableCell></TableRow>
                 </TableBody>
               </Table>
             </SectionRow>
@@ -671,7 +671,7 @@ export default function StyleguidePage() {
                 <ItemSeparator />
                 <Item><ItemMedia><Avatar><AvatarFallback>X</AvatarFallback></Avatar></ItemMedia><ItemContent><ItemTitle>Nexus</ItemTitle><ItemDescription>Durable agent runtime</ItemDescription></ItemContent></Item>
                 <ItemSeparator />
-                <Item variant="muted"><ItemMedia><Avatar><AvatarFallback>T</AvatarFallback></Avatar></ItemMedia><ItemContent><ItemTitle>f.twyt</ItemTitle><ItemDescription>Twitter intelligence</ItemDescription></ItemContent></Item>
+                <Item variant="muted"><ItemMedia><Avatar><AvatarFallback>A</AvatarFallback></Avatar></ItemMedia><ItemContent><ItemTitle>Agents</ItemTitle><ItemDescription>AI agent marketplace</ItemDescription></ItemContent></Item>
               </div>
             </SectionRow>
             <Separator />

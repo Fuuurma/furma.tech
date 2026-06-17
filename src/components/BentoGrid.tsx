@@ -16,7 +16,7 @@ interface Product {
 const products: Product[] = [
   {
     name: 'Aitlas',
-    description: 'Sovereign AI ecosystem. Nova workspace, Nexus runtime, 34+ Actions.',
+    description: 'Sovereign AI ecosystem. Nova workspace, Nexus runtime, Agents marketplace.',
     category: 'AI',
     href: '/portfolio/aitlas',
     status: 'In Dev',
@@ -26,7 +26,7 @@ const products: Product[] = [
     name: 'TourManager',
     description: 'Tour operator platform with Viator sync for bookings and scheduling.',
     category: 'Tourism',
-    href: '/portfolio/tourmanager',
+    href: '/portfolio/guidetours',
     status: 'In Dev',
     accent: 'light',
   },
@@ -34,7 +34,7 @@ const products: Product[] = [
     name: 'RestaurantManager',
     description: 'Restaurant management with TheFork integration.',
     category: 'Hospitality',
-    href: '/portfolio/restaurantmanager',
+    href: '/portfolio/restauramanager',
     status: 'In Dev',
     accent: 'light',
   },
@@ -96,10 +96,10 @@ const products: Product[] = [
   },
 ];
 
-const statusBadge: Record<ProductStatus, string> = {
-  'In Dev': 'bg-green-500/20 text-green-600 dark:text-green-400 border-green-500/30',
-  'Roadmap': 'bg-foreground/10 text-foreground/60 border-foreground/20',
-  'Paused': 'bg-foreground/5 text-foreground/30 border-foreground/10',
+const statusStyles: Record<ProductStatus, string> = {
+  'In Dev': 'border-foreground/20 text-foreground/60',
+  'Roadmap': 'border-foreground/10 text-foreground/40',
+  'Paused': 'border-foreground/5 text-foreground/25',
 };
 
 const cardBg: Record<string, string> = {
@@ -108,16 +108,10 @@ const cardBg: Record<string, string> = {
   muted: 'bg-grey-100 dark:bg-grey-900/30 border-grey-200 dark:border-grey-800/50',
 };
 
-const categoryStyle: Record<string, string> = {
-  dark: 'text-background/50',
-  light: 'text-foreground/40',
-  muted: 'text-foreground/40',
-};
-
 function StatusBadge({ status }: { status: ProductStatus }) {
   return (
-    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm text-[9px] font-mono uppercase tracking-wider border ${statusBadge[status]}`}>
-      <span className="w-1 h-1 rounded-full bg-current" />
+    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider border ${statusStyles[status]}`}>
+      <span className="w-1 h-1 bg-current" />
       {status}
     </span>
   );
@@ -126,41 +120,35 @@ function StatusBadge({ status }: { status: ProductStatus }) {
 export default function BentoGrid() {
   return (
     <div className="w-full">
-      {/* Big Portfolio Title */}
       <div className="mb-8">
         <h2 className="text-[clamp(3rem,8vw,7rem)] font-serif font-bold tracking-tight leading-[0.9] -ml-1">
           Portfolio
         </h2>
       </div>
 
-      {/* Products Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {products.map((product) => (
           <Link
             key={product.name}
             href={product.href}
-            className={`group flex flex-col p-6 transition-all duration-200 hover:-translate-y-1 ${cardBg[product.accent]} border rounded-lg`}
+            className={`group flex flex-col p-6 border ${cardBg[product.accent]} hover:border-foreground/40 transition-colors`}
           >
-            {/* Top row: category + status */}
             <div className="flex items-center justify-between mb-4">
-              <span className={`text-[10px] font-mono uppercase tracking-widest ${categoryStyle[product.accent]}`}>
+              <span className={`text-[10px] font-mono uppercase tracking-widest ${product.accent === 'dark' ? 'text-background/40' : 'text-foreground/30'}`}>
                 {product.category}
               </span>
               <StatusBadge status={product.status} />
             </div>
 
-            {/* Product name */}
-            <h3 className={`font-serif font-bold text-2xl mb-2 ${product.accent === 'dark' ? 'text-background' : 'text-foreground'} group-hover:text-foreground/80 transition-colors`}>
+            <h3 className={`font-serif font-bold text-2xl mb-2 ${product.accent === 'dark' ? 'text-background' : 'text-foreground'}`}>
               {product.name}
             </h3>
 
-            {/* Description */}
-            <p className={`text-sm leading-relaxed mb-4 ${product.accent === 'dark' ? 'text-background/60' : 'text-foreground/60'}`}>
+            <p className={`text-sm leading-relaxed mb-4 ${product.accent === 'dark' ? 'text-background/50' : 'text-foreground/50'}`}>
               {product.description}
             </p>
 
-            {/* View link */}
-            <span className={`mt-auto text-xs font-medium ${product.accent === 'dark' ? 'text-background/40 group-hover:text-background/70' : 'text-foreground/30 group-hover:text-foreground/60'} transition-colors`}>
+            <span className={`mt-auto text-xs font-medium ${product.accent === 'dark' ? 'text-background/30 group-hover:text-background/60' : 'text-foreground/20 group-hover:text-foreground/50'} transition-colors`}>
               View project →
             </span>
           </Link>

@@ -98,7 +98,7 @@ export default function PrivacyPage() {
                   3. BYOK - Your keys, your data
                 </h2>
                 <p className="text-[15px] leading-[1.7] text-grey-600 dark:text-grey-400 mb-6">
-                  For Aitlas products (Nexus, Actions), you may provide your own API keys
+                  For Aitlas products (Nova, Nexus, Agents), you may provide your own API keys
                   (OpenAI, Anthropic, DeepSeek, etc.). Here&apos;s how we handle them:
                 </p>
                 <div className="p-6 bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-900/30 rounded-lg">

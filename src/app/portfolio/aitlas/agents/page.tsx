@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { Coins, Shield, Bot, Microscope, CheckCircle2, ArrowRight } from 'lucide-react';
 import { ProjectLayout, ProjectHero, ProjectSection, ProjectCTA } from '@/components/ui/ProjectLayout';
+import { getProjectCoverTint } from '@/lib/home-projects';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
@@ -47,6 +48,7 @@ export default function AgentsStorePage() {
         title="Agents Store"
         description="Hire pre-built AI agents for your workspace. Or build and publish your own — keep 70% of revenue."
         status={{ label: 'In Development', variant: 'beta' }}
+        coverTint={getProjectCoverTint('aitlas')}
       >
         <div className="flex flex-col sm:flex-row gap-4">
           <Button href="#agents" variant="default" size="lg" className="min-w-[200px]">
@@ -113,7 +115,7 @@ export default function AgentsStorePage() {
           </ScrollReveal>
 
           <ScrollReveal delay={200}>
-            <Card className="bg-foreground text-background border-foreground shadow-2xl p-8">
+            <Card className="bg-foreground text-background border-foreground p-8">
               <div className="font-mono text-[11px] font-bold tracking-[0.2em] uppercase text-background/30 mb-6">
                 Example Revenue Projection
               </div>

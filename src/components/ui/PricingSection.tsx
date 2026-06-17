@@ -40,7 +40,7 @@ export function PricingSection({
           {plans.map((plan) => (
             <Card
               key={plan.name}
-              className={`flex flex-col h-full bg-background p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500 ${plan.popular ? 'bg-foreground text-background border-foreground' : ''}`}
+              className={`flex flex-col h-full bg-background p-6 sm:p-8 hover:border-foreground/30 transition-colors ${plan.popular ? 'bg-foreground text-background border-foreground' : ''}`}
             >
               <div className="flex items-center justify-between mb-8">
                 <div className="text-[14px] font-bold uppercase tracking-widest">{plan.name}</div>

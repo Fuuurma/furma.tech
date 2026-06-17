@@ -10,7 +10,7 @@ import {
   NavigationMenuContent,
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, LayoutGrid } from "lucide-react";
 
 interface Product {
   title: string;
@@ -41,11 +41,11 @@ export function ProductsDropdown({ products }: ProductsDropdownProps) {
             Portfolio
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <div className="p-5 lg:w-[800px] bg-background border border-border shadow-2xl dark:shadow-black/20">
+            <div className="p-5 lg:w-[800px] bg-background border border-border">
               {/* Header */}
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-foreground" strokeWidth={1.5} />
+                  <LayoutGrid className="w-4 h-4 text-foreground" strokeWidth={1.5} />
                   <h4 className="font-serif text-base font-bold text-foreground">All Portfolio</h4>
                 </div>
                 <NavigationMenuLink
@@ -63,7 +63,7 @@ export function ProductsDropdown({ products }: ProductsDropdownProps) {
                   <NavigationMenuLink
                     key={product.title}
                     href={product.href}
-                    className={`flex items-center gap-3 p-3 rounded-lg transition-all group ${
+                    className={`flex items-center gap-3 p-3 transition-all group ${
                       isActive(pathname, product.href)
                         ? "bg-foreground/5"
                         : "hover:bg-foreground/5"
@@ -116,7 +116,7 @@ export function MobileProductsMenu({ products, pathname }: MobileProductsMenuPro
         <Link
           key={product.title}
           href={product.href}
-          className={`flex items-center gap-3 px-3 py-3 text-[15px] transition-all rounded-lg ${
+          className={`flex items-center gap-3 px-3 py-3 text-[15px] transition-all ${
             isActive(pathname, product.href)
               ? "text-foreground bg-foreground/5 font-bold"
               : "text-grey-500 hover:text-foreground hover:bg-foreground/5"
@@ -131,7 +131,7 @@ export function MobileProductsMenu({ products, pathname }: MobileProductsMenuPro
           </div>
           <span className="flex-1">{product.title}</span>
           {product.featured && (
-            <span className="text-[8px] font-mono uppercase bg-foreground text-background px-1.5 py-0.5 rounded">
+            <span className="text-[8px] font-mono uppercase bg-foreground text-background px-1.5 py-0.5">
               Core
             </span>
           )}

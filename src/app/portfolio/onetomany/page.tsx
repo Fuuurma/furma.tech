@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { Target, Users, Trophy } from 'lucide-react';
 import { ProjectLayout, ProjectHero, ProjectStatusPlaceholder } from '@/components/ui/ProjectLayout';
+import { getProjectCoverTint } from '@/lib/home-projects';
 import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default function OneToManyPage() {
         title="OneToMany"
         description="A goal-oriented social platform where users create groups with numeric targets (e.g., 'Drink 100 Beers', 'Complete 1000 Reps'). Members contribute toward goals through validated posts with community voting and approval mechanisms."
         status={{ label: 'Paused', variant: 'paused' }}
+        coverTint={getProjectCoverTint('onetomany')}
       />
       <ProjectStatusPlaceholder status="paused" highlights={highlights} />
     </ProjectLayout>

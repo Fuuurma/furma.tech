@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { Building2, Vote, MessageSquare } from 'lucide-react';
 import { ProjectLayout, ProjectHero, ProjectStatusPlaceholder } from '@/components/ui/ProjectLayout';
+import { getProjectCoverTint } from '@/lib/home-projects';
 import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default function OpenGovernPage() {
         title="OpenGovern"
         description="A governance platform where communities make decisions together through polls, forums (Agora), and meaningful discussions — unlike traditional social media's hot takes."
         status={{ label: 'Roadmap', variant: 'roadmap' }}
+        coverTint={getProjectCoverTint('opengovern')}
       />
       <ProjectStatusPlaceholder status="roadmap" highlights={highlights} />
     </ProjectLayout>

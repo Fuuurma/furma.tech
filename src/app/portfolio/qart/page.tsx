@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { QrCode } from 'lucide-react';
 import { ProjectLayout, ProjectHero, ProjectSection, ProjectSectionHeader, ProjectCTA } from '@/components/ui/ProjectLayout';
+import { getProjectCoverTint } from '@/lib/home-projects';
 import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default function QArtPage() {
         title="QArt"
         description="Transform any QR code into stunning visual art. AI-powered design generation while maintaining 100% scannability. Perfect for brands and marketing."
         status={{ label: 'Soon', variant: 'soon' }}
+        coverTint={getProjectCoverTint('qart')}
       >
         <div className="flex items-center gap-4">
           <div className="font-mono text-[10px] uppercase tracking-[.14em] text-muted-foreground">Coming</div>
@@ -78,7 +80,7 @@ export default function QArtPage() {
                 <div className="absolute inset-0 bg-foreground/5" />
                 <div className="absolute inset-2 grid grid-cols-5 gap-0.5">
                   {pattern.map((cell, i) => (
-                    <div key={i} className={`rounded-sm ${cell ? 'bg-foreground/20' : 'bg-transparent'}`} />
+                    <div key={i} className={`${cell ? 'bg-foreground/20' : 'bg-transparent'}`} />
                   ))}
                 </div>
               </div>

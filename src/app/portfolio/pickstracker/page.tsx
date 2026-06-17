@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { Trophy, Users, TrendingUp } from 'lucide-react';
 import { ProjectLayout, ProjectHero, ProjectStatusPlaceholder } from '@/components/ui/ProjectLayout';
+import { getProjectCoverTint } from '@/lib/home-projects';
 import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default function PicksTrackerPage() {
         title="PicksTracker"
         description="Track your sports predictions across multiple sports, compete with friends, and build your track record with detailed analytics and social prediction features."
         status={{ label: 'Roadmap', variant: 'roadmap' }}
+        coverTint={getProjectCoverTint('pickstracker')}
       />
       <ProjectStatusPlaceholder status="roadmap" highlights={highlights} />
     </ProjectLayout>

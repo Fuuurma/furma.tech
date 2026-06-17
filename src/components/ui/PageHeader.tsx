@@ -1,6 +1,9 @@
-import { ReactNode } from "react";
+"use client";
+
+import type { ReactNode } from "react";
 import { ScrollReveal } from "./ScrollReveal";
 import Breadcrumbs from "./breadcrumb";
+import { SplitReveal } from "@/components/motion/SplitReveal";
 
 interface PageHeaderProps {
   label?: string;
@@ -10,6 +13,26 @@ interface PageHeaderProps {
   children?: ReactNode;
   variant?: "default" | "minimal" | "centered";
   className?: string;
+}
+
+function PageTitle({
+  title,
+  className,
+}: {
+  title: ReactNode;
+  className: string;
+}) {
+  if (typeof title === "string") {
+    return (
+      <SplitReveal
+        as="h1"
+        text={title}
+        className={className}
+        delay={80}
+      />
+    );
+  }
+  return <h1 className={className}>{title}</h1>;
 }
 
 export function PageHeader({
@@ -29,19 +52,22 @@ export function PageHeader({
           <ScrollReveal>
             {label && (
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-px bg-grey-400"></div>
+                <div className="w-8 h-px bg-grey-400" />
                 <span className="font-mono text-[11px] font-medium tracking-[0.12em] uppercase text-grey-500">
                   {label}
                 </span>
               </div>
             )}
-            <h1 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.05] tracking-tight text-foreground">
-              {title}
-            </h1>
+            <PageTitle
+              title={title}
+              className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.05] tracking-tight text-foreground"
+            />
             {description && (
-              <p className="text-[16px] sm:text-[18px] leading-[1.6] text-grey-600 dark:text-grey-400 max-w-[600px] mt-6">
-                {description}
-              </p>
+              <ScrollReveal delay={160}>
+                <p className="text-[16px] sm:text-[18px] leading-[1.6] text-grey-600 dark:text-grey-400 max-w-[600px] mt-6">
+                  {description}
+                </p>
+              </ScrollReveal>
             )}
           </ScrollReveal>
         </div>
@@ -62,13 +88,16 @@ export function PageHeader({
                 </span>
               </div>
             )}
-            <h1 className="font-serif text-[clamp(40px,6vw,72px)] font-semibold leading-[0.95] tracking-tight text-foreground mb-6">
-              {title}
-            </h1>
+            <PageTitle
+              title={title}
+              className="font-serif text-[clamp(40px,6vw,72px)] font-semibold leading-[0.95] tracking-tight text-foreground mb-6"
+            />
             {description && (
-              <p className="text-[18px] sm:text-[20px] leading-[1.6] text-grey-600 dark:text-grey-400">
-                {description}
-              </p>
+              <ScrollReveal delay={160}>
+                <p className="text-[18px] sm:text-[20px] leading-[1.6] text-grey-600 dark:text-grey-400">
+                  {description}
+                </p>
+              </ScrollReveal>
             )}
             {children && <div className="mt-10">{children}</div>}
           </ScrollReveal>
@@ -77,7 +106,6 @@ export function PageHeader({
     );
   }
 
-  // Default variant
   return (
     <section className={`px-4 sm:px-6 md:px-12 py-20 sm:py-28 ${className}`}>
       <div className="max-w-4xl">
@@ -85,19 +113,22 @@ export function PageHeader({
         <ScrollReveal>
           {label && (
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-10 h-px bg-grey-400"></div>
+              <div className="w-10 h-px bg-grey-400" />
               <span className="font-mono text-[11px] font-medium tracking-[0.12em] uppercase text-grey-500">
                 {label}
               </span>
             </div>
           )}
-          <h1 className="font-serif text-[clamp(42px,5vw,72px)] font-semibold leading-[1.02] tracking-tight text-foreground mb-6">
-            {title}
-          </h1>
+          <PageTitle
+            title={title}
+            className="font-serif text-[clamp(42px,5vw,72px)] font-semibold leading-[1.02] tracking-tight text-foreground mb-6"
+          />
           {description && (
-            <p className="text-[17px] sm:text-[18px] leading-[1.7] text-grey-600 dark:text-grey-400 max-w-[650px]">
-              {description}
-            </p>
+            <ScrollReveal delay={160}>
+              <p className="text-[17px] sm:text-[18px] leading-[1.7] text-grey-600 dark:text-grey-400 max-w-[650px]">
+                {description}
+              </p>
+            </ScrollReveal>
           )}
           {children && <div className="mt-10">{children}</div>}
         </ScrollReveal>

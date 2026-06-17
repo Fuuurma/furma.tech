@@ -41,7 +41,7 @@ export function FeaturesGrid({
           {features.map((feature) => (
             <Card
               key={feature.title}
-              className="bg-white dark:bg-grey-900 p-6 sm:p-8 hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500"
+              className="bg-white dark:bg-grey-900 p-6 sm:p-8 hover:border-foreground/30 transition-colors"
             >
               <h3 className="text-[17px] font-bold text-foreground mb-3">{feature.title}</h3>
               <p className="text-[14px] leading-[1.6] text-grey-600 dark:text-grey-400">{feature.desc}</p>

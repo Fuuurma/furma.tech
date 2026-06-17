@@ -9,7 +9,7 @@ import {
   NavigationMenuTrigger,
   NavigationMenuContent,
 } from "@/components/ui/navigation-menu";
-import { ArrowRight, Sparkles, ChevronDown } from "lucide-react";
+import { ArrowRight, LayoutGrid, ChevronDown } from "lucide-react";
 
 interface Product {
   title: string;
@@ -45,11 +45,11 @@ export function ProductsDropdown({ products }: ProductsDropdownProps) {
             Portfolio
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <div className="p-5 lg:w-[700px] bg-background border border-border shadow-2xl">
+            <div className="p-5 lg:w-[700px] bg-background border border-border">
               {/* Header */}
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-foreground" strokeWidth={1.5} />
+                  <LayoutGrid className="w-4 h-4 text-foreground" strokeWidth={1.5} />
                   <h4 className="font-serif text-base font-bold text-foreground">All Products</h4>
                 </div>
                 <Link
@@ -64,7 +64,7 @@ export function ProductsDropdown({ products }: ProductsDropdownProps) {
               <div className="space-y-4">
                 {/* Aitlas Ecosystem Group */}
                 {aitlasGroup && (
-                  <div className="border border-border rounded-xl overflow-hidden">
+                  <div className="border border-border overflow-hidden">
                     {/* Aitlas Header */}
                     <Link
                       href={aitlasGroup.href}
@@ -97,7 +97,7 @@ export function ProductsDropdown({ products }: ProductsDropdownProps) {
                             <Link
                               key={child.title}
                               href={child.href}
-                              className={`flex items-center gap-2.5 p-2.5 rounded-lg transition-all group ${
+                              className={`flex items-center gap-2.5 p-2.5  transition-all group ${
                                 isActive(pathname, child.href)
                                   ? "bg-foreground/5"
                                   : "hover:bg-foreground/5"
@@ -125,7 +125,7 @@ export function ProductsDropdown({ products }: ProductsDropdownProps) {
                       <Link
                         key={product.title}
                         href={product.href}
-                        className={`flex items-center gap-3 p-3 rounded-lg transition-all group ${
+                        className={`flex items-center gap-3 p-3  transition-all group ${
                           isActive(pathname, product.href)
                             ? "bg-foreground/5"
                             : "hover:bg-foreground/5"
@@ -170,7 +170,7 @@ export function MobilePortfolioMenu({ products, pathname }: MobilePortfolioMenuP
           </div>
           <Link
             href={aitlasGroup.href}
-            className={`flex items-center gap-3 px-3 py-3 text-[15px] transition-all rounded-lg ${
+            className={`flex items-center gap-3 px-3 py-3 text-[15px] transition-all  ${
               isActive(pathname, aitlasGroup.href)
                 ? "text-foreground bg-foreground/5 font-bold"
                 : "text-grey-500 hover:text-foreground hover:bg-foreground/5"
@@ -180,7 +180,7 @@ export function MobilePortfolioMenu({ products, pathname }: MobilePortfolioMenuP
               <aitlasGroup.icon className="w-4 h-4" strokeWidth={1.5} />
             </div>
             <span className="flex-1 font-bold">{aitlasGroup.title}</span>
-            <span className="text-[8px] font-mono uppercase bg-foreground text-background px-1.5 py-0.5 rounded">
+            <span className="text-[8px] font-mono uppercase bg-foreground text-background px-1.5 py-0.5">
               Core
             </span>
           </Link>
@@ -188,7 +188,7 @@ export function MobilePortfolioMenu({ products, pathname }: MobilePortfolioMenuP
             <Link
               key={child.title}
               href={child.href}
-              className={`flex items-center gap-3 pl-8 pr-3 py-2.5 text-[14px] transition-all rounded-lg ${
+              className={`flex items-center gap-3 pl-8 pr-3 py-2.5 text-[14px] transition-all  ${
                 isActive(pathname, child.href)
                   ? "text-foreground bg-foreground/5 font-bold"
                   : "text-grey-500 hover:text-foreground hover:bg-foreground/5"
@@ -211,7 +211,7 @@ export function MobilePortfolioMenu({ products, pathname }: MobilePortfolioMenuP
             <Link
               key={product.title}
               href={product.href}
-              className={`flex items-center gap-3 px-3 py-3 text-[15px] transition-all rounded-lg ${
+              className={`flex items-center gap-3 px-3 py-3 text-[15px] transition-all  ${
                 isActive(pathname, product.href)
                   ? "text-foreground bg-foreground/5 font-bold"
                   : "text-grey-500 hover:text-foreground hover:bg-foreground/5"

@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { ProjectLayout, ProjectHero, ProjectSection, ProjectSectionHeader, ProjectCTA } from '@/components/ui/ProjectLayout';
+import { getProjectCoverTint } from '@/lib/home-projects';
 import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
@@ -38,6 +39,7 @@ export default function TicTacToePage() {
         title="Tic-Tac-Toe Disappear"
         description="A strategic twist on the classic game where moves vanish after a set number of turns. Think ahead, adapt fast, and outmaneuver your opponent in this dynamic battlefield."
         status={{ label: 'Live', variant: 'live' }}
+        coverTint={getProjectCoverTint('tic-tac-toe')}
       >
         <div className="flex items-center gap-3">
           <div className="font-mono text-[10px] uppercase tracking-[.14em] text-muted-foreground">Stack</div>

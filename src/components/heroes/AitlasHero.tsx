@@ -99,7 +99,7 @@ export function AitlasHero({ className = "" }: { className?: string }) {
 
       {/* Bottom nodes */}
       <circle cx="310" cy="220" r="14" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-      <text x="310" y="224" fontSize="5.5" fill="rgba(255,255,255,0.3)" fontFamily="JetBrains Mono, monospace" textAnchor="middle">34+</text>
+      <text x="310" y="224" fontSize="5.5" fill="rgba(255,255,255,0.3)" fontFamily="JetBrains Mono, monospace" textAnchor="middle">BYOK</text>
 
       <circle cx="450" cy="220" r="14" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
       <text x="450" y="224" fontSize="5.5" fill="rgba(255,255,255,0.3)" fontFamily="JetBrains Mono, monospace" textAnchor="middle">MCP</text>
@@ -107,7 +107,7 @@ export function AitlasHero({ className = "" }: { className?: string }) {
       {/* Bottom tip */}
       <circle cx="380" cy="270" r="16" fill="rgba(113,112,255,0.08)" stroke="rgba(113,112,255,0.2)" strokeWidth="1" />
       <text x="380" y="267" fontSize="5" fill="rgba(113,112,255,0.6)" fontFamily="JetBrains Mono, monospace" textAnchor="middle">Agents</text>
-      <text x="380" y="276" fontSize="5" fill="rgba(113,112,255,0.4)" fontFamily="JetBrains Mono, monospace" textAnchor="middle">Actions</text>
+      <text x="380" y="276" fontSize="5" fill="rgba(113,112,255,0.4)" fontFamily="JetBrains Mono, monospace" textAnchor="middle">store</text>
     </svg>
   );
 }
