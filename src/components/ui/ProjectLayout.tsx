@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, type LucideIcon } from "lucide-react";
 import { StaggerReveal } from "@/components/motion/StaggerReveal";
 import { ProjectCTA } from "@/components/ui/project/ProjectCTA";
+import { ProjectCoverVisual } from "@/components/ui/project/ProjectCoverVisual";
 import { ProjectHero as ProjectHeroMotion } from "@/components/ui/project/ProjectHero";
 import { ProjectLayoutFooter } from "@/components/ui/project/ProjectLayoutFooter";
 import { ProjectSection } from "@/components/ui/project/ProjectSection";
@@ -32,22 +33,9 @@ interface ProjectHeroProps {
   };
   children?: ReactNode;
   visual?: ReactNode;
+  /** When set, renders the shared hero mock for this project id */
+  projectId?: string;
   coverTint?: string;
-}
-
-function ProjectStatusBadge({
-  variant,
-}: {
-  variant: "live" | "beta" | "soon" | "roadmap" | "paused";
-}) {
-  const labels = {
-    live: "Live",
-    beta: "Beta",
-    soon: "Soon",
-    roadmap: "Roadmap",
-    paused: "Paused",
-  };
-  return <span className="text-foreground">{labels[variant]}</span>;
 }
 
 export function ProjectHeroSection({
@@ -57,21 +45,23 @@ export function ProjectHeroSection({
   status,
   children,
   visual,
+  projectId,
   coverTint,
 }: ProjectHeroProps) {
+  const cover =
+    visual ??
+    (projectId ? <ProjectCoverVisual projectId={projectId} /> : undefined);
+
   return (
     <ProjectHeroMotion
       label={label}
       title={title}
       description={description}
       coverTint={coverTint}
-      visual={visual}
+      visual={cover}
       statusBadge={
         status ? (
-          <>
-            <ProjectStatusBadge variant={status.variant} />
-            <span className="sr-only">{status.label}</span>
-          </>
+          <span className="plastic-label text-foreground">{status.label}</span>
         ) : undefined
       }
     >
@@ -83,7 +73,12 @@ export function ProjectHeroSection({
 /** @deprecated Use ProjectHeroSection — kept for existing imports */
 export const ProjectHero = ProjectHeroSection;
 
-export { ProjectSection, ProjectSectionHeader, ProjectCTA };
+export {
+  ProjectSection,
+  ProjectSectionHeader,
+  ProjectCTA,
+  ProjectCoverVisual,
+};
 
 interface Feature {
   icon?: LucideIcon;
@@ -94,6 +89,7 @@ interface Feature {
 interface ProjectFeaturesProps {
   label?: string;
   title?: string;
+  description?: string;
   features: Feature[];
   columns?: 2 | 3 | 4;
 }
@@ -101,6 +97,7 @@ interface ProjectFeaturesProps {
 export function ProjectFeatures({
   label,
   title,
+  description,
   features,
   columns = 3,
 }: ProjectFeaturesProps) {
@@ -113,7 +110,11 @@ export function ProjectFeatures({
   return (
     <div>
       {(label || title) && (
-        <ProjectSectionHeader label={label} title={title ?? ""} />
+        <ProjectSectionHeader
+          label={label}
+          title={title ?? ""}
+          description={description}
+        />
       )}
       <StaggerReveal
         className={cn(
@@ -128,14 +129,15 @@ export function ProjectFeatures({
           >
             {feature.icon && (
               <feature.icon
-                className="w-5 h-5 mb-5 text-foreground/40 group-hover:text-foreground transition-colors"
+                className="w-5 h-5 mb-5 text-foreground/45 group-hover:text-foreground transition-colors"
                 strokeWidth={1.5}
+                aria-hidden
               />
             )}
             <h3 className="font-sans text-[15px] font-semibold tracking-tight mb-2">
               {feature.title}
             </h3>
-            <p className="font-mono text-[11px] leading-relaxed text-foreground/55">
+            <p className="font-mono text-[11px] leading-relaxed text-foreground/60">
               {feature.desc}
             </p>
           </div>
@@ -152,17 +154,110 @@ interface Stat {
 
 interface ProjectStatsProps {
   stats: Stat[];
+  className?: string;
 }
 
-export function ProjectStats({ stats }: ProjectStatsProps) {
+export function ProjectStats({ stats, className }: ProjectStatsProps) {
   return (
-    <StaggerReveal className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-10 mt-10 border-t border-foreground/10">
+    <StaggerReveal
+      className={cn(
+        "grid grid-cols-2 md:grid-cols-4 gap-8 pt-10 mt-10 border-t border-foreground/10",
+        className,
+      )}
+    >
       {stats.map((stat) => (
         <div key={stat.label}>
           <div className="font-sans text-[clamp(28px,4vw,40px)] font-medium tracking-[-0.03em] leading-none mb-2">
             {stat.value}
           </div>
           <div className="plastic-label">{stat.label}</div>
+        </div>
+      ))}
+    </StaggerReveal>
+  );
+}
+
+interface ProjectTrustRowProps {
+  items: string[];
+}
+
+/** Compact trust chips under a project hero — wraps on small screens. */
+export function ProjectTrustRow({ items }: ProjectTrustRowProps) {
+  return (
+    <ul className="flex flex-wrap gap-x-6 gap-y-3 pt-4 mt-4 border-t border-foreground/10 list-none p-0 m-0">
+      {items.map((item) => (
+        <li
+          key={item}
+          className="font-mono text-[11px] text-foreground/60 tracking-[0.04em]"
+        >
+          <span className="text-foreground/35 mr-2" aria-hidden>
+            ✓
+          </span>
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+interface PricingTier {
+  name: string;
+  subtitle: string;
+  price: string;
+  period: string;
+  annual?: string;
+  features: string[];
+}
+
+interface ProjectPricingProps {
+  tiers: PricingTier[];
+}
+
+export function ProjectPricing({ tiers }: ProjectPricingProps) {
+  const columnStyles =
+    tiers.length === 1
+      ? "md:grid-cols-1 max-w-md"
+      : tiers.length === 2
+        ? "md:grid-cols-2 max-w-3xl"
+        : "md:grid-cols-3";
+
+  return (
+    <StaggerReveal
+      className={cn(
+        "grid grid-cols-1 gap-px bg-foreground/10 border border-foreground/10",
+        columnStyles,
+      )}
+    >
+      {tiers.map((tier) => (
+        <div key={tier.name} className="motion-card bg-background p-8">
+          <h3 className="font-sans text-[15px] font-semibold tracking-tight">
+            {tier.name}
+          </h3>
+          <p className="plastic-label mt-2 mb-6">{tier.subtitle}</p>
+          <div className="font-sans text-[clamp(28px,4vw,36px)] font-medium tracking-[-0.03em] leading-none mb-1">
+            {tier.price}
+            <span className="font-mono text-[12px] text-foreground/55 font-normal ml-1">
+              {tier.period}
+            </span>
+          </div>
+          {tier.annual && (
+            <p className="font-mono text-[11px] text-foreground/55 mb-6">
+              {tier.annual}
+            </p>
+          )}
+          <ul className="space-y-3 mt-6">
+            {tier.features.map((feature) => (
+              <li
+                key={feature}
+                className="flex items-start gap-2 font-mono text-[11px] text-foreground/65 leading-relaxed"
+              >
+                <span className="text-foreground/35 mt-0.5" aria-hidden>
+                  ✓
+                </span>
+                {feature}
+              </li>
+            ))}
+          </ul>
         </div>
       ))}
     </StaggerReveal>
@@ -209,13 +304,14 @@ export function ProjectStatusPlaceholder({
               {highlights.map((highlight) => (
                 <div key={highlight.title} className="motion-card bg-background p-6">
                   <highlight.icon
-                    className="w-5 h-5 text-foreground/40 mb-4"
+                    className="w-5 h-5 text-foreground/45 mb-4"
                     strokeWidth={1.5}
+                    aria-hidden
                   />
                   <h3 className="font-sans text-[14px] font-semibold mb-2">
                     {highlight.title}
                   </h3>
-                  <p className="font-mono text-[11px] text-foreground/55 leading-relaxed">
+                  <p className="font-mono text-[11px] text-foreground/60 leading-relaxed">
                     {highlight.desc}
                   </p>
                 </div>

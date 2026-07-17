@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useState } from "react";
 import type { ReelItem } from "@/lib/home-reel";
 import { StudioChrome } from "@/components/studio/StudioChrome";
 import { cn } from "@/lib/utils";
@@ -17,6 +17,7 @@ interface ReelColumnProps {
   activeReelIndex: number;
   columnOffset: -1 | 0 | 1;
   onSelect?: (reelIndex: number) => void;
+  className?: string;
 }
 
 function ReelRow({
@@ -58,6 +59,7 @@ function ReelColumn({
   activeReelIndex,
   columnOffset,
   onSelect,
+  className,
 }: ReelColumnProps) {
   const labels = {
     [-1]: "Previous one",
@@ -119,7 +121,10 @@ function ReelColumn({
       <button
         type="button"
         onClick={() => onSelect?.(targetReelIndex)}
-        className="plastic-reel__viewport plastic-reel__viewport--interactive"
+        className={cn(
+          "plastic-reel__viewport plastic-reel__viewport--interactive",
+          className,
+        )}
         aria-label={`Go to ${target.title}`}
       >
         {strip}
@@ -129,13 +134,18 @@ function ReelColumn({
 
   if (columnOffset === 0) {
     return (
-      <div className="plastic-reel__viewport" aria-current="true">
+      <div
+        className={cn("plastic-reel__viewport", className)}
+        aria-current="true"
+      >
         {strip}
       </div>
     );
   }
 
-  return <div className="plastic-reel__viewport">{strip}</div>;
+  return (
+    <div className={cn("plastic-reel__viewport", className)}>{strip}</div>
+  );
 }
 
 export function SectionReelBar({
@@ -144,18 +154,22 @@ export function SectionReelBar({
   onSelect,
   onBrandReset,
 }: SectionReelBarProps) {
-  const prevIndexRef = useRef(activeReelIndex);
-  const prev = prevIndexRef.current;
-  const direction =
-    activeReelIndex > prev
-      ? "forward"
-      : activeReelIndex < prev
-        ? "backward"
-        : "idle";
+  const [reelMotion, setReelMotion] = useState<{
+    prev: number;
+    direction: "forward" | "backward" | "idle";
+  }>({ prev: activeReelIndex, direction: "idle" });
 
-  useLayoutEffect(() => {
-    prevIndexRef.current = activeReelIndex;
-  }, [activeReelIndex]);
+  if (activeReelIndex !== reelMotion.prev) {
+    setReelMotion({
+      prev: activeReelIndex,
+      direction:
+        activeReelIndex > reelMotion.prev ? "forward" : "backward",
+    });
+  }
+
+  const { direction } = reelMotion;
+  const prevItem = items[activeReelIndex - 1];
+  const nextItem = items[activeReelIndex + 1];
 
   return (
     <StudioChrome
@@ -175,6 +189,7 @@ export function SectionReelBar({
             activeReelIndex={activeReelIndex}
             columnOffset={-1}
             onSelect={onSelect}
+            className="plastic-reel__column--adjacent"
           />
           <ReelColumn
             items={items}
@@ -186,7 +201,33 @@ export function SectionReelBar({
             activeReelIndex={activeReelIndex}
             columnOffset={1}
             onSelect={onSelect}
+            className="plastic-reel__column--adjacent"
           />
+
+          <div className="plastic-reel__mobile-nav" aria-label="Section controls">
+            <button
+              type="button"
+              className="plastic-reel__mobile-btn"
+              disabled={!prevItem}
+              onClick={() => onSelect(activeReelIndex - 1)}
+              aria-label={
+                prevItem ? `Previous: ${prevItem.title}` : "No previous section"
+              }
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              className="plastic-reel__mobile-btn"
+              disabled={!nextItem}
+              onClick={() => onSelect(activeReelIndex + 1)}
+              aria-label={
+                nextItem ? `Next: ${nextItem.title}` : "No next section"
+              }
+            >
+              →
+            </button>
+          </div>
         </div>
       }
       className="border-foreground/10"

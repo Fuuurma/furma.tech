@@ -28,6 +28,7 @@ export default function OpenGovernPage() {
         title="OpenGovern"
         description="A governance platform where communities make decisions together through polls, forums (Agora), and meaningful discussions — unlike traditional social media's hot takes."
         status={{ label: 'Roadmap', variant: 'roadmap' }}
+        projectId="opengovern"
         coverTint={getProjectCoverTint('opengovern')}
       />
       <ProjectStatusPlaceholder status="roadmap" highlights={highlights} />

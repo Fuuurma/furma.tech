@@ -2,8 +2,9 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { submitWaitlistSignup } from "@/lib/server-actions";
+import { useReducedMotion } from "framer-motion";
+import { submitContactForm } from "@/lib/server-actions";
+import { contactFormSchema, validateForm } from "@/lib/schemas";
 import { HOME_PROJECTS } from "@/lib/home-projects";
 import {
   buildHomeReelItems,
@@ -19,6 +20,11 @@ import { PROJECT_HERO_MAP } from "@/lib/project-heroes";
 import { AnimatedNumber } from "@/components/motion/AnimatedNumber";
 import { SlideReveal } from "@/components/motion/SlideReveal";
 import { SplitReveal } from "@/components/motion/SplitReveal";
+import {
+  useSmoothSectionScroll,
+  type GoToOptions,
+} from "@/components/home/useSmoothSectionScroll";
+import { cn } from "@/lib/utils";
 
 const SECTIONS = [
   { id: "hero", type: "hero" as const },
@@ -38,104 +44,43 @@ const CONTACT_SECTION = HOME_SECTION.contact;
 
 const HOME_REEL_ITEMS = buildHomeReelItems();
 
+function sectionLabel(index: number): string {
+  const section = SECTIONS[index];
+  if (!section) return `Section ${index + 1}`;
+  if (section.type === "hero") return "Introduction";
+  if (section.type === "portfolio-index") return "Portfolio index";
+  if (section.type === "contact") return "Contact";
+  if (section.type === "footer") return "Studio";
+  if (section.type === "project") {
+    const project = HOME_PROJECTS.find((p) => p.id === section.id);
+    return project?.name ?? section.id;
+  }
+  return `Section ${index + 1}`;
+}
+
 function LetterSpacedTitle({ text }: { text: string }) {
+  const reduceMotion = useReducedMotion();
   return (
     <h1 className="plastic-hero-title" aria-label={text}>
       {text.split("").map((char, i) => (
         <span
           key={`${char}-${i}`}
-          className="plastic-hero-letter"
-          style={{ animationDelay: `${0.08 + i * 0.04}s` }}
-          aria-hidden={char === " "}
+          className={cn(
+            "plastic-hero-letter",
+            reduceMotion && "plastic-hero-letter--static",
+          )}
+          style={
+            reduceMotion
+              ? undefined
+              : { animationDelay: `${0.08 + i * 0.04}s` }
+          }
+          aria-hidden="true"
         >
           {char === " " ? "\u00a0" : char}
         </span>
       ))}
     </h1>
   );
-}
-
-function useSmoothSectionScroll() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const isScrolling = useRef(false);
-  const touchStart = useRef(0);
-  const activeRef = useRef(0);
-
-  useEffect(() => {
-    activeRef.current = activeIndex;
-  }, [activeIndex]);
-
-  const goTo = useCallback((index: number) => {
-    const clamped = Math.max(0, Math.min(TOTAL - 1, index));
-    if (isScrolling.current || clamped === activeRef.current) return;
-    isScrolling.current = true;
-    setActiveIndex(clamped);
-    window.setTimeout(() => {
-      isScrolling.current = false;
-    }, 850);
-  }, []);
-
-  useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
-      const target = e.target;
-      if (target instanceof Element) {
-        const scrollable = target.closest("[data-section-scroll]");
-        if (scrollable instanceof HTMLElement) {
-          const { scrollTop, scrollHeight, clientHeight } = scrollable;
-          const atTop = scrollTop <= 0;
-          const atBottom = scrollTop + clientHeight >= scrollHeight - 2;
-          if ((e.deltaY < 0 && !atTop) || (e.deltaY > 0 && !atBottom)) return;
-        }
-      }
-
-      e.preventDefault();
-      if (isScrolling.current) return;
-      goTo(activeRef.current + (e.deltaY > 0 ? 1 : -1));
-    };
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const tag = (e.target as HTMLElement)?.tagName;
-      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
-
-      if (e.key === "ArrowDown" || e.key === " ") {
-        e.preventDefault();
-        goTo(activeRef.current + 1);
-      } else if (e.key === "ArrowUp") {
-        e.preventDefault();
-        goTo(activeRef.current - 1);
-      } else if (e.key === "Home") {
-        e.preventDefault();
-        goTo(0);
-      } else if (e.key === "End") {
-        e.preventDefault();
-        goTo(TOTAL - 1);
-      }
-    };
-
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStart.current = e.touches[0].clientY;
-    };
-
-    const handleTouchEnd = (e: TouchEvent) => {
-      const diff = touchStart.current - e.changedTouches[0].clientY;
-      if (Math.abs(diff) > 50) {
-        goTo(activeRef.current + (diff > 0 ? 1 : -1));
-      }
-    };
-
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("touchstart", handleTouchStart, { passive: true });
-    window.addEventListener("touchend", handleTouchEnd, { passive: true });
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchend", handleTouchEnd);
-    };
-  }, [goTo]);
-
-  return { activeIndex, goTo };
 }
 
 function HeroSlide({
@@ -145,50 +90,72 @@ function HeroSlide({
   onEnterWork: () => void;
   onContact: () => void;
 }) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <div className="h-full w-full flex flex-col bg-black text-white relative overflow-hidden">
       <div className="flex-1 flex flex-col items-center justify-center px-6">
         <LetterSpacedTitle text="furma.tech" />
         <p
-          className="mt-10 font-sans text-[11px] uppercase tracking-[0.2em] text-white/40 opacity-0 animate-fade-up"
-          style={{ animationDelay: "1.2s", animationFillMode: "forwards" }}
+          className={cn(
+            "mt-10 font-sans text-[11px] uppercase tracking-[0.2em] text-white/60",
+            !reduceMotion && "opacity-0 animate-fade-up",
+          )}
+          style={
+            reduceMotion
+              ? undefined
+              : { animationDelay: "1.2s", animationFillMode: "forwards" }
+          }
         >
           Digital venture studio
         </p>
       </div>
 
       <div
-        className="shrink-0 border-t border-white/10 px-6 md:px-12 py-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 opacity-0 animate-fade-up"
-        style={{ animationDelay: "1.5s", animationFillMode: "forwards" }}
+        className={cn(
+          "shrink-0 border-t border-white/10 px-6 md:px-12 py-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6",
+          !reduceMotion && "opacity-0 animate-fade-up",
+        )}
+        style={
+          reduceMotion
+            ? undefined
+            : { animationDelay: "1.5s", animationFillMode: "forwards" }
+        }
       >
         <p className="plastic-paragraph text-white max-w-md !text-[clamp(18px,2.2vw,26px)] !leading-[1.35]">
           Bootstrapped studio building industry SaaS and the Aitlas AI ecosystem.
         </p>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
           <button
             type="button"
             onClick={onEnterWork}
-            className="plastic-cta plastic-cta--inverse motion-link"
+            className="plastic-cta plastic-cta--inverse"
           >
-            View work
+            See projects
             <span aria-hidden>↓</span>
           </button>
           <button
             type="button"
             onClick={onContact}
-            className="font-sans text-[11px] uppercase tracking-[0.14em] text-white/50 hover:text-white transition-colors"
+            className="plastic-cta plastic-cta--inverse plastic-cta--quiet"
           >
             Contact
           </button>
         </div>
       </div>
 
-      <div className="absolute bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none opacity-0 animate-fade-up" style={{ animationDelay: "2s", animationFillMode: "forwards" }}>
-        <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25">
-          Scroll
-        </span>
-        <span className="block w-px h-8 bg-white/20 animate-pulse" />
-      </div>
+      {!reduceMotion && (
+        <div
+          className="plastic-hero-scroll-cue absolute bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none opacity-0 animate-fade-up"
+          style={{ animationDelay: "2s", animationFillMode: "forwards" }}
+          aria-hidden="true"
+        >
+          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/50">
+            Scroll
+          </span>
+          <span className="block w-px h-8 bg-white/40 animate-pulse" />
+        </div>
+      )}
     </div>
   );
 }
@@ -226,11 +193,19 @@ function PortfolioIndexSlide({
               <button
                 type="button"
                 onClick={onStart}
-                className="plastic-cta mt-12 motion-link"
+                className="plastic-cta mt-12"
               >
-                Enter portfolio
+                Start with {HOME_PROJECTS[0]?.name ?? "projects"}
                 <span aria-hidden>→</span>
               </button>
+              <div className="mt-6">
+                <Link
+                  href="/portfolio"
+                  className="plastic-label motion-link-subtle hover:text-foreground"
+                >
+                  Or open full index
+                </Link>
+              </div>
             </SlideReveal>
           </div>
         </div>
@@ -240,19 +215,89 @@ function PortfolioIndexSlide({
 }
 
 function ContactSlide({ isActive }: { isActive: boolean }) {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle",
+  );
+  const [errorMessage, setErrorMessage] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const formRef = useRef<HTMLFormElement>(null);
+  const statusRef = useRef<HTMLParagraphElement>(null);
+
+  function clearFieldError(field: string) {
+    setFieldErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+  }
+
+  function focusFirstInvalid(errors: Record<string, string>) {
+    const order = ["name", "email", "message"] as const;
+    const first = order.find((key) => errors[key]);
+    if (!first || !formRef.current) return;
+    const el = formRef.current.querySelector<HTMLElement>(`#${first}`);
+    el?.focus();
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setErrorMessage("");
+    setFieldErrors({});
+
     const fd = new FormData(formRef.current!);
-    await submitWaitlistSignup(fd);
-    setSubmitted(true);
-    window.setTimeout(() => {
-      setSubmitted(false);
+    const payload = {
+      name: String(fd.get("name") ?? ""),
+      email: String(fd.get("email") ?? ""),
+      company: "",
+      subject: String(fd.get("subject") ?? "general"),
+      message: String(fd.get("message") ?? ""),
+      newsletter: false,
+    };
+
+    const clientValidation = validateForm(contactFormSchema, payload);
+    if (clientValidation.errors) {
+      const errors = Object.fromEntries(
+        Object.entries(clientValidation.errors).map(([key, messages]) => [
+          key,
+          messages[0] ?? "Invalid value",
+        ]),
+      );
+      setFieldErrors(errors);
+      setStatus("error");
+      setErrorMessage("Please fix the highlighted fields.");
+      focusFirstInvalid(errors);
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const result = await submitContactForm(fd);
+      if (!result.success) {
+        const errors = result.fieldErrors ?? {};
+        setFieldErrors(errors);
+        setStatus("error");
+        setErrorMessage(
+          result.error ?? "Something went wrong. Please try again.",
+        );
+        if (Object.keys(errors).length) focusFirstInvalid(errors);
+        else statusRef.current?.focus();
+        return;
+      }
+      setStatus("sent");
       formRef.current?.reset();
-    }, 3500);
+      window.setTimeout(() => setStatus("idle"), 6000);
+    } catch {
+      setStatus("error");
+      setErrorMessage("Couldn't send right now. Please try again in a moment.");
+    }
   }
+
+  useEffect(() => {
+    if (status === "sent") statusRef.current?.focus();
+  }, [status]);
+
+  const fieldsLocked = status === "sending" || status === "sent";
 
   return (
     <div
@@ -273,50 +318,93 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
               />
             </SlideReveal>
             <SlideReveal isActive={isActive} delay={0.12}>
-            <p className="plastic-paragraph text-foreground/70 max-w-sm mb-8">
-              Interested in our products, a collaboration, or integrating
-              sovereign AI? We read every message.
-            </p>
-            <div className="flex gap-10">
-              {[
-                ["Email", "hello@furma.tech", "mailto:hello@furma.tech"],
-                ["GitHub", "@Fuuurma", "https://github.com/Fuuurma"],
-              ].map(([label, text, href]) => (
-                <div key={label} className="flex flex-col gap-1">
-                  <span className="plastic-label">{label}</span>
-                  <a
-                    href={href}
-                    target={label === "GitHub" ? "_blank" : undefined}
-                    rel={label === "GitHub" ? "noopener noreferrer" : undefined}
-                    className="text-[14px] text-foreground border-b border-foreground/20 pb-0.5 hover:border-foreground transition-colors"
-                  >
-                    {text}
-                  </a>
-                </div>
-              ))}
-            </div>
+              <p className="plastic-paragraph text-foreground/70 max-w-sm mb-8">
+                Interested in our products, a collaboration, or integrating
+                sovereign AI? We read every message.
+              </p>
+              <div className="flex gap-10">
+                {[
+                  ["Email", "hello@furma.tech", "mailto:hello@furma.tech"],
+                  ["GitHub", "@Fuuurma", "https://github.com/Fuuurma"],
+                ].map(([label, text, href]) => (
+                  <div key={label} className="flex flex-col gap-1">
+                    <span className="plastic-label">{label}</span>
+                    <a
+                      href={href}
+                      target={label === "GitHub" ? "_blank" : undefined}
+                      rel={
+                        label === "GitHub" ? "noopener noreferrer" : undefined
+                      }
+                      className="text-[14px] text-foreground border-b border-foreground/20 pb-0.5 hover:border-foreground transition-colors"
+                    >
+                      {text}
+                    </a>
+                  </div>
+                ))}
+              </div>
             </SlideReveal>
           </div>
-          <SlideReveal isActive={isActive} className="lg:col-span-6 lg:col-start-7" delay={0.18}>
-            <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-6">
+          <SlideReveal
+            isActive={isActive}
+            className="lg:col-span-6 lg:col-start-7"
+            delay={0.18}
+          >
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              className="flex flex-col gap-6"
+              noValidate
+              aria-busy={status === "sending"}
+            >
+              <input type="hidden" name="subject" value="general" />
               {[
-                { id: "name", label: "Name", type: "text", placeholder: "Your name" },
-                { id: "email", label: "Email", type: "email", placeholder: "your@email.com" },
-              ].map((f) => (
-                <div key={f.id}>
-                  <label htmlFor={f.id} className="plastic-label block mb-2">
-                    {f.label}
-                  </label>
-                  <input
-                    id={f.id}
-                    name={f.id}
-                    type={f.type}
-                    placeholder={f.placeholder}
-                    className="w-full border-b border-foreground/20 bg-transparent pb-2.5 pt-1 font-mono text-[13px] text-foreground placeholder:text-foreground/30 outline-none focus:border-foreground transition-colors"
-                    required
-                  />
-                </div>
-              ))}
+                {
+                  id: "name",
+                  label: "Name",
+                  type: "text",
+                  placeholder: "Your name",
+                  autoComplete: "name",
+                },
+                {
+                  id: "email",
+                  label: "Email",
+                  type: "email",
+                  placeholder: "your@email.com",
+                  autoComplete: "email",
+                },
+              ].map((f) => {
+                const errorId = `${f.id}-error`;
+                const hasError = Boolean(fieldErrors[f.id]);
+                return (
+                  <div key={f.id}>
+                    <label htmlFor={f.id} className="plastic-label block mb-2">
+                      {f.label}
+                    </label>
+                    <input
+                      id={f.id}
+                      name={f.id}
+                      type={f.type}
+                      placeholder={f.placeholder}
+                      autoComplete={f.autoComplete}
+                      className={cn(
+                        "plastic-field w-full border-b bg-transparent pb-2.5 pt-1 font-mono text-[13px] text-foreground placeholder:text-foreground/35 outline-none transition-colors",
+                        hasError
+                          ? "border-foreground plastic-field--invalid"
+                          : "border-foreground/25 focus-visible:border-foreground",
+                      )}
+                      aria-invalid={hasError || undefined}
+                      aria-describedby={hasError ? errorId : undefined}
+                      disabled={fieldsLocked}
+                      onChange={() => clearFieldError(f.id)}
+                    />
+                    {hasError && (
+                      <p id={errorId} className="plastic-field-error" role="alert">
+                        {fieldErrors[f.id]}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
               <div>
                 <label htmlFor="message" className="plastic-label block mb-2">
                   Message
@@ -326,16 +414,65 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                   name="message"
                   rows={3}
                   placeholder="Tell us what you're building…"
-                  className="w-full resize-none border-b border-foreground/20 bg-transparent pb-2.5 pt-1 font-mono text-[13px] text-foreground placeholder:text-foreground/30 outline-none focus:border-foreground transition-colors"
-                  required
+                  className={cn(
+                    "plastic-field w-full resize-none border-b bg-transparent pb-2.5 pt-1 font-mono text-[13px] text-foreground placeholder:text-foreground/35 outline-none transition-colors",
+                    fieldErrors.message
+                      ? "border-foreground plastic-field--invalid"
+                      : "border-foreground/25 focus-visible:border-foreground",
+                  )}
+                  aria-invalid={fieldErrors.message ? true : undefined}
+                  aria-describedby={
+                    fieldErrors.message ? "message-error" : undefined
+                  }
+                  disabled={fieldsLocked}
+                  onChange={() => clearFieldError("message")}
                 />
+                {fieldErrors.message && (
+                  <p id="message-error" className="plastic-field-error" role="alert">
+                    {fieldErrors.message}
+                  </p>
+                )}
               </div>
-              <Button
-                type="submit"
-                className={`h-12 w-full rounded-none font-mono text-[11px] uppercase tracking-[0.12em] transition-all duration-300 ${submitted ? "bg-foreground/80 text-background" : "bg-foreground text-background hover:opacity-80"}`}
+              <p
+                ref={statusRef}
+                id="contact-form-status"
+                role="status"
+                aria-live="polite"
+                tabIndex={-1}
+                className={cn(
+                  "font-mono text-[11px] uppercase tracking-[0.12em] outline-none min-h-[1.25rem]",
+                  status === "idle"
+                    ? "sr-only"
+                    : status === "error"
+                      ? "text-foreground"
+                      : "text-foreground/70",
+                )}
               >
-                {submitted ? "Sent ✓" : "Send message →"}
-              </Button>
+                {status === "sending"
+                  ? "Sending your message…"
+                  : status === "sent"
+                    ? "Message sent. We'll get back to you soon."
+                    : status === "error"
+                      ? errorMessage
+                      : ""}
+              </p>
+              <button
+                type="submit"
+                disabled={fieldsLocked}
+                className={cn(
+                  "plastic-submit h-12 w-full font-mono text-[11px] uppercase tracking-[0.12em] transition-opacity duration-300",
+                  status === "sent"
+                    ? "bg-foreground/80 text-background"
+                    : "bg-foreground text-background hover:opacity-80",
+                  fieldsLocked && "cursor-not-allowed",
+                )}
+              >
+                {status === "sending"
+                  ? "Sending…"
+                  : status === "sent"
+                    ? "Sent ✓"
+                    : "Send message →"}
+              </button>
             </form>
           </SlideReveal>
         </div>
@@ -360,13 +497,13 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
                   trigger={isActive}
                   delay={40}
                 />
-                <p className="font-sans text-[14px] text-background/40 max-w-sm leading-relaxed">
+                <p className="font-sans text-[14px] text-background/50 max-w-sm leading-relaxed">
                   Venture studio for industry SaaS and autonomous AI ecosystems.
                   Sitges · Global.
                 </p>
               </div>
               <div className="space-y-4">
-                <p className="plastic-label text-background/30">Connect</p>
+                <p className="plastic-label text-background/40">Connect</p>
                 <a
                   href="mailto:hello@furma.tech"
                   className="text-[17px] font-medium text-background hover:opacity-60 transition-opacity block"
@@ -378,7 +515,7 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
                     href="https://github.com/Fuuurma"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="plastic-label text-background/50 hover:text-background"
+                    className="plastic-label text-background/55 hover:text-background"
                   >
                     GitHub
                   </a>
@@ -386,7 +523,7 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
                     href="https://twitter.com/fuuurma"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="plastic-label text-background/50 hover:text-background"
+                    className="plastic-label text-background/55 hover:text-background"
                   >
                     Twitter
                   </a>
@@ -395,9 +532,9 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
             </SlideReveal>
 
             <SlideReveal isActive={isActive} className="lg:col-span-7 border-l border-background/10 pl-8 lg:pl-16" delay={0.12}>
-              <p className="plastic-label text-background/25 mb-8">Portfolio</p>
+              <p className="plastic-label text-background/40 mb-8">Portfolio</p>
               <div className="grid grid-cols-2 gap-x-8 gap-y-6">
-                {HOME_PROJECTS.slice(0, 6).map((p) => (
+                {HOME_PROJECTS.map((p) => (
                   <Link
                     key={p.id}
                     href={p.href}
@@ -409,9 +546,9 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
               </div>
               <Link
                 href="/portfolio"
-                className="inline-flex items-center gap-2 mt-10 plastic-label text-background/40 hover:text-background motion-link-subtle"
+                className="inline-flex items-center gap-2 mt-10 plastic-label text-background/50 hover:text-background motion-link-subtle"
               >
-                All products <span>→</span>
+                All projects <span aria-hidden>→</span>
               </Link>
             </SlideReveal>
           </div>
@@ -419,18 +556,44 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
       </div>
 
       <div className="shrink-0 px-6 md:px-12 py-5 border-t border-background/10 flex justify-between items-center">
-        <span className="plastic-label text-background/30">© 2026 Furma.tech</span>
-        <span className="plastic-label text-background/30">Sitges, Catalonia</span>
+        <span className="plastic-label text-background/40">© 2026 Furma.tech</span>
+        <span className="plastic-label text-background/40">Sitges, Catalonia</span>
       </div>
     </div>
   );
 }
 
 export default function PlasticHome() {
-  const { activeIndex, goTo } = useSmoothSectionScroll();
+  const { activeIndex, goTo, setFocusHandler } = useSmoothSectionScroll(TOTAL);
+  const reduceMotion = useReducedMotion();
+  const panelRefs = useRef<(HTMLElement | null)[]>([]);
+  const [announcement, setAnnouncement] = useState(
+    `Section 1 of ${TOTAL}: ${sectionLabel(0)}`,
+  );
 
   const activeReelIndex = reelIndexForSection(activeIndex, HOME_REEL_ITEMS);
   const showReel = activeReelIndex >= 0;
+
+  const navigate = useCallback(
+    (index: number, options: GoToOptions = {}) => {
+      goTo(index, options);
+    },
+    [goTo],
+  );
+
+  useEffect(() => {
+    setFocusHandler((index) => {
+      const panel = panelRefs.current[index];
+      panel?.focus({ preventScroll: true });
+    });
+    return () => setFocusHandler(null);
+  }, [setFocusHandler]);
+
+  useEffect(() => {
+    setAnnouncement(
+      `Section ${activeIndex + 1} of ${TOTAL}: ${sectionLabel(activeIndex)}`,
+    );
+  }, [activeIndex]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -442,15 +605,14 @@ export default function PlasticHome() {
   }, []);
 
   useEffect(() => {
-    const handleHomeReset = () => goTo(0);
+    const handleHomeReset = () => navigate(0, { force: true, focus: true });
     window.addEventListener(HOME_RESET_EVENT, handleHomeReset);
     return () => window.removeEventListener(HOME_RESET_EVENT, handleHomeReset);
-  }, [goTo]);
+  }, [navigate]);
 
   useEffect(() => {
     const navigateToContact = () => {
-      const contactIndex = SECTIONS.findIndex((s) => s.type === "contact");
-      if (contactIndex !== -1) goTo(contactIndex);
+      navigate(CONTACT_SECTION, { force: true, focus: true });
     };
 
     if (window.location.hash === "#contact") {
@@ -463,77 +625,121 @@ export default function PlasticHome() {
 
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
-  }, [goTo]);
+  }, [navigate]);
 
   const handleReelSelect = (reelIndex: number) => {
     const target = HOME_REEL_ITEMS[reelIndex];
-    if (target) goTo(target.sectionIndex);
+    if (target) navigate(target.sectionIndex, { force: true, focus: true });
   };
 
   return (
-    <div className="plastic-home fixed inset-0 z-10 flex flex-col bg-background text-foreground overflow-hidden">
+    <div
+      className="plastic-home fixed inset-0 z-10 flex flex-col bg-background text-foreground overflow-hidden"
+      aria-label="Furma.tech portfolio"
+      aria-describedby="home-nav-instructions"
+    >
+      <p id="home-nav-instructions" className="sr-only">
+        Immersive portfolio. Use arrow keys or Page Up and Page Down to move
+        between sections. Press Escape to focus the site header. Scroll or swipe
+        also moves between sections.
+      </p>
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {announcement}
+      </div>
+
       {activeIndex !== HOME_SECTION.hero &&
         (showReel && activeReelIndex >= 0 ? (
           <SectionReelBar
             items={HOME_REEL_ITEMS}
             activeReelIndex={activeReelIndex}
             onSelect={handleReelSelect}
-            onBrandReset={() => goTo(0)}
+            onBrandReset={() => navigate(0, { force: true, focus: true })}
           />
         ) : (
-          <StudioChrome onBrandReset={() => goTo(0)} />
+          <StudioChrome
+            onBrandReset={() => navigate(0, { force: true, focus: true })}
+          />
         ))}
 
       <div className="relative flex-1 min-h-0 overflow-hidden">
         <ScrollProgress activeIndex={activeIndex} total={TOTAL} />
 
         <div className="absolute inset-0">
-        {SECTIONS.map((section, i) => {
-          const isActive = i === activeIndex;
-          const isPast = i < activeIndex;
-          const translateY = isActive ? 0 : isPast ? -100 : 100;
+          {SECTIONS.map((section, i) => {
+            const isActive = i === activeIndex;
+            const isPast = i < activeIndex;
+            const translateY = isActive ? 0 : isPast ? -100 : 100;
+            const label = sectionLabel(i);
 
-          return (
-            <div
-              key={section.id}
-              className="absolute inset-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-              style={{
-                transform: `translateY(${translateY}%)`,
-                opacity: isActive ? 1 : 0,
-                pointerEvents: isActive ? "auto" : "none",
-              }}
-            >
-              {section.type === "hero" && (
-                <HeroSlide
-                  onEnterWork={() => goTo(1)}
-                  onContact={() => goTo(CONTACT_SECTION)}
-                />
-              )}
-              {section.type === "portfolio-index" && (
-                <PortfolioIndexSlide
-                  count={HOME_PROJECTS.length}
-                  onStart={() => goTo(FIRST_PROJECT_SECTION)}
-                  isActive={isActive}
-                />
-              )}
-              {section.type === "project" && (() => {
-                const project = HOME_PROJECTS.find((p) => p.id === section.id)!;
-                const pIndex = HOME_PROJECTS.indexOf(project);
-                return (
-                  <PlasticProjectSlide
-                    project={project}
-                    index={pIndex}
-                    total={HOME_PROJECTS.length}
-                    HeroVisual={PROJECT_HERO_MAP[section.id]}
+            return (
+              <section
+                key={section.id}
+                ref={(el) => {
+                  panelRefs.current[i] = el;
+                }}
+                id={`home-section-${section.id}`}
+                tabIndex={-1}
+                aria-label={`${label}, section ${i + 1} of ${TOTAL}`}
+                aria-hidden={!isActive}
+                inert={isActive ? undefined : true}
+                className={cn(
+                  "plastic-home__panel absolute inset-0 outline-none",
+                  !reduceMotion &&
+                    "transition-[transform,opacity] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                )}
+                style={{
+                  transform: `translateY(${translateY}%)`,
+                  opacity: isActive ? 1 : 0,
+                  pointerEvents: isActive ? "auto" : "none",
+                }}
+              >
+                {section.type === "hero" && (
+                  <HeroSlide
+                    onEnterWork={() =>
+                      navigate(1, { force: true, focus: true })
+                    }
+                    onContact={() =>
+                      navigate(CONTACT_SECTION, { force: true, focus: true })
+                    }
+                  />
+                )}
+                {section.type === "portfolio-index" && (
+                  <PortfolioIndexSlide
+                    count={HOME_PROJECTS.length}
+                    onStart={() =>
+                      navigate(FIRST_PROJECT_SECTION, {
+                        force: true,
+                        focus: true,
+                      })
+                    }
                     isActive={isActive}
                   />
-                );
-              })()}
-              {section.type === "contact" && <ContactSlide isActive={isActive} />}
-              {section.type === "footer" && <FooterSlide isActive={isActive} />}
-            </div>
-          );
-        })}
+                )}
+                {section.type === "project" &&
+                  (() => {
+                    const project = HOME_PROJECTS.find(
+                      (p) => p.id === section.id,
+                    )!;
+                    const pIndex = HOME_PROJECTS.indexOf(project);
+                    return (
+                      <PlasticProjectSlide
+                        project={project}
+                        index={pIndex}
+                        total={HOME_PROJECTS.length}
+                        HeroVisual={PROJECT_HERO_MAP[section.id]}
+                        isActive={isActive}
+                      />
+                    );
+                  })()}
+                {section.type === "contact" && (
+                  <ContactSlide isActive={isActive} />
+                )}
+                {section.type === "footer" && (
+                  <FooterSlide isActive={isActive} />
+                )}
+              </section>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -56,7 +56,9 @@ export function ProjectHero({
             <ScrollReveal className="col-span-12 md:col-span-2 flex md:flex-col justify-between gap-4">
               <div>
                 <p className="plastic-label">{label}</p>
-                {statusBadge && <p className="plastic-label mt-4">{statusBadge}</p>}
+                {statusBadge && (
+                  <div className="mt-4">{statusBadge}</div>
+                )}
               </div>
               <p className="plastic-label hidden md:block">Furma.tech</p>
             </ScrollReveal>

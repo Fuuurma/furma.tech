@@ -28,6 +28,7 @@ export default function PicksTrackerPage() {
         title="PicksTracker"
         description="Track your sports predictions across multiple sports, compete with friends, and build your track record with detailed analytics and social prediction features."
         status={{ label: 'Roadmap', variant: 'roadmap' }}
+        projectId="pickstracker"
         coverTint={getProjectCoverTint('pickstracker')}
       />
       <ProjectStatusPlaceholder status="roadmap" highlights={highlights} />

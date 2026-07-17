@@ -35,8 +35,8 @@ export function ProjectCTA({
       )}
     >
       <div className="max-w-[1280px] mx-auto grid grid-cols-12 gap-8 items-end">
-        <ScrollReveal className="col-span-12 md:col-span-8 md:col-start-3 lg:col-start-4">
-          <p className={cn("plastic-label mb-6", isDark && "text-background/40")}>
+        <ScrollReveal className="col-span-12 md:col-span-8 md:col-start-4 lg:col-start-5">
+          <p className={cn("plastic-label mb-6", isDark && "text-background/55")}>
             Get started
           </p>
           <SplitReveal
@@ -72,7 +72,7 @@ export function ProjectCTA({
                 href={secondaryHref}
                 className={cn(
                   "plastic-label motion-link-subtle hover:opacity-100 transition-opacity",
-                  isDark ? "text-background/50 hover:text-background" : "",
+                  isDark ? "text-background/55 hover:text-background" : "",
                 )}
               >
                 {secondaryLabel}

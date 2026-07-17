@@ -28,6 +28,7 @@ export default function OneToManyPage() {
         title="OneToMany"
         description="A goal-oriented social platform where users create groups with numeric targets (e.g., 'Drink 100 Beers', 'Complete 1000 Reps'). Members contribute toward goals through validated posts with community voting and approval mechanisms."
         status={{ label: 'Paused', variant: 'paused' }}
+        projectId="onetomany"
         coverTint={getProjectCoverTint('onetomany')}
       />
       <ProjectStatusPlaceholder status="paused" highlights={highlights} />

@@ -1,10 +1,11 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import type { CSSProperties, ComponentType } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import type { HomeProject } from "@/lib/home-projects";
-import { getProjectHero } from "@/lib/project-heroes";
+import { PROJECT_HERO_MAP } from "@/lib/project-heroes";
 import {
   expandChildVariants,
   indexVariants,
@@ -25,20 +26,38 @@ function statusTone(status: string): string {
   return "portfolio-list-page__status--paused";
 }
 
+function PreviewVisual({
+  name,
+  HeroVisual,
+}: {
+  name: string;
+  HeroVisual: ComponentType<{ className?: string }> | undefined;
+}) {
+  if (!HeroVisual) {
+    return (
+      <span className="portfolio-list-page__preview-fallback">{name}</span>
+    );
+  }
+  return <HeroVisual className="portfolio-list-page__preview-visual" />;
+}
+
 function StaticRowContent({
   project,
   index,
+  HeroVisual,
 }: {
   project: HomeProject;
   index: number;
+  HeroVisual: ComponentType<{ className?: string }> | undefined;
 }) {
-  const HeroVisual = getProjectHero(project.id);
   const indexLabel = String(index + 1).padStart(2, "0");
 
   return (
     <>
       <div className="portfolio-list-page__row-main">
-        <span className="portfolio-list-page__index">{indexLabel}</span>
+        <span className="portfolio-list-page__index" aria-hidden="true">
+          {indexLabel}
+        </span>
         <span className="portfolio-list-page__name">{project.name}</span>
         <span className="portfolio-list-page__tags portfolio-list-page__tags--collapsed">
           {project.category}
@@ -47,25 +66,28 @@ function StaticRowContent({
           </span>
           {project.status}
         </span>
-        <span className="portfolio-list-page__arrow" aria-hidden>
+        <span className="portfolio-list-page__arrow" aria-hidden="true">
           →
         </span>
       </div>
+
+      <div className="portfolio-list-page__mobile-meta">
+        <span>{project.category}</span>
+        <span className="portfolio-list-page__tag-sep" aria-hidden>
+          ·
+        </span>
+        <span>{project.status}</span>
+      </div>
       <p className="portfolio-list-page__mobile-desc">{project.description}</p>
-      <div className="portfolio-list-page__expand">
+
+      <div className="portfolio-list-page__expand" aria-hidden="true">
         <div className="portfolio-list-page__expand-inner">
           <div
             className="portfolio-list-page__preview"
             style={{ "--preview-tint": project.coverTint } as CSSProperties}
           >
             <div className="portfolio-list-page__preview-frame">
-              {HeroVisual ? (
-                <HeroVisual className="portfolio-list-page__preview-visual" />
-              ) : (
-                <span className="portfolio-list-page__preview-fallback">
-                  {project.name}
-                </span>
-              )}
+              <PreviewVisual name={project.name} HeroVisual={HeroVisual} />
             </div>
           </div>
           <div className="portfolio-list-page__detail">
@@ -85,7 +107,7 @@ function StaticRowContent({
             </p>
             <span className="portfolio-list-page__cta">
               View project
-              <span aria-hidden>→</span>
+              <span>→</span>
             </span>
           </div>
         </div>
@@ -97,11 +119,12 @@ function StaticRowContent({
 function AnimatedRowContent({
   project,
   index,
+  HeroVisual,
 }: {
   project: HomeProject;
   index: number;
+  HeroVisual: ComponentType<{ className?: string }> | undefined;
 }) {
-  const HeroVisual = getProjectHero(project.id);
   const indexLabel = String(index + 1).padStart(2, "0");
 
   return (
@@ -110,6 +133,7 @@ function AnimatedRowContent({
         <motion.span
           className="portfolio-list-page__index"
           variants={indexVariants}
+          aria-hidden="true"
         >
           {indexLabel}
         </motion.span>
@@ -121,14 +145,21 @@ function AnimatedRowContent({
           </span>
           {project.status}
         </span>
-        <span className="portfolio-list-page__arrow" aria-hidden>
+        <span className="portfolio-list-page__arrow" aria-hidden="true">
           →
         </span>
       </div>
 
+      <div className="portfolio-list-page__mobile-meta">
+        <span>{project.category}</span>
+        <span className="portfolio-list-page__tag-sep" aria-hidden>
+          ·
+        </span>
+        <span>{project.status}</span>
+      </div>
       <p className="portfolio-list-page__mobile-desc">{project.description}</p>
 
-      <div className="portfolio-list-page__expand">
+      <div className="portfolio-list-page__expand" aria-hidden="true">
         <div className="portfolio-list-page__expand-inner">
           <motion.div
             className="portfolio-list-page__preview"
@@ -139,13 +170,7 @@ function AnimatedRowContent({
               className="portfolio-list-page__preview-frame"
               variants={previewVisualVariants}
             >
-              {HeroVisual ? (
-                <HeroVisual className="portfolio-list-page__preview-visual" />
-              ) : (
-                <span className="portfolio-list-page__preview-fallback">
-                  {project.name}
-                </span>
-              )}
+              <PreviewVisual name={project.name} HeroVisual={HeroVisual} />
             </motion.div>
           </motion.div>
 
@@ -169,7 +194,7 @@ function AnimatedRowContent({
             </p>
             <span className="portfolio-list-page__cta">
               View project
-              <span aria-hidden>→</span>
+              <span>→</span>
             </span>
           </motion.div>
         </div>
@@ -184,23 +209,49 @@ export function PortfolioListItem({
   itemIndex,
 }: PortfolioListItemProps) {
   const reduceMotion = useReducedMotion();
+  const [expanded, setExpanded] = useState(false);
+  const HeroVisual = PROJECT_HERO_MAP[project.id];
+
+  const open = () => setExpanded(true);
+  const close = () => setExpanded(false);
 
   return (
     <li
-      className="portfolio-list-page__item"
+      className={cn(
+        "portfolio-list-page__item",
+        expanded && "portfolio-list-page__item--expanded",
+      )}
       style={{ "--item-index": itemIndex } as CSSProperties}
     >
-      <Link href={project.href} className="portfolio-list-page__row group">
+      <Link
+        href={project.href}
+        className={cn(
+          "portfolio-list-page__row group",
+          expanded && "portfolio-list-page__row--expanded",
+        )}
+        onMouseEnter={open}
+        onMouseLeave={close}
+        onFocus={open}
+        onBlur={close}
+      >
         {reduceMotion ? (
-          <StaticRowContent project={project} index={index} />
+          <StaticRowContent
+            project={project}
+            index={index}
+            HeroVisual={HeroVisual}
+          />
         ) : (
           <motion.div
             className="portfolio-list-page__row-body"
             initial="rest"
-            whileHover="hover"
+            animate={expanded ? "hover" : "rest"}
             variants={listRowVariants}
           >
-            <AnimatedRowContent project={project} index={index} />
+            <AnimatedRowContent
+              project={project}
+              index={index}
+              HeroVisual={HeroVisual}
+            />
           </motion.div>
         )}
       </Link>

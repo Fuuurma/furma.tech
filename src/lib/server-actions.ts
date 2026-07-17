@@ -12,6 +12,7 @@ interface ServerActionResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;
+  fieldErrors?: Record<string, string>;
 }
 
 async function withActionLogging<T>(name: string, fn: () => Promise<T>): Promise<T> {
@@ -32,21 +33,29 @@ export async function submitContactForm(formData: FormData): Promise<ServerActio
   
   return withActionLogging('submitContactForm', async () => {
     const data = {
-      name: formData.get('name') as string,
-      email: formData.get('email') as string,
-      company: formData.get('company') as string,
-      subject: formData.get('subject') as string,
-      message: formData.get('message') as string,
-      newsletter: formData.get('newsletter') === 'on',
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      company: (formData.get("company") as string) || "",
+      subject: (formData.get("subject") as string) || "general",
+      message: formData.get("message") as string,
+      newsletter: formData.get("newsletter") === "on",
     };
 
     const validation = validateForm(contactFormSchema, data);
     if (validation.errors) {
-      return { success: false, error: 'Validation failed' };
+      const fieldErrors = Object.fromEntries(
+        Object.entries(validation.errors).map(([key, messages]) => [
+          key,
+          messages[0] ?? "Invalid value",
+        ]),
+      );
+      const first =
+        Object.values(fieldErrors)[0] ?? "Please check the form and try again.";
+      return { success: false, error: first, fieldErrors };
     }
 
     const messageId = `msg_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-    revalidatePath('/contact');
+    revalidatePath('/');
 
     return { success: true, data: { messageId } };
   });

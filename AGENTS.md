@@ -6,16 +6,17 @@
 
 **Products:**
 - **Tic-Tac-Toe Disappear** — Vanishing-move strategy game (In Dev)
-- **QArt** — AI-generated QR codes that look like art (Roadmap)
-- **SailingMate** — Real-time sailing navigation with GPS routing (Paused)
-- **TourManager** — Tour operator platform with Viator sync (In Dev)
-- **RestaurantManager** — Restaurant management with TheFork integration (In Dev)
+- **QArt** — AI-generated QR codes that look like art (Soon)
+- **GuideTours** — Tour operator platform with Viator sync (In Dev)
+- **restauManager** — Restaurant management with TheFork integration (In Dev)
 - **FinanceHub** — Market data & portfolio monitoring (Paused)
 - **OneToMany** — Goal setting & habit tracking (Paused)
-- **OpenGovern** — Direct democracy tooling for municipalities (Paused)
+- **OpenGovern** — Direct democracy tooling for municipalities (Roadmap)
 - **LinkUp** — Short-video professional matching (Paused)
 - **PicksTracker** — Sports pick tracking with social predictions (Roadmap)
-- **Aitlas** — Sovereign AI ecosystem: Nova workspace, Nexus runtime, 34+ Actions (In Dev)
+- **Aitlas** — Sovereign AI ecosystem: Nova workspace, Nexus runtime, Agents marketplace (In Dev)
+
+Primary routes: `/`, `/portfolio`, `/portfolio/[project]`, `/privacy`. Contact: `/#contact`.
 
 Core ethos: 0% VC, profitable before flashy, "build software that works."
 
@@ -26,7 +27,7 @@ Core ethos: 0% VC, profitable before flashy, "build software that works."
 ## 1. Commands
 
 ```bash
-pnpm dev          # Start dev server (http://localhost:3000)
+  pnpm dev          # Start dev server (http://127.0.0.1:3080)
 pnpm dev --turbo  # Force Turbopack (default in 16.2)
 pnpm build        # Production build
 pnpm start        # Start production server
@@ -86,7 +87,7 @@ import Navigation from "@/components/Navigation";
 | Type | Convention | Example |
 |------|------------|---------|
 | Components | PascalCase | `Button.tsx`, `PricingSection.tsx` |
-| UI components | PascalCase | `src/components/ui/Button.tsx` |
+| UI components | kebab-case | `src/components/ui/button.tsx` |
 | Utilities | camelCase | `cn()`, `formatDate.ts` |
 | Types/Interfaces | PascalCase | `ButtonProps`, `ApiResponse` |
 | Constants | UPPER_SNAKE_CASE | `MAX_RETRIES` |

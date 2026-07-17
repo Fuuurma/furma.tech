@@ -31,7 +31,7 @@ export function ProjectSectionHeader({
         />
         {description && (
           <ScrollReveal delay={140}>
-            <p className="plastic-paragraph text-[clamp(16px,2vw,22px)] max-w-2xl opacity-80">
+            <p className="plastic-paragraph text-[clamp(16px,2vw,22px)] max-w-2xl text-foreground/70">
               {description}
             </p>
           </ScrollReveal>

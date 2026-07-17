@@ -7,32 +7,23 @@ import { z } from 'zod';
 export const contactFormSchema = z.object({
   name: z
     .string()
-    .min(2, 'Name must be at least 2 characters')
-    .max(100, 'Name must be less than 100 characters'),
-  email: z
-    .string()
-    .email('Please enter a valid email address'),
+    .min(2, "Name must be at least 2 characters")
+    .max(100, "Name must be less than 100 characters"),
+  email: z.string().email("Please enter a valid email address"),
   company: z
     .string()
-    .min(2, 'Company name must be at least 2 characters')
-    .max(100, 'Company name must be less than 100 characters')
+    .max(100, "Company name must be less than 100 characters")
     .optional()
-    .or(z.literal('')),
+    .or(z.literal("")),
   subject: z
-    .enum([
-      'product_demo',
-      'aitlas_access',
-      'partnership',
-      'general',
-    ]),
+    .enum(["product_demo", "aitlas_access", "partnership", "general"])
+    .optional()
+    .default("general"),
   message: z
     .string()
-    .min(10, 'Message must be at least 10 characters')
-    .max(2000, 'Message must be less than 2000 characters'),
-  newsletter: z
-    .boolean()
-    .optional()
-    .default(false),
+    .min(10, "Message must be at least 10 characters")
+    .max(2000, "Message must be less than 2000 characters"),
+  newsletter: z.boolean().optional().default(false),
 });
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;

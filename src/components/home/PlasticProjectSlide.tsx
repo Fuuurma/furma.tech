@@ -101,7 +101,10 @@ function ProjectCopy({
         : "text-left items-start";
 
   return (
-    <div className={cn("flex flex-col gap-8", alignClass)}>
+    <div className={cn("flex flex-col gap-6", alignClass)}>
+      <h2 className="plastic-headline text-[clamp(28px,4vw,44px)]">
+        {project.name}
+      </h2>
       <p className="plastic-paragraph max-w-[42rem]">{project.description}</p>
       <div
         className={cn(
@@ -110,19 +113,10 @@ function ProjectCopy({
           align === "right" && "justify-end",
         )}
       >
-        <Link href={project.href} className="plastic-cta motion-link">
+        <Link href={project.href} className="plastic-cta">
           View project
           <span aria-hidden>→</span>
         </Link>
-        <p className="plastic-label">
-          Studio:{" "}
-          <Link
-            href="/"
-            className="text-foreground underline underline-offset-4 decoration-foreground/20 hover:decoration-foreground"
-          >
-            Furma.tech
-          </Link>
-        </p>
       </div>
     </div>
   );
@@ -151,7 +145,7 @@ function EditorialIntro({
       : "md:col-span-8 md:col-start-1 lg:col-start-2";
 
   return (
-    <div className="plastic-intro shrink-0 border-t border-foreground/10 max-h-[38vh] overflow-y-auto">
+    <div className="plastic-intro shrink-0 border-t border-foreground/10 max-h-[42vh] overflow-y-auto">
       <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-5 md:py-8">
         <div className="grid grid-cols-12 gap-x-6 gap-y-6">
           <SlideReveal isActive={isActive} className={cn("col-span-12 flex md:flex-col justify-between gap-4", metaCol)} delay={0.05}>
@@ -216,12 +210,17 @@ function LayoutVisualHeavy(props: LayoutProps) {
       <SlideReveal isActive={isActive} className="plastic-intro shrink-0 border-t border-foreground/10">
         <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-4 md:py-6">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-            <ProjectMeta project={project} indexLabel={indexLabel} total={total} className="md:flex-row md:items-center md:gap-10" />
-            <Link href={project.href} className="plastic-cta shrink-0 motion-link">
+            <div>
+              <h2 className="plastic-headline text-[clamp(26px,3.5vw,40px)] mb-3">
+                {project.name}
+              </h2>
+              <ProjectMeta project={project} indexLabel={indexLabel} total={total} className="md:flex-row md:items-center md:gap-10" />
+            </div>
+            <Link href={project.href} className="plastic-cta shrink-0">
               View project <span aria-hidden>→</span>
             </Link>
           </div>
-          <p className="plastic-paragraph mt-4 max-w-3xl line-clamp-2 md:line-clamp-none">
+          <p className="plastic-paragraph mt-4 max-w-3xl">
             {project.description}
           </p>
         </div>
@@ -274,9 +273,12 @@ function LayoutOverlay(props: LayoutProps) {
             />
           </SlideReveal>
           <SlideReveal isActive={isActive} className="col-span-12 md:col-span-9" delay={0.14}>
+            <h2 className="plastic-headline text-white text-[clamp(28px,4vw,44px)] mb-4">
+              {project.name}
+            </h2>
             <p className="plastic-paragraph text-white max-w-2xl">{project.description}</p>
             <div className="mt-8 flex flex-wrap gap-6">
-              <Link href={project.href} className="plastic-cta plastic-cta--inverse motion-link">
+              <Link href={project.href} className="plastic-cta plastic-cta--inverse">
                 View project <span aria-hidden>→</span>
               </Link>
             </div>

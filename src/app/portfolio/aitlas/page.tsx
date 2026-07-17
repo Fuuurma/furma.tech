@@ -1,65 +1,106 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { Hexagon, Store, Zap, Brain, ArrowRight, Shield, Key, Cloud, Cpu } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
-import { ProjectLayout, ProjectHero, ProjectSection, ProjectCTA } from '@/components/ui/ProjectLayout';
-import { getProjectCoverTint } from '@/lib/home-projects';
-import { getOgImageUrl } from '@/lib/metadata';
+import { Metadata } from "next";
+import Link from "next/link";
+import {
+  Hexagon,
+  Store,
+  Brain,
+  ArrowRight,
+  Shield,
+  Key,
+  Cloud,
+  Cpu,
+} from "lucide-react";
+import {
+  ProjectLayout,
+  ProjectHero,
+  ProjectSection,
+  ProjectSectionHeader,
+  ProjectFeatures,
+  ProjectStats,
+  ProjectCTA,
+} from "@/components/ui/ProjectLayout";
+import { StaggerReveal } from "@/components/motion/StaggerReveal";
+import { getProjectCoverTint } from "@/lib/home-projects";
+import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
-  title: 'Aitlas — Sovereign AI Ecosystem | Furma.tech',
-  description: 'A modular agentic operating system. Nova workspace, Nexus runtime, and an Agents marketplace for autonomous workflows. BYOK architecture.',
+  title: "Aitlas — Sovereign AI Ecosystem | Furma.tech",
+  description:
+    "A modular agentic operating system. Nova workspace, Nexus runtime, and an Agents marketplace for autonomous workflows. BYOK architecture.",
   openGraph: {
-    title: 'Aitlas — Sovereign AI Ecosystem',
-    description: 'A modular agentic operating system for autonomous workflows.',
-    images: [getOgImageUrl({ title: 'Aitlas', subtitle: 'Sovereign AI Ecosystem', variant: 'aitlas' })],
+    title: "Aitlas — Sovereign AI Ecosystem",
+    description: "A modular agentic operating system for autonomous workflows.",
+    images: [
+      getOgImageUrl({
+        title: "Aitlas",
+        subtitle: "Sovereign AI Ecosystem",
+        variant: "aitlas",
+      }),
+    ],
   },
 };
 
 const pillars = [
   {
     icon: Hexagon,
-    name: 'Nova',
-    tagline: 'AI Workspace',
-    description: 'Your AI command center. Bring your own API keys and access multiple LLM providers without vendor lock-in.',
-    features: ['BYOK Architecture', 'Multi-Provider', 'MCP Tools', 'Persistent Threads'],
-    status: 'beta',
-    href: '/portfolio/aitlas/nova',
+    name: "Nova",
+    tagline: "AI Workspace",
+    description:
+      "Your AI command center. Bring your own API keys and access multiple LLM providers without vendor lock-in.",
+    features: ["BYOK Architecture", "Multi-Provider", "MCP Tools", "Persistent Threads"],
+    status: "Beta",
+    href: "/portfolio/aitlas/nova",
   },
   {
     icon: Brain,
-    name: 'Nexus',
-    tagline: 'Agent Runtime',
-    description: 'Durable execution for autonomous agents. Run long-running tasks without server timeouts.',
-    features: ['No Timeouts', 'State Persistence', 'Task Queue', 'MCP Compatible'],
-    status: 'beta',
-    href: '/portfolio/aitlas/nexus',
+    name: "Nexus",
+    tagline: "Agent Runtime",
+    description:
+      "Durable execution for autonomous agents. Run long-running tasks without server timeouts.",
+    features: ["No Timeouts", "State Persistence", "Task Queue", "MCP Compatible"],
+    status: "Beta",
+    href: "/portfolio/aitlas/nexus",
   },
   {
     icon: Store,
-    name: 'Agents',
-    tagline: 'Marketplace',
-    description: 'Hire pre-built AI agents. Crypto Quant, Code Guardian, Support Bot — each with curated skills.',
-    features: ['70/30 Revenue Share', 'Trial Credits', 'Version Lock', 'Creator Economy'],
-    status: 'beta',
-    href: '/portfolio/aitlas/agents',
+    name: "Agents",
+    tagline: "Marketplace",
+    description:
+      "Hire pre-built AI agents. Crypto Quant, Code Guardian, Support Bot — each with curated skills.",
+    features: ["70/30 Revenue Share", "Trial Credits", "Version Lock", "Creator Economy"],
+    status: "Beta",
+    href: "/portfolio/aitlas/agents",
   },
 ];
 
 const principles = [
-  { icon: Key, title: 'Bring Your Own Keys', desc: 'You control your API keys. We never touch your tokens.' },
-  { icon: Shield, title: 'Sovereign by Design', desc: 'Every component designed for self-hosting.' },
-  { icon: Cloud, title: 'MCP Protocol', desc: 'Connect any tool, any agent, any provider.' },
-  { icon: Cpu, title: 'Durable Execution', desc: 'Long-running tasks survive restarts.' },
+  {
+    icon: Key,
+    title: "Bring Your Own Keys",
+    desc: "You control your API keys. We never touch your tokens.",
+  },
+  {
+    icon: Shield,
+    title: "Sovereign by Design",
+    desc: "Every component designed for self-hosting.",
+  },
+  {
+    icon: Cloud,
+    title: "MCP Protocol",
+    desc: "Connect any tool, any agent, any provider.",
+  },
+  {
+    icon: Cpu,
+    title: "Durable Execution",
+    desc: "Long-running tasks survive restarts.",
+  },
 ];
 
 const stats = [
-  { val: '3', label: 'Core Products' },
-  { val: 'BYOK', label: 'Ownership' },
-  { val: '0%', label: 'Vendor Lock' },
-  { val: 'MCP', label: 'Native' },
+  { value: "3", label: "Core Products" },
+  { value: "BYOK", label: "Ownership" },
+  { value: "0%", label: "Vendor Lock" },
+  { value: "MCP", label: "Native" },
 ];
 
 export default function AitlasPage() {
@@ -69,88 +110,91 @@ export default function AitlasPage() {
         label="AI Infrastructure"
         title="Aitlas Ecosystem"
         description="A modular agentic operating system where you own your keys, connect tools via MCP, and run autonomous agents without trust compromises."
-        coverTint={getProjectCoverTint('aitlas')}
+        status={{ label: "In Development", variant: "beta" }}
+        projectId="aitlas"
+        coverTint={getProjectCoverTint("aitlas")}
       >
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center mt-8">
-          <Button href="/portfolio/aitlas/nova" variant="default" size="lg" className="min-w-[200px]">
+        <div className="flex flex-wrap items-center gap-6">
+          <Link
+            href="/portfolio/aitlas/nova"
+            className="plastic-cta motion-link"
+          >
             Explore Nova
-            <ArrowRight className="ml-2 w-4 h-4" />
-          </Button>
-          <Button href="#pillars" variant="outline" size="lg" className="min-w-[200px]">
-            View Architecture
-          </Button>
+            <ArrowRight className="w-3 h-3" aria-hidden />
+          </Link>
+          <Link
+            href="#pillars"
+            className="plastic-label motion-link-subtle hover:text-foreground"
+          >
+            View architecture
+          </Link>
         </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 mt-8 border-t border-border">
-          {stats.map(stat => (
-            <div key={stat.label}>
-              <div className="font-serif text-[32px] sm:text-[40px] font-bold text-foreground leading-none mb-2">{stat.val}</div>
-              <div className="text-[10px] font-mono text-grey-400 uppercase tracking-widest">{stat.label}</div>
-            </div>
-          ))}
-        </div>
+        <ProjectStats stats={stats} />
       </ProjectHero>
 
-      <ProjectSection className="bg-foreground text-background">
-        <div className="text-center mb-16">
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-background/40 mb-4 block">Architecture</span>
-          <h2 className="font-serif text-[clamp(28px,4vw,44px)] font-semibold leading-[1.05] tracking-tight">Built for sovereignty.</h2>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-background/10 border border-background/10">
-          {principles.map((principle) => (
-            <div key={principle.title} className="p-10 bg-foreground group hover:bg-background hover:text-foreground transition-colors duration-500 cursor-pointer">
-              <principle.icon className="w-8 h-8 mb-8 opacity-40 group-hover:opacity-100 transition-opacity" strokeWidth={1.5} />
-              <h3 className="text-[18px] font-bold mb-4">{principle.title}</h3>
-              <p className="text-[14px] opacity-60 leading-relaxed">{principle.desc}</p>
-            </div>
-          ))}
-        </div>
+      <ProjectSection>
+        <ProjectFeatures
+          label="Architecture"
+          title="Built for sovereignty."
+          features={principles}
+          columns={4}
+        />
       </ProjectSection>
 
       <ProjectSection id="pillars">
-        <div className="mb-16">
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-4 block">Products</span>
-          <h2 className="font-serif text-[clamp(28px,4vw,44px)] font-semibold leading-[1.05] tracking-tight text-foreground">Three pillars.</h2>
-          <p className="text-[15px] text-grey-500 mt-4 max-w-2xl leading-relaxed">Nova for conversation, Nexus for execution, Agents for specialization. Each works standalone. Together they&apos;re an operating system.</p>
-        </div>
+        <ProjectSectionHeader
+          label="Products"
+          title="Three pillars."
+          description="Nova for conversation, Nexus for execution, Agents for specialization. Each works standalone. Together they're an operating system."
+        />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <StaggerReveal className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-foreground/10 border border-foreground/10">
           {pillars.map((product) => (
-            <Link key={product.name} href={product.href} className="group block cursor-pointer">
-              <Card className="h-full border-foreground/5 bg-foreground/[0.01] p-6 sm:p-8 hover:border-foreground/30 transition-colors">
-                <div className="flex items-start justify-between mb-8">
-                  <div className="flex items-center gap-6">
-                    <div className="w-14 h-14 border border-foreground flex items-center justify-center group-hover:bg-foreground group-hover:text-background transition-colors duration-500">
-                      <product.icon className="w-7 h-7" strokeWidth={1.5} />
-                    </div>
-                    <div>
-                      <h3 className="text-[20px] font-bold text-foreground tracking-tight">{product.name}</h3>
-                      <p className="text-[11px] font-mono text-grey-400 uppercase tracking-widest mt-1">{product.tagline}</p>
-                    </div>
+            <Link
+              key={product.name}
+              href={product.href}
+              className="motion-card group block bg-background p-6 sm:p-8 hover:bg-foreground/[0.02] transition-colors"
+            >
+              <div className="flex items-start justify-between gap-4 mb-8">
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="w-12 h-12 shrink-0 border border-foreground flex items-center justify-center group-hover:bg-foreground group-hover:text-background transition-colors duration-500">
+                    <product.icon className="w-5 h-5" strokeWidth={1.5} aria-hidden />
                   </div>
-                  <Badge variant="secondary" className="text-[9px] font-mono font-bold uppercase tracking-wider">
-                    {product.status}
-                  </Badge>
+                  <div className="min-w-0">
+                    <h3 className="font-sans text-[18px] font-semibold tracking-tight">
+                      {product.name}
+                    </h3>
+                    <p className="plastic-label mt-1">{product.tagline}</p>
+                  </div>
                 </div>
+                <span className="plastic-label shrink-0 text-foreground">
+                  {product.status}
+                </span>
+              </div>
 
-                <p className="text-[14px] text-grey-600 dark:text-grey-400 mb-8 leading-relaxed">{product.description}</p>
+              <p className="font-mono text-[12px] text-foreground/60 mb-8 leading-relaxed">
+                {product.description}
+              </p>
 
-                <div className="grid grid-cols-2 gap-y-3 mb-8">
-                  {product.features.map((feature, i) => (
-                    <div key={i} className="flex items-center gap-3 text-[12px] font-bold text-foreground/40 group-hover:text-foreground transition-colors">
-                      <div className="w-1 h-1 bg-foreground/20" />
-                      {feature}
-                    </div>
-                  ))}
-                </div>
+              <ul className="grid grid-cols-2 gap-y-3 mb-8 list-none p-0 m-0">
+                {product.features.map((feature) => (
+                  <li
+                    key={feature}
+                    className="flex items-center gap-2 font-mono text-[11px] text-foreground/45 group-hover:text-foreground/70 transition-colors"
+                  >
+                    <span className="w-1 h-1 bg-foreground/25" aria-hidden />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
 
-                <div className="flex items-center gap-2 text-[13px] font-bold text-foreground">
-                  View details <ArrowRight className="transition-transform group-hover:translate-x-1" />
-                </div>
-              </Card>
+              <span className="inline-flex items-center gap-2 plastic-cta motion-link">
+                View details
+                <ArrowRight className="w-3 h-3" aria-hidden />
+              </span>
             </Link>
           ))}
-        </div>
+        </StaggerReveal>
       </ProjectSection>
 
       <ProjectCTA

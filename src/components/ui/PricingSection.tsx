@@ -74,7 +74,7 @@ export function PricingSection({
               </ul>
 
               <Button 
-                href={plan.href || "/contact"} 
+                href={plan.href || "/#contact"} 
                 variant={plan.popular ? "default" : "outline"}
                 className="w-full h-14"
               >

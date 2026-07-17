@@ -1,20 +1,28 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Browser log forwarding - sends client errors to terminal
   logging: {
-    browserToTerminal: 'error',
+    browserToTerminal: "error",
   },
 
-  // Turbopack is enabled by default in Next.js 16.2
-  // Image optimization
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '**.vercel.app',
+        protocol: "https",
+        hostname: "**.vercel.app",
       },
     ],
+  },
+
+  async redirects() {
+    return [
+      { source: "/about", destination: "/", permanent: true },
+      { source: "/docs", destination: "/", permanent: true },
+      { source: "/contact", destination: "/", permanent: true },
+      { source: "/projects/:path*", destination: "/portfolio/:path*", permanent: true },
+      { source: "/products", destination: "/portfolio", permanent: true },
+      { source: "/products/:slug", destination: "/portfolio/:slug", permanent: true },
+    ];
   },
 };
 

@@ -21,7 +21,7 @@ pnpm install
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
+Open [http://127.0.0.1:3080](http://127.0.0.1:3080)
 
 ---
 
@@ -72,12 +72,13 @@ See `AGENTS.md` for full guidelines.
 
 | Route | Description |
 |-------|-------------|
-| `/` | Homepage |
-| `/about` | Studio info |
-| `/projects/aitlas` | AI ecosystem |
-| `/projects/saas` | Industry SaaS |
-| `/contact` | Contact form |
-| `/docs` | Developer portal |
+| `/` | Fullscreen studio home |
+| `/portfolio` | Editorial project list |
+| `/portfolio/[project]` | Case study pages |
+| `/privacy` | Privacy policy |
+| `/brand` | Brand assets (noindex) |
+
+Contact lives on the home experience at `/#contact`.
 
 ---
 

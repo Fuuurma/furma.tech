@@ -71,14 +71,14 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           '/api/',
           '/_next/',
-          '/contact', // Don't let AI scrape contact forms
+          '/styleguide',
+          '/brand',
         ],
       },
     ],
     sitemap: [
       `${baseUrl}/sitemap.xml`,
     ],
-    // Host information for search engines
     host: baseUrl,
   };
 }

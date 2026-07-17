@@ -28,6 +28,7 @@ export default function LinkUpPage() {
         title="LinkUp"
         description="A social communication platform featuring random stranger connections (Omegle-style), contact-based connections, and multi-modal communication including chat, video, and voice with privacy controls."
         status={{ label: 'Paused', variant: 'paused' }}
+        projectId="linkup"
         coverTint={getProjectCoverTint('linkup')}
       />
       <ProjectStatusPlaceholder status="paused" highlights={highlights} />

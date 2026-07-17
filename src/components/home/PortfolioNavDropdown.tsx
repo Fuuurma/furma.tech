@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,6 +14,22 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { HOME_PROJECTS, type HomeProject } from "@/lib/home-projects";
 import { EASE_OUT_EXPO, motionDuration } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+
+function isInsidePortfolioMenu(node: Node | null) {
+  if (!node || !(node instanceof Element)) return false;
+  return Boolean(
+    node.closest(".plastic-reel__portfolio-wrap") ||
+      node.closest("#portfolio-nav-panel"),
+  );
+}
+
+function useIsClient() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+}
 
 function ProjectMenuCell({
   project,
@@ -35,10 +57,13 @@ function ProjectMenuCell({
         style={{ backgroundColor: project.coverTint }}
         aria-hidden
       />
-      <span className="studio-portfolio-panel__index">
+      <span className="studio-portfolio-panel__index" aria-hidden>
         {String(index + 1).padStart(2, "0")}
       </span>
-      <span className="studio-portfolio-panel__name">{project.name}</span>
+      <span className="studio-portfolio-panel__copy">
+        <span className="studio-portfolio-panel__name">{project.name}</span>
+        <span className="studio-portfolio-panel__meta">{project.status}</span>
+      </span>
       <span className="studio-portfolio-panel__arrow" aria-hidden>
         →
       </span>
@@ -48,14 +73,13 @@ function ProjectMenuCell({
 
 export function PortfolioNavDropdown() {
   const pathname = usePathname();
+  const isClient = useIsClient();
   const [open, setOpen] = useState(false);
   const [panelTop, setPanelTop] = useState(0);
-  const [mounted, setMounted] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLAnchorElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const reduceMotion = useReducedMotion();
-
-  useEffect(() => setMounted(true), []);
 
   const syncPanelPosition = useCallback(() => {
     const chrome = wrapRef.current?.closest(".studio-chrome");
@@ -71,6 +95,11 @@ export function PortfolioNavDropdown() {
     }
   }, []);
 
+  const closeMenu = useCallback(() => {
+    clearCloseTimer();
+    setOpen(false);
+  }, [clearCloseTimer]);
+
   const scheduleClose = useCallback(() => {
     clearCloseTimer();
     closeTimer.current = setTimeout(() => setOpen(false), 200);
@@ -84,7 +113,6 @@ export function PortfolioNavDropdown() {
 
   useEffect(() => {
     if (!open) return;
-    syncPanelPosition();
     const onScrollOrResize = () => syncPanelPosition();
     window.addEventListener("resize", onScrollOrResize);
     window.addEventListener("scroll", onScrollOrResize, true);
@@ -97,13 +125,22 @@ export function PortfolioNavDropdown() {
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key !== "Escape") return;
+      closeMenu();
+      triggerRef.current?.focus();
+    };
+    const onPointerDown = (e: PointerEvent) => {
+      if (!isInsidePortfolioMenu(e.target as Node)) closeMenu();
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
+  }, [open, closeMenu]);
 
-  const panel = mounted && (
+  const panel = (
     <AnimatePresence>
       {open && (
         <motion.div
@@ -125,9 +162,9 @@ export function PortfolioNavDropdown() {
               href="/portfolio"
               role="menuitem"
               className="studio-portfolio-panel__list-link motion-link"
-              onClick={() => setOpen(false)}
+              onClick={closeMenu}
             >
-              <span>View full list</span>
+              <span>View full index</span>
               <span aria-hidden>→</span>
             </Link>
           </header>
@@ -139,8 +176,11 @@ export function PortfolioNavDropdown() {
                   key={project.id}
                   project={project}
                   index={i}
-                  isActive={pathname === project.href}
-                  onNavigate={() => setOpen(false)}
+                  isActive={
+                    pathname === project.href ||
+                    pathname.startsWith(`${project.href}/`)
+                  }
+                  onNavigate={closeMenu}
                 />
               ))}
             </div>
@@ -150,8 +190,11 @@ export function PortfolioNavDropdown() {
                   key={project.id}
                   project={project}
                   index={i + 5}
-                  isActive={pathname === project.href}
-                  onNavigate={() => setOpen(false)}
+                  isActive={
+                    pathname === project.href ||
+                    pathname.startsWith(`${project.href}/`)
+                  }
+                  onNavigate={closeMenu}
                 />
               ))}
             </div>
@@ -169,12 +212,12 @@ export function PortfolioNavDropdown() {
       onMouseLeave={scheduleClose}
       onFocus={handleOpen}
       onBlur={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-          scheduleClose();
-        }
+        const next = e.relatedTarget as Node | null;
+        if (!isInsidePortfolioMenu(next)) scheduleClose();
       }}
     >
       <Link
+        ref={triggerRef}
         href="/portfolio"
         className={cn(
           "plastic-reel__portfolio",
@@ -182,25 +225,26 @@ export function PortfolioNavDropdown() {
         )}
         aria-expanded={open}
         aria-controls="portfolio-nav-panel"
-        aria-haspopup="true"
+        aria-haspopup="menu"
         onClick={(e) => {
+          // Touch: first tap opens; second tap follows the link to the index.
           if (window.matchMedia("(hover: none)").matches) {
-            e.preventDefault();
-            if (open) {
-              setOpen(false);
-            } else {
+            if (!open) {
+              e.preventDefault();
               handleOpen();
+            } else {
+              closeMenu();
             }
           }
         }}
       >
         <span>Portfolio</span>
         <span className="plastic-reel__portfolio-chevron" aria-hidden>
-          ↓
+          {open ? "↑" : "↓"}
         </span>
       </Link>
 
-      {mounted && createPortal(panel, document.body)}
+      {isClient && createPortal(panel, document.body)}
     </div>
   );
 }

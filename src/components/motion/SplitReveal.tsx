@@ -14,6 +14,7 @@ interface SplitRevealProps {
   by?: "word" | "line";
   /** When set, overrides scroll-in-view (e.g. fullscreen section active) */
   trigger?: boolean;
+  id?: string;
 }
 
 export function SplitReveal({
@@ -23,6 +24,7 @@ export function SplitReveal({
   delay = 0,
   by = "word",
   trigger,
+  id,
 }: SplitRevealProps) {
   const [ref, isInView] = useInView(0.15);
   const reduceMotion = useReducedMotion();
@@ -34,7 +36,11 @@ export function SplitReveal({
 
   if (reduceMotion) {
     return (
-      <Tag ref={ref as RefObject<HTMLHeadingElement>} className={className}>
+      <Tag
+        id={id}
+        ref={ref as RefObject<HTMLHeadingElement>}
+        className={className}
+      >
         {text}
       </Tag>
     );
@@ -42,6 +48,7 @@ export function SplitReveal({
 
   return (
     <Tag
+      id={id}
       ref={ref as RefObject<HTMLHeadingElement>}
       className={cn("split-reveal", className)}
       aria-label={text}
@@ -50,11 +57,11 @@ export function SplitReveal({
         <span key={`${unit}-${i}`} className="split-reveal__unit">
           <motion.span
             className="split-reveal__inner"
-            initial={{ y: "108%", rotate: 2 }}
+            initial={{ y: "115%", rotate: 1.5 }}
             animate={
               isVisible
                 ? { y: "0%", rotate: 0 }
-                : { y: "108%", rotate: 2 }
+                : { y: "115%", rotate: 1.5 }
             }
             transition={{
               duration: motionDuration.reveal,

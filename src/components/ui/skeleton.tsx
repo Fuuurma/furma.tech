@@ -38,22 +38,35 @@ function CardSkeleton({ showImage = false, className = "" }: { showImage?: boole
 
 function PageSkeleton() {
   return (
-    <div className="min-h-screen bg-background p-6 md:p-12 space-y-12">
-      <div className="max-w-4xl space-y-6">
-        <Skeleton className="h-4 w-32" />
-        <Skeleton className="h-16 w-3/4" />
-        <Skeleton className="h-16 w-1/2" />
-        <TextSkeleton lines={2} className="max-w-2xl" />
-        <div className="flex gap-4">
-          <Skeleton className="h-12 w-40" />
-          <Skeleton className="h-12 w-36" />
+    <div
+      className="min-h-[70vh] bg-background text-foreground"
+      aria-busy="true"
+      aria-live="polite"
+    >
+      <span className="sr-only">Loading page</span>
+      <div className="w-full max-w-[1280px] mx-auto px-6 md:px-12 py-16 md:py-24">
+        <div className="grid grid-cols-12 gap-8">
+          <div className="col-span-12 md:col-span-2 space-y-4">
+            <Skeleton className="h-3 w-16 bg-foreground/10" />
+            <Skeleton className="h-3 w-12 bg-foreground/10" />
+          </div>
+          <div className="col-span-12 md:col-span-8 md:col-start-4 lg:col-start-5 space-y-6">
+            <Skeleton className="h-10 w-4/5 max-w-xl bg-foreground/10" />
+            <Skeleton className="h-10 w-2/3 max-w-md bg-foreground/10" />
+            <div className="space-y-3 pt-2 max-w-lg">
+              <Skeleton className="h-4 w-full bg-foreground/8" />
+              <Skeleton className="h-4 w-5/6 bg-foreground/8" />
+              <Skeleton className="h-4 w-3/4 bg-foreground/8" />
+            </div>
+            <div className="flex gap-4 pt-4">
+              <Skeleton className="h-11 w-36 bg-foreground/10" />
+              <Skeleton className="h-11 w-28 bg-foreground/8" />
+            </div>
+          </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {Array.from({ length: 3 }).map((_, i) => <CardSkeleton key={i} />)}
-      </div>
     </div>
-  )
+  );
 }
 
 export { Skeleton, TextSkeleton, CardSkeleton, PageSkeleton }

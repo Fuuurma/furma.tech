@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { ScrollReveal } from "./ScrollReveal";
 import Breadcrumbs from "./breadcrumb";
 import { SplitReveal } from "@/components/motion/SplitReveal";
+import { cn } from "@/lib/utils";
 
 interface PageHeaderProps {
   label?: string;
@@ -24,12 +25,7 @@ function PageTitle({
 }) {
   if (typeof title === "string") {
     return (
-      <SplitReveal
-        as="h1"
-        text={title}
-        className={className}
-        delay={80}
-      />
+      <SplitReveal as="h1" text={title} className={className} delay={80} />
     );
   }
   return <h1 className={className}>{title}</h1>;
@@ -39,62 +35,30 @@ export function PageHeader({
   label,
   title,
   description,
-  breadcrumb = true,
+  breadcrumb = false,
   children,
   variant = "default",
   className = "",
 }: PageHeaderProps) {
-  if (variant === "minimal") {
-    return (
-      <section className={`px-4 sm:px-6 md:px-12 py-16 sm:py-24 ${className}`}>
-        <div className="max-w-4xl">
-          {breadcrumb && <Breadcrumbs className="mb-8" />}
-          <ScrollReveal>
-            {label && (
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-px bg-grey-400" />
-                <span className="font-mono text-[11px] font-medium tracking-[0.12em] uppercase text-grey-500">
-                  {label}
-                </span>
-              </div>
-            )}
-            <PageTitle
-              title={title}
-              className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.05] tracking-tight text-foreground"
-            />
-            {description && (
-              <ScrollReveal delay={160}>
-                <p className="text-[16px] sm:text-[18px] leading-[1.6] text-grey-600 dark:text-grey-400 max-w-[600px] mt-6">
-                  {description}
-                </p>
-              </ScrollReveal>
-            )}
-          </ScrollReveal>
-        </div>
-      </section>
-    );
-  }
-
   if (variant === "centered") {
     return (
-      <section className={`px-4 sm:px-6 md:px-12 py-20 sm:py-28 ${className}`}>
-        <div className="max-w-3xl mx-auto text-center">
+      <section
+        className={cn(
+          "border-b border-foreground/10 px-6 md:px-12 py-16 md:py-24",
+          className,
+        )}
+      >
+        <div className="max-w-[1280px] mx-auto text-center">
           {breadcrumb && <Breadcrumbs className="mb-8 inline-block" />}
           <ScrollReveal>
-            {label && (
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-foreground/10 mb-8">
-                <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-grey-500">
-                  {label}
-                </span>
-              </div>
-            )}
+            {label && <p className="plastic-label mb-6">{label}</p>}
             <PageTitle
               title={title}
-              className="font-serif text-[clamp(40px,6vw,72px)] font-semibold leading-[0.95] tracking-tight text-foreground mb-6"
+              className="plastic-headline text-[clamp(36px,5vw,56px)] mb-6 block"
             />
             {description && (
               <ScrollReveal delay={160}>
-                <p className="text-[18px] sm:text-[20px] leading-[1.6] text-grey-600 dark:text-grey-400">
+                <p className="plastic-paragraph text-foreground/65 max-w-2xl mx-auto">
                   {description}
                 </p>
               </ScrollReveal>
@@ -107,31 +71,33 @@ export function PageHeader({
   }
 
   return (
-    <section className={`px-4 sm:px-6 md:px-12 py-20 sm:py-28 ${className}`}>
-      <div className="max-w-4xl">
+    <section
+      className={cn(
+        "border-b border-foreground/10 px-6 md:px-12 py-14 md:py-20",
+        className,
+      )}
+    >
+      <div className="max-w-[1280px] mx-auto">
         {breadcrumb && <Breadcrumbs className="mb-10" />}
-        <ScrollReveal>
-          {label && (
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-10 h-px bg-grey-400" />
-              <span className="font-mono text-[11px] font-medium tracking-[0.12em] uppercase text-grey-500">
-                {label}
-              </span>
-            </div>
-          )}
-          <PageTitle
-            title={title}
-            className="font-serif text-[clamp(42px,5vw,72px)] font-semibold leading-[1.02] tracking-tight text-foreground mb-6"
-          />
-          {description && (
-            <ScrollReveal delay={160}>
-              <p className="text-[17px] sm:text-[18px] leading-[1.7] text-grey-600 dark:text-grey-400 max-w-[650px]">
-                {description}
-              </p>
-            </ScrollReveal>
-          )}
-          {children && <div className="mt-10">{children}</div>}
-        </ScrollReveal>
+        <div className="grid grid-cols-12 gap-6">
+          <ScrollReveal className="col-span-12 md:col-span-2">
+            {label && <p className="plastic-label">{label}</p>}
+          </ScrollReveal>
+          <div className="col-span-12 md:col-span-8 md:col-start-4 lg:col-start-5">
+            <PageTitle
+              title={title}
+              className="plastic-headline text-[clamp(32px,5vw,52px)] mb-6 block"
+            />
+            {description && (
+              <ScrollReveal delay={160}>
+                <p className="plastic-paragraph text-foreground/65 max-w-xl">
+                  {description}
+                </p>
+              </ScrollReveal>
+            )}
+            {children && <div className="mt-10">{children}</div>}
+          </div>
+        </div>
       </div>
     </section>
   );

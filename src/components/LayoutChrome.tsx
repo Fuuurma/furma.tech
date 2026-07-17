@@ -2,12 +2,11 @@
 
 import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
 import { ScrollProgressBar } from "@/components/motion/ScrollProgressBar";
 import { SiteSmoothScroll } from "@/components/motion/SiteSmoothScroll";
 import { StudioChrome } from "@/components/studio/StudioChrome";
-import { getPortfolioPageTitle } from "@/lib/portfolio-nav";
+import { StudioSiteFooter } from "@/components/studio/StudioSiteFooter";
+import { getStudioPageTitle } from "@/lib/portfolio-nav";
 
 interface LayoutChromeProps {
   children: ReactNode;
@@ -17,7 +16,6 @@ export function LayoutChrome({ children }: LayoutChromeProps) {
   const pathname = usePathname();
   const isImmersiveHome = pathname === "/";
   const isPortfolio = pathname.startsWith("/portfolio");
-  const isPortfolioList = pathname === "/portfolio";
   const useSiteMotion = !isImmersiveHome;
 
   const content = useSiteMotion ? (
@@ -29,23 +27,13 @@ export function LayoutChrome({ children }: LayoutChromeProps) {
   return (
     <>
       {useSiteMotion && <ScrollProgressBar />}
-      {!isImmersiveHome && !isPortfolio && <Navigation />}
-      {isPortfolio && (
-        <StudioChrome
-          pageTitle={
-            isPortfolioList ? undefined : getPortfolioPageTitle(pathname)
-          }
-        />
+      {!isImmersiveHome && (
+        <StudioChrome pageTitle={getStudioPageTitle(pathname)} />
       )}
-      <main
-        id="main-content"
-        className={
-          isImmersiveHome || isPortfolio ? "flex-1" : "flex-1 pt-16"
-        }
-      >
+      <main id="main-content" className="flex-1 outline-none" tabIndex={-1}>
         {content}
       </main>
-      {!isImmersiveHome && !isPortfolio && <Footer />}
+      {!isImmersiveHome && !isPortfolio && <StudioSiteFooter />}
     </>
   );
 }

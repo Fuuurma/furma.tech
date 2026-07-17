@@ -1,26 +1,24 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { Moon, Sun } from 'lucide-react';
-import { useTheme } from './ThemeProvider';
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "./ThemeProvider";
+import { cn } from "@/lib/utils";
 
-export default function ThemeToggle() {
+export default function ThemeToggle({ className = "" }: { className?: string }) {
   const { theme, setTheme } = useTheme();
-
-  const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
-  };
+  const next = theme === "light" ? "dark" : "light";
 
   return (
     <button
-      onClick={toggleTheme}
-      className="p-2 rounded-lg border border-border hover:bg-secondary dark:hover:bg-grey-800 transition-colors"
-      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+      type="button"
+      onClick={() => setTheme(next)}
+      className={cn("studio-chrome__theme", className)}
+      aria-label={`Switch to ${next} mode`}
     >
-      {theme === 'light' ? (
-        <Moon className="w-4 h-4" />
+      {theme === "light" ? (
+        <Moon className="w-4 h-4" strokeWidth={1.5} aria-hidden />
       ) : (
-        <Sun className="w-4 h-4" />
+        <Sun className="w-4 h-4" strokeWidth={1.5} aria-hidden />
       )}
     </button>
   );

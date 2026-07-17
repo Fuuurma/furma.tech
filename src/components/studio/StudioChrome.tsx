@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PlasticBrandLink } from "@/components/home/PlasticBrandLink";
 import { PortfolioNavDropdown } from "@/components/home/PortfolioNavDropdown";
+import ThemeToggle from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
 
 interface StudioChromeProps {
@@ -26,6 +27,7 @@ export function StudioChrome({
 
   return (
     <header
+      data-studio-chrome
       className={cn(
         "studio-chrome shrink-0 z-50 bg-background text-foreground border-b border-foreground",
         className,
@@ -36,17 +38,21 @@ export function StudioChrome({
 
         <PortfolioNavDropdown />
 
-        <nav className="studio-chrome__views" aria-label="View mode">
+        <nav className="studio-chrome__views" aria-label="Browse mode">
           {isLanding ? (
             <span
               className="studio-chrome__view-link studio-chrome__view-link--active"
               aria-current="page"
             >
-              Fullscreen
+              Explore
             </span>
           ) : (
-            <Link href="/" className="studio-chrome__view-link">
-              Fullscreen
+            <Link
+              href="/"
+              className="studio-chrome__view-link"
+              title="Fullscreen project tour"
+            >
+              Explore
             </Link>
           )}
           {isList ? (
@@ -54,13 +60,18 @@ export function StudioChrome({
               className="studio-chrome__view-link studio-chrome__view-link--active"
               aria-current="page"
             >
-              List
+              Index
             </span>
           ) : (
-            <Link href="/portfolio" className="studio-chrome__view-link">
-              List
+            <Link
+              href="/portfolio"
+              className="studio-chrome__view-link"
+              title="All projects as a list"
+            >
+              Index
             </Link>
           )}
+          <ThemeToggle />
         </nav>
 
         <div className="studio-chrome__slot min-w-0 overflow-hidden">
