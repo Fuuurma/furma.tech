@@ -31,7 +31,7 @@ export function ProjectCTA({
     <section
       className={cn(
         "portfolio-page__section px-6 md:px-12 py-20 md:py-24 border-b border-foreground/10",
-        isDark ? "bg-foreground text-background" : "bg-foreground/[0.02]",
+        isDark ? "bg-foreground text-background plastic-on-dark" : "bg-foreground/[0.02]",
       )}
     >
       <div className="max-w-[1280px] mx-auto grid grid-cols-12 gap-8 items-end">

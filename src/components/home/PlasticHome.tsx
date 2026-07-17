@@ -233,11 +233,14 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
   }
 
   function focusFirstInvalid(errors: Record<string, string>) {
-    const order = ["name", "email", "message"] as const;
-    const first = order.find((key) => errors[key]);
+    const ids: Record<string, string> = {
+      name: "contact-name",
+      email: "contact-email",
+      message: "contact-message",
+    };
+    const first = (["name", "email", "message"] as const).find((key) => errors[key]);
     if (!first || !formRef.current) return;
-    const el = formRef.current.querySelector<HTMLElement>(`#${first}`);
-    el?.focus();
+    formRef.current.querySelector<HTMLElement>(`#${ids[first]}`)?.focus();
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -359,14 +362,16 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
               <input type="hidden" name="subject" value="general" />
               {[
                 {
-                  id: "name",
+                  id: "contact-name",
+                  name: "name",
                   label: "Name",
                   type: "text",
                   placeholder: "Your name",
                   autoComplete: "name",
                 },
                 {
-                  id: "email",
+                  id: "contact-email",
+                  name: "email",
                   label: "Email",
                   type: "email",
                   placeholder: "your@email.com",
@@ -374,7 +379,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                 },
               ].map((f) => {
                 const errorId = `${f.id}-error`;
-                const hasError = Boolean(fieldErrors[f.id]);
+                const hasError = Boolean(fieldErrors[f.name]);
                 return (
                   <div key={f.id}>
                     <label htmlFor={f.id} className="plastic-label block mb-2">
@@ -382,7 +387,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                     </label>
                     <input
                       id={f.id}
-                      name={f.id}
+                      name={f.name}
                       type={f.type}
                       placeholder={f.placeholder}
                       autoComplete={f.autoComplete}
@@ -395,22 +400,22 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                       aria-invalid={hasError || undefined}
                       aria-describedby={hasError ? errorId : undefined}
                       disabled={fieldsLocked}
-                      onChange={() => clearFieldError(f.id)}
+                      onChange={() => clearFieldError(f.name)}
                     />
                     {hasError && (
                       <p id={errorId} className="plastic-field-error" role="alert">
-                        {fieldErrors[f.id]}
+                        {fieldErrors[f.name]}
                       </p>
                     )}
                   </div>
                 );
               })}
               <div>
-                <label htmlFor="message" className="plastic-label block mb-2">
+                <label htmlFor="contact-message" className="plastic-label block mb-2">
                   Message
                 </label>
                 <textarea
-                  id="message"
+                  id="contact-message"
                   name="message"
                   rows={3}
                   placeholder="Tell us what you're building…"
@@ -422,13 +427,17 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                   )}
                   aria-invalid={fieldErrors.message ? true : undefined}
                   aria-describedby={
-                    fieldErrors.message ? "message-error" : undefined
+                    fieldErrors.message ? "contact-message-error" : undefined
                   }
                   disabled={fieldsLocked}
                   onChange={() => clearFieldError("message")}
                 />
                 {fieldErrors.message && (
-                  <p id="message-error" className="plastic-field-error" role="alert">
+                  <p
+                    id="contact-message-error"
+                    className="plastic-field-error"
+                    role="alert"
+                  >
                     {fieldErrors.message}
                   </p>
                 )}
@@ -483,7 +492,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
 
 function FooterSlide({ isActive }: { isActive: boolean }) {
   return (
-    <div className="h-full w-full flex flex-col bg-foreground text-background overflow-hidden">
+    <div className="h-full w-full flex flex-col bg-foreground text-background overflow-hidden plastic-on-dark">
       <div className="flex-1 flex flex-col justify-center min-h-0 relative z-10">
         <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 py-8 md:py-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
@@ -567,9 +576,8 @@ export default function PlasticHome() {
   const { activeIndex, goTo, setFocusHandler } = useSmoothSectionScroll(TOTAL);
   const reduceMotion = useReducedMotion();
   const panelRefs = useRef<(HTMLElement | null)[]>([]);
-  const [announcement, setAnnouncement] = useState(
-    `Section 1 of ${TOTAL}: ${sectionLabel(0)}`,
-  );
+  const preferContactFormFocus = useRef(false);
+  const announcement = `Section ${activeIndex + 1} of ${TOTAL}: ${sectionLabel(activeIndex)}`;
 
   const activeReelIndex = reelIndexForSection(activeIndex, HOME_REEL_ITEMS);
   const showReel = activeReelIndex >= 0;
@@ -581,19 +589,44 @@ export default function PlasticHome() {
     [goTo],
   );
 
+  const syncContactHash = useCallback((index: number) => {
+    if (typeof window === "undefined") return;
+    const onContact = index === CONTACT_SECTION;
+    const hasContactHash = window.location.hash === "#contact";
+    if (onContact && !hasContactHash) {
+      window.history.replaceState(null, "", "#contact");
+    } else if (!onContact && hasContactHash) {
+      window.history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${window.location.search}`,
+      );
+    }
+  }, []);
+
+  const navigateToContact = useCallback(() => {
+    preferContactFormFocus.current = true;
+    navigate(CONTACT_SECTION, { force: true, focus: true });
+  }, [navigate]);
+
   useEffect(() => {
     setFocusHandler((index) => {
-      const panel = panelRefs.current[index];
-      panel?.focus({ preventScroll: true });
+      if (index === CONTACT_SECTION && preferContactFormFocus.current) {
+        preferContactFormFocus.current = false;
+        const nameField = document.getElementById("contact-name");
+        if (nameField) {
+          nameField.focus({ preventScroll: true });
+          return;
+        }
+      }
+      panelRefs.current[index]?.focus({ preventScroll: true });
     });
     return () => setFocusHandler(null);
   }, [setFocusHandler]);
 
   useEffect(() => {
-    setAnnouncement(
-      `Section ${activeIndex + 1} of ${TOTAL}: ${sectionLabel(activeIndex)}`,
-    );
-  }, [activeIndex]);
+    syncContactHash(activeIndex);
+  }, [activeIndex, syncContactHash]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -611,16 +644,16 @@ export default function PlasticHome() {
   }, [navigate]);
 
   useEffect(() => {
-    const navigateToContact = () => {
-      navigate(CONTACT_SECTION, { force: true, focus: true });
-    };
-
     if (window.location.hash === "#contact") {
-      navigateToContact();
+      preferContactFormFocus.current = true;
+      navigate(CONTACT_SECTION, { force: true, focus: true });
     }
 
     const handleHashChange = () => {
-      if (window.location.hash === "#contact") navigateToContact();
+      if (window.location.hash === "#contact") {
+        preferContactFormFocus.current = true;
+        navigate(CONTACT_SECTION, { force: true, focus: true });
+      }
     };
 
     window.addEventListener("hashchange", handleHashChange);
@@ -629,7 +662,12 @@ export default function PlasticHome() {
 
   const handleReelSelect = (reelIndex: number) => {
     const target = HOME_REEL_ITEMS[reelIndex];
-    if (target) navigate(target.sectionIndex, { force: true, focus: true });
+    if (!target) return;
+    if (target.sectionIndex === CONTACT_SECTION) {
+      navigateToContact();
+      return;
+    }
+    navigate(target.sectionIndex, { force: true, focus: true });
   };
 
   return (
@@ -677,7 +715,11 @@ export default function PlasticHome() {
                 ref={(el) => {
                   panelRefs.current[i] = el;
                 }}
-                id={`home-section-${section.id}`}
+                id={
+                  section.type === "contact"
+                    ? "contact"
+                    : `home-section-${section.id}`
+                }
                 tabIndex={-1}
                 aria-label={`${label}, section ${i + 1} of ${TOTAL}`}
                 aria-hidden={!isActive}
@@ -698,9 +740,7 @@ export default function PlasticHome() {
                     onEnterWork={() =>
                       navigate(1, { force: true, focus: true })
                     }
-                    onContact={() =>
-                      navigate(CONTACT_SECTION, { force: true, focus: true })
-                    }
+                    onContact={navigateToContact}
                   />
                 )}
                 {section.type === "portfolio-index" && (

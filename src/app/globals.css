@@ -627,6 +627,11 @@ html {
   border-color: rgba(255, 255, 255, 0.6);
 }
 
+.plastic-cta--inverse:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: 3px;
+}
+
 .plastic-cta--quiet {
   border-bottom-color: rgba(255, 255, 255, 0.28);
   color: rgba(255, 255, 255, 0.72);
@@ -778,12 +783,17 @@ html {
   opacity: 1;
 }
 
-/* Full-width portfolio mega panel (no inner scroll) */
+/* Full-width portfolio mega panel */
 .studio-portfolio-panel {
   position: fixed;
   left: 0;
   right: 0;
   z-index: 100;
+  max-height: min(70vh, calc(100dvh - var(--plastic-nav-h, 56px) - 8px));
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   background: #000;
   color: #fff;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
@@ -841,6 +851,15 @@ html {
 @media (max-width: 639px) {
   .studio-portfolio-panel__col + .studio-portfolio-panel__col {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .studio-portfolio-panel__cell {
+    padding: 0.7rem 1rem;
+    min-height: 48px;
+  }
+
+  .studio-portfolio-panel__name {
+    font-size: 17px;
   }
 }
 
@@ -942,6 +961,41 @@ html {
 
 .studio-portfolio-panel__cell--active .studio-portfolio-panel__swatch {
   opacity: 1;
+}
+
+.studio-portfolio-panel a:focus-visible,
+.studio-portfolio-panel button:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: 3px;
+}
+
+.studio-portfolio-panel__cell:focus-visible {
+  background: #fff;
+  color: #000;
+  outline-offset: -2px;
+}
+
+.studio-portfolio-panel__cell:focus-visible .studio-portfolio-panel__index,
+.studio-portfolio-panel__cell:focus-visible .studio-portfolio-panel__meta {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.studio-portfolio-panel__cell:focus-visible .studio-portfolio-panel__arrow {
+  opacity: 0.55;
+  transform: translateX(0);
+}
+
+/* Inverted surfaces (project CTAs, footer slide): rings must contrast */
+.bg-foreground a:focus-visible,
+.bg-foreground button:focus-visible,
+.plastic-on-dark a:focus-visible,
+.plastic-on-dark button:focus-visible {
+  outline: 1px solid var(--background);
+  outline-offset: 3px;
+}
+
+.plastic-on-dark .plastic-cta--inverse:focus-visible {
+  outline-color: #fff;
 }
 
 .studio-portfolio-panel__list-link {
