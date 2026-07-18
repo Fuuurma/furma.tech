@@ -1,7 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import {
+  motion,
+  useInView,
+  useReducedMotion,
+  useMotionValue,
+  useTransform,
+  animate,
+} from "framer-motion";
 import { EASE_OUT_EXPO, motionDuration } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -24,30 +31,25 @@ export function AnimatedNumber({
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.6 });
   const shouldRun = trigger ?? inView;
-  const [display, setDisplay] = useState(reduceMotion ? value : 0);
+  const count = useMotionValue(reduceMotion ? value : 0);
+  const display = useTransform(count, (v) => {
+    const rounded = Math.round(v);
+    return pad > 0 ? String(rounded).padStart(pad, "0") : String(rounded);
+  });
 
   useEffect(() => {
     if (!shouldRun || reduceMotion) {
-      setDisplay(value);
+      count.set(value);
       return;
     }
 
-    let start: number | null = null;
-    let frame = 0;
-
-    const step = (ts: number) => {
-      if (start === null) start = ts;
-      const t = Math.min(1, (ts - start) / (duration * 1000));
-      const eased = 1 - (1 - t) ** 3;
-      setDisplay(Math.round(eased * value));
-      if (t < 1) frame = requestAnimationFrame(step);
-    };
-
-    frame = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(frame);
-  }, [shouldRun, value, duration, reduceMotion]);
-
-  const text = pad > 0 ? String(display).padStart(pad, "0") : String(display);
+    count.set(0);
+    const controls = animate(count, value, {
+      duration,
+      ease: "easeOut",
+    });
+    return controls.stop;
+  }, [shouldRun, value, duration, reduceMotion, count]);
 
   return (
     <motion.span
@@ -57,7 +59,7 @@ export function AnimatedNumber({
       animate={shouldRun ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: motionDuration.base, ease: EASE_OUT_EXPO }}
     >
-      {text}
+      {display}
     </motion.span>
   );
 }
