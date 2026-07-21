@@ -18,6 +18,8 @@
 
 Primary routes: `/`, `/portfolio`, `/portfolio/[project]`, `/privacy`. Contact: `/#contact`.
 
+Alternate UI concept: `/v2` — "The Workshop" (warm editorial, self-contained: own layout, fonts, CSS in `src/app/v2/`, components in `src/components/v2/`). Bypasses v1 chrome via `isV2` in `LayoutChrome.tsx`. See `.impeccable.md` for its design context.
+
 Core ethos: 0% VC, profitable before flashy, "build software that works."
 
 **Stack:** Next.js 16.2.1 | React 19.2.3 | TypeScript (strict) | Tailwind v4 | Zod | Radix UI | Lucide
