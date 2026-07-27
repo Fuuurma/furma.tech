@@ -81,13 +81,18 @@ test("submitToProvider: provider HTTP failure is non-success without a fabricate
   }
 });
 
-test("submitToProvider: success only when provider accepts; reference comes from provider", async () => {
+test("submitToProvider: success only when provider acknowledges persistence; reference comes from provider", async () => {
+  // The legacy `{ id: ... }` shape is NOT enough on its own — the provider
+  // must also return the documented acknowledgment flag. This test proves
+  // the documented happy path: provider returns `{ acknowledged: true,
+  // reference: "rec_123" }` and the boundary returns success with the
+  // provider-supplied reference.
   const original = globalThis.fetch;
   globalThis.fetch = (async () =>
-    new Response(JSON.stringify({ id: "rec_123" }), {
-      status: 200,
-      headers: { "content-type": "application/json" },
-    })) as typeof fetch;
+    new Response(
+      JSON.stringify({ acknowledged: true, reference: "rec_123" }),
+      { status: 200, headers: { "content-type": "application/json" } },
+    )) as typeof fetch;
   try {
     const result = await submitToProvider(
       { channel: "contact", name: "A", email: "a@b.test", message: "hi" },
@@ -100,10 +105,35 @@ test("submitToProvider: success only when provider accepts; reference comes from
   }
 });
 
-test("submitToProvider: ok without reference when provider accepts but returns no id", async () => {
+test("submitToProvider: legacy `ok: true` + `reference` alias is honored", async () => {
+  // Backwards-compat: a provider that returns the legacy `{ ok: true,
+  // reference: "..." }` shape (without the canonical `acknowledged` flag)
+  // is still treated as a durable acknowledgment.
   const original = globalThis.fetch;
   globalThis.fetch = (async () =>
-    new Response(JSON.stringify({ ok: true }), {
+    new Response(JSON.stringify({ ok: true, reference: "rec_legacy" }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    })) as typeof fetch;
+  try {
+    const result = await submitToProvider(
+      { channel: "contact", name: "A", email: "a@b.test", message: "hi" },
+      { configured: true, url: "https://hook.test/inbox" },
+    );
+    assert.equal(result.ok, true);
+    assert.equal(result.reference, "rec_legacy");
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test("submitToProvider: ok without reference when provider acknowledges persistence", async () => {
+  // The provider must return the documented acknowledgment schema
+  // (an explicit `acknowledged: true` flag). When it does, success is
+  // reported without a fabricated reference.
+  const original = globalThis.fetch;
+  globalThis.fetch = (async () =>
+    new Response(JSON.stringify({ acknowledged: true }), {
       status: 200,
       headers: { "content-type": "application/json" },
     })) as typeof fetch;
@@ -114,6 +144,78 @@ test("submitToProvider: ok without reference when provider accepts but returns n
     );
     assert.equal(result.ok, true);
     assert.equal(result.reference, undefined, "no id invented");
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test("submitToProvider: REGRESSION 2xx with empty body is NOT durable success", async () => {
+  // The previous contract accepted any 2xx response as durable success.
+  // The new contract requires the documented acknowledgment schema; an
+  // empty body must NOT be reported as recorded.
+  const original = globalThis.fetch;
+  globalThis.fetch = (async () =>
+    new Response("", {
+      status: 200,
+      headers: { "content-type": "text/plain" },
+    })) as typeof fetch;
+  try {
+    const result = await submitToProvider(
+      { channel: "contact", name: "A", email: "a@b.test", message: "hi" },
+      { configured: true, url: "https://hook.test/inbox" },
+    );
+    assert.equal(result.ok, false, "empty 2xx must not be reported as success");
+    assert.equal(result.reference, undefined, "no reference invented");
+    assert.equal(
+      result.message,
+      "provider-acknowledgment-missing",
+      "failure reason names the contract gap",
+    );
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test("submitToProvider: REGRESSION 2xx with unrelated payload is NOT durable success", async () => {
+  // A 2xx body that doesn't match the acknowledgment schema (no
+  // `acknowledged: true`, no `reference`, no `id`, no `ok: true`) must
+  // not be reported as durable success. Even a body that LOOKS healthy
+  // but lacks the explicit acknowledgment is treated as unrecorded.
+  const original = globalThis.fetch;
+  globalThis.fetch = (async () =>
+    new Response(
+      JSON.stringify({ status: "received", echo: true, value: 42 }),
+      { status: 200, headers: { "content-type": "application/json" } },
+    )) as typeof fetch;
+  try {
+    const result = await submitToProvider(
+      { channel: "waitlist", email: "a@b.test", message: "" },
+      { configured: true, url: "https://hook.test/inbox" },
+    );
+    assert.equal(result.ok, false, "unrelated 2xx must not be reported as success");
+    assert.equal(result.reference, undefined);
+    assert.equal(result.message, "provider-acknowledgment-missing");
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test("submitToProvider: explicit acknowledgment with reference returns reference", async () => {
+  // When the provider returns the documented schema WITH a reference id,
+  // the reference flows through. `acknowledged: true` is the contract flag.
+  const original = globalThis.fetch;
+  globalThis.fetch = (async () =>
+    new Response(
+      JSON.stringify({ acknowledged: true, reference: "ack_42" }),
+      { status: 200, headers: { "content-type": "application/json" } },
+    )) as typeof fetch;
+  try {
+    const result = await submitToProvider(
+      { channel: "contact", name: "A", email: "a@b.test", message: "hi" },
+      { configured: true, url: "https://hook.test/inbox" },
+    );
+    assert.equal(result.ok, true);
+    assert.equal(result.reference, "ack_42");
   } finally {
     globalThis.fetch = original;
   }
