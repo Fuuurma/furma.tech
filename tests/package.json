@@ -1,0 +1,6 @@
+{
+  "name": "furmatech-tests",
+  "private": true,
+  "type": "module",
+  "description": "Zero-dependency node:test gate. Run with: node --test tests/"
+}

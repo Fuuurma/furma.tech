@@ -55,20 +55,19 @@ export function constructMetadata({
 }
 
 /**
- * Generate OG image URL for dynamic pages
+ * Open Graph image URL.
+ *
+ * There is no dynamic `/og` image route in this app, so referencing
+ * `https://furma.tech/og?...` produced a guaranteed 404 for every social
+ * crawler. Until a dedicated OG image route ships (owner decision), we point at
+ * the existing branded static asset so previews resolve instead of breaking.
+ * The params are accepted for API stability and reserved for the future dynamic
+ * route; they do not change the returned URL today.
  */
-export function getOgImageUrl(params: {
+export function getOgImageUrl(_params: {
   title: string;
   subtitle?: string;
-  variant?: 'default' | 'product' | 'aitlas';
+  variant?: "default" | "product" | "aitlas";
 }): string {
-  const url = new URL('https://furma.tech/og');
-  url.searchParams.set('title', params.title);
-  if (params.subtitle) {
-    url.searchParams.set('subtitle', params.subtitle);
-  }
-  if (params.variant) {
-    url.searchParams.set('variant', params.variant);
-  }
-  return url.toString();
+  return "https://furma.tech/og-image.svg";
 }

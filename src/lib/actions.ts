@@ -45,24 +45,14 @@ export function errorResponse(error: string, digest?: string): ServerActionRespo
 }
 
 /**
- * Rate limiting helper for server actions
+ * Rate limiting helper for server actions.
+ *
+ * Delegates to the real bounded limiter in `./rate-limit` so this surface no
+ * longer silently allows every request. Server actions import `checkRateLimit`
+ * from `./rate-limit` directly; this re-export keeps the historical helper honest
+ * for any external consumer and fails closed once the window is exhausted.
  */
-export function checkRateLimit(
-  identifier: string,
-  limit: number,
-  windowMs: number
-): { allowed: boolean; remaining: number; resetAt: number } {
-  // Simple in-memory rate limiting
-  // In production, use Redis or similar
-  const now = Date.now();
-  
-  // This is a simplified version - use Upstash Redis in production
-  return {
-    allowed: true,
-    remaining: limit,
-    resetAt: now + windowMs,
-  };
-}
+export { checkRateLimit } from "./rate-limit";
 
 /**
  * Validate server action input
