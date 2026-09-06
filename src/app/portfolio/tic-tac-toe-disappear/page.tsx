@@ -40,7 +40,7 @@ const features = [
   },
   {
     title: "Multiplayer & AI",
-    desc: "Play online with friends via real-time matchmaking or challenge the AI with 4 difficulty levels.",
+    desc: "Play online with friends via real-time matchmaking or challenge the AI with 3 difficulty levels (Easy, Normal, Hard).",
   },
 ];
 
@@ -51,7 +51,7 @@ export default function TicTacToePage() {
         label="Games"
         title="Tic-Tac-Toe Disappear"
         description="A strategic twist on the classic game where moves vanish after a set number of turns. Think ahead, adapt fast, and outmaneuver your opponent in this dynamic battlefield."
-        status={{ label: "Live", variant: "live" }}
+        status={{ label: "In Dev", variant: "soon" }}
         projectId="tic-tac-toe"
         coverTint={getProjectCoverTint("tic-tac-toe")}
       >
