@@ -11,6 +11,10 @@ export function useIsMobile() {
       setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
     }
     mql.addEventListener("change", onChange)
+    // Syncing from an external system (matchMedia) that does not exist during
+    // an SSR render, so it cannot be read in the useState initialiser. Doing
+    // it in the effect is what avoids a hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
     return () => mql.removeEventListener("change", onChange)
   }, [])

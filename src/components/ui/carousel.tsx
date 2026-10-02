@@ -95,6 +95,10 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
+    // Notifying the consumer of the embla instance's current state on mount.
+    // `api` is created by the external embla system after mount, so this
+    // cannot be derived during render.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     onSelect(api)
     api.on("reInit", onSelect)
     api.on("select", onSelect)

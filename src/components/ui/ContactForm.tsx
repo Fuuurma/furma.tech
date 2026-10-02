@@ -54,6 +54,12 @@ export function ContactForm({ action }: ContactFormProps) {
   return (
     <form id="contact-form" action={handleSubmit} className="w-full">
       <FieldGroup>
+        {status === 'error' && message ? (
+          <Alert variant="destructive">
+            <XCircle />
+            <AlertDescription>{message}</AlertDescription>
+          </Alert>
+        ) : null}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Name - Optional */}
           <Field>

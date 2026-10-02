@@ -22,6 +22,10 @@ export function ThemeProvider({
   const [isMounted, setIsMounted] = React.useState(false);
 
   React.useEffect(() => {
+    // localStorage is unreadable during an SSR render; `isMounted` is the
+    // standard guard that keeps the server and client markup in agreement
+    // before the stored theme is applied.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsMounted(true);
     const stored = localStorage.getItem(storageKey) as Theme | null;
     if (stored) {
