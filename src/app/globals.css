@@ -118,6 +118,7 @@
   /* The chrome's type ladder lives in the @theme block at the top of this
      file: --text-label, --text-meta, --text-small, --text-body. */
 
+  --surface-dark-foreground: oklch(1 0 0);
   --radius: 0.25rem; /* More minimalistic, sharper corners */
 
   /* Light mode - Strictly Black & White */
@@ -659,7 +660,7 @@ html {
    utility — on a dark surface that renders black-on-black. These tokens are
    the supported way to put type on an inverse surface. */
 .plastic-paragraph--inverse {
-  color: #fff;
+  color: var(--surface-dark-foreground);
 }
 
 .plastic-headline--inverse {

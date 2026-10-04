@@ -149,6 +149,9 @@ function HeroSlide({
             : { animationDelay: "1.5s", animationFillMode: "forwards" }
         }
       >
+        <p className="plastic-paragraph plastic-paragraph--inverse max-w-md !text-[clamp(18px,2.2vw,26px)] !leading-[1.35]">
+          Bootstrapped studio building industry SaaS and the Aitlas AI ecosystem.
+        </p>
         <div className="flex flex-wrap items-center gap-3 sm:gap-4 sm:ml-auto">
           <button
             type="button"
