@@ -147,7 +147,10 @@ function EditorialIntro({
       : "md:col-span-8 md:col-start-1 lg:col-start-2";
 
   return (
-    <div className="plastic-intro shrink-0 border-t border-foreground/10 md:max-h-[42vh] md:overflow-y-auto">
+    <div
+      className="plastic-intro shrink-0 border-t border-foreground/10 md:max-h-[42vh] md:overflow-y-auto"
+      data-section-scroll
+    >
       <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-4 md:py-8">
         <div className="grid grid-cols-12 gap-x-6 gap-y-4 md:gap-y-6">
           <SlideReveal isActive={isActive} className={cn("col-span-12 flex md:flex-col justify-between gap-3 md:gap-4", metaCol)} delay={0.05}>
