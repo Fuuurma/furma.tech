@@ -95,6 +95,7 @@
 }
 
 :root {
+  --surface-dark-foreground: oklch(1 0 0);
   --radius: 0.25rem; /* More minimalistic, sharper corners */
 
   /* Light mode - Strictly Black & White */
@@ -594,6 +595,12 @@ html {
   line-height: 1.4;
   letter-spacing: -0.01em;
   color: var(--foreground);
+}
+
+/* Inverse surfaces keep their text color independently of the page theme.
+   Unlayered paragraph styles otherwise override Tailwind text utilities. */
+.plastic-paragraph--inverse {
+  color: var(--surface-dark-foreground);
 }
 
 .plastic-cta {
