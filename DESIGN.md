@@ -53,6 +53,18 @@ public face until a deliberate cutover.
   a caption with a picture attached
 - Invoke `design-arsenal` + `impeccable` on UI passes
 
+### Public opening
+
+The studio's work and one actual project share the first viewport. The hero
+keeps the house's wave as its picture — the swell still waits for an idle
+reader — and the entry's own type keeps clean paper around it on the plate.
+Project name, category, status and destination come from `HOME_PROJECTS`;
+concepts stay labeled. The existing guided tour, direct index and contact
+remain available. The entry is a scroll region, so a swipe that begins inside
+it scrolls the entry instead of advancing the tour. V1 motion reads media
+preference through the SSR-safe hook so server markup and the first client
+render agree.
+
 ## Softer screens — a plate for a footer, and no black boxes (2026-10-21)
 
 The owner's second look at the landed pass: *the effect is an improvement; the
