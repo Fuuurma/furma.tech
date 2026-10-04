@@ -75,7 +75,7 @@ export const V2_PROJECTS: V2Project[] = [
     name: "Tic-Tac-Toe Disappear",
     monogram: "TT",
     category: "Games",
-    note: "Pieces vanish after each turn. A disappearing-move mechanic that changes everything.",
+    note: "3 pieces per player — your oldest vanishes when you place a 4th. A disappearing-move mechanic that changes everything.",
     status: "in-dev",
     statusLabel: V2_STATUS_LABELS["in-dev"],
     href: "/portfolio/tic-tac-toe-disappear",
