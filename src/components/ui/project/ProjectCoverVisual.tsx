@@ -27,11 +27,16 @@ export function ProjectCoverVisual({
   }
 
   return (
-    <Hero
-      className={cn(
-        "w-full h-full max-h-[min(100%,420px)] object-contain",
-        className,
-      )}
-    />
+    <figure className="m-0">
+      <Hero
+        className={cn(
+          "w-full h-full max-h-[min(100%,420px)] object-contain",
+          className,
+        )}
+      />
+      <figcaption className="plastic-label mt-2 opacity-80">
+        Concept visual — illustrative mock, not a product screenshot
+      </figcaption>
+    </figure>
   );
 }

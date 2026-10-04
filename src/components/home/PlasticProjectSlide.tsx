@@ -41,7 +41,7 @@ function ProjectCover({
       >
         <div
           className={cn(
-            "plastic-cover__frame w-full h-full max-w-[min(100%,1200px)] max-h-full flex items-center justify-center transition-transform duration-700 ease-[var(--ease-out-expo)]",
+            "plastic-cover__frame relative w-full h-full max-w-[min(100%,1200px)] max-h-full flex items-center justify-center transition-transform duration-700 ease-[var(--ease-out-expo)]",
             isActive && "scale-100",
             !isActive && "scale-[0.97]",
             frameClassName,
@@ -51,6 +51,11 @@ function ProjectCover({
             <HeroVisual className="w-full h-full max-h-[min(100%,520px)] object-contain" />
           ) : (
             <div className="w-full aspect-[16/10] bg-foreground/5" />
+          )}
+          {HeroVisual && (
+            <p className="plastic-label absolute bottom-3 left-4 m-0">
+              Concept visual
+            </p>
           )}
         </div>
       </ParallaxFrame>
