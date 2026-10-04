@@ -175,7 +175,7 @@ function PortfolioIndexSlide({
         <div className="max-w-[1280px] w-full grid grid-cols-12 gap-6">
           <SlideReveal isActive={isActive} className="col-span-12 md:col-span-4">
             <p className="plastic-label">Portfolio</p>
-            <p className="plastic-label mt-6">Index 00</p>
+            <p className="plastic-label mt-6">Guided tour</p>
           </SlideReveal>
           <div className="col-span-12 md:col-span-8 md:col-start-5">
             <h2 className="plastic-headline">
@@ -203,7 +203,7 @@ function PortfolioIndexSlide({
                   href="/portfolio"
                   className="plastic-label motion-link-subtle hover:text-foreground"
                 >
-                  Or open full index
+                  Or skip the tour — open full index
                 </Link>
               </div>
             </SlideReveal>

@@ -97,3 +97,22 @@ test("FinanceHub cache claim reads as a target, not a measured rate", () => {
   assert.doesNotMatch(financehubDetail, /with 85-95% hit rate/);
   assert.match(financehubDetail, /target(ing|ed)?[^.]{0,40}85-95% hit rate/i);
 });
+
+// FT-UX-02: the hero's "See projects" lands on an interstitial that
+// starts a guided tour — that step must name itself as a tour and
+// offer the direct index as an explicit skip, never a mystery gate.
+
+const plasticHome = readFileSync(
+  new URL("../src/components/home/PlasticHome.tsx", import.meta.url),
+  "utf8",
+);
+
+test("Tour interstitial names itself as a guided tour", () => {
+  assert.match(plasticHome, /Guided tour/);
+  assert.doesNotMatch(plasticHome, /Index 00/);
+});
+
+test("Tour interstitial offers skipping to the full index", () => {
+  assert.match(plasticHome, /skip the tour/i);
+  assert.match(plasticHome, /open full index/i);
+});
