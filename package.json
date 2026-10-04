@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start --hostname 127.0.0.1 --port 4080",
     "lint": "eslint",
-    "test": "node --test tests/contact-provider.test.ts tests/section-scroll.test.ts",
+    "test": "node --test tests/contact-provider.test.ts tests/section-scroll.test.ts tests/project-copy.test.ts",
     "test:smoke": "node scripts/smoke.mjs"
   },
   "dependencies": {

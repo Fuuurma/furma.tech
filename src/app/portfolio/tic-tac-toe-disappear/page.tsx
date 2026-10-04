@@ -50,7 +50,7 @@ export default function TicTacToePage() {
       <ProjectHero
         label="Games"
         title="Tic-Tac-Toe Disappear"
-        description="A strategic twist on the classic game where moves vanish after a set number of turns. Think ahead, adapt fast, and outmaneuver your opponent in this dynamic battlefield."
+        description="A strategic twist on the classic game: only 3 pieces per player — place a 4th and your oldest vanishes. Think ahead, adapt fast, and outmaneuver your opponent in this dynamic battlefield."
         status={{ label: "In Dev", variant: "soon" }}
         projectId="tic-tac-toe"
         coverTint={getProjectCoverTint("tic-tac-toe")}
@@ -82,7 +82,7 @@ export default function TicTacToePage() {
 
       <ProjectCTA
         title="Ready to think ahead?"
-        description="Play the vanishing-move variant — online or against AI."
+        description="The 3-piece variant is in development — online play and AI opponents are on the way."
         primaryHref="/#contact"
         primaryLabel="Get updates"
         secondaryHref="/portfolio"

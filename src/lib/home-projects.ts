@@ -68,7 +68,7 @@ export const HOME_PROJECTS: HomeProject[] = [
     name: "Tic-Tac-Toe",
     category: "Games",
     description:
-      "Strategy game where pieces vanish after each turn — a disappearing-move mechanic that changes everything.",
+      "Strategy game with a 3-piece rule: your oldest piece vanishes when you place a 4th — a disappearing-move mechanic that changes everything.",
     status: "In Development",
     href: "/portfolio/tic-tac-toe-disappear",
     coverTint: "#e4d8f8",
