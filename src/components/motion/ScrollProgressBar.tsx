@@ -1,6 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
+
+import { motion, useScroll, useSpring } from "framer-motion";
 
 export function ScrollProgressBar() {
   const reduceMotion = useReducedMotion();

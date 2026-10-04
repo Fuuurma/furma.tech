@@ -1,8 +1,11 @@
 "use client";
 
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
+
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useReducedMotion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+
 import { submitContactForm } from "@/lib/server-actions";
 import { contactFormSchema, validateForm } from "@/lib/schemas";
 import { HOME_PROJECTS } from "@/lib/home-projects";
@@ -83,6 +86,31 @@ function LetterSpacedTitle({ text }: { text: string }) {
   );
 }
 
+// Home-only projection of the existing Aitlas concept: legible modules, no simulated UI.
+function AitlasEntryVisual() {
+  const modules = [
+    { x: 90, name: "Nova", role: "Workspace" },
+    { x: 260, name: "Nexus", role: "Runtime" },
+    { x: 430, name: "Agents", role: "Marketplace" },
+  ];
+  return (
+    <svg viewBox="0 0 520 340" className="plastic-entry-preview" xmlns="http://www.w3.org/2000/svg">
+      <g className="plastic-entry-preview-lines">
+        <circle cx="260" cy="60" r="28" />
+        <path d="M260 88V120H90V150 M260 120V150 M260 120H430V150" />
+        {modules.map(({ x, name }) => <circle key={name} cx={x} cy="190" r="40" />)}
+      </g>
+      <text x="260" y="67" className="plastic-entry-preview-root">MCP</text>
+      {modules.map(({ x, name, role }) => (
+        <g key={name}>
+          <text x={x} y="198" className="plastic-entry-preview-name">{name}</text>
+          <text x={x} y="268" className="plastic-entry-preview-role">{role}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 function HeroSlide({
   onEnterWork,
   onContact,
@@ -90,72 +118,50 @@ function HeroSlide({
   onEnterWork: () => void;
   onContact: () => void;
 }) {
-  const reduceMotion = useReducedMotion();
+  const project = HOME_PROJECTS[0];
+  const HeroVisual = project ? PROJECT_HERO_MAP[project.id] : undefined;
 
   return (
-    <div className="h-full w-full flex flex-col bg-black text-white relative overflow-hidden">
-      <div className="flex-1 flex flex-col items-center justify-center px-6">
-        <LetterSpacedTitle text="furma.tech" />
-        <p
-          className={cn(
-            "mt-10 font-sans text-[11px] uppercase tracking-[0.2em] text-white/60",
-            !reduceMotion && "opacity-0 animate-fade-up",
-          )}
-          style={
-            reduceMotion
-              ? undefined
-              : { animationDelay: "1.2s", animationFillMode: "forwards" }
-          }
-        >
-          Digital venture studio
-        </p>
-      </div>
+    <div className="plastic-entry" data-section-scroll>
+      <div className="plastic-entry-layout">
+        <div className="plastic-entry-copy">
+          <LetterSpacedTitle text="furma.tech" />
+          <p className="plastic-entry-kind">Digital venture studio</p>
+          <p className="plastic-paragraph plastic-paragraph--inverse plastic-entry-premise">
+            Bootstrapped studio building industry SaaS and the Aitlas AI ecosystem.
+          </p>
+          <div className="plastic-entry-actions">
+            <button type="button" onClick={onEnterWork} className="plastic-cta plastic-cta--inverse">
+              See projects <span aria-hidden>↓</span>
+            </button>
+            <button type="button" onClick={onContact} className="plastic-cta plastic-cta--inverse plastic-cta--quiet">
+              Contact
+            </button>
+            <Link href="/portfolio" className="plastic-cta plastic-cta--inverse plastic-cta--quiet">
+              Full index
+            </Link>
+          </div>
+        </div>
 
-      <div
-        className={cn(
-          "shrink-0 border-t border-white/10 px-6 md:px-12 py-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6",
-          !reduceMotion && "opacity-0 animate-fade-up",
+        {project && (
+          <figure className="plastic-entry-project">
+            <div className="plastic-entry-project-meta">
+              <span>{project.category}</span>
+              <span>{project.status}</span>
+            </div>
+            <Link href={project.href} className="plastic-entry-project-visual" aria-label={`Open ${project.name} project`}>
+              {HeroVisual && <div aria-hidden="true">{project.id === "aitlas" ? <AitlasEntryVisual /> : <HeroVisual />}</div>}
+            </Link>
+            <figcaption className="plastic-entry-project-caption">
+              <Link href={project.href} className="plastic-entry-project-name">
+                {project.name}<ArrowUpRight aria-hidden="true" />
+              </Link>
+              <span className="plastic-entry-project-note">Concept visual</span>
+              <span className="sr-only">{project.description}</span>
+            </figcaption>
+          </figure>
         )}
-        style={
-          reduceMotion
-            ? undefined
-            : { animationDelay: "1.5s", animationFillMode: "forwards" }
-        }
-      >
-        <p className="plastic-paragraph plastic-paragraph--inverse max-w-md !text-[clamp(18px,2.2vw,26px)] !leading-[1.35]">
-          Bootstrapped studio building industry SaaS and the Aitlas AI ecosystem.
-        </p>
-        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-          <button
-            type="button"
-            onClick={onEnterWork}
-            className="plastic-cta plastic-cta--inverse"
-          >
-            See projects
-            <span aria-hidden>↓</span>
-          </button>
-          <button
-            type="button"
-            onClick={onContact}
-            className="plastic-cta plastic-cta--inverse plastic-cta--quiet"
-          >
-            Contact
-          </button>
-        </div>
       </div>
-
-      {!reduceMotion && (
-        <div
-          className="plastic-hero-scroll-cue absolute bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none opacity-0 animate-fade-up"
-          style={{ animationDelay: "2s", animationFillMode: "forwards" }}
-          aria-hidden="true"
-        >
-          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/50">
-            Scroll
-          </span>
-          <span className="block w-px h-8 bg-white/40 animate-pulse" />
-        </div>
-      )}
     </div>
   );
 }

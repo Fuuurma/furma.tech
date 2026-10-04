@@ -1,6 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion, useSpring } from "framer-motion";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
+
+import { motion, useSpring } from "framer-motion";
 
 interface ScrollProgressProps {
   activeIndex: number;
