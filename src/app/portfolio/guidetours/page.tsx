@@ -123,7 +123,7 @@ export default function GuideToursPage() {
 
       <ProjectCTA
         title="Ready to unify your tours?"
-        description="Book a personalized demo. See how GuideTours can save you 8+ hours per week and increase your bookings."
+        description="Book a personalized demo. See how GuideTours can save an estimated 8+ hours per week and increase your bookings."
         primaryHref="/#contact"
         primaryLabel="Book Your Demo"
         secondaryHref="/portfolio"
