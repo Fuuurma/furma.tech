@@ -58,7 +58,7 @@ export const HOME_PROJECTS: HomeProject[] = [
     category: "Marketing",
     description:
       "AI-generated QR codes that look like art — scannable, beautiful, and fully customizable.",
-    status: "Roadmap",
+    status: "In Development",
     href: "/portfolio/qart",
     coverTint: "#f0d4e8",
     layout: "stacked",

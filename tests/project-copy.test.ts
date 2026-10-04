@@ -34,7 +34,7 @@ test("home card description states the 3-piece rule", () => {
   assert.doesNotMatch(homeDescription, /vanish after each turn/i);
 });
 
-test("detail hero states the 3-piece rule, not turn-based vanishing", () => {
+test("Detail hero states the 3-piece rule, not turn-based vanishing", () => {
   assert.doesNotMatch(detailPage, /vanish after a set number of turns/i);
   assert.match(detailPage, /only 3 pieces per player/i);
 });
@@ -42,4 +42,32 @@ test("detail hero states the 3-piece rule, not turn-based vanishing", () => {
 test("detail CTA matches In-Dev status (no Play promise)", () => {
   assert.doesNotMatch(detailPage, /Play the vanishing-move variant/i);
   assert.match(detailPage, /Get updates/);
+});
+
+// FT-CONTENT-02: QArt is stage=building, so index/home/detail must all
+// say In Development like the other building projects — never the
+// expired "Coming Soon · Q2 2026" promise, and never three different
+// stages at once. (The row text said "roadmap", but the hub STATE and
+// sibling convention both say building → In Development; roadmap
+// would understate a product with landed slices. Deviation annotated.)
+
+const qartIndex = V2_PROJECTS.find((p) => p.id === "qart");
+const qartHome = HOME_PROJECTS.find((p) => p.id === "qart");
+const qartDetail = readFileSync(
+  new URL("../src/app/portfolio/qart/page.tsx", import.meta.url),
+  "utf8",
+);
+
+test("QArt index badge says in-dev", () => {
+  assert.equal(qartIndex?.status, "in-dev");
+});
+
+test("QArt home card says In Development", () => {
+  assert.equal(qartHome?.status, "In Development");
+});
+
+test("QArt detail badge says In Development with no expired date", () => {
+  assert.doesNotMatch(qartDetail, /Q2 2026/);
+  assert.doesNotMatch(qartDetail, /Coming Soon/);
+  assert.match(qartDetail, /label: "In Development", variant: "beta"/);
 });
