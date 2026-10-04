@@ -1739,6 +1739,21 @@ a.studio-chrome__view-link:hover {
   object-fit: contain;
 }
 
+.portfolio-list-page__preview-art {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.portfolio-list-page__preview-caption {
+  position: absolute;
+  bottom: 0.35rem;
+  left: 0.5rem;
+}
+
 .portfolio-list-page__preview-fallback {
   font-family: var(--font-sans);
   font-size: 1.25rem;

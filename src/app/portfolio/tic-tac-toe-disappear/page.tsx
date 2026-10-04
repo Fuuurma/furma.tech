@@ -56,6 +56,16 @@ export default function TicTacToePage() {
         coverTint={getProjectCoverTint("tic-tac-toe")}
       >
         <ProjectTrustRow items={["React", "Canvas API", "TypeScript"]} />
+        <p className="pt-3 m-0">
+          <a
+            href="https://tic-tac-toe-1ou.pages.dev"
+            target="_blank"
+            rel="noreferrer"
+            className="plastic-label motion-link-subtle hover:text-foreground"
+          >
+            Play the live preview ↗ (early build)
+          </a>
+        </p>
       </ProjectHero>
 
       <ProjectSection>

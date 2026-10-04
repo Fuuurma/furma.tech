@@ -38,7 +38,14 @@ function PreviewVisual({
       <span className="portfolio-list-page__preview-fallback">{name}</span>
     );
   }
-  return <HeroVisual className="portfolio-list-page__preview-visual" />;
+  return (
+    <span className="portfolio-list-page__preview-art">
+      <HeroVisual className="portfolio-list-page__preview-visual" />
+      <span className="plastic-label portfolio-list-page__preview-caption">
+        Concept visual
+      </span>
+    </span>
+  );
 }
 
 function StaticRowContent({

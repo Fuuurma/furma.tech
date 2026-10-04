@@ -116,3 +116,43 @@ test("Tour interstitial offers skipping to the full index", () => {
   assert.match(plasticHome, /skip the tour/i);
   assert.match(plasticHome, /open full index/i);
 });
+
+// FT-CONTENT-04: every hero is bespoke SVG artwork — no surface shows
+// a real product capture. Each render site must label the visual as
+// conceptual, and implemented work links inspectable proof where the
+// hub knows a live URL (tic-tac-toe's public preview).
+
+const coverVisual = readFileSync(
+  new URL("../src/components/ui/project/ProjectCoverVisual.tsx", import.meta.url),
+  "utf8",
+);
+const projectSlide = readFileSync(
+  new URL("../src/components/home/PlasticProjectSlide.tsx", import.meta.url),
+  "utf8",
+);
+const listItem = readFileSync(
+  new URL("../src/components/portfolio/PortfolioListItem.tsx", import.meta.url),
+  "utf8",
+);
+const tttDetail = readFileSync(
+  new URL("../src/app/portfolio/tic-tac-toe-disappear/page.tsx", import.meta.url),
+  "utf8",
+);
+
+test("Detail cover labels the artwork as a concept visual", () => {
+  assert.match(coverVisual, /Concept visual/);
+  assert.match(coverVisual, /not a (product )?screenshot/i);
+});
+
+test("Home tour slide labels the artwork as a concept visual", () => {
+  assert.match(projectSlide, /Concept visual/);
+});
+
+test("Portfolio list preview labels the artwork as a concept visual", () => {
+  assert.match(listItem, /Concept visual/);
+});
+
+test("Tic-tac-toe detail links the live preview as inspectable proof", () => {
+  assert.match(tttDetail, /tic-tac-toe-1ou\.pages\.dev/);
+  assert.match(tttDetail, /early build/i);
+});
