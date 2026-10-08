@@ -12,6 +12,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   atScrollBottom,
   atScrollTop,
@@ -78,4 +79,18 @@ test("menu nav stays in range for degenerate totals", () => {
   assert.equal(nextMenuIndex(0, 1, "ArrowUp"), 0);
   assert.equal(nextMenuIndex(0, 0, "ArrowDown"), 0);
   assert.equal(nextMenuIndex(0, 0, "End"), 0);
+});
+
+// FT-DEEP-02: every overflow-y:auto overlay must declare itself a scroll
+// region, or wheel/touch over it advances the tour instead of scrolling.
+const portfolioPanel = readFileSync(
+  new URL("../src/components/home/PortfolioNavDropdown.tsx", import.meta.url),
+  "utf8",
+);
+
+test("the mega-panel declares itself a scroll region", () => {
+  assert.match(
+    portfolioPanel,
+    /className="studio-portfolio-panel"[^>]*data-section-scroll/s,
+  );
 });

@@ -171,6 +171,7 @@ export function PortfolioNavDropdown() {
           role="menu"
           aria-label="Portfolio projects"
           className="studio-portfolio-panel"
+          data-section-scroll
           style={{ top: panelTop }}
           initial={reduceMotion ? false : { opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
