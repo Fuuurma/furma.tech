@@ -55,9 +55,12 @@ export function AnimatedNumber({
     <motion.span
       ref={ref}
       className={cn("animated-number tabular-nums", className)}
-      initial={{ opacity: 0, y: 8 }}
-      animate={shouldRun ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: motionDuration.base, ease: EASE_OUT_EXPO }}
+      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+      animate={reduceMotion || shouldRun ? { opacity: 1, y: 0 } : {}}
+      transition={{
+        duration: reduceMotion ? 0 : motionDuration.base,
+        ease: EASE_OUT_EXPO,
+      }}
     >
       {display}
     </motion.span>
