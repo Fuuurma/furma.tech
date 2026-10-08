@@ -1,9 +1,11 @@
 "use client";
 
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
+
 import type { CSSProperties, ComponentType } from "react";
 import { useState } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import type { HomeProject } from "@/lib/home-projects";
 import { PROJECT_HERO_MAP } from "@/lib/project-heroes";
 import {

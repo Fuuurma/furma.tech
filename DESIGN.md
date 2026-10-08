@@ -23,3 +23,11 @@ public face until a deliberate cutover.
 - One home direction on `/`
 - Tokens only; hairlines; reduced-motion
 - Invoke `design-arsenal` + `impeccable` on UI passes
+
+### Public opening
+
+The studio premise and one project concept share the first viewport. Project
+name, category, status and destination come from `HOME_PROJECTS`; concepts
+stay labeled. The existing guided tour, direct index and contact remain
+available. V1 motion reads media preference through the SSR-safe hook so
+server markup and the first client render agree.

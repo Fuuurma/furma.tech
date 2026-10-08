@@ -1,5 +1,7 @@
 "use client";
 
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
+
 import {
   useCallback,
   useEffect,
@@ -10,7 +12,7 @@ import {
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { HOME_PROJECTS, type HomeProject } from "@/lib/home-projects";
 import { EASE_OUT_EXPO, motionDuration } from "@/lib/motion";
 import { nextMenuIndex, type MenuNavKey } from "@/lib/section-scroll";

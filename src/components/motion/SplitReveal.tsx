@@ -1,7 +1,9 @@
 "use client";
 
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
+
 import type { RefObject } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useInView } from "@/hooks/useScroll";
 import { EASE_OUT_EXPO, motionDuration, motionStagger } from "@/lib/motion";
 import { cn } from "@/lib/utils";
