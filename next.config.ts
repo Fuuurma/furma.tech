@@ -1,17 +1,13 @@
 import type { NextConfig } from "next";
+import { SECURITY_HEADERS } from "./src/lib/security-headers";
 
 const nextConfig: NextConfig = {
   logging: {
     browserToTerminal: "error",
   },
 
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**.vercel.app",
-      },
-    ],
+  async headers() {
+    return [{ source: "/(.*)", headers: [...SECURITY_HEADERS] }];
   },
 
   async redirects() {
