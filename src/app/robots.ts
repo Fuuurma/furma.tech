@@ -17,6 +17,7 @@ export default function robots(): MetadataRoute.Robots {
           '/api/',
           '/_next/',
           '/node_modules/',
+          '/styleguide',
         ],
       },
       // Be more restrictive with AI crawlers
