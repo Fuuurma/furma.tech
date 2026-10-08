@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/privacy" },
   title: "Privacy Policy — Furma.tech",
   description: "Privacy policy for Furma.tech - how we handle your data.",
 };

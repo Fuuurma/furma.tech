@@ -21,6 +21,7 @@ import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/guidetours" },
   title: "GuideTours — Tour Operator Platform | Furma.tech",
   description:
     "Multi-tenant SaaS for tour operators. CRM, staff scheduling, real-time availability, Viator & GetYourGuide sync.",

@@ -30,6 +30,7 @@ import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/aitlas/nexus" },
   title: "Nexus — Durable Agent Runtime | Aitlas | Furma.tech",
   description:
     "Execute long-running autonomous AI tasks without server timeouts. Built for reliable, production-grade workflows.",

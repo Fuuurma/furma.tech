@@ -5,6 +5,7 @@ import { getProjectCoverTint } from '@/lib/home-projects';
 import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/pickstracker" },
   title: 'PicksTracker — Furma.tech',
   description: 'Track your sports predictions, compete with friends, and build your track record with social prediction features.',
   openGraph: {

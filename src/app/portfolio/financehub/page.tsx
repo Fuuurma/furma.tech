@@ -5,6 +5,7 @@ import { getProjectCoverTint } from '@/lib/home-projects';
 import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/financehub" },
   title: 'FinanceHub — Furma.tech',
   description: 'Track stocks, crypto, ETFs with 18 data providers, real-time WebSocket streaming, technical analytics, and custom alerts.',
   openGraph: {

@@ -32,6 +32,7 @@ import { getOgImageUrl } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/aitlas/nova" },
   title: "Nova — AI Workspace | Aitlas | Furma.tech",
   description:
     "Your AI command center. Bring your own API keys and access multiple LLM providers without vendor lock-in.",

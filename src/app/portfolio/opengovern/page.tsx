@@ -5,6 +5,7 @@ import { getProjectCoverTint } from '@/lib/home-projects';
 import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/opengovern" },
   title: 'OpenGovern — Furma.tech',
   description: 'Decentralized governance via polls, forums (Agora), and discussions. Community decision-making made transparent.',
   openGraph: {

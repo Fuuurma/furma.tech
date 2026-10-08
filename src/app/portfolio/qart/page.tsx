@@ -10,6 +10,7 @@ import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/qart" },
   title: "QArt — AI QR Code Generator | Furma.tech",
   description:
     "AI-generated QR codes that look like art. Transform any QR code into stunning visual art while maintaining full scannability.",

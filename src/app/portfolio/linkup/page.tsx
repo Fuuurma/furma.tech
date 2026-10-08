@@ -5,6 +5,7 @@ import { getProjectCoverTint } from '@/lib/home-projects';
 import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/linkup" },
   title: 'LinkUp — Furma.tech',
   description: 'Random & contact-based professional matching via short video profiles. Chat, video, voice with privacy control.',
   openGraph: {

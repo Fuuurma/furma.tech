@@ -12,6 +12,7 @@ import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/tic-tac-toe-disappear" },
   title: "Tic-Tac-Toe Disappear — Furma.tech",
   description:
     "Strategic 3-piece variant TicTacToe. Your oldest piece auto-removes when you place a 4th. Online multiplayer & AI opponent.",

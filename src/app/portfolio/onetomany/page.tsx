@@ -5,6 +5,7 @@ import { getProjectCoverTint } from '@/lib/home-projects';
 import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/onetomany" },
   title: 'OneToMany — Furma.tech',
   description: 'Goal-oriented social platform. Create missions with numeric targets, post evidence, community voting validates progress.',
   openGraph: {

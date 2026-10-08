@@ -24,6 +24,7 @@ import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/aitlas" },
   title: "Aitlas — Sovereign AI Ecosystem | Furma.tech",
   description:
     "A modular agentic operating system. Nova workspace, Nexus runtime, and an Agents marketplace for autonomous workflows. BYOK architecture.",

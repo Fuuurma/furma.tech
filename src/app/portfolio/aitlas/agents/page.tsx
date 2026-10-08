@@ -20,6 +20,7 @@ import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/aitlas/agents" },
   title: "Agents Store — AI Agent Marketplace | Aitlas | Furma.tech",
   description:
     "A marketplace for pre-built AI agents. Hire specialists or publish your own. 70% revenue share for creators.",
