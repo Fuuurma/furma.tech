@@ -33,6 +33,8 @@ Open [http://127.0.0.1:3080](http://127.0.0.1:3080)
 | `pnpm build` | Production build |
 | `pnpm start` | Start production server |
 | `pnpm lint` | ESLint check |
+| `pnpm test` | node:test contract suites in `tests/` |
+| `pnpm test:smoke` | Runtime smoke gate (needs `pnpm start` on :4080) |
 
 ---
 
@@ -41,7 +43,7 @@ Open [http://127.0.0.1:3080](http://127.0.0.1:3080)
 ```
 src/
 ├── app/                    # App Router pages
-│   ├── layout.tsx         # Root layout (fonts, theme, nav, footer)
+│   ├── layout.tsx         # Root layout (fonts, theme, metadata)
 │   ├── globals.css         # Tailwind v4 config + CSS variables
 │   └── [route]/page.tsx   # Route pages
 ├── components/

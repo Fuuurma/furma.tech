@@ -434,10 +434,6 @@ html {
 }
 
 /* AI Company UI Accents - Monochrome */
-.gradient-text {
-  color: var(--foreground);
-}
-
 .gradient-border {
   position: relative;
   border: 1px solid var(--border);
@@ -445,14 +441,6 @@ html {
 
 .gradient-border:hover {
   border-color: var(--foreground);
-}
-
-.glow-mono {
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
-}
-
-.dark .glow-mono {
-  box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
 }
 
 .hover-lift {

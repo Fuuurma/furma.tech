@@ -22,7 +22,7 @@ Alternate UI concept: `/v2` — "The Workshop" (warm editorial, self-contained: 
 
 Core ethos: 0% VC, profitable before flashy, "build software that works."
 
-**Stack:** Next.js 16.2.1 | React 19.2.3 | TypeScript (strict) | Tailwind v4 | Zod | Radix UI | Lucide
+**Stack:** Next.js 16.2.11 | React 19.2.8 | TypeScript (strict) | Tailwind v4 | Zod | Radix UI | Lucide
 
 ---
 
@@ -34,9 +34,9 @@ pnpm dev --turbo  # Force Turbopack (default in 16.2)
 pnpm build        # Production build
 pnpm start        # Start production server
 pnpm lint         # Run ESLint
+pnpm test         # node:test contract suites in tests/
+pnpm test:smoke   # Runtime smoke gate (needs pnpm start on :4080)
 ```
-
-**Note:** No test framework configured yet. When adding tests, use Vitest + RTL.
 
 ### Dev Server Lock
 ```bash
@@ -59,7 +59,8 @@ src/
 │   └── ui/                # Primitive UI components
 ├── lib/                   # Utilities (camelCase)
 │   └── utils.ts           # cn() helper using clsx + tailwind-merge
-└── styles/                # (unused, globals.css is in app/)
+tests/                     # node:test contract suites (run via pnpm test)
+scripts/                   # Zero-dep ops scripts (smoke.mjs runtime gate)
 ```
 
 ---
@@ -76,7 +77,7 @@ import type { Metadata } from "next";
 // 3. Third-party (Radix, Lucide, class-variance-authority, Zod)
 import { clsx, type ClassValue } from "clsx";
 // 4. Internal @/ aliases
-import Navigation from "@/components/Navigation";
+import { LayoutChrome } from "@/components/LayoutChrome";
 // 5. Relative imports (rarely used)
 ```
 
@@ -160,16 +161,14 @@ export default function MyComponent({ defaultValue = "", onSubmit }: Props) {
 .animate-ticker          /* Horizontal ticker (pauses on hover) */
 .reveal / .reveal.visible  /* Scroll reveal (add .visible via JS) */
 /* Directional reveals: .reveal-up, .reveal-down, .reveal-left, .reveal-right */
-.section                 /* padding: 120px 0 (80px mobile) */
+.section                 /* padding: 100px 0 (60px mobile) */
 ```
 
 ### Glass & Effects
 ```css
 .glass         /* backdrop-filter blur + semi-transparent bg */
-.hover-lift    /* translateY(-4px) on hover */
+.hover-lift    /* translateY(-2px) on hover */
 .card-hover    /* subtle shadow lift on hover */
-.gradient-text /* amber→orange→pink text gradient */
-.glow-amber-sm /* amber glow effect */
 ```
 
 ---
@@ -224,33 +223,30 @@ try {
 
 ## 8. Testing Guidelines
 
-No test framework is configured yet. When adding tests:
+Zero-dependency `node:test` contract suites under `tests/` — no framework
+install. Suites import pure `src/lib` modules directly and read component
+source with `readFileSync` to pin product decisions (copy, a11y, config).
 
-**Framework:** Vitest + React Testing Library
 **Running tests:**
 ```bash
-pnpm test           # Run tests in watch mode
-pnpm test:run      # Run tests once (CI mode)
-pnpm test:coverage # Generate coverage report
+pnpm test        # All contract suites (listed in package.json)
+pnpm test:smoke  # Runtime smoke gate against a running server
 ```
 
-**Test file naming:**
-- Unit tests: `ComponentName.test.tsx`
-- Integration tests: `api.endpoint.test.ts`
-- E2E tests: `*.e2e.test.ts`
+**Test file naming:** `tests/<area>.test.ts`
 
-**Test patterns:**
+**Test pattern:**
 ```typescript
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 
-describe("ComponentName", () => {
-  it("renders correctly", () => {
-    render(<ComponentName />);
-    expect(screen.getByText("Expected")).toBeInTheDocument();
-  });
+test("the contract holds", () => {
+  assert.equal(actual, expected);
 });
 ```
+
+Add new suites to the `test` script list in `package.json`. For DOM-level
+testing, install Vitest + RTL first — nothing renders components today.
 
 ---
 
