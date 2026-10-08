@@ -124,7 +124,7 @@ export const HOME_PROJECTS: HomeProject[] = [
     category: "Civic Tech",
     description:
       "Direct democracy tooling for municipalities — citizen proposals, transparent voting, open governance.",
-    status: "Paused",
+    status: "In Development",
     href: "/portfolio/opengovern",
     coverTint: "#d4ecf8",
     layout: "editorial-right",

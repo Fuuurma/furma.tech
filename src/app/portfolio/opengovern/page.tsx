@@ -27,11 +27,11 @@ export default function OpenGovernPage() {
         label="Civic Tech"
         title="OpenGovern"
         description="A governance platform where communities make decisions together through polls, forums (Agora), and meaningful discussions — unlike traditional social media's hot takes."
-        status={{ label: 'Roadmap', variant: 'roadmap' }}
+        status={{ label: 'In Development', variant: 'beta' }}
         projectId="opengovern"
         coverTint={getProjectCoverTint('opengovern')}
       />
-      <ProjectStatusPlaceholder status="roadmap" highlights={highlights} />
+      <ProjectStatusPlaceholder status="soon" highlights={highlights} />
     </ProjectLayout>
   );
 }

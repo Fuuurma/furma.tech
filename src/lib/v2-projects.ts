@@ -102,8 +102,8 @@ export const V2_PROJECTS: V2Project[] = [
     monogram: "OG",
     category: "Civic Tech",
     note: "Direct democracy tooling for municipalities — proposals, transparent voting.",
-    status: "roadmap",
-    statusLabel: V2_STATUS_LABELS.roadmap,
+    status: "in-dev",
+    statusLabel: V2_STATUS_LABELS["in-dev"],
     href: "/portfolio/opengovern",
     color: "oklch(0.58 0.13 230)",
     onColor: "oklch(0.97 0.01 90)",
@@ -163,8 +163,8 @@ export const V2_PROJECTS: V2Project[] = [
 ];
 
 export const V2_STATS = [
-  { value: 11, suffix: "", label: "Products in the workshop" },
-  { value: 4, suffix: "", label: "Actively in development" },
+  { value: 10, suffix: "", label: "Products in the workshop" },
+  { value: 6, suffix: "", label: "Actively in development" },
   { value: 0, suffix: "%", label: "Venture capital taken" },
   { value: 100, suffix: "%", label: "Independent & bootstrapped" },
 ] as const;

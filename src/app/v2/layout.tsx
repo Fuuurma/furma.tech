@@ -26,7 +26,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Furma.tech v2 — The Workshop",
   description:
-    "Alternate UI/UX concept for Furma.tech: a warm, industrial-editorial venture studio showcase. 11 products, 0% VC, software that works.",
+    "Alternate UI/UX concept for Furma.tech: a warm, industrial-editorial venture studio showcase. 10 products, 0% VC, software that works.",
   robots: { index: false, follow: false },
 };
 

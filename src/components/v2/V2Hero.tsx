@@ -107,7 +107,7 @@ export function V2Hero() {
             className="max-w-[42ch] text-[clamp(1rem,1.4vw,1.2rem)] leading-[1.55] font-medium text-[var(--v2-ink-60)]"
           >
             A bootstrapped venture studio forging{" "}
-            <span className="text-[var(--v2-ink)]">11 products</span> across AI,
+            <span className="text-[var(--v2-ink)]">10 products</span> across AI,
             SaaS, games and civic tech. No pitch decks. No burn rate.{" "}
             <span className="v2-serif-accent text-[1.1em] text-[var(--v2-ink)]">
               Profitable before flashy.
@@ -134,7 +134,7 @@ export function V2Hero() {
               </span>
             </a>
             <span className="v2-label hidden sm:block">
-              11 products
+              10 products
               <br />
               2 verticals
             </span>

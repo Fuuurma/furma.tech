@@ -2,7 +2,7 @@
 
 **Purpose:** Instructions for AI coding assistants working in this codebase.
 
-**Context:** Furma.tech is a bootstrapped venture studio (Estonian OÜ, Sitges, Catalonia). 11 products across games, SaaS, AI, finance, and civic tech:
+**Context:** Furma.tech is a bootstrapped venture studio (Estonian OÜ, Sitges, Catalonia). 10 products across games, SaaS, AI, finance, and civic tech:
 
 **Products:**
 - **Tic-Tac-Toe Disappear** — Vanishing-move strategy game (In Dev)
@@ -11,7 +11,7 @@
 - **restauManager** — Restaurant management with TheFork integration (In Dev)
 - **FinanceHub** — Market data & portfolio monitoring (Paused)
 - **OneToMany** — Goal setting & habit tracking (Paused)
-- **OpenGovern** — Direct democracy tooling for municipalities (Roadmap)
+- **OpenGovern** — Direct democracy tooling for municipalities (In Dev)
 - **LinkUp** — Short-video professional matching (Paused)
 - **PicksTracker** — Sports pick tracking with social predictions (Roadmap)
 - **Aitlas** — Sovereign AI ecosystem: Nova workspace, Nexus runtime, Agents marketplace (In Dev)
