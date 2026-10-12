@@ -6,6 +6,8 @@ import { PortfolioListItem } from "@/components/portfolio/PortfolioListItem";
 import { FilmGrain } from "@/components/motion/FilmGrain";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { ProjectFilm } from "@/components/ui/project/ProjectFilm";
+import { STUDIO_REEL } from "@/lib/showcase-films";
 
 export function PortfolioListView() {
   return (
@@ -33,6 +35,15 @@ export function PortfolioListView() {
               </ScrollReveal>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="portfolio-list-page__reel" aria-label="Studio reel">
+        <div className="max-w-[1280px] mx-auto px-6 md:px-12 pb-10 md:pb-14">
+          <ProjectFilm
+            film={STUDIO_REEL}
+            caption="Studio reel — every product in one cut"
+          />
         </div>
       </section>
 
