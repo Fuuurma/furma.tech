@@ -1,6 +1,8 @@
 "use client";
 
+import { ProjectFilm } from "@/components/ui/project/ProjectFilm";
 import { PROJECT_HERO_MAP } from "@/lib/project-heroes";
+import { getShowcaseFilm } from "@/lib/showcase-films";
 import { cn } from "@/lib/utils";
 
 interface ProjectCoverVisualProps {
@@ -8,11 +10,17 @@ interface ProjectCoverVisualProps {
   className?: string;
 }
 
-/** Shared cover mock from the home hero map — keeps case pages and list previews aligned. */
+/**
+ * Case-page cover: the project's motion showcase film when one exists,
+ * otherwise the shared cover mock from the home hero map.
+ */
 export function ProjectCoverVisual({
   projectId,
   className,
 }: ProjectCoverVisualProps) {
+  const film = getShowcaseFilm(projectId);
+  if (film) return <ProjectFilm film={film} className={className} />;
+
   const Hero = PROJECT_HERO_MAP[projectId];
   if (!Hero) {
     return (
