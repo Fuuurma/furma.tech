@@ -32,6 +32,13 @@ export function PortfolioListView() {
                   Bootstrapped from Sitges. 0% VC. Preview a project, then open
                   the case study.
                 </p>
+                <Link
+                  href="/showcase"
+                  className="plastic-cta motion-link inline-flex mt-6"
+                >
+                  Watch every product in motion
+                  <span aria-hidden>→</span>
+                </Link>
               </ScrollReveal>
             </div>
           </div>
