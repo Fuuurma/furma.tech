@@ -2,6 +2,13 @@
 
 **Purpose:** Instructions for AI coding assistants working in this codebase.
 
+## Design
+
+- Contract: `DESIGN.md` (this repo). Notes: `.impeccable.md` for `/v2`.
+- Invoke `design-arsenal`, then `design-taste-frontend` / `hallmark` / `impeccable`.
+- Name three references + one craft move before generating UI. Default shadcn is not done.
+- Hub catalogs: `~/Projects/hub/design/README.md`.
+
 **Context:** Furma.tech is a bootstrapped venture studio (Estonian OÜ, Sitges, Catalonia). 11 products across games, SaaS, AI, finance, and civic tech:
 
 **Products:**
