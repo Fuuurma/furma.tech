@@ -6,7 +6,7 @@ This file provides guidance for GitHub Copilot sessions working in this reposito
 
 ```bash
 pnpm install    # Install dependencies
-pnpm dev        # Start dev server (http://localhost:3000)
+pnpm dev        # Start dev server (http://127.0.0.1:3080)
 pnpm lint       # Run ESLint check
 pnpm build      # Production build
 pnpm start      # Start production server

@@ -53,7 +53,7 @@ src/
 
 ```bash
 pnpm install        # Install dependencies
-pnpm dev            # Start dev server (http://localhost:3000, Turbopack enabled)
+pnpm dev            # Start dev server (http://127.0.0.1:3080, Turbopack enabled)
 pnpm build          # Production build
 pnpm start          # Start production server
 pnpm lint           # Run ESLint
