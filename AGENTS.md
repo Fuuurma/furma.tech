@@ -327,3 +327,13 @@ refactor/<short-description> # Code improvements
 | `src/lib/utils.ts` | `cn()` utility for Tailwind class merging |
 | `src/components/ThemeProvider.tsx` | Dark mode state management |
 | `eslint.config.mjs` | ESLint config (Next core-web-vitals + TypeScript) |
+
+### Engineering foundation
+
+Before implementation, debugging, architecture work, agent-instruction edits,
+or knowledge curation, invoke `hub-foundation` from `.devin/skills/`.
+If the harness cannot invoke it, read `.devin/skills/hub-foundation/SKILL.md`
+explicitly and follow only the references relevant to the approved task.
+The foundation supplements this repository's rules; it grants no additional
+permissions. `retro` is owner-invoked, and raw session history stays local.
+Provenance: `.devin/skills/mattpocock-source.json`.

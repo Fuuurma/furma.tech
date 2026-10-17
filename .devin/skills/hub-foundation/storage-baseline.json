@@ -1,0 +1,35 @@
+{
+  "observation": "2026-10-02 14:49 CEST (baseline) — updated 2026-10-03 11:35 CEST after Furma-approved VACUUM the baseline's own limits called for",
+  "machine": "worker-primary",
+  "purpose": "Frozen read-only evidence for a retention-aware storage proposal, not a cleanup authorization.",
+  "databases": [
+    {
+      "path": "~/.local/share/devin/cli/sessions.db",
+      "page_size_bytes": 4096,
+      "page_count": 2488763,
+      "freelist_count": 5
+    },
+    {
+      "path": "~/.local/share/opencode/opencode.db",
+      "page_size_bytes": 4096,
+      "page_count": 1001850,
+      "freelist_count": 1463,
+      "vacuuum_2026_10_03": "owner-approved VACUUM: 2562976 -> 1001850 pages (10.50 GB -> 4.10 GB), reclaiming 1,567,557 free pages. No data loss: 3,056 sessions / 130,007 messages intact, PRAGMA quick_check ok. The 2026-10-02 baseline had already measured the 61% free-list and deferred it as an Furma decision; this is that decision being executed, not a new finding."
+    }
+  ],
+  "method": "SQLite mode=ro, PRAGMA query_only=ON, main.page_size, main.page_count, main.freelist_count; no session contents queried.",
+  "other_observations": {
+    "pnpm_store": "~/Library/pnpm/store/v10",
+    "docker": "docker system df failed: Cannot connect to the Docker daemon at unix:///Users/sergi/.docker/run/docker.sock. Is the docker daemon running?",
+    "ssh_to_design_primary": "Strict existing host-key verification failed; no remote commands executed.",
+    "tailscale": "Both Macs online; a direct ping to design-primary succeeded in 24 ms at 14:37 CEST."
+  },
+  "limits": [
+    "Free database pages are reusable internal space, not currently free filesystem space.",
+    "No VACUUM, deletion, pruning, backup, or service shutdown was performed.",
+    "Current app activity and reclaimability must be checked before an owner-approved maintenance operation."
+  ],
+  "actioned": {
+    "2026-10-03": "opencode.db vacuumed (see above). sessions.db NOT touched: freelist_count 5 means 0% reclaimable — its 9.8 GB is real session content, so shrinking it means losing sessions, not reclaiming waste. A repo-wide sweep of ~/.local/share, Library/Application Support, Library/Caches and ~/.cache found no other database with a non-trivial free-list, so this was a targeted fix and not a general pattern."
+  }
+}
