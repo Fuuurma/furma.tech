@@ -1,5 +1,9 @@
 "use client";
 
+// Immersive full-page home: section-navigated panels with focus managed per panel
+// (focus moves with content via preventScroll), a validated contact form that
+// moves focus to its status on send, and body-scroll lock while mounted.
+
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useReducedMotion } from "framer-motion";
