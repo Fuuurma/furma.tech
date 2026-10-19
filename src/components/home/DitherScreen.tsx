@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import {
   BAYER_8,
+  PLATE_PEAK,
   bayerThreshold,
   ditherCell,
   plateReserve,
@@ -111,7 +112,14 @@ export function DitherScreen({
             plateTone(u, v, rect.width, rect.height, reserves) *
             plateReserve(reserves, (column + 0.5) * cell, cy);
 
-          if (!ditherCell(tone, bayerThreshold(BAYER_8, column, row))) continue;
+          if (
+            !ditherCell(
+              tone * PLATE_PEAK,
+              bayerThreshold(BAYER_8, column, row),
+            )
+          ) {
+            continue;
+          }
 
           const offset = (row * columns + column) * 4;
           image.data[offset] = ink[0];

@@ -2,12 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
-  BAYER_4,
+  ASCII_GLYPHS,
+  BAYER_8,
+  PLATE_PEAK,
   asciiCell,
   bayerThreshold,
+  measureRamp,
   plateReserve,
   plateTone,
   type PlateReserve,
+  type RampStep,
 } from "@/lib/halftone";
 import { readReserves } from "@/lib/screen-reserves";
 import { cn } from "@/lib/utils";
@@ -24,9 +28,9 @@ interface AsciiScreenProps {
  *
  * A printed sheet carries two screens for one image — a coarse one for the
  * picture, a fine one for the type beside it. This is the coarse one. The
- * glyphs come off a density ramp that states how much of its cell each one
- * inks, so the field carries tone rather than lettering, and the headline is
- * reserved out of the ink so the type still sits on clean black.
+ * marks come off a density ladder measured from the face in use, so the field
+ * carries tone rather than lettering, and the headline is reserved out of the
+ * ink so the type still sits on clean black.
  */
 export function AsciiScreen({ surfaceRef, className }: AsciiScreenProps) {
   const preRef = useRef<HTMLPreElement>(null);
@@ -39,13 +43,15 @@ export function AsciiScreen({ surfaceRef, className }: AsciiScreenProps) {
 
     let frame = 0;
     let cancelled = false;
+    let ramp: RampStep[] = [];
+    let rampStale = true;
 
     /**
-     * The advance of one cell, in panel pixels.
+     * The metrics of one cell, in panel pixels.
      *
-     * It is measured from the DOM rather than from a canvas: the grid is
-     * spaced with letter-spacing, and `measureText` on its own does not
-     * know about it, so the columns would drift away from the glyphs.
+     * The advance is measured from the DOM rather than from a canvas: the grid
+     * is spaced with letter-spacing, and `measureText` on its own does not
+     * know about it, so the columns would drift away from the marks.
      */
     const measure = () => {
       const style = window.getComputedStyle(pre);
@@ -68,7 +74,12 @@ export function AsciiScreen({ surfaceRef, className }: AsciiScreenProps) {
 
       if (!(advance > 0)) return;
 
-      return { fontSize, lineHeight, advance };
+      return {
+        fontSize,
+        lineHeight,
+        advance,
+        font: `${fontSize}px ${style.fontFamily}`,
+      };
     };
 
     const paint = () => {
@@ -77,6 +88,18 @@ export function AsciiScreen({ surfaceRef, className }: AsciiScreenProps) {
 
       const metrics = measure();
       if (!metrics) return;
+
+      // The ladder is measured against the face in use, so each mark prints
+      // the tone it actually carries.
+      if (rampStale) {
+        ramp = measureRamp(
+          ASCII_GLYPHS,
+          metrics.font,
+          metrics.advance,
+          metrics.lineHeight,
+        );
+        rampStale = false;
+      }
 
       const rect = surface.getBoundingClientRect();
       const width = rect.width;
@@ -104,7 +127,11 @@ export function AsciiScreen({ surfaceRef, className }: AsciiScreenProps) {
             plateTone(u, v, width, height, reserves) *
             plateReserve(reserves, (column + 0.5) * metrics.advance, cy);
 
-          line += asciiCell(tone, bayerThreshold(BAYER_4, column, row));
+          line += asciiCell(
+            tone * PLATE_PEAK,
+            bayerThreshold(BAYER_8, column, row),
+            ramp,
+          );
         }
 
         rendered.push(line);
@@ -127,7 +154,7 @@ export function AsciiScreen({ surfaceRef, className }: AsciiScreenProps) {
     observer.observe(surface);
 
     // The grid is measured against the real face, so it has to be repainted
-    // once the webfont has landed.
+    // once the webfont has landed — and the ladder measured again against it.
     const loadFonts = async () => {
       if (typeof document === "undefined" || !document.fonts) return;
       const style = window.getComputedStyle(pre);
@@ -139,6 +166,7 @@ export function AsciiScreen({ surfaceRef, className }: AsciiScreenProps) {
       } catch {
         // A failed font load still leaves a measurable face.
       }
+      rampStale = true;
       schedule();
     };
 

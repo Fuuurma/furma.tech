@@ -61,33 +61,99 @@ export function bayerThreshold(
 }
 
 /**
- * The coarse screen's density ramp, thinnest ink first, with the share of its
- * cell each glyph actually inks.
+ * The coarse screen's density ladder.
  *
- * This table is the ASCII screen's dot-size ladder — the same job a halftone
- * does with dots of graded diameter. It is also the calibration between the
- * two screens: a coarse screen of characters and a fine screen of dots only
- * carry the same tone if both cover the same share of their cell.
+ * These are the marks the screen is allowed to print, lightest first. Their
+ * ink shares are **measured** from the face in use rather than guessed — a
+ * glyph's share of its cell is a property of the typeface, the size and the
+ * tracking, and a guessed table puts the ladder out of order (`-` inks less
+ * than `.` in JetBrains Mono, and `=` inks twice what a guess says).
+ *
+ * The ladder is the same job a halftone does with dots of graded diameter,
+ * and it is the calibration between the two screens: a coarse screen of
+ * characters and a fine screen of dots only carry the same tone if both cover
+ * the same share of their cell.
  */
-export const ASCII_RAMP = [
-  { glyph: " ", coverage: 0 },
-  { glyph: ".", coverage: 0.02 },
-  { glyph: ":", coverage: 0.045 },
-  { glyph: "-", coverage: 0.07 },
-  { glyph: "=", coverage: 0.1 },
-  { glyph: "+", coverage: 0.135 },
-  { glyph: "*", coverage: 0.17 },
-  { glyph: "#", coverage: 0.21 },
-  { glyph: "%", coverage: 0.26 },
+export const ASCII_GLYPHS = [
+  " ",
+  ".",
+  ":",
+  "-",
+  "=",
+  "+",
+  "*",
+  "#",
+  "%",
+  "@",
 ] as const;
 
+/** One step of the density ladder: a mark and the share of its cell it inks. */
+export interface RampStep {
+  glyph: string;
+  coverage: number;
+}
+
 /**
- * The share of a cell the plate may ink at its darkest. The darkest glyph
- * sets the ceiling for both screens, which is what makes the hero's
- * characters and the footer's dots read as one tone rather than as two
- * different textures.
+ * The share of a cell the plate may ink at its darkest.
+ *
+ * This is the ceiling for both screens. The character screen reaches it with
+ * the ladder's last mark; the dot screen reaches it by inking that share of
+ * its cells. Same tone, same weight, two screens.
+ *
+ * Measured against JetBrains Mono at 11px / 12px line / 2.4px tracking, whose
+ * heaviest mark on this ladder inks 0.328 of its cell.
  */
-export const MAX_COVERAGE = ASCII_RAMP[ASCII_RAMP.length - 1].coverage;
+export const PLATE_PEAK = 0.33;
+
+/**
+ * Measure what each mark inks of its cell, in the face being used.
+ *
+ * The measurement is alpha-weighted, so a patterned mark (a light shade)
+ * counts the share of its area it actually covers rather than the share of
+ * pixels it touches.
+ */
+export function measureRamp(
+  glyphs: readonly string[],
+  font: string,
+  advance: number,
+  lineHeight: number,
+): RampStep[] {
+  if (typeof document === "undefined") {
+    return glyphs.map((glyph) => ({ glyph, coverage: 0 }));
+  }
+
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  if (!context) {
+    return glyphs.map((glyph) => ({ glyph, coverage: 0 }));
+  }
+
+  const width = Math.max(1, Math.round(advance));
+  const height = Math.max(1, Math.round(lineHeight));
+  canvas.width = width;
+  canvas.height = height;
+
+  const steps: RampStep[] = [];
+
+  for (const glyph of glyphs) {
+    context.clearRect(0, 0, width, height);
+    context.font = font;
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillStyle = "#fff";
+    context.fillText(glyph, width / 2, height / 2);
+
+    const pixels = context.getImageData(0, 0, width, height).data;
+    let ink = 0;
+    for (let i = 3; i < pixels.length; i += 4) ink += pixels[i] / 255;
+
+    steps.push({ glyph, coverage: ink / (width * height) });
+  }
+
+  // The ladder only works if it climbs: a mark that inks less than the one
+  // before it would print as a step backwards.
+  return steps.sort((a, b) => a.coverage - b.coverage);
+}
 
 /**
  * Where the plate's mass sits, in normalised panel space.
@@ -103,9 +169,6 @@ const PLATE = {
   /** The clear space the type keeps around itself, in panel pixels. */
   clearance: 36,
 };
-
-/** The picture's darkest tone, as a share of a cell. */
-const PLATE_PEAK = 0.26;
 
 /**
  * The plate: a continuous tone field, 0 (paper) to 1 (full ink).
@@ -166,29 +229,34 @@ export function plateTone(
     0.05 * Math.sin(angle * 3 + 1.2) +
     0.025 * Math.sin(angle * 5 - 0.4);
 
-  const falloff = Math.pow(1 - Math.min(1, distance * wobble), 1.7);
-  return falloff * PLATE_PEAK;
+  return Math.pow(1 - Math.min(1, distance * wobble), 1.7);
 }
 
 /**
- * Resolve a coverage to a glyph on the ramp, dithering between two
+ * Resolve a coverage to a mark on the ladder, dithering between two
  * neighbouring steps with an ordered threshold so the gradation stays smooth
  * instead of banding into visible steps.
  */
-export function asciiCell(coverage: number, threshold: number): string {
+export function asciiCell(
+  coverage: number,
+  threshold: number,
+  ramp: RampStep[],
+): string {
+  if (ramp.length === 0) return " ";
+
   let level = 0;
-  for (let i = 0; i < ASCII_RAMP.length; i++) {
-    if (ASCII_RAMP[i].coverage <= coverage) level = i;
+  for (let i = 0; i < ramp.length; i++) {
+    if (ramp[i].coverage <= coverage) level = i;
   }
 
-  const next = Math.min(ASCII_RAMP.length - 1, level + 1);
-  const low = ASCII_RAMP[level].coverage;
-  const high = ASCII_RAMP[next].coverage;
+  const next = Math.min(ramp.length - 1, level + 1);
+  const low = ramp[level].coverage;
+  const high = ramp[next].coverage;
   const span = high - low;
   const blend = span > 0 ? (coverage - low) / span : 0;
 
   const index = blend > threshold ? next : level;
-  return ASCII_RAMP[index].glyph;
+  return ramp[index].glyph;
 }
 
 /**
