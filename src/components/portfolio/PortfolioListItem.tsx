@@ -3,7 +3,7 @@
 import type { CSSProperties, ComponentType } from "react";
 import { useState } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import type { HomeProject } from "@/lib/home-projects";
 import { PROJECT_HERO_MAP } from "@/lib/project-heroes";
 import {
@@ -13,6 +13,7 @@ import {
   previewVisualVariants,
 } from "@/components/portfolio/portfolio-list-motion";
 import { cn } from "@/lib/utils";
+import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 
 interface PortfolioListItemProps {
   project: HomeProject;
@@ -208,7 +209,7 @@ export function PortfolioListItem({
   index,
   itemIndex,
 }: PortfolioListItemProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useStableReducedMotion();
   const [expanded, setExpanded] = useState(false);
   const HeroVisual = PROJECT_HERO_MAP[project.id];
 

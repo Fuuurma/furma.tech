@@ -10,10 +10,11 @@ import {
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { HOME_PROJECTS, type HomeProject } from "@/lib/home-projects";
 import { EASE_OUT_EXPO, motionDuration } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 
 function isInsidePortfolioMenu(node: Node | null) {
   if (!node || !(node instanceof Element)) return false;
@@ -79,7 +80,7 @@ export function PortfolioNavDropdown() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLAnchorElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useStableReducedMotion();
 
   const syncPanelPosition = useCallback(() => {
     const chrome = wrapRef.current?.closest(".studio-chrome");

@@ -283,17 +283,17 @@ function LayoutOverlay(props: LayoutProps) {
               total={total}
               className="plastic-meta--on-dark max-md:hidden"
             />
-            <p className="plastic-label text-white/55 md:hidden">
+            <p className="plastic-label plastic-label--inverse md:hidden">
               {project.category}
               <span className="text-white/30"> · </span>
               {project.status}
             </p>
           </SlideReveal>
           <SlideReveal isActive={isActive} className="col-span-12 md:col-span-9" delay={0.14}>
-            <h2 className="plastic-headline text-white text-[clamp(26px,4vw,44px)] mb-3 md:mb-4">
+            <h2 className="plastic-headline plastic-headline--inverse text-[clamp(26px,4vw,44px)] mb-3 md:mb-4">
               {project.name}
             </h2>
-            <p className="plastic-paragraph text-white max-w-2xl line-clamp-3 md:line-clamp-none">
+            <p className="plastic-paragraph plastic-paragraph--inverse max-w-2xl line-clamp-3 md:line-clamp-none">
               {project.description}
             </p>
             <div className="mt-6 md:mt-8 flex flex-wrap gap-4 md:gap-6">

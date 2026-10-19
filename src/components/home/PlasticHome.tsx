@@ -6,7 +6,6 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useReducedMotion } from "framer-motion";
 import { submitContactForm } from "@/lib/server-actions";
 import { contactFormSchema, validateForm } from "@/lib/schemas";
 import { HOME_PROJECTS } from "@/lib/home-projects";
@@ -24,6 +23,9 @@ import { PROJECT_HERO_MAP } from "@/lib/project-heroes";
 import { AnimatedNumber } from "@/components/motion/AnimatedNumber";
 import { SlideReveal } from "@/components/motion/SlideReveal";
 import { SplitReveal } from "@/components/motion/SplitReveal";
+import { AsciiScreen } from "@/components/home/AsciiScreen";
+import { DitherScreen } from "@/components/home/DitherScreen";
+import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 import {
   useSmoothSectionScroll,
   type GoToOptions,
@@ -63,9 +65,9 @@ function sectionLabel(index: number): string {
 }
 
 function LetterSpacedTitle({ text }: { text: string }) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useStableReducedMotion();
   return (
-    <h1 className="plastic-hero-title" aria-label={text}>
+    <h1 className="plastic-hero-title" aria-label={text} data-screen-reserve>
       {text.split("").map((char, i) => (
         <span
           key={`${char}-${i}`}
@@ -94,15 +96,21 @@ function HeroSlide({
   onEnterWork: () => void;
   onContact: () => void;
 }) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useStableReducedMotion();
+  const surfaceRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="h-full w-full flex flex-col bg-black text-white relative overflow-hidden">
-      <div className="flex-1 flex flex-col items-center justify-center px-6">
+    <div
+      ref={surfaceRef}
+      className="h-full w-full flex flex-col bg-black text-white relative overflow-hidden"
+    >
+      <AsciiScreen surfaceRef={surfaceRef} />
+
+      <div className="flex-1 flex flex-col items-center justify-center px-6 relative">
         <LetterSpacedTitle text="furma.tech" />
         <p
           className={cn(
-            "mt-10 font-sans text-[11px] uppercase tracking-[0.2em] text-white/60",
+            "mt-10 font-sans text-[11px] uppercase tracking-[0.2em] plastic-label--inverse",
             !reduceMotion && "opacity-0 animate-fade-up",
           )}
           style={
@@ -110,6 +118,7 @@ function HeroSlide({
               ? undefined
               : { animationDelay: "1.2s", animationFillMode: "forwards" }
           }
+          data-screen-reserve
         >
           Digital venture studio
         </p>
@@ -126,7 +135,7 @@ function HeroSlide({
             : { animationDelay: "1.5s", animationFillMode: "forwards" }
         }
       >
-        <p className="plastic-paragraph text-white max-w-md !text-[clamp(18px,2.2vw,26px)] !leading-[1.35]">
+        <p className="plastic-paragraph plastic-paragraph--inverse max-w-md !text-[clamp(18px,2.2vw,26px)] !leading-[1.35]">
           Bootstrapped studio building industry SaaS and the Aitlas AI ecosystem.
         </p>
         <div className="flex flex-wrap items-center gap-3 sm:gap-4">
@@ -495,31 +504,56 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
 }
 
 function FooterSlide({ isActive }: { isActive: boolean }) {
+  const surfaceRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div className="h-full w-full flex flex-col bg-foreground text-background overflow-hidden plastic-on-dark">
+    <div
+      ref={surfaceRef}
+      className="h-full w-full flex flex-col bg-foreground text-background overflow-hidden plastic-on-dark relative"
+    >
+      <DitherScreen surfaceRef={surfaceRef} />
+
       <div className="flex-1 flex flex-col justify-center min-h-0 relative z-10">
         <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 py-8 md:py-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-            <SlideReveal isActive={isActive} className="lg:col-span-5 flex flex-col justify-between gap-10">
+            <SlideReveal
+              isActive={isActive}
+              className="lg:col-span-5 flex flex-col justify-between gap-10"
+            >
               <div>
-                <p className="plastic-label text-background/40 mb-8">Furma.tech</p>
+                <p
+                  className="plastic-label plastic-label--inverse-dim mb-8"
+                  data-screen-reserve
+                >
+                  Furma.tech
+                </p>
                 <SplitReveal
                   as="h3"
                   text="We build sovereign digital futures."
                   className="font-sans text-[clamp(28px,4vw,48px)] font-medium leading-[1.1] tracking-[-0.03em] text-background block mb-6"
                   trigger={isActive}
                   delay={40}
+                  reserve
                 />
-                <p className="font-sans text-[14px] text-background/50 max-w-sm leading-relaxed">
+                <p
+                  className="font-sans text-[14px] text-background/50 max-w-sm leading-relaxed"
+                  data-screen-reserve
+                >
                   Venture studio for industry SaaS and autonomous AI ecosystems.
                   Sitges · Global.
                 </p>
               </div>
               <div className="space-y-4">
-                <p className="plastic-label text-background/40">Connect</p>
+                <p
+                  className="plastic-label plastic-label--inverse-dim"
+                  data-screen-reserve
+                >
+                  Connect
+                </p>
                 <a
                   href="mailto:hello@furma.tech"
                   className="text-[17px] font-medium text-background hover:opacity-60 transition-opacity block"
+                  data-screen-reserve
                 >
                   hello@furma.tech
                 </a>
@@ -528,7 +562,8 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
                     href="https://github.com/Fuuurma"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="plastic-label text-background/55 hover:text-background"
+                    className="plastic-label plastic-label--inverse"
+                    data-screen-reserve
                   >
                     GitHub
                   </a>
@@ -536,7 +571,8 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
                     href="https://twitter.com/fuuurma"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="plastic-label text-background/55 hover:text-background"
+                    className="plastic-label plastic-label--inverse"
+                    data-screen-reserve
                   >
                     Twitter
                   </a>
@@ -544,14 +580,24 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
               </div>
             </SlideReveal>
 
-            <SlideReveal isActive={isActive} className="lg:col-span-7 border-l border-background/10 pl-8 lg:pl-16" delay={0.12}>
-              <p className="plastic-label text-background/40 mb-8">Portfolio</p>
+            <SlideReveal
+              isActive={isActive}
+              className="lg:col-span-7 border-l border-background/10 pl-8 lg:pl-16"
+              delay={0.12}
+            >
+              <p
+                className="plastic-label plastic-label--inverse-dim mb-8"
+                data-screen-reserve
+              >
+                Portfolio
+              </p>
               <div className="grid grid-cols-2 gap-x-8 gap-y-6">
                 {HOME_PROJECTS.map((p) => (
                   <Link
                     key={p.id}
                     href={p.href}
                     className="text-[15px] font-medium text-background hover:opacity-50 transition-opacity"
+                    data-screen-reserve
                   >
                     {p.name}
                   </Link>
@@ -559,7 +605,8 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
               </div>
               <Link
                 href="/portfolio"
-                className="inline-flex items-center gap-2 mt-10 plastic-label text-background/50 hover:text-background motion-link-subtle"
+                className="inline-flex items-center gap-2 mt-10 plastic-label plastic-label--inverse motion-link-subtle"
+                data-screen-reserve
               >
                 All projects <span aria-hidden>→</span>
               </Link>
@@ -569,8 +616,8 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
       </div>
 
       <div className="shrink-0 px-6 md:px-12 py-5 border-t border-background/10 flex justify-between items-center">
-        <span className="plastic-label text-background/40">© 2026 Furma.tech</span>
-        <span className="plastic-label text-background/40">Sitges, Catalonia</span>
+        <span className="plastic-label plastic-label--inverse-dim">© 2026 Furma.tech</span>
+        <span className="plastic-label plastic-label--inverse-dim">Sitges, Catalonia</span>
       </div>
     </div>
   );
@@ -578,7 +625,7 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
 
 export default function PlasticHome() {
   const { activeIndex, goTo, setFocusHandler } = useSmoothSectionScroll(TOTAL);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useStableReducedMotion();
   const panelRefs = useRef<(HTMLElement | null)[]>([]);
   const preferContactFormFocus = useRef(false);
   const announcement = `Section ${activeIndex + 1} of ${TOTAL}: ${sectionLabel(activeIndex)}`;
