@@ -2,16 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
-  ASCII_GLYPHS,
   BAYER_8,
   PLATE_PEAK,
   asciiCell,
   bayerThreshold,
-  measureRamp,
   plateReserve,
   plateTone,
   type PlateReserve,
-  type RampStep,
 } from "@/lib/halftone";
 import { readReserves } from "@/lib/screen-reserves";
 import { cn } from "@/lib/utils";
@@ -28,9 +25,9 @@ interface AsciiScreenProps {
  *
  * A printed sheet carries two screens for one image — a coarse one for the
  * picture, a fine one for the type beside it. This is the coarse one. The
- * marks come off a density ladder measured from the face in use, so the field
- * carries tone rather than lettering, and the headline is reserved out of the
- * ink so the type still sits on clean black.
+ * marks come off a density ladder measured from the rendered page, so the
+ * field carries tone rather than lettering, and the headline is reserved out
+ * of the ink so the type still sits on clean black.
  */
 export function AsciiScreen({ surfaceRef, className }: AsciiScreenProps) {
   const preRef = useRef<HTMLPreElement>(null);
@@ -43,8 +40,6 @@ export function AsciiScreen({ surfaceRef, className }: AsciiScreenProps) {
 
     let frame = 0;
     let cancelled = false;
-    let ramp: RampStep[] = [];
-    let rampStale = true;
 
     /**
      * The metrics of one cell, in panel pixels.
@@ -74,12 +69,7 @@ export function AsciiScreen({ surfaceRef, className }: AsciiScreenProps) {
 
       if (!(advance > 0)) return;
 
-      return {
-        fontSize,
-        lineHeight,
-        advance,
-        font: `${fontSize}px ${style.fontFamily}`,
-      };
+      return { fontSize, lineHeight, advance };
     };
 
     const paint = () => {
@@ -88,18 +78,6 @@ export function AsciiScreen({ surfaceRef, className }: AsciiScreenProps) {
 
       const metrics = measure();
       if (!metrics) return;
-
-      // The ladder is measured against the face in use, so each mark prints
-      // the tone it actually carries.
-      if (rampStale) {
-        ramp = measureRamp(
-          ASCII_GLYPHS,
-          metrics.font,
-          metrics.advance,
-          metrics.lineHeight,
-        );
-        rampStale = false;
-      }
 
       const rect = surface.getBoundingClientRect();
       const width = rect.width;
@@ -130,7 +108,6 @@ export function AsciiScreen({ surfaceRef, className }: AsciiScreenProps) {
           line += asciiCell(
             tone * PLATE_PEAK,
             bayerThreshold(BAYER_8, column, row),
-            ramp,
           );
         }
 
@@ -154,7 +131,7 @@ export function AsciiScreen({ surfaceRef, className }: AsciiScreenProps) {
     observer.observe(surface);
 
     // The grid is measured against the real face, so it has to be repainted
-    // once the webfont has landed — and the ladder measured again against it.
+    // once the webfont has landed — the fallback's advance is not the same.
     const loadFonts = async () => {
       if (typeof document === "undefined" || !document.fonts) return;
       const style = window.getComputedStyle(pre);
@@ -166,7 +143,6 @@ export function AsciiScreen({ surfaceRef, className }: AsciiScreenProps) {
       } catch {
         // A failed font load still leaves a measurable face.
       }
-      rampStale = true;
       schedule();
     };
 

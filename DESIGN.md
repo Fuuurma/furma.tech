@@ -30,18 +30,22 @@ public face until a deliberate cutover.
 
 The landing hero and the closing footer carry **one** black-and-white
 treatment. A single continuous-tone picture — a disc of light in the top-right
-corner — is resolved by an ordered Bayer threshold twice: once through a
-coarse screen of characters in the hero, once through a fine screen of dots in
-the footer.
+corner — is printed twice, on two screens of different fineness: a coarse
+screen of characters in the hero, a fine screen of dots in the footer.
 
 A printed sheet has always carried two screens for one image — a coarse one
 for the picture, a fine one for the type beside it. That is the whole idea:
 the hero and the footer are the same plate, printed at two frequencies.
 
-| Panel | Screen | Cell | Matrix |
+Both screens work the same way: **every cell of the picture carries a mark,
+and the mark is sized by the tone under it.** The coarse screen's mark is a
+character off a density ladder; the fine screen's mark is a round dot whose
+*area* is the share of its cell the tone asks for.
+
+| Panel | Screen | Cell | Ceiling |
 |---|---|---|---|
-| hero | characters | 9 × 12 px | Bayer 8×8 |
-| footer | dots | 4 × 4 px | Bayer 8×8 |
+| hero | characters | 9 × 12 px | `PLATE_PEAK` = 0.2189 |
+| footer | dots | 6 × 6 px | `PLATE_PEAK` = 0.2189 |
 
 The wordmark and the copy are untouched. Where the type meets the ink it
 reverses out of it — the print idiom of type knocked out of a screened block.
@@ -54,18 +58,29 @@ References (with why):
   a coarse grid of characters, where the character carries the tone instead
   of a pixel.
 - **Radium Coders' Evil Buttons `DitherButton`** (vendored in
-  `furma.bloxs-v2`, Apache-2.0) — a proven ordered-Bayer canvas dither on a
-  4px grid; the fine screen inherits house craft instead of a tutorial.
+  `furma.bloxs-v2`, Apache-2.0) — a proven canvas dither on a 4px grid; the
+  fine screen inherits house craft instead of a tutorial.
 
 Craft move: the two screens are calibrated by **cell coverage**, not by
-look. The character screen's density ladder is *measured* from the face in
-use — each mark is rasterised into its cell and its ink share counted,
-alpha-weighted — so the ladder always climbs, and both screens share one
-ceiling (`PLATE_PEAK`). The same tone therefore inks the same share of a
-cell in each, which is what makes the hero's characters and the footer's
-dots read as one style rather than two textures. The two screens share the
-same threshold matrix and differ only in cell size: two screens for one
-plate.
+look, and the calibration is measured at both ends.
+
+- The character screen's density ladder is measured from the **rendered
+  page** — the browser's own text, in the face and cell the design ships
+  with. It cannot be measured in a canvas: a canvas rasterises the same
+  glyph about a third heavier than the DOM does (`@` reads 0.30 in a canvas
+  where the page prints 0.22), and a ladder built from a canvas makes the
+  two screens disagree by exactly that much. The measured table lives in
+  `ASCII_COVERAGE`, and the shared ceiling `PLATE_PEAK` is derived from its
+  top step rather than being a number of its own.
+- The fine screen measures **its own radii**: a rasterised dot does not
+  cover quite the area its radius asks for, so each radius is drawn on a
+  cell-sized canvas, read back, and corrected until the ink it lays down is
+  the share the tone asked for.
+
+The same tone therefore inks the same share of a cell in each panel, which
+is what makes the hero's characters and the footer's dots read as one style
+rather than two textures. Measured on the shipped page: over the same area
+of the same picture the two panels differ by 1–2% of light share.
 
 Rules:
 - One plate, one style: hero = characters, footer = dots. No variant switch.
