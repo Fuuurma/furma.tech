@@ -40,7 +40,7 @@ the hero and the footer are the same plate, printed at two frequencies.
 
 | Panel | Screen | Cell | Matrix |
 |---|---|---|---|
-| hero | characters | 9 × 12 px | Bayer 4×4 |
+| hero | characters | 9 × 12 px | Bayer 8×8 |
 | footer | dots | 4 × 4 px | Bayer 8×8 |
 
 The wordmark and the copy are untouched. Where the type meets the ink it
@@ -58,9 +58,14 @@ References (with why):
   4px grid; the fine screen inherits house craft instead of a tutorial.
 
 Craft move: the two screens are calibrated by **cell coverage**, not by
-look. The ASCII ramp states how much of its cell each glyph inks, and the
-dot screen inks a cell when the tone passes that cell's threshold, so both
-screens carry the same share of ink for the same tone.
+look. The character screen's density ladder is *measured* from the face in
+use — each mark is rasterised into its cell and its ink share counted,
+alpha-weighted — so the ladder always climbs, and both screens share one
+ceiling (`PLATE_PEAK`). The same tone therefore inks the same share of a
+cell in each, which is what makes the hero's characters and the footer's
+dots read as one style rather than two textures. The two screens share the
+same threshold matrix and differ only in cell size: two screens for one
+plate.
 
 Rules:
 - One plate, one style: hero = characters, footer = dots. No variant switch.
