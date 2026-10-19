@@ -43,8 +43,8 @@ export function TicTacToeHero({ className = "" }: { className?: string }) {
       <circle cx="160" cy="170" r="30" fill="none" stroke="rgba(113,112,255,0.15)" strokeWidth="1" strokeDasharray="2 4" />
       <circle cx="253" cy="96" r="30" fill="none" stroke="rgba(113,112,255,0.1)" strokeWidth="1" strokeDasharray="2 4" />
 
-      {/* Bottom panel — game state */}
-      <rect x="20" y="290" width="280" height="30" rx="0 0 8 8" fill="rgba(255,255,255,0.02)" />
+      {/* Bottom panel — game state; square at the top, rounded at the foot */}
+      <path d="M20 290 H300 V312 A8 8 0 0 1 292 320 H28 A8 8 0 0 1 20 312 Z" fill="rgba(255,255,255,0.02)" />
       <rect x="20" y="290" width="280" height="1" fill="rgba(255,255,255,0.04)" />
 
       <text x="40" y="307" fontSize="6" fill="rgba(255,255,255,0.25)" fontFamily="JetBrains Mono, monospace">TURN</text>
