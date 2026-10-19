@@ -3,14 +3,21 @@
  *
  * The landing hero and the closing footer are not two decorations that happen
  * to share a colour. They are the same plate seen twice: one continuous-tone
- * picture, resolved by an ordered Bayer threshold, once through a coarse
- * screen of characters and once through a fine screen of dots.
+ * picture, read by two screens of different fineness.
  *
  * A printed sheet has always carried two screens for one image — a coarse
  * one for the picture, a fine one for the type beside it. That is the whole
  * idea here: `AsciiScreen` is the coarse screen, `DitherScreen` is the fine
  * one, and both read the tone field below. Change the field and the whole
  * page moves together.
+ *
+ * The two screens share one model, and that is what makes them one style
+ * rather than two: **every cell of the picture carries a mark, and the mark
+ * is sized by the tone under it.** The coarse screen's mark is a character
+ * from a density ladder measured off the face in use; the fine screen's mark
+ * is a round dot whose area is the share of its cell the tone asks for. Both
+ * are held to the same ceiling, so the same tone prints the same weight of
+ * paper in either panel — the hero in characters, the footer in dots.
  *
  * Everything here is deterministic and static. The plate is painted once per
  * resize, so it costs nothing to animate nothing.
@@ -20,21 +27,7 @@
  *  exceed before that cell takes ink. */
 export type BayerMatrix = readonly (readonly number[])[];
 
-/**
- * 4×4 Bayer threshold matrix, values 0..15.
- *
- * The classic ordered dither, in the arrangement used by Radium Coders'
- * Evil Buttons `DitherButton` (Apache-2.0, vendored in `furma.bloxs-v2`).
- * House craft, not a tutorial.
- */
-export const BAYER_4: BayerMatrix = [
-  [0, 8, 2, 10],
-  [12, 4, 14, 6],
-  [3, 11, 1, 9],
-  [15, 7, 13, 5],
-];
-
-/** 8×8 Bayer threshold matrix, values 0..63. The fine screen's matrix. */
+/** 8×8 Bayer threshold matrix, values 0..63. The coarse screen's matrix. */
 export const BAYER_8: BayerMatrix = [
   [0, 32, 8, 40, 2, 34, 10, 42],
   [48, 16, 56, 24, 50, 18, 58, 26],
@@ -64,10 +57,10 @@ export function bayerThreshold(
  * The coarse screen's density ladder.
  *
  * These are the marks the screen is allowed to print, lightest first. Their
- * ink shares are **measured** from the face in use rather than guessed — a
- * glyph's share of its cell is a property of the typeface, the size and the
- * tracking, and a guessed table puts the ladder out of order (`-` inks less
- * than `.` in JetBrains Mono, and `=` inks twice what a guess says).
+ * ink shares are **measured** rather than guessed — a glyph's share of its
+ * cell is a property of the typeface, the size and the tracking, and a
+ * guessed table puts the ladder out of order (`-` inks less than `.` in
+ * JetBrains Mono, and `=` inks twice what a guess says).
  *
  * The ladder is the same job a halftone does with dots of graded diameter,
  * and it is the calibration between the two screens: a coarse screen of
@@ -77,8 +70,8 @@ export function bayerThreshold(
 export const ASCII_GLYPHS = [
   " ",
   ".",
-  ":",
   "-",
+  ":",
   "=",
   "+",
   "*",
@@ -94,66 +87,52 @@ export interface RampStep {
 }
 
 /**
- * The share of a cell the plate may ink at its darkest.
+ * What each mark really inks of its cell, as the browser prints it.
  *
- * This is the ceiling for both screens. The character screen reaches it with
- * the ladder's last mark; the dot screen reaches it by inking that share of
- * its cells. Same tone, same weight, two screens.
+ * These are measured from the *rendered page* — the browser's own text, in
+ * the face and the cell the design ships with (JetBrains Mono, 11px on a 12px
+ * line, 2.4px of tracking, in a 9 × 12 px cell). They cannot be measured in a
+ * canvas: a canvas rasterises the same glyph about a third heavier than the
+ * DOM does, so a canvas measurement of `@` reads 0.30 where the page prints
+ * 0.22, and a ladder built from it makes the two screens disagree by exactly
+ * that much. The numbers here are the page's own.
  *
- * Measured against JetBrains Mono at 11px / 12px line / 2.4px tracking, whose
- * heaviest mark on this ladder inks 0.328 of its cell.
+ * The order is the measured order, not the assumed one: `=` inks *less* than
+ * `+`, and `.` inks less than `-`.
  */
-export const PLATE_PEAK = 0.33;
+export const ASCII_COVERAGE: Readonly<Record<string, number>> = {
+  " ": 0,
+  ".": 0.0225,
+  "-": 0.0286,
+  ":": 0.0405,
+  "=": 0.0771,
+  "+": 0.0805,
+  "*": 0.1055,
+  "#": 0.1663,
+  "%": 0.1811,
+  "@": 0.2189,
+};
 
 /**
- * Measure what each mark inks of its cell, in the face being used.
+ * The density ladder, lightest mark first.
  *
- * The measurement is alpha-weighted, so a patterned mark (a light shade)
- * counts the share of its area it actually covers rather than the share of
- * pixels it touches.
+ * The ladder only works if it climbs: a mark that inks less than the one
+ * before it would print as a step backwards.
  */
-export function measureRamp(
-  glyphs: readonly string[],
-  font: string,
-  advance: number,
-  lineHeight: number,
-): RampStep[] {
-  if (typeof document === "undefined") {
-    return glyphs.map((glyph) => ({ glyph, coverage: 0 }));
-  }
+export const ASCII_RAMP: readonly RampStep[] = ASCII_GLYPHS.map((glyph) => ({
+  glyph,
+  coverage: ASCII_COVERAGE[glyph] ?? 0,
+})).sort((a, b) => a.coverage - b.coverage);
 
-  const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
-  if (!context) {
-    return glyphs.map((glyph) => ({ glyph, coverage: 0 }));
-  }
-
-  const width = Math.max(1, Math.round(advance));
-  const height = Math.max(1, Math.round(lineHeight));
-  canvas.width = width;
-  canvas.height = height;
-
-  const steps: RampStep[] = [];
-
-  for (const glyph of glyphs) {
-    context.clearRect(0, 0, width, height);
-    context.font = font;
-    context.textAlign = "center";
-    context.textBaseline = "middle";
-    context.fillStyle = "#fff";
-    context.fillText(glyph, width / 2, height / 2);
-
-    const pixels = context.getImageData(0, 0, width, height).data;
-    let ink = 0;
-    for (let i = 3; i < pixels.length; i += 4) ink += pixels[i] / 255;
-
-    steps.push({ glyph, coverage: ink / (width * height) });
-  }
-
-  // The ladder only works if it climbs: a mark that inks less than the one
-  // before it would print as a step backwards.
-  return steps.sort((a, b) => a.coverage - b.coverage);
-}
+/**
+ * The share of a cell the plate may cover at its darkest.
+ *
+ * This is the ceiling for both screens, and it is the ladder's own top step
+ * rather than a number of its own: the character screen reaches it with the
+ * ladder's last mark, and the dot screen reaches it with a dot that covers
+ * that share of its cell. Same tone, same weight, two screens.
+ */
+export const PLATE_PEAK = ASCII_RAMP[ASCII_RAMP.length - 1].coverage;
 
 /**
  * Where the plate's mass sits, in normalised panel space.
@@ -237,37 +216,35 @@ export function plateTone(
  * neighbouring steps with an ordered threshold so the gradation stays smooth
  * instead of banding into visible steps.
  */
-export function asciiCell(
-  coverage: number,
-  threshold: number,
-  ramp: RampStep[],
-): string {
-  if (ramp.length === 0) return " ";
+export function asciiCell(coverage: number, threshold: number): string {
+  if (ASCII_RAMP.length === 0) return " ";
 
   let level = 0;
-  for (let i = 0; i < ramp.length; i++) {
-    if (ramp[i].coverage <= coverage) level = i;
+  for (let i = 0; i < ASCII_RAMP.length; i++) {
+    if (ASCII_RAMP[i].coverage <= coverage) level = i;
   }
 
-  const next = Math.min(ramp.length - 1, level + 1);
-  const low = ramp[level].coverage;
-  const high = ramp[next].coverage;
+  const next = Math.min(ASCII_RAMP.length - 1, level + 1);
+  const low = ASCII_RAMP[level].coverage;
+  const high = ASCII_RAMP[next].coverage;
   const span = high - low;
   const blend = span > 0 ? (coverage - low) / span : 0;
 
   const index = blend > threshold ? next : level;
-  return ramp[index].glyph;
+  return ASCII_RAMP[index].glyph;
 }
 
 /**
- * Resolve a coverage to a single inked or bare cell of the fine screen.
+ * The radius of a dot that covers a given share of its cell.
  *
- * The threshold is uniform across the matrix, so the share of cells that take
- * ink is the coverage itself — the same share the coarse screen's glyph
- * inks of its own cell.
+ * The fine screen's mark is a round dot, so the share of the cell it covers
+ * is the dot's area over the cell's area, and the radius follows from there.
+ * A dot of this radius prints the same weight of paper as the coarse
+ * screen's mark of the same coverage — which is the whole calibration
+ * between the two screens.
  */
-export function ditherCell(coverage: number, threshold: number): boolean {
-  return coverage > threshold;
+export function dotRadius(share: number, cell: number): number {
+  return Math.sqrt((share * cell * cell) / Math.PI);
 }
 
 /** A rectangle on the panel that the ink must not touch. */
