@@ -26,26 +26,36 @@ public face until a deliberate cutover.
   `text-white` utilities — the unlayered `plastic-*` rules win otherwise)
 - Invoke `design-arsenal` + `impeccable` on UI passes
 
-## Home hero + footer — one halftone plate, two screens (2026-10-19)
+## Home hero + footer — a wave and a body of water (2026-10-20)
 
-The landing hero and the closing footer carry **one** black-and-white
-treatment. A single continuous-tone picture — a disc of light in the top-right
-corner — is printed twice, on two screens of different fineness: a coarse
-screen of characters in the hero, a fine screen of dots in the footer.
+The landing hero and the closing footer carry two black-and-white screens,
+and they are the same kind of thing: **a tone field, printed as marks.**
 
-A printed sheet has always carried two screens for one image — a coarse one
-for the picture, a fine one for the type beside it. That is the whole idea:
-the hero and the footer are the same plate, printed at two frequencies.
+The hero prints a **wave** — a noise field, warped by a second noise field
+and ridged, so the crests catch the light and the troughs stay dark. The
+field is held to the top-right corner and falls away from it, so the page
+keeps its composition (light in one corner, quiet everywhere else) while the
+picture inside that light now moves.
 
-Both screens work the same way: **every cell of the picture carries a mark,
-and the mark is sized by the tone under it.** The coarse screen's mark is a
-character off a density ladder; the fine screen's mark is a round dot whose
-*area* is the share of its cell the tone asks for.
+The footer prints a **body of water** that sloshes. A body of water is not a
+picture of water, it is a thing with mass, so the footer simulates one: a
+PIC/FLIP particle fluid on the character's own lattice, and the ASCII picture
+is the water itself rather than a caption of it. The surface of the water is
+the picture — lit from above, fading with the depth beneath it, brightened
+by the motion. The pointer stirs it.
 
-| Panel | Screen | Cell | Ceiling |
+| Panel | Screen | Lattice | Ink |
 |---|---|---|---|
-| hero | characters | 9 × 12 px | `PLATE_PEAK` = 0.2189 |
-| footer | dots | 6 × 6 px | `PLATE_PEAK` = 0.2189 |
+| hero | dots | 7 × 7 px | the hero's fixed white on black |
+| footer | characters | the face's advance × 16 px | `--background` on `--foreground` |
+
+Both screens obey one rule: **a mark's area is the share of its cell the
+tone asks for**, and no mark on this page covers more than `INK_CEILING`
+(0.2189) of its cell. The hero reaches that ceiling with a dot whose area is
+graded to the tone; the footer reaches it with the heaviest character it is
+allowed to print. Measured on the rendered page, the hero's darkest dot
+covers 18.5% of its cell and the footer's heaviest character 20.3% — the
+same weight of paper, two screen frequencies.
 
 The wordmark and the copy are untouched. Where the type meets the ink it
 reverses out of it — the print idiom of type knocked out of a screened block.
@@ -60,35 +70,44 @@ References (with why):
 - **Radium Coders' Evil Buttons `DitherButton`** (vendored in
   `furma.bloxs-v2`, Apache-2.0) — a proven canvas dither on a 4px grid; the
   fine screen inherits house craft instead of a tutorial.
+- **React Bits Pro `Dither Wave` and `Liquid Ascii`** — the briefs for the
+  two screens. The components in `src/components/dither-wave-tw.tsx` and
+  `src/components/liquid-ascii-tw.tsx` carry their prop API verbatim, so the
+  licensed files can replace them without the call site changing. The
+  registry is configured in `components.json`; the key is a credential and
+  never enters the tree (`launchctl setenv REACTBITS_LICENSE_KEY <key>`,
+  then `npx shadcn@latest add @reactbits-starter/dither-wave-tw`).
 
-Craft move: the two screens are calibrated by **cell coverage**, not by
-look, and the calibration is measured at both ends.
-
-- The character screen's density ladder is measured from the **rendered
-  page** — the browser's own text, in the face and cell the design ships
-  with. It cannot be measured in a canvas: a canvas rasterises the same
-  glyph about a third heavier than the DOM does (`@` reads 0.30 in a canvas
-  where the page prints 0.22), and a ladder built from a canvas makes the
-  two screens disagree by exactly that much. The measured table lives in
-  `ASCII_COVERAGE`, and the shared ceiling `PLATE_PEAK` is derived from its
-  top step rather than being a number of its own.
-- The fine screen measures **its own radii**: a rasterised dot does not
-  cover quite the area its radius asks for, so each radius is drawn on a
-  cell-sized canvas, read back, and corrected until the ink it lays down is
-  the share the tone asked for.
-
-The same tone therefore inks the same share of a cell in each panel, which
-is what makes the hero's characters and the footer's dots read as one style
-rather than two textures. Measured on the shipped page: over the same area
-of the same picture the two panels differ by 1–2% of light share.
+Craft move: **each screen measures its own marks.** A rasterised dot does
+not cover quite the area its radius asks for, and a canvas rasterises a
+glyph about a third heavier than the DOM does — so the fine screen draws
+each radius on a cell-sized canvas, reads it back and corrects it, and the
+coarse screen measures its ladder of characters the same way. The ceiling is
+shared; the measurement is local, because the medium that prints a mark is
+the only thing that can say what it prints.
 
 Rules:
-- One plate, one style: hero = characters, footer = dots. No variant switch.
+- One model, two screens: hero = dots, footer = characters. No variant
+  switch, no second design.
 - No chroma, no gradient fills, no shadow depth.
-- The plate is painted once per resize and never animated, so reduced motion
-  changes nothing about it.
+- Reduced motion gets one still frame: the wave at rest, the water caught
+  mid-slosh. Nothing may put either screen back in motion.
 - The artwork is decorative — a real `<h1>` carries the name for assistive
   technology.
 - The footer's surface is painted with `--foreground`, so its type follows
   `--background` and the whole panel inverts with the theme. The hero is
   painted black outright and keeps fixed white.
+- A screen that is off the page stops: neither of them runs a loop the
+  reader cannot see.
+
+## Home hero + footer — one halftone plate, two screens (2026-10-19, superseded)
+
+The landing hero and the closing footer carried one black-and-white
+treatment: a single continuous-tone picture — a disc of light in the
+top-right corner — printed twice, on a coarse screen of characters in the
+hero and a fine screen of dots in the footer. The two screens were
+calibrated by cell coverage, and the calibration was measured at both ends.
+
+That treatment is superseded by the two screens above, which keep its
+calibration and its knock-out, and give each panel a subject that moves.
+The wordmark, the copy, the tokens and the reserve model are unchanged.

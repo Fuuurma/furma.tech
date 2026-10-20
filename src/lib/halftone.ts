@@ -1,33 +1,26 @@
 /**
- * One halftone plate, printed at two screen frequencies.
+ * The house screen: a lattice, a rule, and a ceiling.
  *
- * The landing hero and the closing footer are not two decorations that happen
- * to share a colour. They are the same plate seen twice: one continuous-tone
- * picture, read by two screens of different fineness.
+ * A screen is a lattice and a rule. The lattice is where the marks sit; the
+ * rule says how much ink a mark carries at a given tone. Everything on this
+ * page that prints — the wave in the hero, the water in the footer — is a
+ * tone field fed through the same rule, which is what keeps two very
+ * different pictures reading as one style.
  *
- * A printed sheet has always carried two screens for one image — a coarse
- * one for the picture, a fine one for the type beside it. That is the whole
- * idea here: `AsciiScreen` is the coarse screen, `DitherScreen` is the fine
- * one, and both read the tone field below. Change the field and the whole
- * page moves together.
+ * The rule is deliberately about **coverage**: the share of its cell a mark
+ * covers. It is not about brightness, because brightness is a property of the
+ * ink and the paper, and the paper here is always the page's own.
  *
- * The two screens share one model, and that is what makes them one style
- * rather than two: **every cell of the picture carries a mark, and the mark
- * is sized by the tone under it.** The coarse screen's mark is a character
- * from a density ladder measured off the face in use; the fine screen's mark
- * is a round dot whose area is the share of its cell the tone asks for. Both
- * are held to the same ceiling, so the same tone prints the same weight of
- * paper in either panel — the hero in characters, the footer in dots.
- *
- * Everything here is deterministic and static. The plate is painted once per
- * resize, so it costs nothing to animate nothing.
+ * The ceiling is the page's constant. No mark on this page covers more than
+ * `INK_CEILING` of its cell, so the coarsest screen and the finest screen
+ * print the same weight of paper.
  */
 
 /** A fixed threshold pattern. Each cell states the tone the source must
  *  exceed before that cell takes ink. */
 export type BayerMatrix = readonly (readonly number[])[];
 
-/** 8×8 Bayer threshold matrix, values 0..63. The coarse screen's matrix. */
+/** 8×8 Bayer threshold matrix, values 0..63. The house's ordered dither. */
 export const BAYER_8: BayerMatrix = [
   [0, 32, 8, 40, 2, 34, 10, 42],
   [48, 16, 56, 24, 50, 18, 58, 26],
@@ -54,201 +47,189 @@ export function bayerThreshold(
 }
 
 /**
- * The coarse screen's density ladder.
+ * The share of a cell a mark may cover at its darkest.
  *
- * These are the marks the screen is allowed to print, lightest first. Their
- * ink shares are **measured** rather than guessed — a glyph's share of its
- * cell is a property of the typeface, the size and the tracking, and a
- * guessed table puts the ladder out of order (`-` inks less than `.` in
- * JetBrains Mono, and `=` inks twice what a guess says).
+ * This is the page's ink ceiling, and it is a measured number rather than a
+ * taste decision. It was read off the rendered page — the browser's own text,
+ * in the face and the cell the design ships with — where the heaviest mark
+ * covers 21.9% of its cell.
  *
- * The ladder is the same job a halftone does with dots of graded diameter,
- * and it is the calibration between the two screens: a coarse screen of
- * characters and a fine screen of dots only carry the same tone if both cover
- * the same share of their cell.
+ * Both screens are held to it. The fine screen reaches it with a dot whose
+ * area is the share the tone asks for; the coarse screen reaches it with the
+ * heaviest character it is allowed to print. Same tone, same weight of
+ * paper, two screen frequencies.
  */
-export const ASCII_GLYPHS = [
-  " ",
-  ".",
-  "-",
-  ":",
-  "=",
-  "+",
-  "*",
-  "#",
-  "%",
-  "@",
-] as const;
-
-/** One step of the density ladder: a mark and the share of its cell it inks. */
-export interface RampStep {
-  glyph: string;
-  coverage: number;
-}
-
-/**
- * What each mark really inks of its cell, as the browser prints it.
- *
- * These are measured from the *rendered page* — the browser's own text, in
- * the face and the cell the design ships with (JetBrains Mono, 11px on a 12px
- * line, 2.4px of tracking, in a 9 × 12 px cell). They cannot be measured in a
- * canvas: a canvas rasterises the same glyph about a third heavier than the
- * DOM does, so a canvas measurement of `@` reads 0.30 where the page prints
- * 0.22, and a ladder built from it makes the two screens disagree by exactly
- * that much. The numbers here are the page's own.
- *
- * The order is the measured order, not the assumed one: `=` inks *less* than
- * `+`, and `.` inks less than `-`.
- */
-export const ASCII_COVERAGE: Readonly<Record<string, number>> = {
-  " ": 0,
-  ".": 0.0225,
-  "-": 0.0286,
-  ":": 0.0405,
-  "=": 0.0771,
-  "+": 0.0805,
-  "*": 0.1055,
-  "#": 0.1663,
-  "%": 0.1811,
-  "@": 0.2189,
-};
-
-/**
- * The density ladder, lightest mark first.
- *
- * The ladder only works if it climbs: a mark that inks less than the one
- * before it would print as a step backwards.
- */
-export const ASCII_RAMP: readonly RampStep[] = ASCII_GLYPHS.map((glyph) => ({
-  glyph,
-  coverage: ASCII_COVERAGE[glyph] ?? 0,
-})).sort((a, b) => a.coverage - b.coverage);
-
-/**
- * The share of a cell the plate may cover at its darkest.
- *
- * This is the ceiling for both screens, and it is the ladder's own top step
- * rather than a number of its own: the character screen reaches it with the
- * ladder's last mark, and the dot screen reaches it with a dot that covers
- * that share of its cell. Same tone, same weight, two screens.
- */
-export const PLATE_PEAK = ASCII_RAMP[ASCII_RAMP.length - 1].coverage;
-
-/**
- * Where the plate's mass sits, in normalised panel space.
- *
- * The plate is anchored to the top-right corner of the hero and the footer
- * alike, so the picture reads as continuous down the page: the same form,
- * resolved by a coarse screen at the top of the sheet and a fine one at the
- * bottom.
- */
-const PLATE = {
-  /** Radius, as a share of the panel's height. */
-  r: 0.22,
-  /** The clear space the type keeps around itself, in panel pixels. */
-  clearance: 36,
-};
-
-/**
- * The plate: a continuous tone field, 0 (paper) to 1 (full ink).
- *
- * `u` runs across the panel, `v` down it, both 0..1; `width` and `height` are
- * the panel's size in pixels, so the disc stays round whatever the viewport.
- *
- * The subject is a disc of light with a soft, slightly uneven rim — dense at
- * the core and dissolving at the edge, the way a photograph falls off around
- * a lit form. The rim carries a slow wave so the edge looks drawn rather
- * than computed.
- *
- * The disc sits in the panel's top-right corner. Its size follows the clear
- * band above the first block of type that reaches into that corner: where
- * the panel is roomy the disc is large, and where the type fills the panel
- * it shrinks to a mark rather than disappearing under the words.
- *
- * The same function draws the character screen and the dot screen. Only the
- * resolution and the ink change.
- */
-export function plateTone(
-  u: number,
-  v: number,
-  width: number,
-  height: number,
-  reserves: PlateReserve[] = [],
-): number {
-  const base = Math.min(PLATE.r * height, PLATE.r * width * 1.25);
-  if (base <= 0) return 0;
-
-  // The first type that reaches into the corner decides the clear band.
-  const corner = width - base * 0.86;
-  const band = reserves.reduce((top, reserve) => {
-    const reaches = reserve.x + reserve.width + PLATE.clearance > corner;
-    if (!reaches) return top;
-    return Math.min(top, Math.max(0, reserve.y - PLATE.clearance));
-  }, height);
-
-  const radius = Math.min(base, band / 0.62);
-  if (radius <= 0) return 0;
-
-  const centreX = width - radius * 0.86;
-  // Where the panel is roomy the disc sits high in the corner; where the
-  // type fills it, the disc settles into the clear band and is cropped by
-  // the edge of the sheet.
-  const centreY =
-    radius < base ? band / 2 : radius * 0.84;
-
-  const dx = u * width - centreX;
-  const dy = v * height - centreY;
-  const distance = Math.hypot(dx, dy) / radius;
-  if (distance >= 1) return 0;
-
-  // A slow wave on the radius keeps the rim from reading as a computed arc.
-  const angle = Math.atan2(dy, dx);
-  const wobble =
-    1 +
-    0.05 * Math.sin(angle * 3 + 1.2) +
-    0.025 * Math.sin(angle * 5 - 0.4);
-
-  return Math.pow(1 - Math.min(1, distance * wobble), 1.7);
-}
-
-/**
- * Resolve a coverage to a mark on the ladder, dithering between two
- * neighbouring steps with an ordered threshold so the gradation stays smooth
- * instead of banding into visible steps.
- */
-export function asciiCell(coverage: number, threshold: number): string {
-  if (ASCII_RAMP.length === 0) return " ";
-
-  let level = 0;
-  for (let i = 0; i < ASCII_RAMP.length; i++) {
-    if (ASCII_RAMP[i].coverage <= coverage) level = i;
-  }
-
-  const next = Math.min(ASCII_RAMP.length - 1, level + 1);
-  const low = ASCII_RAMP[level].coverage;
-  const high = ASCII_RAMP[next].coverage;
-  const span = high - low;
-  const blend = span > 0 ? (coverage - low) / span : 0;
-
-  const index = blend > threshold ? next : level;
-  return ASCII_RAMP[index].glyph;
-}
+export const INK_CEILING = 0.2189;
 
 /**
  * The radius of a dot that covers a given share of its cell.
  *
  * The fine screen's mark is a round dot, so the share of the cell it covers
  * is the dot's area over the cell's area, and the radius follows from there.
- * A dot of this radius prints the same weight of paper as the coarse
- * screen's mark of the same coverage — which is the whole calibration
- * between the two screens.
  */
 export function dotRadius(share: number, cell: number): number {
   return Math.sqrt((share * cell * cell) / Math.PI);
 }
 
+/**
+ * The radii that lay down a given share of a cell.
+ *
+ * A dot's *area* is what carries the tone, and a rasterised dot does not
+ * cover quite the area its radius asks for — a small circle loses a slice of
+ * itself to the pixel grid, so a dot drawn for a fifth of its cell lays down
+ * nearer a sixth. The radii are therefore measured, not assumed: each one is
+ * drawn on a cell-sized canvas, read back, and corrected until the ink it
+ * lays down is the share the tone asked for.
+ *
+ * This is the one calibration the page can make for itself, because the fine
+ * screen paints into a canvas and a canvas can be read back. The coarse
+ * screen's marks are drawn the same way, so its ladder is measured in the
+ * medium that prints it — see `measureGlyphCoverage`.
+ */
+export function measureDotRadii(
+  cellPx: number,
+  levels: number,
+  ceiling: number = INK_CEILING,
+): number[] {
+  const radii = new Array<number>(levels + 1).fill(0);
+  const size = Math.max(1, Math.ceil(cellPx));
+
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  if (!context) return radii;
+
+  for (let level = 1; level <= levels; level++) {
+    const share = (level / levels) * ceiling;
+    let radius = dotRadius(share, size);
+
+    for (let pass = 0; pass < 3; pass++) {
+      context.clearRect(0, 0, size, size);
+      context.fillStyle = "#fff";
+      context.beginPath();
+      context.arc(size / 2, size / 2, radius, 0, Math.PI * 2);
+      context.fill();
+
+      const pixels = context.getImageData(0, 0, size, size).data;
+      let ink = 0;
+      for (let i = 3; i < pixels.length; i += 4) ink += pixels[i] / 255;
+      const realised = ink / (size * size);
+      if (realised <= 0) break;
+
+      const correction = Math.sqrt(share / realised);
+      radius *= correction;
+      if (Math.abs(correction - 1) < 0.002) break;
+    }
+
+    radii[level] = radius;
+  }
+
+  return radii;
+}
+
+/**
+ * The level a share of ink falls on, dithered against an ordered threshold.
+ *
+ * The lattice of levels is the tone scale of the screen: level 0 is paper,
+ * the top level is the ceiling. A tone that lands between two levels is
+ * printed as one or the other, and the ordered threshold decides which —
+ * so a smooth gradient breaks into the ordered dots of a dither instead of
+ * banding into visible steps.
+ */
+export function ditherLevel(
+  share: number,
+  levels: number,
+  threshold: number,
+): number {
+  if (levels <= 0) return 0;
+  const exact = Math.min(levels, Math.max(0, share * levels));
+  const low = Math.floor(exact);
+  const high = Math.min(levels, low + 1);
+  return exact - low > threshold ? high : low;
+}
+
+/**
+ * The share of its cell each glyph inks, measured in the medium that prints
+ * it.
+ *
+ * A glyph's weight is a property of the typeface, the size and the tracking —
+ * and of the printer. The same face prints a third heavier in a canvas than
+ * it does in the DOM, so a ladder measured in one medium and used in the
+ * other prints the wrong weight by exactly that much.
+ *
+ * The coarse screen paints into a canvas, so it measures itself the way the
+ * fine screen measures its own radii: draw each glyph on a cell-sized canvas,
+ * read it back, and count the ink. The table that comes back is the face's,
+ * as this browser prints it.
+ */
+export function measureGlyphCoverage(
+  font: string,
+  cellWidth: number,
+  cellHeight: number,
+  glyphs: readonly string[],
+): number[] {
+  const width = Math.max(1, Math.ceil(cellWidth));
+  const height = Math.max(1, Math.ceil(cellHeight));
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  if (!context) return glyphs.map(() => 0);
+
+  context.font = font;
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+
+  const coverage: number[] = [];
+  for (const glyph of glyphs) {
+    context.clearRect(0, 0, width, height);
+    context.fillStyle = "#fff";
+    context.fillText(glyph, width / 2, height / 2);
+    const pixels = context.getImageData(0, 0, width, height).data;
+    let ink = 0;
+    for (let i = 3; i < pixels.length; i += 4) ink += pixels[i] / 255;
+    coverage.push(ink / (width * height));
+  }
+
+  return coverage;
+}
+
+/**
+ * The step of a ramp a tone falls on, dithered against an ordered threshold.
+ *
+ * A ramp is an ordered set of marks and the share of a cell each one inks.
+ * A tone that lands between two marks is printed as one or the other, and
+ * the ordered threshold decides which — so a smooth gradient breaks into the
+ * ordered dots of a dither instead of banding into visible steps.
+ *
+ * The ramp must climb: a mark that inks less than the one before it would
+ * print as a step backwards.
+ */
+export function ditherRamp(
+  ramp: readonly { coverage: number }[],
+  target: number,
+  threshold: number,
+): number {
+  if (ramp.length === 0) return 0;
+
+  let level = 0;
+  for (let index = 0; index < ramp.length; index++) {
+    if (ramp[index].coverage <= target) level = index;
+  }
+
+  const next = Math.min(ramp.length - 1, level + 1);
+  const low = ramp[level].coverage;
+  const high = ramp[next].coverage;
+  const span = high - low;
+  const blend = span > 0 ? (target - low) / span : 0;
+
+  return blend > threshold ? next : level;
+}
+
 /** A rectangle on the panel that the ink must not touch. */
-export interface PlateReserve {
+export interface ScreenReserve {
   x: number;
   y: number;
   width: number;
@@ -258,15 +239,15 @@ export interface PlateReserve {
 }
 
 /**
- * How much ink survives at a point, given the blocks of type on the plate.
+ * How much ink survives at a point, given the blocks of type on the panel.
  *
  * The type knocks a soft hole out of the ink rather than a hard rectangle —
  * the way type reverses out of a screened block on a printed sheet. The whole
  * of the block is cleared, and the ink eases back over the margin around it,
  * so type always sits on clean ground with the texture flowing back into it.
  */
-export function plateReserve(
-  reserves: PlateReserve[],
+export function screenReserve(
+  reserves: ScreenReserve[],
   x: number,
   y: number,
 ): number {
