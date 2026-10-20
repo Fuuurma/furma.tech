@@ -1,6 +1,6 @@
 "use client";
 
-import type { PlateReserve } from "@/lib/halftone";
+import type { ScreenReserve } from "@/lib/halftone";
 
 /**
  * Read the blocks of type on a panel, so the plate's ink can be kept off
@@ -39,9 +39,9 @@ function boxesFor(element: HTMLElement): DOMRect[] {
   return rects;
 }
 
-export function readReserves(surface: HTMLElement): PlateReserve[] {
+export function readReserves(surface: HTMLElement): ScreenReserve[] {
   const surfaceRect = surface.getBoundingClientRect();
-  const reserves: PlateReserve[] = [];
+  const reserves: ScreenReserve[] = [];
 
   for (const element of surface.querySelectorAll<HTMLElement>(
     "[data-screen-reserve]",

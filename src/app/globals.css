@@ -2048,33 +2048,26 @@ a.studio-chrome__view-link:hover {
 }
 
 
-/* ─── The home plate: one halftone, printed at two screen frequencies ───
-   The hero resolves the plate on a coarse screen of characters, the footer
-   on a fine screen of dots. Both are decorative, so the artwork carries no
-   meaning for assistive technology — the real headings stay in the DOM. */
+/* ─── The home screens ───
+   The hero prints a wave on a fine screen of dots; the footer holds a body
+   of water printed in characters. Both are decorative, so the artwork carries
+   no meaning for assistive technology — the real headings stay in the DOM.
+   The water is stirred by the pointer, so it listens on the panel itself and
+   the canvas above it stays out of the way. */
 
-.ascii-screen {
+.dither-wave,
+.liquid-ascii {
   position: absolute;
   inset: 0;
   z-index: 0;
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  line-height: 12px;
-  letter-spacing: 2.4px;
-  color: #fff;
-  white-space: pre;
   overflow: hidden;
   pointer-events: none;
   user-select: none;
 }
 
-.dither-screen {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+.dither-wave__canvas,
+.liquid-ascii__canvas {
+  display: block;
   width: 100%;
   height: 100%;
-  pointer-events: none;
 }
