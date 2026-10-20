@@ -36,6 +36,10 @@ public face until a deliberate cutover.
   and it is a theme, not a hue on the page
 - The hero carries no scroll cue — no label, no rule. The wave is the cue.
 - The footer's water has a band of its own; the type is set on clean paper
+- The screens answer the hand — hover, drag, hold, release — and everything
+  the hand writes is printed through the same ordered threshold and ink
+  ceiling as the picture: printed, never glowed. Reduced motion has no hand
+  at all.
 - The water keeps its volume. A body of water that drains is a puddle
 - The footer is the site's, not a page's: one component, one plate. The home
   closes on it; the pages in the flow carry it
@@ -44,6 +48,94 @@ public face until a deliberate cutover.
 - The shot fills its mount. A picture shown as a thumbnail inside a frame is
   a caption with a picture attached
 - Invoke `design-arsenal` + `impeccable` on UI passes
+
+## The hand — the screens answer the reader (2026-10-21)
+
+The brief: the hero is good; let the reader interact with the ASCII and the
+dither — hover, click, drag — more fluid, even abstract forms. "The two
+initial lobes are nice, but the user can modify them with actions." Same for
+the footer, a hero on the portfolio page, and the same idea on other sections.
+
+**1. One hand, two screens.** `src/lib/ink-field.ts` is the field the reader
+writes into: a coarse grid of ink, a flow that carries it, and a push that
+leans the picture. It is a tone field like the wave and the water, so the
+hero's dots and the footer's characters print it through the same ordered
+threshold and ink ceiling. It has no DOM and no randomness; the same hand on
+the same screen prints the same thing.
+
+| Gesture | The screen |
+|---|---|
+| hover | a faint wake that fades in under a second; the picture leans |
+| drag | a stroke that is carried by the hand's own motion and lingers ~2 s |
+| hold | a metaball with three satellites swells under the hand |
+| release | a form — ring, square, diamond, plus, lens, triangle — opens from the hand, echoed inside itself, and fades. A click is a hold of no length: a small form |
+
+The repertoire cycles with every throw, so the screen has six forms and no
+dice. A drag throws none: the ink it laid is its mark.
+
+**2. The lobes are things you can take.** `src/lib/lobes.ts`. A hover leans a
+lobe toward the hand and a drag that starts inside one takes it; the lobe
+follows the hand, swells, and on release swings back past its corner on an
+underdamped spring and settles inside six seconds. A strike near a lobe
+knocks it away. A press that has not moved is a click and does not take a
+lobe. The bottom-left lobe still prints the top-right lobe's field, mirrored:
+one plate, printed twice.
+
+**3. The footer's water gathers.** A held hand lifts the water into a mound
+under it, deeper the longer it rests, and the release lets it go as a wave.
+The hand's ink is printed over the water in characters. The band is taller
+(30% of the panel, 190–360px; 240–320px in a page's flow) because a form
+needs room to open. Volume drift stays inside the 0.2% the water is held to.
+
+**4. The portfolio page has a hero again.** The previous pass removed the
+intro and left an `sr-only` heading; the owner asked for a hero. It is the
+home's black plate with a *tide* — light that rises from the foot of the
+panel, its crest a slow swell of two waves — and a visible `<h1>`, set large.
+The type sits in the top half and the tide owns the bottom half: the hand
+needs open ground, and a headline set over the tide would knock the light out
+around itself. The page now begins in a wave and ends in water.
+
+**5. Other sections.** `DitherWave` has three compositions: `corners` (the
+home), `horizon` (the portfolio's tide) and `field`, a quiet ground at low
+gain where only the wave's crests carry ink. The home's portfolio-index slide
+uses `field`, printed in the page's own paper and ink so it follows the theme.
+
+References (with why):
+- **Bencho Lab's ASCII wake** — the characters are the water, so a hand in the
+  water is a hand in the characters. The footer's ink is characters.
+- **Pavel Dobryakov's WebGL fluid** — the hand's motion carries the ink. A
+  drag swirls rather than smears because the flow is the hand's own velocity.
+- **Lucas Pope's ordered dither (*Return of the Obra Dinn*)** — the threshold
+  stays fixed while the tone moves, so interaction reads as print, not glow.
+
+Craft move: **the hand leaves a mark, and the mark ages.** Every gesture
+deposits into a field that decays, and every field is printed through the
+house screen. Nothing the reader does introduces a second visual language.
+
+Catalog pick: **no library.** The engine is ~700 lines of house code, and the
+licensed Liquid ASCII / Dither Wave prop APIs are unchanged: `interactive`,
+`composition` and `ink` are house additions.
+
+Rules:
+- The hand's ink goes through `screenReserve`: it keeps off the type like the
+  wave does. A press that starts on a link or a button belongs to the link.
+- A press suppresses text selection for its length, so a drag draws and does
+  not select the words it passes over. Touch scrolls vertically and draws
+  horizontally (`touch-action: pan-y`).
+- Reduced motion binds no pointer and runs no field: the screens are the
+  still frame they already were.
+- `cursor: crosshair` is the only invitation. The hero carries no label.
+
+Smoke (Playwright, 1440×900 and 390×844 touch, light and dark; `/` and
+`/portfolio`): no console errors on any of the eight; 0 chroma pixels on the
+first screen of each; the page does not scroll sideways at 1440; a drag
+changes ~53,000 px on the home hero and ~33,000 px on the portfolio tide; the
+wheel still scrolls the page over the portfolio hero; the home's "See
+projects" still navigates; under `prefers-reduced-motion` the screens are
+identical 900 ms apart and a drag plus a click change nothing; the rAF
+interval under a drag is p50 13 ms / p95 26 ms in software-rendered headless
+Chromium. 66/66 tests (ink field 8, lobes 12, water 8), typecheck clean,
+lint clean, build clean.
 
 ## The index is the width of the screen (2026-10-20)
 
@@ -68,7 +160,8 @@ to edge, and the rows keep the page's margin inside them. The order is
 untouched — the ten projects still read top to bottom, which is the order
 the work wants and the one the eye already knows.
 
-**3. The page has no headline.** The intro block ("Portfolio / Index 00 / 10
+**3. The page has no headline.** *(Superseded 2026-10-21 by "The hand" above: the
+index now opens on a hero with a visible `<h1>`.)* The intro block ("Portfolio / Index 00 / 10
 products / Bootstrapped from Sitges…") is gone. It was a caption for the
 list, and the list is the page. The heading survives as `sr-only`, so the
 page still names itself to a reader who arrives by search or by a link, and
