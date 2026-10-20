@@ -71,7 +71,10 @@ export default function TicTacToePage() {
           description="Place. Vanish. Adapt. The classic board with a strategic twist."
         />
         <div className="border border-foreground/10 bg-background p-12 md:p-16 flex flex-col items-center justify-center gap-4">
-          <p className="font-sans text-[clamp(64px,12vw,120px)] font-medium tracking-[-0.04em] leading-none text-foreground/15">
+          <p
+            className="font-sans text-[clamp(64px,12vw,120px)] font-medium tracking-[-0.04em] leading-none text-foreground/15"
+            aria-hidden="true"
+          >
             3×3
           </p>
           <p className="plastic-label">Vanishing grid</p>

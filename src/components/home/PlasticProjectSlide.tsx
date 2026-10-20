@@ -75,7 +75,7 @@ function ProjectMeta({
         <p className="plastic-label">{project.category}</p>
         <p className="plastic-label mt-3">
           Index <span className="text-foreground">{indexLabel}</span>
-          <span className="text-foreground/30"> / {total}</span>
+          <span className="text-foreground/60"> / {total}</span>
         </p>
       </div>
       <p className="plastic-label">{project.status}</p>
@@ -219,7 +219,7 @@ function LayoutVisualHeavy(props: LayoutProps) {
               />
               <p className="plastic-label md:hidden mt-2">
                 {project.category}
-                <span className="text-foreground/30"> · </span>
+                <span className="text-foreground/60"> · </span>
                 {project.status}
               </p>
             </div>
@@ -279,7 +279,7 @@ function LayoutOverlay(props: LayoutProps) {
             />
             <p className="plastic-label plastic-label--inverse md:hidden">
               {project.category}
-              <span className="text-white/30"> · </span>
+              <span className="text-white/60"> · </span>
               {project.status}
             </p>
           </SlideReveal>

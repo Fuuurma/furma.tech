@@ -24,7 +24,96 @@ public face until a deliberate cutover.
 - Tokens only; hairlines; reduced-motion
 - Inverse surfaces own their text colour (`--inverse` tokens, not
   `text-white` utilities — the unlayered `plastic-*` rules win otherwise)
+- The chrome's type is the ladder: `--text-label` / `--text-meta` /
+  `--text-small` / `--text-body`. No other small size, in CSS or in a
+  Tailwind arbitrary value.
+- No text below 55% of the opposite colour. No text below 60% of the
+  theme's foreground, because that colour has to clear both surfaces.
 - Invoke `design-arsenal` + `impeccable` on UI passes
+
+## The v1 pages — one type ladder, and a legible smallest step (2026-10-20)
+
+The chrome's small type carried ten sizes between 8px and 17px — 8, 9, 10,
+10.4, 11, 12, 13, 14, 16 and 17 — most of them a pixel apart, and two of them
+below the floor a label can be read at. The house measure tool named sixteen
+runs of 9px on `/portfolio` alone. It is now four steps:
+
+| step | size | the job |
+|---|---|---|
+| `--text-label` | 10px | the mono meta label — the house's smallest mark |
+| `--text-meta` | 11px | small meta, links, CTAs, form fields |
+| `--text-small` | 13px | the smallest step still read as text |
+| `--text-body` | 15px | small body copy |
+
+They live in one `@theme` block, so the `text-label` / `text-meta` /
+`text-small` / `text-body` utilities reference the token rather than freezing
+its value at build time. Every one of the 27 hardcoded small sizes in
+`globals.css` and all 75 arbitrary Tailwind sizes in the v1 house files now
+come from the ladder. Measured on the rendered pages: **the smallest chrome
+type is 10px, and there is no sub-10px chrome text on any v1 page, at
+1440×900 or 390×844.** The only text left below 10px is inside the product
+artifacts — a mockup's own labels, which belong to the picture.
+
+**The merge had to be taught.** tailwind-merge reads any `text-*` class it
+does not recognise as a *colour*, so `text-meta` and `text-background` landed
+in the same group and the earlier one was dropped: the size silently
+disappeared from every element that also set a text colour, and the element
+fell back to the browser's 16px. The contact form's submit button was one —
+it said 16px where it said 11px. `src/lib/utils.ts` now extends the merge
+with the four steps, and a test holds it there.
+
+**The smallest step has to be legible.** The band that was left had run down
+into the floor: the slide separators were at 30% of the foreground (2.12:1 on
+white), the portfolio's feature tags at 45% (3.36:1), the footer's dim
+labels at 40% of white on black (3.66:1), the hero's scroll marker at 50%
+(3.98:1). All of them are now at 55–60% of the opposite colour, which clears
+4.5:1 on a black ground and on a white one — the floors are written into the
+tests, because a surface that inverts with the theme has to clear both.
+
+The inverse ladder got the same treatment. The three inverse steps were 55%,
+40% and 30% of the opposite colour, and the lower two failed AA on either
+ground; they are now 65%, 60% and 55%, the same three steps the page's own
+surface uses. The one thing allowed to go lower is the ghost numeral on
+tic-tac-toe, and only because it says `aria-hidden` and repeats the heading
+beside it.
+
+References (with why):
+- **Vignelli's Unigrid** — a system of very few steps, each with exactly one
+  job, used without exception. Why: the ladder's four steps replace a dozen,
+  and every one of them has a single job. A size that does two jobs is two
+  sizes wearing one coat.
+- **Jan Tschichold's "Die neue Typographie"** (1928) — hierarchy built from a
+  scale rather than from decoration; the typographic architect sets the order
+  of the page in type sizes before anything else is chosen. Why: the page's
+  hierarchy is a ladder, and the sizes now say which thing outranks which.
+- **WCAG 2.2 SC 1.4.3 and 1.4.11** — 4.5:1 for text, 3:1 for a meaningful
+  graphic. Why: the smallest step is where the contract bites, and the
+  floors are written down so the next pass does not have to rediscover them.
+
+Craft move: **one mark, one weight.** The meta label is now a single pair —
+10px at 62% of the foreground — and it is the same mark in the nav, on the
+slides, in the portfolio's tags and in the footer. Before, the same label
+appeared at four different sizes and four different opacities in four
+different places, so the page's smallest type read as a set of near-misses
+rather than as a register.
+
+Catalog pick: **no library.** The ladder is four custom properties in the
+stylesheet's own `@theme` block, and the utilities come from Tailwind's
+existing `text-*` namespace. The one thing the pass had to reach for was
+tailwind-merge's own configuration API — the merge had to be taught the four
+steps, and that is the choice that made the difference.
+
+Rules:
+- The ladder is the only source of a small size. A size that is not on the
+  ladder is a bug, in the stylesheet and in a Tailwind arbitrary value.
+- The ladder is declared once, in `@theme`, so a utility and a rule can
+  never disagree about what a step is.
+- `cn()` has to know the four steps are sizes, not colours.
+- No text below 55% of the opposite colour; no text below 60% of the
+  theme's foreground.
+- The shadcn floor in `src/components/ui/` and the `/v2` concept are their
+  own contexts and are not on the ladder. The floor is the floor; `/v2` is
+  a different design and will be cut over deliberately.
 
 ## The v1 pages — one neutral mount (2026-10-20)
 

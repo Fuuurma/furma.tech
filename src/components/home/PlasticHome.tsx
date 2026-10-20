@@ -121,7 +121,7 @@ function HeroSlide({
         <LetterSpacedTitle text="furma.tech" />
         <p
           className={cn(
-            "mt-10 font-sans text-[11px] uppercase tracking-[0.2em] plastic-label--inverse",
+            "mt-10 font-sans text-meta uppercase tracking-[0.2em] plastic-label--inverse",
             !reduceMotion && "opacity-0 animate-fade-up",
           )}
           style={
@@ -174,7 +174,7 @@ function HeroSlide({
           style={{ animationDelay: "2s", animationFillMode: "forwards" }}
           aria-hidden="true"
         >
-          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/50">
+          <span className="font-mono text-label uppercase tracking-[0.3em] text-white/60">
             Scroll
           </span>
           <span className="block w-px h-8 bg-white/40 animate-pulse" />
@@ -362,7 +362,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                       rel={
                         label === "GitHub" ? "noopener noreferrer" : undefined
                       }
-                      className="text-[14px] text-foreground border-b border-foreground/20 pb-0.5 hover:border-foreground transition-colors"
+                      className="text-body text-foreground border-b border-foreground/20 pb-0.5 hover:border-foreground transition-colors"
                     >
                       {text}
                     </a>
@@ -416,7 +416,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                       placeholder={f.placeholder}
                       autoComplete={f.autoComplete}
                       className={cn(
-                        "plastic-field w-full border-b bg-transparent pb-2.5 pt-1 font-mono text-[13px] text-foreground placeholder:text-foreground/35 outline-none transition-colors",
+                        "plastic-field w-full border-b bg-transparent pb-2.5 pt-1 font-mono text-small text-foreground placeholder:text-foreground/60 outline-none transition-colors",
                         hasError
                           ? "border-foreground plastic-field--invalid"
                           : "border-foreground/25 focus-visible:border-foreground",
@@ -444,7 +444,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                   rows={3}
                   placeholder="Tell us what you're building…"
                   className={cn(
-                    "plastic-field w-full resize-none border-b bg-transparent pb-2.5 pt-1 font-mono text-[13px] text-foreground placeholder:text-foreground/35 outline-none transition-colors",
+                    "plastic-field w-full resize-none border-b bg-transparent pb-2.5 pt-1 font-mono text-small text-foreground placeholder:text-foreground/60 outline-none transition-colors",
                     fieldErrors.message
                       ? "border-foreground plastic-field--invalid"
                       : "border-foreground/25 focus-visible:border-foreground",
@@ -473,7 +473,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                 aria-live="polite"
                 tabIndex={-1}
                 className={cn(
-                  "font-mono text-[11px] uppercase tracking-[0.12em] outline-none min-h-[1.25rem]",
+                  "font-mono text-meta uppercase tracking-[0.12em] outline-none min-h-[1.25rem]",
                   status === "idle"
                     ? "sr-only"
                     : status === "error"
@@ -493,7 +493,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                 type="submit"
                 disabled={fieldsLocked}
                 className={cn(
-                  "plastic-submit h-12 w-full font-mono text-[11px] uppercase tracking-[0.12em] transition-opacity duration-300",
+                  "plastic-submit h-12 w-full font-mono text-meta uppercase tracking-[0.12em] transition-opacity duration-300",
                   status === "sent"
                     ? "bg-foreground/80 text-background"
                     : "bg-foreground text-background hover:opacity-80",
@@ -565,7 +565,7 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
                   reserve
                 />
                 <p
-                  className="font-sans text-[14px] text-background/50 max-w-sm leading-relaxed"
+                  className="font-sans text-body text-background/50 max-w-sm leading-relaxed"
                   data-screen-reserve
                 >
                   Venture studio for industry SaaS and autonomous AI ecosystems.
@@ -581,7 +581,7 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
                 </p>
                 <a
                   href="mailto:hello@furma.tech"
-                  className="text-[17px] font-medium text-background hover:opacity-60 transition-opacity block"
+                  className="text-body font-medium text-background hover:opacity-60 transition-opacity block"
                   data-screen-reserve
                 >
                   hello@furma.tech
@@ -625,7 +625,7 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
                   <Link
                     key={p.id}
                     href={p.href}
-                    className="text-[15px] font-medium text-background hover:opacity-50 transition-opacity"
+                    className="text-body font-medium text-background hover:opacity-50 transition-opacity"
                     data-screen-reserve
                   >
                     {p.name}
