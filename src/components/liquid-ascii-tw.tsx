@@ -445,14 +445,21 @@ export function LiquidAscii({
 
       for (let row = 0; row < rows; row++) {
         for (let column = 0; column < columns; column++) {
-          const value = tone[row * columns + column];
-          if (value <= 0.002) continue;
-
           const x = column * cellWidth;
           const y = row * cellHeight;
-          if (screenReserve(reserves, x + cellWidth / 2, y + cellHeight / 2) <= 0) {
-            continue;
-          }
+
+          // The type knocks a soft hole out of the water, and the water
+          // eases back into it over the margin — the print idiom of type
+          // reversed out of a screened block. The hole is a *share* of the
+          // tone, not a cut-out: the cells just outside the words are the
+          // lightest, and the body of the water grows back in around them.
+          const keep = screenReserve(
+            reserves,
+            x + cellWidth / 2,
+            y + cellHeight / 2,
+          );
+          const value = tone[row * columns + column] * keep;
+          if (value <= 0.002) continue;
 
           const index = ditherRamp(
             ramp,
