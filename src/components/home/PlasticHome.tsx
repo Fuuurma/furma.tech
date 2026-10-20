@@ -23,8 +23,8 @@ import { PROJECT_HERO_MAP } from "@/lib/project-heroes";
 import { AnimatedNumber } from "@/components/motion/AnimatedNumber";
 import { SlideReveal } from "@/components/motion/SlideReveal";
 import { SplitReveal } from "@/components/motion/SplitReveal";
-import { AsciiScreen } from "@/components/home/AsciiScreen";
-import { DitherScreen } from "@/components/home/DitherScreen";
+import { DitherWave } from "@/components/dither-wave-tw";
+import { LiquidAscii } from "@/components/liquid-ascii-tw";
 import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 import {
   useSmoothSectionScroll,
@@ -104,7 +104,18 @@ function HeroSlide({
       ref={surfaceRef}
       className="h-full w-full flex flex-col bg-black text-white relative overflow-hidden"
     >
-      <AsciiScreen surfaceRef={surfaceRef} />
+      <DitherWave
+        surfaceRef={surfaceRef}
+        primaryColor="#000000"
+        secondaryColor="#ffffff"
+        tertiaryColor="#ffffff"
+        speed={0.6}
+        intensity={1}
+        scale={5}
+        downScale={0.5}
+        quality="medium"
+        maxFPS={60}
+      />
 
       <div className="flex-1 flex flex-col items-center justify-center px-6 relative">
         <LetterSpacedTitle text="furma.tech" />
@@ -511,7 +522,25 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
       ref={surfaceRef}
       className="h-full w-full flex flex-col bg-foreground text-background overflow-hidden plastic-on-dark relative"
     >
-      <DitherScreen surfaceRef={surfaceRef} />
+      <LiquidAscii
+        surfaceRef={surfaceRef}
+        color="var(--screen-ink)"
+        backgroundColor="var(--screen-paper)"
+        fontFamily="var(--font-mono)"
+        characters=" .:-=+*#%@"
+        speed={0.9}
+        cellSize={16}
+        gravity={-1400}
+        flipRatio={0.35}
+        pressureIters={24}
+        separationIters={2}
+        overRelaxation={1.4}
+        fillHeight={0.34}
+        cursorRadius={0.22}
+        cursorForce={4200}
+        autoWave
+        maxFPS={30}
+      />
 
       <div className="flex-1 flex flex-col justify-center min-h-0 relative z-10">
         <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 py-8 md:py-12">

@@ -26,22 +26,45 @@ public face until a deliberate cutover.
   `text-white` utilities — the unlayered `plastic-*` rules win otherwise)
 - Invoke `design-arsenal` + `impeccable` on UI passes
 
-## Home hero + footer — one halftone plate, two screens (2026-10-19)
+## Home hero + footer — a wave and a body of water (2026-10-20)
 
-The landing hero and the closing footer carry **one** black-and-white
-treatment. A single continuous-tone picture — a disc of light in the top-right
-corner — is resolved by an ordered Bayer threshold twice: once through a
-coarse screen of characters in the hero, once through a fine screen of dots in
-the footer.
+The landing hero and the closing footer carry two black-and-white screens,
+and they are the same kind of thing: **a tone field, printed as marks.**
 
-A printed sheet has always carried two screens for one image — a coarse one
-for the picture, a fine one for the type beside it. That is the whole idea:
-the hero and the footer are the same plate, printed at two frequencies.
+The hero prints a **wave** — a noise field, warped by a second noise field
+and ridged, so the crests catch the light and the troughs stay dark. The
+field is held to the top-right corner and falls away from it, so the page
+keeps its composition (light in one corner, quiet everywhere else) while the
+picture inside that light now moves.
 
-| Panel | Screen | Cell | Matrix |
+The footer prints a **body of water** that sloshes. A body of water is not a
+picture of water, it is a thing with mass, so the footer simulates one: a
+PIC/FLIP particle fluid on the character's own lattice, and the ASCII picture
+is the water itself rather than a caption of it. The surface of the water is
+the picture — lit from above, fading with the depth beneath it, brightened
+by the motion. The pointer stirs it.
+
+| Panel | Screen | Lattice | Ink |
 |---|---|---|---|
-| hero | characters | 9 × 12 px | Bayer 8×8 |
-| footer | dots | 4 × 4 px | Bayer 8×8 |
+| hero | dots | 7 × 7 px | the hero's fixed white on black |
+| footer | characters | the face's advance × 16 px | `--screen-ink` on `--screen-paper` |
+
+Both screens obey one rule: **a mark's area is the share of its cell the
+tone asks for**, and no mark on this page covers more than `INK_CEILING`
+(0.2189) of its cell. The hero reaches that ceiling with a dot whose area is
+graded to the tone; the footer reaches it with the heaviest character it is
+allowed to print. Measured on the rendered page, the hero's darkest dot
+covers 18.5% of its cell and the footer's heaviest character 20.3% — the
+same weight of paper, two screen frequencies.
+
+The other measure is hue. Counting the channels of the rendered page, the
+hero is neutral to the bit (0 of 4.8M pixels carry a colour) and the
+footer's panel is neutral too; the only channel difference left anywhere in
+either screen is 1/255, which is the browser's own rounding on antialiased
+edges. The dark theme's own paper is a warm off-white, and before the
+screen tokens the footer printed it verbatim — a cream panel spread over
+4.6M pixels, a difference of 5/255 that no eye would ever see and no
+measurement would let pass.
 
 The wordmark and the copy are untouched. Where the type meets the ink it
 reverses out of it — the print idiom of type knocked out of a screened block.
@@ -53,27 +76,63 @@ References (with why):
 - **chafa / libcaca tone rendering** — the same continuous tone resolved on
   a coarse grid of characters, where the character carries the tone instead
   of a pixel.
+- **Bencho Lab's ASCII wake** (vendored in `furma.bloxs-v2`) — the closest
+  precedent for the coarse screen: a grid of numbers, and a number picks a
+  character off a ramp, lightest to densest. That is the whole effect, and it
+  is the model both screens here run on — a tone field, printed as marks.
+  Its one idea that does not travel is the shimmer, where the live part of
+  the field flickers between neighbouring characters the way a terminal
+  redraws. Here the field is printed, not redrawn, so the ordered threshold
+  is the point: a random mix would turn the depth ramp into noise.
 - **Radium Coders' Evil Buttons `DitherButton`** (vendored in
-  `furma.bloxs-v2`, Apache-2.0) — a proven ordered-Bayer canvas dither on a
-  4px grid; the fine screen inherits house craft instead of a tutorial.
+  `furma.bloxs-v2`, Apache-2.0) — a proven canvas dither on a 4px grid; the
+  fine screen inherits house craft instead of a tutorial.
+- **React Bits Pro `Dither Wave` and `Liquid Ascii`** — the briefs for the
+  two screens. The components in `src/components/dither-wave-tw.tsx` and
+  `src/components/liquid-ascii-tw.tsx` carry their prop API verbatim, so the
+  licensed files can replace them without the call site changing. The
+  registry is configured in `components.json`; the key is a credential and
+  never enters the tree (`launchctl setenv REACTBITS_LICENSE_KEY <key>`,
+  then `npx shadcn@latest add @reactbits-starter/dither-wave-tw`).
 
-Craft move: the two screens are calibrated by **cell coverage**, not by
-look. The character screen's density ladder is *measured* from the face in
-use — each mark is rasterised into its cell and its ink share counted,
-alpha-weighted — so the ladder always climbs, and both screens share one
-ceiling (`PLATE_PEAK`). The same tone therefore inks the same share of a
-cell in each, which is what makes the hero's characters and the footer's
-dots read as one style rather than two textures. The two screens share the
-same threshold matrix and differ only in cell size: two screens for one
-plate.
+Craft move: **each screen measures its own marks.** A rasterised dot does
+not cover quite the area its radius asks for, and a canvas rasterises a
+glyph about a third heavier than the DOM does — so the fine screen draws
+each radius on a cell-sized canvas, reads it back and corrects it, and the
+coarse screen measures its ladder of characters the same way. The ceiling is
+shared; the measurement is local, because the medium that prints a mark is
+the only thing that can say what it prints.
 
 Rules:
-- One plate, one style: hero = characters, footer = dots. No variant switch.
+- One model, two screens: hero = dots, footer = characters. No variant
+  switch, no second design.
 - No chroma, no gradient fills, no shadow depth.
-- The plate is painted once per resize and never animated, so reduced motion
-  changes nothing about it.
+- Reduced motion gets one still frame: the wave at rest, the water caught
+  mid-slosh. Nothing may put either screen back in motion.
 - The artwork is decorative — a real `<h1>` carries the name for assistive
   technology.
-- The footer's surface is painted with `--foreground`, so its type follows
-  `--background` and the whole panel inverts with the theme. The hero is
-  painted black outright and keeps fixed white.
+- The screens print in `--screen-paper` and `--screen-ink`, not in
+  `--foreground` and `--background`. The page's tokens may carry a hue — the
+  dark theme's paper is a warm off-white — and a screen that prints a token
+  verbatim prints that hue with it, so a cream panel got into a black-and-
+  white footer. The screen tokens keep the token's lightness and drop its
+  hue, and a browser without relative colour syntax falls back to the token
+  itself.
+- The footer's canvas prints its panel in `--screen-paper` and its marks in
+  `--screen-ink`, so the panel still inverts with the theme: the dark footer
+  is a light sheet with dark type. The hero is painted black outright and
+  keeps fixed white.
+- A screen that is off the page stops: neither of them runs a loop the
+  reader cannot see.
+
+## Home hero + footer — one halftone plate, two screens (2026-10-19, superseded)
+
+The landing hero and the closing footer carried one black-and-white
+treatment: a single continuous-tone picture — a disc of light in the
+top-right corner — printed twice, on a coarse screen of characters in the
+hero and a fine screen of dots in the footer. The two screens were
+calibrated by cell coverage, and the calibration was measured at both ends.
+
+That treatment is superseded by the two screens above, which keep its
+calibration and its knock-out, and give each panel a subject that moves.
+The wordmark, the copy, the tokens and the reserve model are unchanged.

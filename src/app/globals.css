@@ -129,6 +129,24 @@
   --grey-700: oklch(0.3 0 0);
   --grey-800: oklch(0.2 0 0);
   --grey-900: oklch(0.1 0 0);
+
+  /* The screens print in black and white.
+     The page's paper and ink may carry a hue — the dark theme's paper is a
+     warm off-white — and a screen that prints a token verbatim prints that
+     hue with it, which is how a warm cream panel got into a black-and-white
+     footer. So the screens take the token's lightness and leave its hue
+     behind: the same lightness in grey reads as the same colour without the
+     colour. A browser without relative colour syntax keeps the token, which
+     is the old behaviour and no worse. */
+  --screen-paper: var(--foreground);
+  --screen-ink: var(--background);
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --screen-paper: oklch(from var(--foreground) l 0 h);
+    --screen-ink: oklch(from var(--background) l 0 h);
+  }
 }
 
 .dark {
@@ -2048,34 +2066,26 @@ a.studio-chrome__view-link:hover {
 }
 
 
-/* ─── The home plate: one halftone, printed at two screen frequencies ───
-   The hero resolves the plate on a coarse screen of characters, the footer
-   on a fine screen of dots. Both are decorative, so the artwork carries no
-   meaning for assistive technology — the real headings stay in the DOM. */
+/* ─── The home screens ───
+   The hero prints a wave on a fine screen of dots; the footer holds a body
+   of water printed in characters. Both are decorative, so the artwork carries
+   no meaning for assistive technology — the real headings stay in the DOM.
+   The water is stirred by the pointer, so it listens on the panel itself and
+   the canvas above it stays out of the way. */
 
-.ascii-screen {
+.dither-wave,
+.liquid-ascii {
   position: absolute;
   inset: 0;
   z-index: 0;
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  line-height: 12px;
-  letter-spacing: 2.4px;
-  color: #fff;
-  white-space: pre;
   overflow: hidden;
   pointer-events: none;
   user-select: none;
 }
 
-.dither-screen {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+.dither-wave__canvas,
+.liquid-ascii__canvas {
+  display: block;
   width: 100%;
   height: 100%;
-  pointer-events: none;
-  image-rendering: pixelated;
 }

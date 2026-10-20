@@ -20,12 +20,19 @@ the visual contract.
   `contact-provider.ts`, `rate-limit.ts` (in-memory sliding window, fails
   closed; single-instance exact, shared store needed across replicas),
   `schemas.ts` (Zod), `metadata.ts`, `home-projects.ts`, `v2-projects.ts`,
-  `halftone.ts` (the home plate: Bayer matrices, the tone field, the ASCII
-  density ramp), `screen-reserves.ts` (reads the blocks of type the plate's
-  ink must avoid), `use-reduced-motion.ts` (SSR-stable reduced-motion
+  `halftone.ts` (the house screen: the ordered threshold, the ink ceiling,
+  the measured dot radii and glyph ladder, the reserve model),
+  `wave-field.ts` (the hero's wave: a warped, ridged noise field),
+  `fluid.ts` (the footer's water: a PIC/FLIP particle fluid on the
+  character's own lattice),
+  `screen-reserves.ts` (reads the blocks of type the ink
+  must avoid), `use-reduced-motion.ts` (SSR-stable reduced-motion
   preference)
-- `src/components/home/` — `PlasticHome.tsx` (the immersive section home),
-  `AsciiScreen.tsx` (the plate on a coarse screen of characters — the hero),
-  `DitherScreen.tsx` (the same plate on a fine screen of dots — the footer)
+- `src/components/home/` — `PlasticHome.tsx` (the immersive section home)
+- `src/components/dither-wave-tw.tsx` — the hero's screen: a wave printed on
+  a fine screen of dots (React Bits Pro `Dither Wave`, prop API verbatim)
+- `src/components/liquid-ascii-tw.tsx` — the footer's screen: a body of
+  water printed in characters (React Bits Pro `Liquid Ascii`, prop API
+  verbatim)
 - `src/hooks/` — `use-mobile.ts`, `useScroll.ts`, `useAgentNavigation.ts`
 - `scripts/smoke.mjs` — post-build smoke check
