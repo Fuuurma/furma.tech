@@ -552,21 +552,24 @@ export class InkField {
   }
 
   /**
-   * Write the hand's tone onto a lattice of `columns` × `rows` cells of
-   * `lattice` px, in 0..1. The lattice is the screen's, not the field's, so
-   * the dots and the characters each read the field at their own pitch.
+   * Write the hand's tone onto a lattice of `columns` × `rows` cells, in
+   * 0..1. The lattice is the screen's, not the field's, so the dots and the
+   * characters each read the field at their own pitch: `lattice` px across,
+   * and `latticeY` px down when the cells are not square (a character is
+   * taller than it is wide).
    */
   fillTone(
     out: Float32Array,
     columns: number,
     rows: number,
     lattice: number,
+    latticeY: number = lattice,
   ): void {
     out.fill(0, 0, columns * rows);
 
     if (this.dyeMax > 0.004) {
       for (let r = 0; r < rows; r++) {
-        const y = (r + 0.5) * lattice;
+        const y = (r + 0.5) * latticeY;
         for (let c = 0; c < columns; c++) {
           const dye = this.dyeAt((c + 0.5) * lattice, y);
           // A curve, not a ramp: the ink has an edge, so a stroke prints as a
@@ -576,9 +579,11 @@ export class InkField {
       }
     }
 
-    for (const form of this.throws) this.paintForm(out, columns, rows, lattice, form);
+    for (const form of this.throws) {
+      this.paintForm(out, columns, rows, lattice, latticeY, form);
+    }
     if (this.charge > 0 || (this.pointer.down && this.pointer.heldFor > HOLD_DELAY)) {
-      this.paintBlob(out, columns, rows, lattice);
+      this.paintBlob(out, columns, rows, lattice, latticeY);
     }
   }
 
@@ -588,6 +593,7 @@ export class InkField {
     columns: number,
     rows: number,
     lattice: number,
+    latticeY: number,
     form: Throw,
   ): void {
     const progress = form.age / form.life;
@@ -601,13 +607,13 @@ export class InkField {
 
     const c0 = Math.max(0, Math.floor((form.x - extent) / lattice));
     const c1 = Math.min(columns - 1, Math.ceil((form.x + extent) / lattice));
-    const r0 = Math.max(0, Math.floor((form.y - extent) / lattice));
-    const r1 = Math.min(rows - 1, Math.ceil((form.y + extent) / lattice));
+    const r0 = Math.max(0, Math.floor((form.y - extent) / latticeY));
+    const r1 = Math.min(rows - 1, Math.ceil((form.y + extent) / latticeY));
 
     for (let r = r0; r <= r1; r++) {
       for (let c = c0; c <= c1; c++) {
         const dx = (c + 0.5) * lattice - form.x;
-        const dy = (r + 0.5) * lattice - form.y;
+        const dy = (r + 0.5) * latticeY - form.y;
         const lx = dx * cos - dy * sin;
         const ly = dx * sin + dy * cos;
 
@@ -633,6 +639,7 @@ export class InkField {
     columns: number,
     rows: number,
     lattice: number,
+    latticeY: number,
   ): void {
     const p = this.pointer;
     const charge = Math.max(0.0001, this.charge);
@@ -655,14 +662,14 @@ export class InkField {
     const extent = orbit + body * 0.6 + radius * 0.6;
     const c0 = Math.max(0, Math.floor((p.x - extent) / lattice));
     const c1 = Math.min(columns - 1, Math.ceil((p.x + extent) / lattice));
-    const r0 = Math.max(0, Math.floor((p.y - extent) / lattice));
-    const r1 = Math.min(rows - 1, Math.ceil((p.y + extent) / lattice));
+    const r0 = Math.max(0, Math.floor((p.y - extent) / latticeY));
+    const r1 = Math.min(rows - 1, Math.ceil((p.y + extent) / latticeY));
     const amount = 0.5 + 0.5 * charge;
 
     for (let r = r0; r <= r1; r++) {
       for (let c = c0; c <= c1; c++) {
         const x = (c + 0.5) * lattice;
-        const y = (r + 0.5) * lattice;
+        const y = (r + 0.5) * latticeY;
         // The sum of the parts' influence: where it passes a threshold, the
         // parts have merged into one body.
         let field = 0;
@@ -719,6 +726,8 @@ const INTERACTIVE = "a, button, input, textarea, select, label, [data-ink-ignore
 export interface BindOptions {
   /** Whether the surface listens at all. Reduced motion turns it off. */
   enabled?: boolean;
+  /** The cursor the surface shows while it is listening. */
+  cursor?: string;
 }
 
 /**
@@ -739,6 +748,8 @@ export function bindPointer(
   const previousTouchAction = surface.style.touchAction;
   surface.style.touchAction = "pan-y";
   const previousSelect = surface.style.userSelect;
+  const previousCursor = surface.style.cursor;
+  if (options.cursor) surface.style.cursor = options.cursor;
 
   let lastStamp = 0;
   let pressed = false;
@@ -791,6 +802,7 @@ export function bindPointer(
   return () => {
     surface.style.touchAction = previousTouchAction;
     surface.style.userSelect = previousSelect;
+    surface.style.cursor = previousCursor;
     surface.removeEventListener("pointermove", onMove);
     surface.removeEventListener("pointerdown", onDown);
     surface.removeEventListener("pointerup", onUp);

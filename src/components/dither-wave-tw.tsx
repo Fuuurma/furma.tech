@@ -109,7 +109,7 @@ const OCTAVES: Record<NonNullable<DitherWaveProps["quality"]>, number> = {
 };
 
 /** How much of the peak tone the quiet ground of a `field` carries. */
-const FIELD_GAIN = 0.35;
+const FIELD_GAIN = 0.4;
 
 /** How strongly the hand's ink prints, against the wave's own tone. */
 const INK_GAIN = 1;
@@ -273,10 +273,6 @@ export function DitherWave({
     let lastHandAt = 0;
     let strikes = 0;
     let unbind: (() => void) | null = null;
-    const previousCursor = surface.style.cursor;
-    if (hands) {
-      surface.style.cursor = "crosshair";
-    }
 
     /** The reserves are read from the live type, so they are read afresh
      *  every few frames — often enough to follow a reveal, seldom enough to
@@ -355,7 +351,7 @@ export function DitherWave({
             line: cell * 1.3,
             reach: Math.max(40, Math.min(rect.width, rect.height) * 0.075),
           });
-          unbind = bindPointer(surface, ink);
+          unbind = bindPointer(surface, ink, { cursor: "crosshair" });
         }
         ink.resize(rect.width, rect.height);
 
@@ -488,7 +484,11 @@ export function DitherWave({
                   (0.18 + 0.82 * sampleField(field, fieldColumns, fieldRows, u, v))
                 : 0;
           } else if (composition === "field") {
-            light = FIELD_GAIN * sampleField(field, fieldColumns, fieldRows, u, v);
+            // Only the crests of the wave carry ink; the ground between them
+            // stays clean paper: a field, not a texture. The ridged wave is
+            // high nearly everywhere, so the crests are its top fifth.
+            const crest = sampleField(field, fieldColumns, fieldRows, u, v);
+            light = FIELD_GAIN * smooth(0.76, 0.97, crest);
           } else {
             // The two corners print the same wave: the bottom-left lobe is
             // the top-right lobe, mirrored, so the page reads as one plate
@@ -659,7 +659,6 @@ export function DitherWave({
       intersection?.disconnect();
       resolution.removeEventListener("change", onResolution);
       unbind?.();
-      if (hands) surface.style.cursor = previousCursor;
       if (idleCue) {
         window.removeEventListener("pointermove", noteTouch);
         window.removeEventListener("pointerdown", noteTouch);
