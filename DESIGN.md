@@ -37,7 +37,90 @@ public face until a deliberate cutover.
 - The hero carries no scroll cue — no label, no rule. The wave is the cue.
 - The footer's water has a band of its own; the type is set on clean paper
 - The water keeps its volume. A body of water that drains is a puddle
+- The footer is the site's, not a page's: one component, one plate. The home
+  closes on it; the pages in the flow carry it
+- The index is the width of the screen: the rules that separate the work run
+  edge to edge, and the work stays stacked top to bottom
+- The shot fills its mount. A picture shown as a thumbnail inside a frame is
+  a caption with a picture attached
 - Invoke `design-arsenal` + `impeccable` on UI passes
+
+## The index is the width of the screen (2026-10-20)
+
+The brief: put the site's footer on the portfolio page; make the section of
+the ten projects full page width; delete the intro block; and give a hovered
+project more room for its work to show.
+
+**1. The footer is the site's, not the home's.** The plate the home closes
+on — the studio statement, the connect block, the project index, the
+colophon, and the body of water at the foot — is now one component
+(`StudioWaterFooter`) that closes whichever page ends in water. It has two
+shapes and one content: `panel`, the home's full-height closing section, and
+`section`, the same plate set in a page's own flow. The portfolio page takes
+the section. The alternative was a second copy of the plate, which would have
+drifted from the first on the first change to either.
+
+**2. The index is the width of the screen, and the work stays stacked top to
+bottom.** The lines that separate the ten projects were the width of a
+1280px column, so the rules stopped short of the screen and the list read as
+a panel floating in the page. The rules are now the page's own: they run edge
+to edge, and the rows keep the page's margin inside them. The order is
+untouched — the ten projects still read top to bottom, which is the order
+the work wants and the one the eye already knows.
+
+**3. The page has no headline.** The intro block ("Portfolio / Index 00 / 10
+products / Bootstrapped from Sitges…") is gone. It was a caption for the
+list, and the list is the page. The heading survives as `sr-only`, so the
+page still names itself to a reader who arrives by search or by a link, and
+the chrome's "Index" label carries the visible identity.
+
+**4. The shot fills its mount.** The row opened on a thumbnail in a frame:
+the mount was cut to 16/10 and the picture was capped at 200px inside it, so
+the work was shown small inside a shape that was mostly mount. The mount is
+now cut to the field the heroes are actually drawn on — **520 × 340** — and
+takes the column's width, so the picture fills it edge to edge.
+
+| | before | after |
+|---|---|---|
+| the separator rules | 1280px, inset 80px each side | 1440px, edge to edge |
+| the opened row's mount | 450px wide, 16/10 | 605px wide, 520:340 |
+| the shot itself | ≈400 × 200 | 542 × 354 (2.4× the area) |
+| the page's head | an intro block | the work |
+
+References (with why):
+- **Vignelli's Unigrid for the National Park Service (1977)** — the grid's
+  rules are the page's structure, not the column's decoration. The
+  separators here are the page's rules, so they belong to the page's width.
+- **The printed catalogue raisonné** — a list of works where each entry is
+  a rule-separated line, and the plate opens beside the entry that is being
+  read. The row's own line is the index; the picture is the work.
+- **The photographic contact sheet** — the index of a shoot is made of
+  pictures, not of captions. A project is worth a frame of its own, and the
+  frame's size is the project's size, not the index's.
+
+Craft move: **the shot is the reason the row opens, so the shot fills the
+mount.** The old mount was a 16/10 box with the picture capped inside it —
+a thumbnail in a frame, which is the same mistake as the hero's copy under
+the wave: the frame is a shape, and the work is what is in it. The mount is
+now cut to the field the heroes are drawn on and the picture fills it.
+
+Catalog pick: **no library.** The list and the footer are house code: the
+water is the house's shallow-water solver under the house's ink ceiling, and
+the mount's ratio is the heroes' own drawing field. The licensed React Bits
+Pro water can replace the water at the call site unchanged — the prop API is
+theirs — but the house additions (`surfaceRef`, `maxFPS`, `pauseWhenOffscreen`,
+`cell`, `idleCue`, `damping`) and the solver underneath are the house's and
+would have to be carried over.
+
+Smoke (Playwright, 1440×900 and 390×844):
+- the rules measure the full width of the screen at both widths;
+- the opened row's shot measures 542 × 354 inside a 605px mount, against
+  ≈400 × 200 before;
+- the order of the ten projects is unchanged, top to bottom;
+- the portfolio page ends in the water: `footer[role=contentinfo]` with a
+  live canvas, and no intro block in the document;
+- 44/44 tests, typecheck clean, lint clean (one pre-existing warning),
+  build clean, the black-box smoke gate green against the production server.
 
 ## Home hero + footer — the wave crosses, and the water answers (2026-10-20)
 
