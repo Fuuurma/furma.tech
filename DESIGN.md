@@ -112,7 +112,7 @@ Craft move: **the hand leaves a mark, and the mark ages.** Every gesture
 deposits into a field that decays, and every field is printed through the
 house screen. Nothing the reader does introduces a second visual language.
 
-Catalog pick: **no library.** The engine is ~700 lines of house code, and the
+Catalog pick: **no library.** The engine is ~800 lines of house code, and the
 licensed Liquid ASCII / Dither Wave prop APIs are unchanged: `interactive`,
 `composition` and `ink` are house additions.
 
