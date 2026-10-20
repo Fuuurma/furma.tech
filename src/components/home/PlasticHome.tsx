@@ -117,6 +117,7 @@ function HeroSlide({
         maxFPS={60}
         idleCue
         idleCueDelay={5000}
+        interactive
       />
 
       <div className="flex-1 flex flex-col items-center justify-center px-6 relative">

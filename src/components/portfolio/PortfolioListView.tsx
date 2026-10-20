@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { HOME_PROJECTS } from "@/lib/home-projects";
+import { PortfolioHero } from "@/components/portfolio/PortfolioHero";
 import { PortfolioListItem } from "@/components/portfolio/PortfolioListItem";
 import { FilmGrain } from "@/components/motion/FilmGrain";
 import { SplitReveal } from "@/components/motion/SplitReveal";
@@ -11,9 +12,7 @@ import { StudioWaterFooter } from "@/components/studio/StudioWaterFooter";
 export function PortfolioListView() {
   return (
     <div className="portfolio-list-page">
-      {/* The page has no headline: the work is the headline. The heading is
-          still here for the reader who arrives by search or by a link. */}
-      <h1 className="sr-only">{HOME_PROJECTS.length} products</h1>
+      <PortfolioHero />
 
       <section className="portfolio-list-page__list" aria-label="Project list">
         <FilmGrain className="portfolio-list-page__grain" />
