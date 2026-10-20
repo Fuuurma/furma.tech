@@ -63,10 +63,26 @@ export interface DitherWaveProps {
   surfaceRef?: React.RefObject<HTMLElement | null>;
   /** House addition: the pitch of the screen, in CSS pixels. */
   cell?: number;
+  /** House addition: whether a swell crosses the screen when the reader is idle. */
+  idleCue?: boolean;
+  /** House addition: how long the reader must leave the page alone, in ms. */
+  idleCueDelay?: number;
 }
 
 /** The tone scale of the screen: how many steps of ink it can print. */
 const LEVELS = 48;
+
+/** How wide the swell is, as a share of the diagonal. */
+const SWELL_WIDTH = 0.17;
+
+/** How much deeper the ink gets as the swell passes. */
+const SWELL_GAIN = 0.9;
+
+/** How much of the swell shows in the quiet middle of the page. */
+const SWELL_FLOOR = 0.16;
+
+/** How long the swell takes to cross the panel, in milliseconds. */
+const SWELL_PERIOD = 4200;
 
 /** How many octaves of noise each quality setting buys. */
 const OCTAVES: Record<NonNullable<DitherWaveProps["quality"]>, number> = {
@@ -80,11 +96,12 @@ const OCTAVES: Record<NonNullable<DitherWaveProps["quality"]>, number> = {
  *
  * The wave is the subject, but the subject does not fill the panel: the type
  * needs clean ground, and a page of even tone is noise. So the wave is held
- * to the top-right corner and falls away from it, which keeps the page's
- * composition — light in one corner, quiet everywhere else — while the
- * picture inside that light now moves.
+ * to two opposite corners — the top right and the bottom left — and falls
+ * away from them. The page's composition is light at the ends of the
+ * diagonal and quiet through the middle, while the picture inside the light
+ * now moves.
  */
-function envelope(
+function corner(
   u: number,
   v: number,
   width: number,
@@ -97,6 +114,36 @@ function envelope(
   if (distance >= 1) return 0;
   const falloff = 1 - distance;
   return falloff * falloff * (3 - 2 * falloff);
+}
+
+/** The light of both corners, held against each other. */
+function envelope(
+  u: number,
+  v: number,
+  width: number,
+  height: number,
+  radius: number,
+): number {
+  return Math.max(
+    corner(u, v, width, height, radius),
+    corner(1 - u, 1 - v, width, height, radius),
+  );
+}
+
+/**
+ * The swell.
+ *
+ * When the reader leaves the hero alone, a swell crosses the panel from the
+ * top right to the bottom left: the ink deepens as it passes, and a faint
+ * band of it shows in the quiet middle, so the page says out loud that it
+ * continues. It is the wave itself doing the talking — there is no label and
+ * no rule to read.
+ */
+function swell(u: number, v: number, position: number): number {
+  if (position < 0) return 0;
+  const diagonal = ((1 - u) + v) / 2;
+  const distance = (diagonal - position) / SWELL_WIDTH;
+  return Math.exp(-(distance * distance));
 }
 
 export function DitherWave({
@@ -117,6 +164,8 @@ export function DitherWave({
   children,
   surfaceRef,
   cell = 7,
+  idleCue = false,
+  idleCueDelay = 5000,
 }: DitherWaveProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -183,6 +232,26 @@ export function DitherWave({
     let frame = 0;
     let lastDraw = 0;
     let visible = true;
+
+    /**
+     * When the reader last touched the page.
+     *
+     * The swell only crosses the panel when nobody is there to read it, so
+     * the screen has to know when the reader walked away.
+     */
+    let lastTouch = performance.now();
+    const noteTouch = () => {
+      lastTouch = performance.now();
+    };
+
+    /** Where the swell is on the diagonal, or -1 when it is not running. */
+    const swellPosition = (): number => {
+      if (!idleCue || reduceMotion) return -1;
+      const idle = performance.now() - lastTouch;
+      if (idle < idleCueDelay) return -1;
+      const phase = ((idle - idleCueDelay) % SWELL_PERIOD) / SWELL_PERIOD;
+      return -0.2 + phase * 1.4;
+    };
 
     const paint = (time: number) => {
       const rect = surface.getBoundingClientRect();
@@ -256,15 +325,31 @@ export function DitherWave({
       const lower = new Map<number, number[]>();
       const upper = new Map<number, number[]>();
 
+      // The swell: where it is on the diagonal right now, or -1 when the
+      // reader is still there and the swell is not needed.
+      const swellAt = swellPosition();
+
       for (let row = 0; row < rows; row++) {
         const v = (row + 0.5) / rows;
         const cy = (row + 0.5) * cell;
 
         for (let column = 0; column < columns; column++) {
           const u = (column + 0.5) / columns;
-          const tone =
+
+          // The two corners print the same wave: the bottom-left lobe is
+          // the top-right lobe, mirrored, so the page reads as one plate
+          // printed twice.
+          const topRight =
             sampleField(field, fieldColumns, fieldRows, u, v) *
-            envelope(u, v, rect.width, rect.height, radius) *
+            envelope(u, v, rect.width, rect.height, radius);
+          const bottomLeft =
+            sampleField(field, fieldColumns, fieldRows, 1 - u, 1 - v) *
+            envelope(1 - u, 1 - v, rect.width, rect.height, radius);
+
+          const swellAmount = swell(u, v, swellAt);
+          const tone =
+            (Math.max(topRight, bottomLeft) * (1 + SWELL_GAIN * swellAmount) +
+              SWELL_FLOOR * swellAmount) *
             screenReserve(reserves, (column + 0.5) * cell, cy);
           if (tone <= 0.001) continue;
 
@@ -393,6 +478,17 @@ export function DitherWave({
       schedule();
     }
 
+    // The swell waits for the reader to leave the page alone, so the screen
+    // has to know when they came back.
+    if (idleCue) {
+      window.addEventListener("pointermove", noteTouch, { passive: true });
+      window.addEventListener("pointerdown", noteTouch, { passive: true });
+      window.addEventListener("keydown", noteTouch);
+      window.addEventListener("wheel", noteTouch, { passive: true });
+      window.addEventListener("touchstart", noteTouch, { passive: true });
+      window.addEventListener("scroll", noteTouch, { passive: true });
+    }
+
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
       observer.disconnect();
@@ -400,6 +496,14 @@ export function DitherWave({
       reserveObserver.disconnect();
       intersection?.disconnect();
       resolution.removeEventListener("change", onResolution);
+      if (idleCue) {
+        window.removeEventListener("pointermove", noteTouch);
+        window.removeEventListener("pointerdown", noteTouch);
+        window.removeEventListener("keydown", noteTouch);
+        window.removeEventListener("wheel", noteTouch);
+        window.removeEventListener("touchstart", noteTouch);
+        window.removeEventListener("scroll", noteTouch);
+      }
     };
   }, [
     surfaceRef,
@@ -414,6 +518,8 @@ export function DitherWave({
     quality,
     maxFPS,
     pauseWhenOffscreen,
+    idleCue,
+    idleCueDelay,
     reduceMotion,
   ]);
 

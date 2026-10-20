@@ -1,25 +1,34 @@
 "use client";
 
 /**
- * Liquid ASCII — sloshing water, drawn in characters.
+ * Liquid ASCII — a body of water, drawn in characters.
  *
  * The footer's picture is a body of water that sloshes. A body of water is
  * not a picture of water — it is a thing with mass — so this component
- * simulates one and lets the picture fall out of the simulation: particles
- * carry the water, a grid carries the pressure, and the lattice of
- * characters reads the result.
+ * solves for one: a row of columns of shallow water, one column per
+ * character, and the picture falls out of the solution.
  *
- * The characters are the water, not a caption of it. The grid the fluid is
- * solved on is the grid the characters are set on, so the surface of the
- * water is quantised to the same lattice the type is, and the ASCII picture
- * and the fluid are the same thing.
+ * The characters are the water, not a caption of it. The columns the water
+ * stands in are the columns the characters are set in, so the surface of
+ * the water is quantised to the same lattice the type is, and the ASCII
+ * picture and the water are the same thing.
  *
- * The prop names and their meanings follow the React Bits Pro component of the
- * same name, so the licensed file can replace this one without the call site
- * changing. Three house additions are marked below: `surfaceRef` (the panel
- * the ink must keep off the type), `maxFPS` (the frame budget) and
- * `pauseWhenOffscreen` (a water simulation has no business running off the
- * page).
+ * The hand in the water is the reader's:
+ *
+ * - **A pointer held over the water** presses the surface down under it and
+ *   the water closes over the hollow.
+ * - **A pointer dragged through the water** pulls it along, and the wake
+ *   keeps sloshing after the hand is lifted.
+ * - **A click** strikes the water, and the strike throws a crown.
+ *
+ * The prop names and their meanings follow the React Bits Pro component of
+ * the same name, so the licensed file can replace this one without the call
+ * site changing. Where the house solver reads a prop differently from the
+ * licensed file, the reading is listed below the interface. Four house
+ * additions are marked: `surfaceRef` (the panel the ink must keep off the
+ * type), `maxFPS` (the frame budget), `pauseWhenOffscreen` (a water
+ * simulation has no business running off the page) and `damping` (how much
+ * of the wave is let go).
  */
 
 import { useEffect, useRef } from "react";
@@ -32,7 +41,7 @@ import {
   screenReserve,
   type ScreenReserve,
 } from "@/lib/halftone";
-import { Fluid, type FluidCursor } from "@/lib/fluid";
+import { Water, type WaterPointer } from "@/lib/water";
 import { readReserves } from "@/lib/screen-reserves";
 import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 import { cn } from "@/lib/utils";
@@ -82,25 +91,49 @@ export interface LiquidAsciiProps {
   pauseWhenOffscreen?: boolean;
   /** House addition: the panel the ink must keep off the type. */
   surfaceRef?: React.RefObject<HTMLElement | null>;
+  /** House addition: how much of the wave is let go each second. */
+  damping?: number;
 }
+
+/**
+ * How the house solver reads the props of the licensed component.
+ *
+ * - `gravity` is the acceleration of the water, as it is there.
+ * - `fillHeight` is how much of the panel the water rests on, as it is there.
+ * - `cursorRadius` is the reach of the pointer and `cursorForce` how deep it
+ *   presses the surface.
+ * - `speed` is how quickly the water's own stirring moves.
+ * - `pressureIters` is the solver's budget for one step: the passes the
+ *   wave is allowed to take to cross the panel.
+ * - `overRelaxation` is how hard the wave is driven.
+ * - `separationIters` is how many times the surface is evened out after a
+ *   step, so a strike does not leave a spike behind.
+ * - `flipRatio` is how much of the pointer's own speed the water keeps.
+ */
 
 /** How much of a cell the face fills. A character with room to breathe. */
 const FONT_FILL = 0.78;
 
-/** How many characters share a cell of the fluid. */
-const PARTICLES_PER_CELL = 3;
-
 /** How deep below its surface the water still shows, in cells. */
-const SURFACE_DEPTH = 4;
+const SURFACE_DEPTH = 2.5;
 
 /** The share of a full cell the water must hold to count as its surface. */
-const SURFACE_MASS = 0.42;
-
-/** The share of the surface light that reaches the bottom of the water. */
-const BODY_FLOOR = 0.14;
+const BODY_FLOOR = 0.08;
 
 /** The speed at which the water is fully lit, in px/s. */
-const MOTION_REFERENCE = 220;
+const MOTION_REFERENCE = 90;
+
+/** How deep the reader's hand presses the surface, in pixels. */
+const PRESS_DEPTH = 30;
+
+/** How much of a strike is thrown up, in pixels. */
+const SPLASH_DEPTH = 66;
+
+/** How fast the reader's hand may move, in px/s. */
+const MAX_HAND_SPEED = 900;
+
+/** How long the hand's memory of its own speed lasts, in seconds. */
+const HAND_MEMORY = 0.08;
 
 export function LiquidAscii({
   width,
@@ -109,7 +142,7 @@ export function LiquidAscii({
   children,
   speed = 0.9,
   cellSize = 15,
-  gravity = -25,
+  gravity = 1400,
   flipRatio = 0.3,
   pressureIters = 30,
   separationIters = 3,
@@ -126,6 +159,7 @@ export function LiquidAscii({
   maxFPS = 60,
   pauseWhenOffscreen = true,
   surfaceRef,
+  damping = 0.7,
 }: LiquidAsciiProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -178,7 +212,7 @@ export function LiquidAscii({
     };
     const glyphs = Array.from(characters.length > 0 ? characters : " ");
 
-    let fluid: Fluid | null = null;
+    let water: Water | null = null;
     let atlas: HTMLCanvasElement | null = null;
     /** The ramp of marks, lightest first, with the share each one inks. */
     let ramp: { glyph: string; coverage: number }[] = [];
@@ -202,18 +236,63 @@ export function LiquidAscii({
     let visible = true;
     let elapsed = 0;
 
-    /** Where the pointer is pressing on the water. */
-    const pointer = { x: 0, y: 0, active: false };
+    /** Where the reader's hand is on the water. */
+    const hand = {
+      x: 0,
+      y: 0,
+      /** The hand's own speed along the surface, in px/s. */
+      speed: 0,
+      /** Where the hand was, and when — the hand remembers a little. */
+      lastX: 0,
+      lastAt: 0,
+      /** Whether the hand is over the water. */
+      over: false,
+      /** Whether the hand is pressing down. */
+      down: false,
+      /** The strike waiting to be thrown. */
+      splash: 0,
+    };
 
     const onPointerMove = (event: PointerEvent) => {
       const rect = surface.getBoundingClientRect();
-      pointer.x = event.clientX - rect.left;
-      pointer.y = event.clientY - rect.top;
-      pointer.active = true;
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const now = performance.now();
+
+      // The hand's speed is remembered for a moment, so a quick flick keeps
+      // pulling the water after the pointer has stopped.
+      const since = (now - hand.lastAt) / 1000;
+      if (since > 0.0005 && hand.lastAt > 0) {
+        const speed = (x - hand.lastX) / since;
+        const blend = Math.min(1, since / HAND_MEMORY);
+        hand.speed = hand.speed * (1 - blend) + speed * blend;
+        hand.speed = Math.max(
+          -MAX_HAND_SPEED,
+          Math.min(MAX_HAND_SPEED, hand.speed),
+        );
+      }
+      hand.lastX = x;
+      hand.lastAt = now;
+      hand.x = x;
+      hand.y = y;
+      hand.over = true;
+    };
+
+    const onPointerDown = (event: PointerEvent) => {
+      onPointerMove(event);
+      hand.down = true;
+      hand.splash = SPLASH_DEPTH;
+      surface.setPointerCapture?.(event.pointerId);
+    };
+
+    const onPointerUp = () => {
+      hand.down = false;
     };
 
     const onPointerLeave = () => {
-      pointer.active = false;
+      hand.over = false;
+      hand.down = false;
+      hand.speed = 0;
     };
 
     /**
@@ -252,7 +331,7 @@ export function LiquidAscii({
      * same ceiling the hero's dots are held to. Two screens, one weight of
      * paper.
      */
-    const layout = (): Fluid | null => {
+    const layout = (): Water | null => {
       const rect = surface.getBoundingClientRect();
       if (rect.width <= 0 || rect.height <= 0) return null;
 
@@ -297,20 +376,18 @@ export function LiquidAscii({
 
       if (!buildAtlas(ratio)) return null;
 
-      const water = new Fluid({
+      water = new Water({
         width: columns * cellWidth,
         height: rows * cellHeight,
         cellWidth,
         cellHeight,
-        gravity,
-        flipRatio,
-        pressureIters,
-        separationIters,
-        overRelaxation,
+        gravity: Math.abs(gravity),
         fillHeight,
-        particlesPerCell: PARTICLES_PER_CELL,
+        damping,
+        maxPasses: pressureIters,
+        drive: overRelaxation,
+        smoothing: separationIters,
       });
-      fluid = water;
 
       return water;
     };
@@ -321,80 +398,31 @@ export function LiquidAscii({
      * The picture is the surface: the top of the water in each column, lit
      * from above, fading with the depth beneath it and brightened by the
      * motion. A still body is a flat line; a sloshing one flickers.
-     *
-     * The water's mass is read through a blur first. A particle fluid throws
-     * spray, and spray read one cell at a time is a field of loose dots —
-     * static, not water. Blurred, the spray becomes a haze and the body
-     * becomes a body.
      */
     const toneField = (): Float32Array => {
       const tone = new Float32Array(columns * rows);
-      if (!fluid) return tone;
-
-      const density = fluid.densityShare();
-      const motion = fluid.motion();
-
-      // The mass of the water, read through a blur.
-      const mass = new Float32Array(columns * rows);
-      for (let row = 0; row < rows; row++) {
-        for (let column = 0; column < columns; column++) {
-          let sum = 0;
-          let weight = 0;
-          for (let offsetRow = -1; offsetRow <= 1; offsetRow++) {
-            const r = row + offsetRow;
-            if (r < 0 || r >= rows) continue;
-            for (let offsetColumn = -1; offsetColumn <= 1; offsetColumn++) {
-              const c = column + offsetColumn;
-              if (c < 0 || c >= columns) continue;
-              sum += density[r * columns + c];
-              weight += 1;
-            }
-          }
-          mass[row * columns + column] = weight > 0 ? sum / weight : 0;
-        }
-      }
-
-      // The surface of each column: the topmost row where the water is
-      // really there, rather than the topmost spray.
-      const surfaceRow = new Int32Array(columns).fill(-1);
-      for (let row = 0; row < rows; row++) {
-        for (let column = 0; column < columns; column++) {
-          if (mass[row * columns + column] < SURFACE_MASS) continue;
-          if (surfaceRow[column] < 0) surfaceRow[column] = row;
-        }
-      }
-
-      // The surface is read across the columns as well, so a single spray
-      // cannot raise a column's water line on its own.
-      const level = new Float32Array(columns);
-      for (let column = 0; column < columns; column++) {
-        let sum = 0;
-        let weight = 0;
-        for (let offset = -2; offset <= 2; offset++) {
-          const c = column + offset;
-          if (c < 0 || c >= columns) continue;
-          if (surfaceRow[c] < 0) continue;
-          sum += surfaceRow[c];
-          weight += 1;
-        }
-        level[column] = weight > 0 ? sum / weight : -1;
-      }
+      if (!water) return tone;
 
       for (let column = 0; column < columns; column++) {
-        const top = level[column];
-        if (top < 0) continue;
+        const surfaceY = water.surfaceY(column);
+        if (surfaceY >= rows * cellHeight) continue;
 
-        for (let row = Math.max(0, Math.floor(top)); row < rows; row++) {
-          const index = row * columns + column;
-          if (mass[index] <= 0) break;
+        const speed = Math.abs(water.surfaceSpeed(column));
+        const stir = Math.min(1, speed / MOTION_REFERENCE);
 
-          const depth = row - top;
+        for (let row = 0; row < rows; row++) {
+          // The depth of the mark under the surface, in cells. It is read
+          // from the water's own level rather than from the row the mark is
+          // in, so the tone fades smoothly instead of in bands.
+          const depth =
+            (row + 1) * cellHeight - surfaceY;
+          if (depth <= 0) continue;
+
           const falloff = Math.max(
             BODY_FLOOR,
-            Math.exp(-Math.max(0, depth) / SURFACE_DEPTH),
+            Math.exp(-depth / (cellHeight * SURFACE_DEPTH)),
           );
-          const stir = Math.min(1, motion[index] / MOTION_REFERENCE);
-          tone[index] = falloff * (0.72 + 0.28 * stir);
+          tone[row * columns + column] = falloff * (0.72 + 0.28 * stir);
         }
       }
 
@@ -402,7 +430,7 @@ export function LiquidAscii({
     };
 
     const paint = () => {
-      if (!fluid || !atlas) return;
+      if (!water || !atlas) return;
 
       const rect = surface.getBoundingClientRect();
       if (rect.width <= 0 || rect.height <= 0) return;
@@ -488,30 +516,44 @@ export function LiquidAscii({
       }
     };
 
-    /** The pointer, or the water's own stirring, pushes the water. */
-    const cursor = (time: number): FluidCursor | null => {
+    /**
+     * The reader's hand, or the water's own stirring.
+     *
+     * The hand presses the surface where it is and pulls it along when it
+     * moves. The water's own stirring is a slow hand that never quite lets
+     * go, so the body is never a dead flat line.
+     */
+    const pointer = (time: number): WaterPointer | null => {
       const rect = surface.getBoundingClientRect();
       const reach = Math.min(rect.width, rect.height) * cursorRadius;
 
-      if (pointer.active) {
+      if (hand.over) {
+        // A strike is an event, not a force: the hand is not pressing the
+        // surface down at the same time as it is throwing it up.
+        const striking = hand.splash > 0;
+        const splash = striking ? hand.splash : 0;
+        hand.splash = 0;
         return {
-          x: pointer.x,
-          y: pointer.y,
+          x: hand.x,
           radius: reach,
-          force: cursorForce,
+          force: striking ? 0 : hand.down ? PRESS_DEPTH * 1.6 : PRESS_DEPTH,
+          velocity: striking ? 0 : hand.down ? hand.speed * flipRatio : 0,
+          splash,
         };
       }
 
       if (!autoWave) return null;
 
-      // The water's own stirring: a slow sweep along the surface, which
-      // pushes the water down and lets it slosh back.
-      const sweep = Math.sin(time * 0.45);
+      // The water's own stirring: a slow hand that drifts along the
+      // surface and never quite lets go.
+      const sweep = Math.sin(time * 0.32);
+      const drift = Math.cos(time * 0.21);
       return {
-        x: rect.width * (0.5 + sweep * 0.32),
-        y: rect.height * (1 - fillHeight) + cellHeight * 0.5,
-        radius: reach * 0.7,
-        force: cursorForce * 0.5,
+        x: rect.width * (0.5 + sweep * 0.34),
+        radius: reach * 0.8,
+        force: cursorForce * 0.55,
+        velocity: drift * 40 * speed,
+        splash: 0,
       };
     };
 
@@ -531,7 +573,7 @@ export function LiquidAscii({
       lastStep = now;
 
       elapsed += (1 / 60) * speed;
-      fluid?.step(1 / 60, cursor(elapsed));
+      water?.step(1 / 60, pointer(elapsed));
       paint();
       schedule();
     };
@@ -563,7 +605,7 @@ export function LiquidAscii({
       attributeFilter: ["class"],
     });
 
-    // A screen that is off the page has nothing to say, and a fluid
+    // A screen that is off the page has nothing to say, and a water
     // simulation is not cheap enough to run for nobody.
     //
     // The observer is given a negative margin, so the screen stops a little
@@ -586,17 +628,20 @@ export function LiquidAscii({
     }
 
     surface.addEventListener("pointermove", onPointerMove);
+    surface.addEventListener("pointerdown", onPointerDown);
+    surface.addEventListener("pointerup", onPointerUp);
+    surface.addEventListener("pointercancel", onPointerUp);
     surface.addEventListener("pointerleave", onPointerLeave);
 
     // The water, once the lattice is laid out.
-    const water = layout();
-    if (!water) return;
+    const body = layout();
+    if (!body) return;
 
     if (reduceMotion) {
       // Reduced motion gets one still frame: the water caught mid-slosh, and
       // no loop to keep it moving.
       for (let i = 0; i < 90; i++) {
-        water.step(1 / 60, cursor(i / 60));
+        body.step(1 / 60, pointer(i / 60));
       }
       reserveAge = 6;
       paint();
@@ -611,6 +656,9 @@ export function LiquidAscii({
       reserveObserver.disconnect();
       intersection?.disconnect();
       surface.removeEventListener("pointermove", onPointerMove);
+      surface.removeEventListener("pointerdown", onPointerDown);
+      surface.removeEventListener("pointerup", onPointerUp);
+      surface.removeEventListener("pointercancel", onPointerUp);
       surface.removeEventListener("pointerleave", onPointerLeave);
     };
   }, [
@@ -632,6 +680,7 @@ export function LiquidAscii({
     autoWave,
     maxFPS,
     pauseWhenOffscreen,
+    damping,
     reduceMotion,
   ]);
 

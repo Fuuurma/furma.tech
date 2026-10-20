@@ -115,6 +115,8 @@ function HeroSlide({
         downScale={0.5}
         quality="medium"
         maxFPS={60}
+        idleCue
+        idleCueDelay={5000}
       />
 
       <div className="flex-1 flex flex-col items-center justify-center px-6 relative">
@@ -146,14 +148,12 @@ function HeroSlide({
             : { animationDelay: "1.5s", animationFillMode: "forwards" }
         }
       >
-        <p className="plastic-paragraph plastic-paragraph--inverse max-w-md !text-[clamp(18px,2.2vw,26px)] !leading-[1.35]">
-          Bootstrapped studio building industry SaaS and the Aitlas AI ecosystem.
-        </p>
-        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4 sm:ml-auto">
           <button
             type="button"
             onClick={onEnterWork}
             className="plastic-cta plastic-cta--inverse"
+            data-screen-reserve
           >
             See projects
             <span aria-hidden>↓</span>
@@ -162,24 +162,12 @@ function HeroSlide({
             type="button"
             onClick={onContact}
             className="plastic-cta plastic-cta--inverse plastic-cta--quiet"
+            data-screen-reserve
           >
             Contact
           </button>
         </div>
       </div>
-
-      {!reduceMotion && (
-        <div
-          className="plastic-hero-scroll-cue absolute bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none opacity-0 animate-fade-up"
-          style={{ animationDelay: "2s", animationFillMode: "forwards" }}
-          aria-hidden="true"
-        >
-          <span className="font-mono text-label uppercase tracking-[0.3em] text-white/60">
-            Scroll
-          </span>
-          <span className="block w-px h-8 bg-white/40 animate-pulse" />
-        </div>
-      )}
     </div>
   );
 }
@@ -515,43 +503,20 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
 }
 
 function FooterSlide({ isActive }: { isActive: boolean }) {
-  const surfaceRef = useRef<HTMLDivElement>(null);
+  const waterRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div
-      ref={surfaceRef}
-      className="h-full w-full flex flex-col bg-foreground text-background overflow-hidden plastic-on-dark relative"
-    >
-      <LiquidAscii
-        surfaceRef={surfaceRef}
-        color="var(--screen-ink)"
-        backgroundColor="var(--screen-paper)"
-        fontFamily="var(--font-mono)"
-        characters=" .:-=+*#%@"
-        speed={0.9}
-        cellSize={16}
-        gravity={-1400}
-        flipRatio={0.35}
-        pressureIters={24}
-        separationIters={2}
-        overRelaxation={1.4}
-        fillHeight={0.34}
-        cursorRadius={0.22}
-        cursorForce={4200}
-        autoWave
-        maxFPS={30}
-      />
-
+    <div className="h-full w-full flex flex-col bg-foreground text-background overflow-hidden plastic-on-dark relative">
       <div className="flex-1 flex flex-col justify-center min-h-0 relative z-10">
-        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 py-8 md:py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 py-4 md:py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
             <SlideReveal
               isActive={isActive}
-              className="lg:col-span-5 flex flex-col justify-between gap-10"
+              className="lg:col-span-5 flex flex-col justify-between gap-6 md:gap-10"
             >
               <div>
                 <p
-                  className="plastic-label plastic-label--inverse-dim mb-8"
+                  className="plastic-label plastic-label--inverse-dim mb-6 md:mb-8"
                   data-screen-reserve
                 >
                   Furma.tech
@@ -559,20 +524,20 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
                 <SplitReveal
                   as="h3"
                   text="We build sovereign digital futures."
-                  className="font-sans text-[clamp(28px,4vw,48px)] font-medium leading-[1.1] tracking-[-0.03em] text-background block mb-6"
+                  className="font-sans text-[clamp(28px,4vw,48px)] font-medium leading-[1.1] tracking-[-0.03em] text-background block mb-4 md:mb-6"
                   trigger={isActive}
                   delay={40}
                   reserve
                 />
                 <p
-                  className="font-sans text-body text-background/50 max-w-sm leading-relaxed"
+                  className="font-sans text-body text-background/60 max-w-sm leading-relaxed"
                   data-screen-reserve
                 >
                   Venture studio for industry SaaS and autonomous AI ecosystems.
                   Sitges · Global.
                 </p>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 <p
                   className="plastic-label plastic-label--inverse-dim"
                   data-screen-reserve
@@ -615,12 +580,12 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
               delay={0.12}
             >
               <p
-                className="plastic-label plastic-label--inverse-dim mb-8"
+                className="plastic-label plastic-label--inverse-dim mb-6 md:mb-8"
                 data-screen-reserve
               >
                 Portfolio
               </p>
-              <div className="grid grid-cols-2 gap-x-8 gap-y-6">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-4 md:gap-y-6">
                 {HOME_PROJECTS.map((p) => (
                   <Link
                     key={p.id}
@@ -634,7 +599,7 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
               </div>
               <Link
                 href="/portfolio"
-                className="inline-flex items-center gap-2 mt-10 plastic-label plastic-label--inverse motion-link-subtle"
+                className="inline-flex items-center gap-2 mt-6 md:mt-10 plastic-label plastic-label--inverse motion-link-subtle"
                 data-screen-reserve
               >
                 All projects <span aria-hidden>→</span>
@@ -644,9 +609,38 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
         </div>
       </div>
 
-      <div className="shrink-0 px-6 md:px-12 py-5 border-t border-background/10 flex justify-between items-center">
+      <div className="shrink-0 px-6 md:px-12 py-5 border-t border-background/10 flex justify-between items-center relative z-10">
         <span className="plastic-label plastic-label--inverse-dim">© 2026 Furma.tech</span>
         <span className="plastic-label plastic-label--inverse-dim">Sitges, Catalonia</span>
+      </div>
+
+      {/* The body of water: the page ends in it, and the reader's hand is in
+          it. The band is its own ground, so the type above keeps the clean
+          paper it was set on. */}
+      <div
+        ref={waterRef}
+        className="relative shrink-0 h-[13%] min-h-[88px] sm:h-[22%] sm:min-h-[150px] max-h-[280px]"
+      >
+        <LiquidAscii
+          surfaceRef={waterRef}
+          color="var(--screen-ink)"
+          backgroundColor="var(--screen-paper)"
+          fontFamily="var(--font-mono)"
+          characters=" .:-=+*#%@"
+          speed={0.9}
+          cellSize={16}
+          gravity={-1400}
+          flipRatio={0.5}
+          pressureIters={30}
+          separationIters={2}
+          overRelaxation={1.4}
+          fillHeight={0.88}
+          cursorRadius={0.55}
+          cursorForce={30}
+          autoWave
+          maxFPS={30}
+          damping={0.7}
+        />
       </div>
     </div>
   );
