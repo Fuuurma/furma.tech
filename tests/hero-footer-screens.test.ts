@@ -34,6 +34,10 @@ const home = read("../src/components/home/PlasticHome.tsx");
 const wave = read("../src/components/dither-wave-tw.tsx");
 const liquid = read("../src/components/liquid-ascii-tw.tsx");
 const css = read("../src/app/globals.css");
+/* The footer is the site's, not the home's: it lives in one component and
+   closes every page that ends in water. */
+const footer = read("../src/components/studio/StudioWaterFooter.tsx");
+const portfolio = read("../src/components/portfolio/PortfolioListView.tsx");
 
 test("the hero carries no scroll cue", () => {
   assert.ok(
@@ -101,17 +105,17 @@ test("the swell waits for an idle reader and honours reduced motion", () => {
 test("the footer's water has its own band, and the type keeps clean paper", () => {
   // The band is its own element, with the water inside it.
   assert.ok(
-    /ref=\{waterRef\}/.test(home),
+    /ref=\{waterRef\}/.test(footer),
     "the footer's water must have a band of its own",
   );
   assert.ok(
-    /<LiquidAscii[\s\S]{0,200}surfaceRef=\{waterRef\}/.test(home),
+    /<LiquidAscii[\s\S]{0,200}surfaceRef=\{waterRef\}/.test(footer),
     "the water must be printed in the band",
   );
 
   // The type is above the band, not inside it.
-  const band = home.indexOf("ref={waterRef}");
-  const type = home.indexOf("We build sovereign digital futures.");
+  const band = footer.indexOf("ref={waterRef}");
+  const type = footer.indexOf("We build sovereign digital futures.");
   assert.ok(type > 0 && band > type, "the type must be set above the band");
 
   // The band is the reader's to touch.
@@ -131,11 +135,11 @@ test("the footer's water has its own band, and the type keeps clean paper", () =
 
 test("the water prints in the screen's own tokens, and the solver is the house's", () => {
   assert.ok(
-    /color="var\(--screen-ink\)"/.test(home),
+    /color="var\(--screen-ink\)"/.test(footer),
     "the water must print in the screen's ink",
   );
   assert.ok(
-    /backgroundColor="var\(--screen-paper\)"/.test(home),
+    /backgroundColor="var\(--screen-paper\)"/.test(footer),
     "the water must print on the screen's paper",
   );
 
@@ -151,5 +155,18 @@ test("the water prints in the screen's own tokens, and the solver is the house's
       fileURLToPath(new URL("../src/lib/water.ts", import.meta.url)),
     ),
     "the shallow water must be here",
+  );
+});
+
+test("the portfolio page closes in the site's footer", () => {
+  assert.ok(
+    /<StudioWaterFooter/.test(portfolio),
+    "the portfolio page must carry the site's footer",
+  );
+  // One footer for the whole site: the home's closing panel is the same
+  // component, not a second copy of the plate.
+  assert.ok(
+    /<StudioWaterFooter[\s\S]{0,120}variant="panel"/.test(home),
+    "the home must close with the same footer, as a panel",
   );
 });
