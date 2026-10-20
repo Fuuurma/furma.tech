@@ -110,9 +110,10 @@ Rules:
   white footer. The screen tokens keep the token's lightness and drop its
   hue, and a browser without relative colour syntax falls back to the token
   itself.
-- The footer's surface is painted with `--screen-paper`, so its type follows
-  `--screen-ink` and the whole panel still inverts with the theme. The hero
-  is painted black outright and keeps fixed white.
+- The footer's canvas prints its panel in `--screen-paper` and its marks in
+  `--screen-ink`, so the panel still inverts with the theme: the dark footer
+  is a light sheet with dark type. The hero is painted black outright and
+  keeps fixed white.
 - A screen that is off the page stops: neither of them runs a loop the
   reader cannot see.
 
