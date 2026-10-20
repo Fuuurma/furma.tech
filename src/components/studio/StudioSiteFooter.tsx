@@ -12,7 +12,7 @@ export function StudioSiteFooter() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8">
           <div className="md:col-span-4">
             <p className="plastic-label mb-4">Furma.tech</p>
-            <p className="font-sans text-[15px] leading-relaxed text-foreground/65 max-w-sm">
+            <p className="font-sans text-body leading-relaxed text-foreground/65 max-w-sm">
               Venture studio building industry SaaS and the Aitlas AI ecosystem.
               Bootstrapped from Sitges, Catalonia.
             </p>
@@ -22,7 +22,7 @@ export function StudioSiteFooter() {
               <p className="plastic-label">Portfolio</p>
               <Link
                 href="/portfolio"
-                className="plastic-label text-foreground/45 hover:text-foreground transition-colors"
+                className="plastic-label text-foreground/60 hover:text-foreground transition-colors"
               >
                 Index →
               </Link>
@@ -32,7 +32,7 @@ export function StudioSiteFooter() {
                 <li key={project.id}>
                   <Link
                     href={project.href}
-                    className="text-[13px] text-foreground/65 hover:text-foreground transition-colors"
+                    className="text-small text-foreground/65 hover:text-foreground transition-colors"
                   >
                     {project.name}
                   </Link>
@@ -46,7 +46,7 @@ export function StudioSiteFooter() {
               <li>
                 <Link
                   href="/#contact"
-                  className="text-[14px] text-foreground/65 hover:text-foreground transition-colors"
+                  className="text-body text-foreground/65 hover:text-foreground transition-colors"
                 >
                   Contact
                 </Link>
@@ -54,7 +54,7 @@ export function StudioSiteFooter() {
               <li>
                 <Link
                   href="/brand"
-                  className="text-[14px] text-foreground/65 hover:text-foreground transition-colors"
+                  className="text-body text-foreground/65 hover:text-foreground transition-colors"
                 >
                   Brand
                 </Link>
@@ -62,7 +62,7 @@ export function StudioSiteFooter() {
               <li>
                 <Link
                   href="/privacy"
-                  className="text-[14px] text-foreground/65 hover:text-foreground transition-colors"
+                  className="text-body text-foreground/65 hover:text-foreground transition-colors"
                 >
                   Privacy
                 </Link>

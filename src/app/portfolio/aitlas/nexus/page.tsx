@@ -239,10 +239,10 @@ export default function NexusPage() {
           {howItWorks.map((step) => (
             <div key={step.step} className="motion-card bg-background p-6 md:p-8">
               <p className="plastic-label mb-4">{step.step}</p>
-              <h3 className="font-sans text-[15px] font-semibold tracking-tight mb-2">
+              <h3 className="font-sans text-body font-semibold tracking-tight mb-2">
                 {step.title}
               </h3>
-              <p className="font-mono text-[11px] text-foreground/60 leading-relaxed">
+              <p className="font-mono text-meta text-foreground/60 leading-relaxed">
                 {step.desc}
               </p>
             </div>

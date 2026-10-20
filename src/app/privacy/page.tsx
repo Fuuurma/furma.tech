@@ -19,7 +19,7 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 
 function Body({ children }: { children: React.ReactNode }) {
   return (
-    <p className="font-sans text-[15px] leading-relaxed text-foreground/65 mb-6">
+    <p className="font-sans text-body leading-relaxed text-foreground/65 mb-6">
       {children}
     </p>
   );
@@ -41,7 +41,7 @@ export default function PrivacyPage() {
           <div className="col-span-12 md:col-span-8 md:col-start-4 lg:col-start-5 space-y-14">
             <ScrollReveal>
               <div className="border border-foreground/10 p-6 bg-foreground/[0.02]">
-                <p className="font-mono text-[12px] leading-relaxed text-foreground/70 m-0">
+                <p className="font-mono text-small leading-relaxed text-foreground/70 m-0">
                   <span className="text-foreground font-semibold">TL;DR — </span>
                   We collect minimal data, encrypt your API keys, never sell your
                   information, and delete everything when you leave. Your data is
@@ -59,7 +59,7 @@ export default function PrivacyPage() {
                   build and operate software products including industry SaaS
                   tools and the Aitlas AI ecosystem.
                 </Body>
-                <p className="font-mono text-[12px] text-foreground/65">
+                <p className="font-mono text-small text-foreground/65">
                   Contact:{" "}
                   <Link
                     href="mailto:hello@furma.tech"
@@ -88,10 +88,10 @@ export default function PrivacyPage() {
                     },
                   ].map((item) => (
                     <li key={item.label} className="bg-background p-5">
-                      <p className="font-sans text-[14px] font-semibold mb-1">
+                      <p className="font-sans text-body font-semibold mb-1">
                         {item.label}
                       </p>
-                      <p className="font-mono text-[11px] text-foreground/60 leading-relaxed">
+                      <p className="font-mono text-meta text-foreground/60 leading-relaxed">
                         {item.desc}
                       </p>
                     </li>
@@ -117,7 +117,7 @@ export default function PrivacyPage() {
                   ].map((item) => (
                     <li
                       key={item}
-                      className="font-mono text-[11px] text-foreground/65 leading-relaxed"
+                      className="font-mono text-meta text-foreground/65 leading-relaxed"
                     >
                       ✓ {item}
                     </li>
@@ -139,14 +139,14 @@ export default function PrivacyPage() {
                   ].map((item) => (
                     <li
                       key={item}
-                      className="bg-background p-4 font-mono text-[11px] text-foreground/65"
+                      className="bg-background p-4 font-mono text-meta text-foreground/65"
                     >
                       {item}
                     </li>
                   ))}
                 </ul>
                 <div className="bg-foreground text-background p-5">
-                  <p className="font-sans text-[15px] font-medium m-0">
+                  <p className="font-sans text-body font-medium m-0">
                     We never sell your data. Your data is yours.
                   </p>
                 </div>
@@ -165,7 +165,7 @@ export default function PrivacyPage() {
                 </div>
                 <div>
                   <SectionHeading>6. Security</SectionHeading>
-                  <ul className="space-y-2 list-none p-0 m-0 font-mono text-[11px] text-foreground/65">
+                  <ul className="space-y-2 list-none p-0 m-0 font-mono text-meta text-foreground/65">
                     <li>• Encryption at rest (AES-256-GCM for API keys)</li>
                     <li>• Encryption in transit (TLS 1.2+)</li>
                     <li>• Access controls and authentication</li>
@@ -200,16 +200,16 @@ export default function PrivacyPage() {
                     },
                   ].map((item) => (
                     <li key={item.label} className="bg-background p-5">
-                      <p className="font-sans text-[14px] font-semibold mb-1">
+                      <p className="font-sans text-body font-semibold mb-1">
                         {item.label}
                       </p>
-                      <p className="font-mono text-[11px] text-foreground/60">
+                      <p className="font-mono text-meta text-foreground/60">
                         {item.desc}
                       </p>
                     </li>
                   ))}
                 </ul>
-                <p className="font-mono text-[11px] text-foreground/55">
+                <p className="font-mono text-meta text-foreground/60">
                   Contact:{" "}
                   <Link
                     href="mailto:hello@furma.tech"
@@ -238,10 +238,10 @@ export default function PrivacyPage() {
                     },
                   ].map((item) => (
                     <li key={item.name} className="bg-background p-5">
-                      <p className="font-sans text-[14px] font-semibold mb-1">
+                      <p className="font-sans text-body font-semibold mb-1">
                         {item.name}
                       </p>
-                      <p className="font-mono text-[11px] text-foreground/60">
+                      <p className="font-mono text-meta text-foreground/60">
                         {item.desc}
                       </p>
                     </li>
@@ -278,7 +278,7 @@ export default function PrivacyPage() {
                   contact us:
                 </Body>
                 <div className="border border-foreground/10 p-6 space-y-2">
-                  <p className="font-mono text-[12px] text-foreground/65 m-0">
+                  <p className="font-mono text-small text-foreground/65 m-0">
                     Email:{" "}
                     <Link
                       href="mailto:hello@furma.tech"
@@ -287,7 +287,7 @@ export default function PrivacyPage() {
                       hello@furma.tech
                     </Link>
                   </p>
-                  <p className="font-mono text-[12px] text-foreground/65 m-0">
+                  <p className="font-mono text-small text-foreground/65 m-0">
                     Address: Furma.tech OÜ, Estonia (e-Residency)
                   </p>
                 </div>

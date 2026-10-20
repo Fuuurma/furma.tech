@@ -84,7 +84,7 @@ export default function LogoPage() {
                 </div>
                 <div className="flex items-end justify-between gap-3">
                   <div>
-                    <h3 className="font-sans text-[15px] font-semibold tracking-tight mb-1">
+                    <h3 className="font-sans text-body font-semibold tracking-tight mb-1">
                       {logo.name}
                     </h3>
                     <p className="plastic-label">{logo.desc}</p>
@@ -125,7 +125,7 @@ export default function LogoPage() {
                   ].map((item) => (
                     <li
                       key={item}
-                      className="font-mono text-[12px] text-foreground/65 leading-relaxed"
+                      className="font-mono text-small text-foreground/65 leading-relaxed"
                     >
                       {item}
                     </li>
@@ -146,7 +146,7 @@ export default function LogoPage() {
                   ].map((item) => (
                     <li
                       key={item}
-                      className="font-mono text-[12px] text-foreground/65 leading-relaxed"
+                      className="font-mono text-small text-foreground/65 leading-relaxed"
                     >
                       {item}
                     </li>
@@ -178,17 +178,17 @@ export default function LogoPage() {
                   <div
                     className={`aspect-square border border-foreground/10 mb-4 ${color.swatch}`}
                   />
-                  <p className="font-sans text-[15px] font-semibold mb-1">
+                  <p className="font-sans text-body font-semibold mb-1">
                     {color.name}
                   </p>
                   <p className="plastic-label mb-1">{color.hex}</p>
-                  <p className="font-mono text-[11px] text-foreground/55">
+                  <p className="font-mono text-meta text-foreground/60">
                     {color.desc}
                   </p>
                 </div>
               ))}
             </div>
-            <p className="font-mono text-[11px] text-foreground/60 leading-relaxed">
+            <p className="font-mono text-meta text-foreground/60 leading-relaxed">
               Strictly black and white. No colored variants, no gradients, no
               exceptions.
             </p>
@@ -221,14 +221,14 @@ export default function LogoPage() {
               </div>
               <div>
                 <p className="plastic-label mb-3">JetBrains Mono — labels</p>
-                <p className="font-mono text-[13px]">
+                <p className="font-mono text-small">
                   const sovereignty = true;
                 </p>
               </div>
             </div>
             <div className="lg:col-span-4 bg-background p-8">
               <p className="plastic-label mb-4">Usage</p>
-              <ul className="space-y-3 list-none p-0 m-0 font-mono text-[11px] text-foreground/65 leading-relaxed">
+              <ul className="space-y-3 list-none p-0 m-0 font-mono text-meta text-foreground/65 leading-relaxed">
                 <li>
                   <span className="text-foreground">Sans (Syne)</span> for
                   headlines, body, and UI

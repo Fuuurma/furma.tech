@@ -108,10 +108,10 @@ export default function GuideToursPage() {
               key={integration.name}
               className="motion-card bg-background p-6"
             >
-              <h3 className="font-sans text-[14px] font-semibold tracking-tight mb-2">
+              <h3 className="font-sans text-body font-semibold tracking-tight mb-2">
                 {integration.name}
               </h3>
-              <p className="font-mono text-[11px] text-foreground/60 leading-relaxed">
+              <p className="font-mono text-meta text-foreground/60 leading-relaxed">
                 {integration.desc}
               </p>
             </div>

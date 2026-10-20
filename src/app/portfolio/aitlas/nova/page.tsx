@@ -155,7 +155,7 @@ export default function NovaPage() {
                   <AlertCircle className="w-full h-full" strokeWidth={1.5} aria-hidden />
                 )}
               </div>
-              <div className="font-sans text-[14px] font-semibold tracking-tight mb-1">
+              <div className="font-sans text-body font-semibold tracking-tight mb-1">
                 {provider.name}
               </div>
               <div className="plastic-label mb-3">{provider.provider}</div>
@@ -164,7 +164,7 @@ export default function NovaPage() {
                   "plastic-label",
                   provider.status === "available"
                     ? "text-foreground"
-                    : "text-foreground/50",
+                    : "text-foreground/60",
                 )}
               >
                 {provider.status === "available" ? "Available" : "Coming soon"}

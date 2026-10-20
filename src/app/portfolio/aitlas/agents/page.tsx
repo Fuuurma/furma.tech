@@ -133,10 +133,10 @@ export default function AgentsStorePage() {
               {creatorPerks.map((perk) => (
                 <li
                   key={perk}
-                  className="flex items-center gap-2 font-mono text-[11px] text-foreground/65"
+                  className="flex items-center gap-2 font-mono text-meta text-foreground/65"
                 >
                   <CheckCircle2
-                    className="w-3.5 h-3.5 text-foreground/40 shrink-0"
+                    className="w-3.5 h-3.5 text-foreground/45 shrink-0"
                     strokeWidth={1.5}
                     aria-hidden
                   />
@@ -158,24 +158,24 @@ export default function AgentsStorePage() {
               <p className="font-sans text-[24px] font-medium tracking-tight mb-2">
                 Your Agent
               </p>
-              <p className="font-mono text-[12px] text-background/55 mb-8 pb-8 border-b border-background/15">
+              <p className="font-mono text-small text-background/55 mb-8 pb-8 border-b border-background/15">
                 200 subscribers @ €25/mo
               </p>
               <div className="space-y-4">
-                <div className="flex justify-between text-[14px]">
+                <div className="flex justify-between text-body">
                   <span className="text-background/55">Gross revenue</span>
                   <span className="font-mono">€5,000/mo</span>
                 </div>
-                <div className="flex justify-between text-[14px]">
+                <div className="flex justify-between text-body">
                   <span className="text-background/55">Platform fee (30%)</span>
                   <span className="font-mono text-background/55">−€1,500</span>
                 </div>
-                <div className="flex justify-between text-[16px] font-medium pt-4 border-t border-background/15">
+                <div className="flex justify-between text-body font-medium pt-4 border-t border-background/15">
                   <span>Your profit</span>
                   <span className="font-mono">€3,500/mo</span>
                 </div>
               </div>
-              <p className="font-mono text-[10px] text-background/45 mt-6 pt-6 border-t border-background/15 leading-relaxed">
+              <p className="font-mono text-label text-background/50 mt-6 pt-6 border-t border-background/15 leading-relaxed">
                 Example only. Actual revenue depends on your agent&apos;s value
                 and demand.
               </p>
