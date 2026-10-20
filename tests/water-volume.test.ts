@@ -151,3 +151,72 @@ test("a strike throws the water up", () => {
     `the strike did not throw the water up (${before} → ${struck})`,
   );
 });
+
+test("holding the hand gathers a mound and keeps the volume", () => {
+  const water = new Water(CONFIG);
+  const rest = water.volume();
+  const column = 96;
+
+  // A held hand makes the crest slosh, so the height at one instant depends
+  // on phase. The mound is judged by its highest point during the hold.
+  const before = water.surfaceY(column);
+  let gathered = before;
+  for (let step = 0; step < 180; step++) {
+    water.step(1 / 60, {
+      x: 720,
+      radius: 120,
+      force: -40,
+      velocity: 0,
+      splash: 0,
+    });
+    gathered = Math.min(gathered, water.surfaceY(column));
+  }
+
+  assert.ok(
+    gathered < before - 15,
+    `the hold did not gather a mound (${before} → ${gathered})`,
+  );
+  assert.ok(
+    drift(water, rest) < TOLERANCE,
+    `the body drifted by ${(drift(water, rest) * 100).toFixed(3)}%`,
+  );
+});
+
+test("releasing the hold throws a wave out of the mound and keeps the volume", () => {
+  const water = new Water(CONFIG);
+  const rest = water.volume();
+  const far = 96 + 40;
+  const restFar = water.surfaceY(far);
+
+  for (let step = 0; step < 180; step++) {
+    water.step(1 / 60, {
+      x: 720,
+      radius: 120,
+      force: -40,
+      velocity: 0,
+      splash: 0,
+    });
+  }
+  water.step(1 / 60, {
+    x: 720,
+    radius: 120,
+    force: 0,
+    velocity: 0,
+    splash: 90,
+  });
+
+  let travelled = 0;
+  for (let step = 0; step < 120; step++) {
+    water.step(1 / 60, null);
+    travelled = Math.max(travelled, Math.abs(water.surfaceY(far) - restFar));
+  }
+
+  assert.ok(
+    travelled > 4,
+    `the release did not send a wave ${40 * CONFIG.cellWidth}px out (${travelled.toFixed(2)}px)`,
+  );
+  assert.ok(
+    drift(water, rest) < TOLERANCE,
+    `the body drifted by ${(drift(water, rest) * 100).toFixed(3)}%`,
+  );
+});

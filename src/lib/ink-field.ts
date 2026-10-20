@@ -417,7 +417,7 @@ export class InkField {
     if (handActive) {
       const dragging = p.down && p.travelled > DRAG_SLOP * 0.35;
       const speed = Math.hypot(p.vx, p.vy);
-      const radius = this.reach * (dragging ? 1.15 : 0.8);
+      const radius = this.reach * (dragging ? 0.95 : 0.8);
       // A resting hand leaves a pinpoint of ink; a moving one a line.
       const rate = dragging ? 16 : p.down ? 3 : 0.9 + Math.min(2.2, speed / 400);
       const follow = dragging ? 1 : p.down ? 0.2 : 0.35;
@@ -506,7 +506,7 @@ export class InkField {
         const right = c < columns - 1 ? this.dye[i + 1] : this.dye[i];
         const up = r > 0 ? this.dye[i - columns] : this.dye[i];
         const down = r < rows - 1 ? this.dye[i + columns] : this.dye[i];
-        const blur = (left + right + up + down - 4 * this.dye[i]) * 0.1;
+        const blur = (left + right + up + down - 4 * this.dye[i]) * 0.055;
 
         const value = Math.max(0, (mix(this.dye) + blur) * dyeDecay);
         next[i] = value < 0.0015 ? 0 : value;
@@ -569,7 +569,9 @@ export class InkField {
         const y = (r + 0.5) * lattice;
         for (let c = 0; c < columns; c++) {
           const dye = this.dyeAt((c + 0.5) * lattice, y);
-          if (dye > 0.004) out[r * columns + c] = Math.min(1, dye);
+          // A curve, not a ramp: the ink has an edge, so a stroke prints as a
+          // stroke and a whisper as a stipple, never as a haze.
+          if (dye > 0.004) out[r * columns + c] = smoothstep(0.04, 0.72, dye);
         }
       }
     }
@@ -736,6 +738,7 @@ export function bindPointer(
 
   const previousTouchAction = surface.style.touchAction;
   surface.style.touchAction = "pan-y";
+  const previousSelect = surface.style.userSelect;
 
   let lastStamp = 0;
   let pressed = false;
@@ -761,15 +764,19 @@ export function bindPointer(
     ink.move(x, y, 0, event.pointerType === "touch");
     ink.press(x, y, event.pointerType === "touch");
     pressed = true;
+    // A drag draws; it must not also select the words it passes over.
+    surface.style.userSelect = "none";
   };
 
   const onUp = () => {
+    surface.style.userSelect = previousSelect;
     if (!pressed) return;
     pressed = false;
     ink.release();
   };
 
   const onLeave = () => {
+    surface.style.userSelect = previousSelect;
     pressed = false;
     lastStamp = 0;
     ink.leave();
@@ -783,6 +790,7 @@ export function bindPointer(
 
   return () => {
     surface.style.touchAction = previousTouchAction;
+    surface.style.userSelect = previousSelect;
     surface.removeEventListener("pointermove", onMove);
     surface.removeEventListener("pointerdown", onDown);
     surface.removeEventListener("pointerup", onUp);
