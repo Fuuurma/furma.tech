@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import { TrendingUp, Zap, BarChart3 } from 'lucide-react';
 import { ProjectLayout, ProjectHero, ProjectStatusPlaceholder } from '@/components/ui/ProjectLayout';
-import { getProjectCoverTint } from '@/lib/home-projects';
 import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
@@ -29,7 +28,6 @@ export default function FinanceHubPage() {
         description="Track stocks, crypto, ETFs and more with 18 data providers integrated. Real-time WebSocket streaming, multi-tier caching with 85-95% hit rate, and 10+ technical indicators."
         status={{ label: 'Paused', variant: 'paused' }}
         projectId="financehub"
-        coverTint={getProjectCoverTint('financehub')}
       />
       <ProjectStatusPlaceholder status="paused" highlights={highlights} />
     </ProjectLayout>

@@ -27,7 +27,6 @@ import {
   ProjectCTA,
 } from "@/components/ui/ProjectLayout";
 import { StaggerReveal } from "@/components/motion/StaggerReveal";
-import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 
@@ -122,7 +121,6 @@ export default function NovaPage() {
         description="The unified AI workspace where you bring your own API keys and access multiple LLM providers without vendor lock-in. One interface, infinite possibilities."
         status={{ label: "Public Beta", variant: "beta" }}
         projectId="aitlas"
-        coverTint={getProjectCoverTint("aitlas")}
       >
         <ProjectTrustRow items={["No credit card", "Free tier", "Your keys"]} />
         <div className="flex flex-wrap items-center gap-6 mt-8">

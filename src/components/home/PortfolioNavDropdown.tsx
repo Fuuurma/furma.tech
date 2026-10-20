@@ -53,11 +53,7 @@ function ProjectMenuCell({
       )}
       onClick={onNavigate}
     >
-      <span
-        className="studio-portfolio-panel__swatch"
-        style={{ backgroundColor: project.coverTint }}
-        aria-hidden
-      />
+      <span className="studio-portfolio-panel__swatch" aria-hidden />
       <span className="studio-portfolio-panel__index" aria-hidden>
         {String(index + 1).padStart(2, "0")}
       </span>

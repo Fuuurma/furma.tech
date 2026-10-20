@@ -21,13 +21,11 @@ type LayoutProps = PlasticProjectSlideProps & {
 };
 
 function ProjectCover({
-  project,
   HeroVisual,
   className,
   frameClassName,
   isActive = false,
 }: {
-  project: HomeProject;
   HeroVisual: ComponentType<{ className?: string }> | undefined;
   className?: string;
   frameClassName?: string;
@@ -48,7 +46,6 @@ function ProjectCover({
             !isActive && "scale-[0.97]",
             frameClassName,
           )}
-          style={{ backgroundColor: project.coverTint }}
         >
           {HeroVisual ? (
             <HeroVisual className="w-full h-full max-h-[min(100%,520px)] object-contain" />
@@ -166,7 +163,7 @@ function LayoutEditorialRight(props: LayoutProps) {
   const { project, total, HeroVisual, indexLabel, isActive } = props;
   return (
     <article className="plastic-project plastic-project--editorial-right h-full min-h-0 grid grid-rows-[1fr_auto]">
-      <ProjectCover project={project} HeroVisual={HeroVisual} isActive={isActive} />
+      <ProjectCover HeroVisual={HeroVisual} isActive={isActive} />
       <EditorialIntro
         project={project}
         indexLabel={indexLabel}
@@ -183,7 +180,6 @@ function LayoutEditorialLeft(props: LayoutProps) {
   return (
     <article className="plastic-project plastic-project--editorial-left h-full min-h-0 grid grid-rows-[1fr_auto]">
       <ProjectCover
-        project={project}
         HeroVisual={HeroVisual}
         frameClassName="ml-auto max-w-[90%]"
         isActive={isActive}
@@ -204,7 +200,6 @@ function LayoutVisualHeavy(props: LayoutProps) {
   return (
     <article className="plastic-project plastic-project--visual-heavy h-full min-h-0 grid grid-rows-[minmax(0,1fr)_auto]">
       <ProjectCover
-        project={project}
         HeroVisual={HeroVisual}
         frameClassName="max-w-[min(100%,1100px)]"
         isActive={isActive}
@@ -249,7 +244,6 @@ function LayoutStacked(props: LayoutProps) {
         <ProjectMeta project={project} indexLabel={indexLabel} total={total} />
       </SlideReveal>
       <ProjectCover
-        project={project}
         HeroVisual={HeroVisual}
         className="flex-1 min-h-[28%]"
         frameClassName="max-w-[720px] mx-auto rounded-sm"
@@ -266,7 +260,7 @@ function LayoutOverlay(props: LayoutProps) {
   const { project, total, HeroVisual, indexLabel, isActive } = props;
   return (
     <article className="plastic-project plastic-project--overlay relative h-full min-h-0 bg-black">
-      <ProjectCover project={project} HeroVisual={HeroVisual} className="absolute inset-0" isActive={isActive} />
+      <ProjectCover HeroVisual={HeroVisual} className="absolute inset-0" isActive={isActive} />
       <div
         className="absolute inset-0 pointer-events-none"
         style={{

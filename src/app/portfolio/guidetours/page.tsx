@@ -17,7 +17,6 @@ import {
   ProjectCTA,
 } from "@/components/ui/ProjectLayout";
 import { StaggerReveal } from "@/components/motion/StaggerReveal";
-import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -89,7 +88,6 @@ export default function GuideToursPage() {
         description="Multi-tenant SaaS platform for tour operators. CRM, staff scheduling, real-time availability, and OTA integrations. Built for Catalonia, designed to scale worldwide."
         status={{ label: "In Development", variant: "beta" }}
         projectId="guidetours"
-        coverTint={getProjectCoverTint("guidetours")}
       >
         <ProjectTrustRow items={["Viator ready", "EU based", "GDPR compliant"]} />
       </ProjectHero>

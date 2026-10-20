@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import { Video, Shuffle, Shield } from 'lucide-react';
 import { ProjectLayout, ProjectHero, ProjectStatusPlaceholder } from '@/components/ui/ProjectLayout';
-import { getProjectCoverTint } from '@/lib/home-projects';
 import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
@@ -29,7 +28,6 @@ export default function LinkUpPage() {
         description="A social communication platform featuring random stranger connections (Omegle-style), contact-based connections, and multi-modal communication including chat, video, and voice with privacy controls."
         status={{ label: 'Paused', variant: 'paused' }}
         projectId="linkup"
-        coverTint={getProjectCoverTint('linkup')}
       />
       <ProjectStatusPlaceholder status="paused" highlights={highlights} />
     </ProjectLayout>
