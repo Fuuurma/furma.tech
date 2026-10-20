@@ -1593,8 +1593,11 @@ a.studio-chrome__view-link:hover {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-width: 1280px;
-  margin-inline: auto;
+  /* The index is the width of the screen. The lines that separate the ten
+     projects are the page's rules, so they run edge to edge; the rows keep
+     the page's own margin, and the work stays stacked top to bottom. */
+  max-width: none;
+  margin-inline: 0;
   position: relative;
   z-index: 2;
 }
@@ -1814,7 +1817,9 @@ a.studio-chrome__view-link:hover {
 
 @media (min-width: 768px) {
   .portfolio-list-page__expand-inner {
-    grid-template-columns: minmax(200px, 38%) minmax(0, 1fr);
+    /* The opened project takes the room the page now gives it: the shot gets
+       a share of the full width, and the words take the rest. */
+    grid-template-columns: minmax(240px, 45%) minmax(0, 1fr);
     gap: 2rem 2.5rem;
     padding-bottom: 2.25rem;
     align-items: center;
@@ -1841,7 +1846,11 @@ a.studio-chrome__view-link:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 16 / 10;
+  /* The shot fills its mount: the frame takes the column's width and the
+     heroes are drawn on a 520 × 340 field, so the mount is cut to that
+     ratio and the picture fills it edge to edge. */
+  width: 100%;
+  aspect-ratio: 520 / 340;
   padding: 1.25rem;
 }
 
@@ -1850,6 +1859,14 @@ a.studio-chrome__view-link:hover {
   height: 100%;
   max-height: 200px;
   object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  /* The shot is the reason the row opens. It is shown as large as the mount
+     allows, not as a thumbnail inside it. */
+  .portfolio-list-page__preview-visual {
+    max-height: none;
+  }
 }
 
 .portfolio-list-page__preview-fallback {
@@ -1947,7 +1964,6 @@ a.studio-chrome__view-link:hover {
   .scroll-progress-bar {
     display: none;
   }
-
   .portfolio-list-page__item {
     animation: none;
   }
