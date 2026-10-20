@@ -34,7 +34,103 @@ public face until a deliberate cutover.
 - The chrome carries no hue: no colour literal in a component rule, and
   none in a house file. The theme's own warm dark paper is the exception,
   and it is a theme, not a hue on the page
+- The hero carries no scroll cue — no label, no rule. The wave is the cue.
+- The footer's water has a band of its own; the type is set on clean paper
+- The water keeps its volume. A body of water that drains is a puddle
 - Invoke `design-arsenal` + `impeccable` on UI passes
+
+## Home hero + footer — the wave crosses, and the water answers (2026-10-20)
+
+The brief: the hero is good and can be better; the footer is horrible and its
+water "disappears the design"; keep the water, and let the reader put a hand
+in it.
+
+**1. The hero carries no scroll cue.** No label, no rule, no pulse. A label
+is a sentence about the page, and the page does not need to be told what it
+is. The wave says it instead: after five seconds of an idle reader a swell
+crosses the panel from the top right to the bottom left, the ink deepening as
+it passes and a faint band of it showing in the quiet middle. The cue is the
+one thing the reader is already looking at, so nothing is added to the page to
+point at the page.
+
+**2. One plate, printed twice.** The wave was held to the top-right corner.
+It is now held to two opposite corners — the top right and the bottom left —
+and the bottom-left lobe prints the same field *mirrored*. Measured at
+1440×900: the two corners carry the same ink, 13.8% and 13.7% of their
+pixels lit. The page's composition is light at the ends of the diagonal and
+quiet through the middle, and the copy that used to sit in the bottom left is
+gone, so the wave fills the space the words were in rather than arguing with
+them.
+
+**3. The footer's water has a band of its own.** The water used to be printed
+behind the whole footer, and the type was reversed out of it — so the type sat
+on a screen and the screen read as a foreign object pasted over the page.
+Now the type is set on clean paper and the water has a band at the foot of the
+page: **the page ends in a body of water.** The band is the only place on the
+page that is a screen, which is what makes it read as a print rather than as
+noise.
+
+**4. The water is a body of water, and it answers the reader.** The particle
+fluid that was there lost **94% of its volume in five seconds** and collapsed
+into a sliver on the floor: the water in the picture was not the water in the
+simulation, and the footer read as a smear. The house solver is now a row of
+columns of shallow water — one column per character — and the rule it keeps is
+that the body keeps its volume. Measured: **0.00% drift** across resting,
+pressing, dragging and striking.
+
+- a pointer held over the water presses the surface down under it, and the
+  water closes over the hollow;
+- a pointer dragged through the water pulls it along, and the wake keeps
+  sloshing after the hand is lifted;
+- a click strikes it, and the strike throws a crown that the wave then carries
+  away across the panel.
+
+| Panel | Screen | Lattice | Ink |
+|---|---|---|---|
+| hero | dots | 7 × 7 px | the hero's fixed white on black |
+| footer | characters | the face's advance × 16 px | `--screen-ink` on `--screen-paper` |
+
+Both screens obey one rule: **a mark's area is the share of its cell the
+tone asks for**, and no mark covers more than `INK_CEILING` (0.2189) of its
+cell. The footer's tone is read from the water's own level rather than from
+the row the mark sits in, so the body fades smoothly instead of in bands, and
+the deep water prints as a stipple rather than a wall of characters.
+
+References (with why):
+- **Bencho Lab's ASCII wake** — a body of water drawn in characters is not a
+  picture of water; the characters *are* the water. The footer's columns are
+  the characters' own cells, so the waterline is quantised to the type.
+- **Tufte's data-ink ratio** — the water carries the page's picture, so it
+  has to earn its ink. The deep water is a stipple at the ink ceiling, not a
+  field of glyphs, and the type around it keeps clean paper.
+- **chafa / libcaca tone rendering** — tone is a *share of the cell*, and a
+  screen is a lattice plus a rule. The hero grades a dot's area; the footer
+  grades a character's coverage. Same weight of paper, two frequencies.
+
+Craft move: **the swell is the scroll cue.** The hero had a rule with a word
+on it, and the rule was a foreign object on a page whose whole idea is that
+a wave is drawn on a screen. The swell replaces it: the same wave, sent
+across the diagonal on its own, so the reader learns the page continues by
+watching the picture continue.
+
+Catalog pick: **no library.** The two screens are house code because the
+house's ink ceiling, its reserve knock-out and its token-driven palette are
+the contract, and a component that draws its own halftone cannot be held to
+them. The licensed React Bits Pro files can replace both components at the
+call site unchanged — the prop API is theirs — but the house additions
+(`surfaceRef`, `maxFPS`, `pauseWhenOffscreen`, `cell`, `idleCue`) and the
+solver underneath are the house's, and a licensed install would need them
+carried over.
+
+Smoke (Playwright, 1440×900 and 390×844, light and dark):
+- the hero's two corners measure the same ink (13.8% / 13.7%);
+- the hero's ink moves from 3.9% to 6.1% and back as the swell crosses, and
+  does not move at all under `prefers-reduced-motion`;
+- the footer's band answers a hover (the surface dips), a drag (a wake is
+  pulled across the panel) and a click (a crown is thrown, at the struck
+  column, within 260 ms);
+- the footer's type is set on clean paper: no ink is printed behind it;
+- 43/43 tests, typecheck clean, lint clean, build clean.
 
 ## The v1 pages — the rule gets teeth (2026-10-20)
 
@@ -264,7 +360,13 @@ Rules:
 - The marker is a hairline in the panel's vocabulary, not a colour chip.
 - The plate is the paper: no radius, no shadow, no border, no gradient.
 
-## Home hero + footer — a wave and a body of water (2026-10-20)
+## Home hero + footer — a wave and a body of water (2026-10-20, superseded)
+
+Superseded by "the wave crosses, and the water answers" above, which keeps
+this section's print idiom — one model, two screens, one ink ceiling — and
+replaces its single corner with the diagonal, its particle fluid with a body
+of water that keeps its volume, and its pointer that stirs with a hand that
+presses, pulls and strikes.
 
 The landing hero and the closing footer carry two black-and-white screens,
 and they are the same kind of thing: **a tone field, printed as marks.**

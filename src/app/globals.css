@@ -830,12 +830,6 @@ html {
   }
 }
 
-@media (max-width: 768px) {
-  .plastic-hero-scroll-cue {
-    display: none;
-  }
-}
-
 .plastic-cover__aspect {
   padding-top: 62.5%;
 }
