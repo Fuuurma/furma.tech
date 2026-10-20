@@ -129,6 +129,24 @@
   --grey-700: oklch(0.3 0 0);
   --grey-800: oklch(0.2 0 0);
   --grey-900: oklch(0.1 0 0);
+
+  /* The screens print in black and white.
+     The page's paper and ink may carry a hue — the dark theme's paper is a
+     warm off-white — and a screen that prints a token verbatim prints that
+     hue with it, which is how a warm cream panel got into a black-and-white
+     footer. So the screens take the token's lightness and leave its hue
+     behind: the same lightness in grey reads as the same colour without the
+     colour. A browser without relative colour syntax keeps the token, which
+     is the old behaviour and no worse. */
+  --screen-paper: var(--foreground);
+  --screen-ink: var(--background);
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --screen-paper: oklch(from var(--foreground) l 0 h);
+    --screen-ink: oklch(from var(--background) l 0 h);
+  }
 }
 
 .dark {

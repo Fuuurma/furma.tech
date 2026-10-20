@@ -524,8 +524,8 @@ function FooterSlide({ isActive }: { isActive: boolean }) {
     >
       <LiquidAscii
         surfaceRef={surfaceRef}
-        color="var(--background)"
-        backgroundColor="var(--foreground)"
+        color="var(--screen-ink)"
+        backgroundColor="var(--screen-paper)"
         fontFamily="var(--font-mono)"
         characters=" .:-=+*#%@"
         speed={0.9}

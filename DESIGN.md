@@ -47,7 +47,7 @@ by the motion. The pointer stirs it.
 | Panel | Screen | Lattice | Ink |
 |---|---|---|---|
 | hero | dots | 7 × 7 px | the hero's fixed white on black |
-| footer | characters | the face's advance × 16 px | `--background` on `--foreground` |
+| footer | characters | the face's advance × 16 px | `--screen-ink` on `--screen-paper` |
 
 Both screens obey one rule: **a mark's area is the share of its cell the
 tone asks for**, and no mark on this page covers more than `INK_CEILING`
@@ -56,6 +56,15 @@ graded to the tone; the footer reaches it with the heaviest character it is
 allowed to print. Measured on the rendered page, the hero's darkest dot
 covers 18.5% of its cell and the footer's heaviest character 20.3% — the
 same weight of paper, two screen frequencies.
+
+The other measure is hue. Counting the channels of the rendered page, the
+hero is neutral to the bit (0 of 4.8M pixels carry a colour) and the
+footer's panel is neutral too; the only channel difference left anywhere in
+either screen is 1/255, which is the browser's own rounding on antialiased
+edges. The dark theme's own paper is a warm off-white, and before the
+screen tokens the footer printed it verbatim — a cream panel spread over
+4.6M pixels, a difference of 5/255 that no eye would ever see and no
+measurement would let pass.
 
 The wordmark and the copy are untouched. Where the type meets the ink it
 reverses out of it — the print idiom of type knocked out of a screened block.
@@ -94,9 +103,16 @@ Rules:
   mid-slosh. Nothing may put either screen back in motion.
 - The artwork is decorative — a real `<h1>` carries the name for assistive
   technology.
-- The footer's surface is painted with `--foreground`, so its type follows
-  `--background` and the whole panel inverts with the theme. The hero is
-  painted black outright and keeps fixed white.
+- The screens print in `--screen-paper` and `--screen-ink`, not in
+  `--foreground` and `--background`. The page's tokens may carry a hue — the
+  dark theme's paper is a warm off-white — and a screen that prints a token
+  verbatim prints that hue with it, so a cream panel got into a black-and-
+  white footer. The screen tokens keep the token's lightness and drop its
+  hue, and a browser without relative colour syntax falls back to the token
+  itself.
+- The footer's surface is painted with `--screen-paper`, so its type follows
+  `--screen-ink` and the whole panel still inverts with the theme. The hero
+  is painted black outright and keeps fixed white.
 - A screen that is off the page stops: neither of them runs a loop the
   reader cannot see.
 
