@@ -21,12 +21,6 @@ interface PortfolioListItemProps {
   itemIndex: number;
 }
 
-function statusTone(status: string): string {
-  if (status === "In Development") return "portfolio-list-page__status--dev";
-  if (status === "Roadmap") return "portfolio-list-page__status--roadmap";
-  return "portfolio-list-page__status--paused";
-}
-
 function PreviewVisual({
   name,
   HeroVisual,
@@ -91,12 +85,7 @@ function StaticRowContent({
           <div className="portfolio-list-page__detail">
             <div className="portfolio-list-page__detail-meta">
               <span className="plastic-label">{project.category}</span>
-              <span
-                className={cn(
-                  "portfolio-list-page__status",
-                  statusTone(project.status),
-                )}
-              >
+              <span className="portfolio-list-page__status">
                 {project.status}
               </span>
             </div>
@@ -177,12 +166,7 @@ function AnimatedRowContent({
           >
             <div className="portfolio-list-page__detail-meta">
               <span className="plastic-label">{project.category}</span>
-              <span
-                className={cn(
-                  "portfolio-list-page__status",
-                  statusTone(project.status),
-                )}
-              >
+              <span className="portfolio-list-page__status">
                 {project.status}
               </span>
             </div>

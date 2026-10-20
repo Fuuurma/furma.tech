@@ -29,7 +29,75 @@ public face until a deliberate cutover.
   Tailwind arbitrary value.
 - No text below 55% of the opposite colour. No text below 60% of the
   theme's foreground, because that colour has to clear both surfaces.
+- The page is monochrome; the product keeps its colours inside its own
+  picture
+- The chrome carries no hue: no colour literal in a component rule, and
+  none in a house file. The theme's own warm dark paper is the exception,
+  and it is a theme, not a hue on the page
 - Invoke `design-arsenal` + `impeccable` on UI passes
+
+## The v1 pages — the rule gets teeth (2026-10-20)
+
+The mount pass wrote a rule: *the page is monochrome, and the product keeps
+its colours inside its own picture.* Nothing enforced it, and one thing
+broke it.
+
+The portfolio's status tag was green for "In Development" and amber for
+"Roadmap" — `#0a5c36` and `#5c3d0a`, the only two colour literals in the
+entire component layer. The shadcn floor underneath had already been
+re-skinned to greys, so the tag was the one hand-written exception on the
+page. And the state was already on the page twice over in words: the row's
+tag column reads "AI INFRASTRUCTURE · IN DEVELOPMENT" and the chip beside
+the description reads "IN DEVELOPMENT". The colour was ink that carried no
+information.
+
+The tag is now one treatment for every state: a hairline frame, the word,
+and nothing else to read. The per-state modifiers are gone, and so is the
+helper that chose between them — a chip that is the same for every state
+does not need a tone.
+
+Measured, on the rendered page with a row expanded: the chroma on
+`/portfolio` fell from **3,907 pixels to 631**, and the 631 that are left
+are the product's own picture — the blue and purple nodes in the Aitlas
+artifact — which is exactly where the rule says a colour may live.
+`/portfolio/aitlas` did not move, because all of its chroma was always the
+artifact.
+
+The rule now has a test. `tests/monochrome-chrome.test.ts` walks the
+stylesheet's rules, skips the token blocks, and fails on any colour literal
+whose channels are not equal; it does the same for the house's own files.
+The theme's warm dark paper and the shadcn floor's own tokens are the
+exemptions, and they are exemptions because they are *themes*, not hues on
+the page.
+
+References (with why):
+- **Experimental Jetset** (house catalogue) — identity systems where colour
+  is a system with a few members, each used with purpose. Why: the shadcn
+  floor here was already re-skinned to greys, and the status tag was the one
+  thing that had opted out of the system.
+- **Vignelli's Unigrid** — a system is a set of decisions, not a set of
+  exceptions. Why: two colour literals in a whole stylesheet is how a system
+  stops being a system. The tag was the only thing left to decide.
+- **Tufte's data-ink ratio** — ink that carries no information should not be
+  printed. Why: the state was on the page twice over in words, so the
+  colour was decoration by another name.
+
+Craft move: **the tag is a tag.** A hairline frame and the word, in the
+house's own vocabulary — the same frame, the same hairline weight and the
+same corner radius the rest of the page's marks use. Nothing to decode.
+
+Catalog pick: **no library.** A stylesheet rule, a deleted helper, and a
+test. The measurement is the house's own: count the channels of the
+rendered page and see what is left.
+
+Rules:
+- The chrome carries no hue. A colour literal in a component rule is a bug.
+- The state is in the word, always. A tag never needs a colour to be read.
+- A product's colour lives inside the artifact's own frame. The chips, the
+  washes, the accents — all of them are the product's, and they stay
+  inside the picture.
+- The theme's warm dark paper is a theme, not a hue on the page. The screens
+  still drop it, and the rest of the page keeps it.
 
 ## The v1 pages — one type ladder, and a legible smallest step (2026-10-20)
 

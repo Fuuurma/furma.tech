@@ -1884,31 +1884,20 @@ a.studio-chrome__view-link:hover {
   color: rgba(0, 0, 0, 0.6);
 }
 
+/* The status tag: one treatment for every state. It used to carry a hue —
+   green for "In Development", amber for "Roadmap" — which was the last
+   colour on the page outside a product's own picture, and the state was
+   already on the page twice over in words. The tag is a tag: a hairline
+   frame and the word. */
 .portfolio-list-page__status {
   font-family: var(--font-mono);
   font-size: var(--text-label);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 0.35rem 0.55rem;
+  color: rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 2px;
-}
-
-.portfolio-list-page__status--dev {
-  color: #0a5c36;
-  border-color: color-mix(in oklch, #0a5c36, transparent 70%);
-  background: color-mix(in oklch, #0a5c36, transparent 92%);
-}
-
-.portfolio-list-page__status--roadmap {
-  color: #5c3d0a;
-  border-color: color-mix(in oklch, #5c3d0a, transparent 70%);
-  background: color-mix(in oklch, #5c3d0a, transparent 92%);
-}
-
-.portfolio-list-page__status--paused {
-  color: rgba(0, 0, 0, 0.6);
-  border-color: rgba(0, 0, 0, 0.12);
   background: rgba(0, 0, 0, 0.04);
 }
 
