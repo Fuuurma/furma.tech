@@ -512,7 +512,11 @@ export function LiquidAscii({
       frame = 0;
       if (!visible) return;
 
-      const interval = 1000 / Math.max(1, maxFPS);
+      // The tolerance matters: a display's frames are a hair under the
+      // period they claim, so an interval of exactly one period throws away
+      // every other frame and the screen runs at half the rate it was asked
+      // for.
+      const interval = (1000 / Math.max(1, maxFPS)) * 0.9;
       if (now - lastStep < interval) {
         schedule();
         return;
@@ -552,14 +556,25 @@ export function LiquidAscii({
       attributeFilter: ["class"],
     });
 
+    // A screen that is off the page has nothing to say, and a fluid
+    // simulation is not cheap enough to run for nobody.
+    //
+    // The observer is given a negative margin, so the screen stops a little
+    // before it leaves the viewport rather than exactly at the edge: a
+    // panel whose top sits flush with the viewport's bottom still counts as
+    // touching it, and the screen would run on for a whole section.
     let intersection: IntersectionObserver | null = null;
     if (pauseWhenOffscreen && typeof IntersectionObserver !== "undefined") {
-      intersection = new IntersectionObserver((entries) => {
-        for (const entry of entries) {
-          visible = entry.isIntersecting;
-          if (visible) schedule();
-        }
-      });
+      visible = false;
+      intersection = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            visible = entry.isIntersecting;
+            if (visible) schedule();
+          }
+        },
+        { rootMargin: "-80px" },
+      );
       intersection.observe(wrapper);
     }
 
