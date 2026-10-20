@@ -130,6 +130,23 @@
   --grey-800: oklch(0.2 0 0);
   --grey-900: oklch(0.1 0 0);
 
+  /* The mount: the sheet a product's picture is printed on.
+     It used to be a pastel per project — a decorative wash that carried a hue
+     the studio's brand does not have, ignored the theme, and split the home
+     into three worlds between the two black-and-white screens. One neutral
+     plate instead: the page keeps its colour in the products, and the
+     products keep theirs inside their own pictures.
+
+     The plate sits on a black ground in both themes, so it does not invert
+     with them — which is why it is its own token and not an alias of the
+     grey scale, whose steps flip in the dark theme (and carry its hue).
+
+     Its lightness is the mean of the ten washes it replaces: those pastels
+     ran OKLCH L 0.879–0.939, mean 0.918. 0.92 is the house's own `--grey-200`
+     step, so the sheet keeps the value it had and no product's picture
+     changes contrast against it. */
+  --mount: oklch(0.92 0 0);
+
   /* The screens print in black and white.
      The page's paper and ink may carry a hue — the dark theme's paper is a
      warm off-white — and a screen that prints a token verbatim prints that
@@ -932,7 +949,7 @@ html {
 
 .studio-portfolio-panel__cell {
   display: grid;
-  grid-template-columns: 3px 1.75rem minmax(0, 1fr) auto;
+  grid-template-columns: 1px 1.75rem minmax(0, 1fr) auto;
   align-items: center;
   column-gap: 0.85rem;
   padding: 0.9rem 1rem;
@@ -949,13 +966,14 @@ html {
   }
 }
 
+/* A hairline, not a colour chip: the panel is black in both themes, and the
+   studio's brand has no hue to spend. The line marks the project you are on. */
 .studio-portfolio-panel__swatch {
   display: block;
-  width: 3px;
+  width: 1px;
   height: 100%;
   min-height: 2.25rem;
-  border-radius: 1px;
-  opacity: 0.9;
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .studio-portfolio-panel__index {
@@ -1027,7 +1045,7 @@ html {
 }
 
 .studio-portfolio-panel__cell--active .studio-portfolio-panel__swatch {
-  opacity: 1;
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .studio-portfolio-panel a:focus-visible,
@@ -1522,6 +1540,12 @@ a.studio-chrome__view-link:hover {
   position: relative;
 }
 
+/* The sheet the product's picture is printed on. */
+.plastic-cover__frame,
+.portfolio-page__cover-frame {
+  background: var(--mount);
+}
+
 .portfolio-page__cover-grain {
   z-index: 1;
   opacity: 0.05;
@@ -1779,7 +1803,7 @@ a.studio-chrome__view-link:hover {
   position: relative;
   border-radius: 2px;
   overflow: hidden;
-  background: color-mix(in oklch, var(--preview-tint, #e8e8e8), #fff 12%);
+  background: color-mix(in oklch, var(--mount), #fff 12%);
   border: 1px solid rgba(0, 0, 0, 0.08);
   clip-path: inset(0 0 0 0 round 2px);
   transition: clip-path var(--motion-duration-slow) var(--ease-out-expo);

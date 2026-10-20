@@ -16,7 +16,6 @@ import {
   ProjectFeatures,
   ProjectCTA,
 } from "@/components/ui/ProjectLayout";
-import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -97,7 +96,6 @@ export default function AgentsStorePage() {
         description="Hire pre-built AI agents for your workspace. Or build and publish your own — keep 70% of revenue."
         status={{ label: "In Development", variant: "beta" }}
         projectId="aitlas"
-        coverTint={getProjectCoverTint("aitlas")}
       >
         <div className="flex flex-wrap items-center gap-6">
           <Link href="#agents" className="plastic-cta motion-link">

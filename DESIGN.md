@@ -26,6 +26,87 @@ public face until a deliberate cutover.
   `text-white` utilities — the unlayered `plastic-*` rules win otherwise)
 - Invoke `design-arsenal` + `impeccable` on UI passes
 
+## The v1 pages — one neutral mount (2026-10-20)
+
+The two screens are black and white. The ten product slides that follow the
+hero were not: each one sat on its own pastel wash, and the result was a page
+that read as three worlds — a black-and-white wave, ten coloured cards, and a
+black-and-white body of water.
+
+The washes carried a hue the studio's brand does not have. They ignored the
+theme, they carried no information, and they were a per-project value, so
+every product had to be re-tinted to keep the family feeling related. The rule
+that replaces them is one line:
+
+> **The page is monochrome; the product keeps its colours inside its own
+> picture.**
+
+The product's accent belongs to the product. It is the one thing on the page
+that is allowed to be in colour, and it is allowed to be in colour because it
+is inside the artifact — the amber table, the blue chart, the green node, the
+purple MCP node. Outside that picture, the page is black, white, and the greys
+between.
+
+**The mount** is the sheet a product's picture is printed on. It is now one
+token, `--mount`, defined once in `:root` at `oklch(0.92 0 0)` — a neutral
+plate, painted at rgb(228, 228, 228) with zero chroma pixels in the margin
+around every picture.
+
+Three decisions sit behind that value:
+
+- **It is not an alias of the grey scale.** The grey steps flip in the dark
+  theme (`--grey-200` becomes a warm 0.18), so an alias would both invert the
+  plate and give it the theme's hue. The plate sits on a black ground in both
+  themes — measured: rgb(0, 0, 0) either side of the frame — so it must not
+  move when the theme does. It is its own token for that reason.
+- **It keeps the value the washes had.** The ten washes ran OKLCH lightness
+  0.879 to 0.939, mean 0.918. 0.92 is the house's own `--grey-200` step, so
+  the sheet is the lightness it already was and no product's picture changes
+  contrast against it. The value was computed from the ten hexes, not chosen
+  by eye.
+- **It is a plate, not a card.** It has no radius, no shadow and no border.
+  It is the paper, and the picture is printed on it.
+
+**The marker** in the portfolio panel used to be a 3px chip in the project's
+own colour. It is now a 1px line in the panel's own hairline vocabulary: an
+inactive project paints at rgb(56, 56, 56), the project you are on at
+rgb(231, 231, 231). It says where you are without spending a colour the
+studio does not have.
+
+References (with why):
+- **Tufte's data-ink ratio** — ink that carries no information should not be
+  printed. Why: the ten washes were decoration, and decoration is the one
+  thing a monochrome page cannot afford. The rule that follows from it is
+  where a colour may live: inside the picture, where it means something.
+- **The press proof** — a proof pull on plain stock: the paper carries no
+  colour of its own, the image carries all of it. Why: the mount is a sheet,
+  not a card. One neutral plate for ten products, so the home reads as one
+  printed artifact instead of a swatch book.
+- **Experimental Jetset** (house catalogue) — identity systems where colour
+  is a system with few members, each used with purpose. Why: this studio has
+  no hue in its identity, so it does not invent one per product. The accent
+  belongs to the product.
+
+Craft move: **the marker joins the panel's hairline vocabulary.** The chip
+was a second, louder pen in a panel that is otherwise drawn entirely in 1px
+lines. Replacing it with a line of the same weight and the same family makes
+"you are here" read as part of the drawing rather than as a badge bolted onto
+it.
+
+Catalog pick: **none needed.** The pass is a token and a stylesheet; the one
+judgement in it — the plate's lightness — was settled by computing the ten
+washes' OKLCH lightness and taking their mean, not by a tool's default.
+
+Rules:
+- The mount is `--mount` and only `--mount`. No per-project colour, no inline
+  `backgroundColor` on a frame, no second plate.
+- A product's colour lives inside its picture. If a colour appears outside
+  the artifact's own frame, it is a bug.
+- The plate does not invert with the theme, because it sits on a black ground
+  in both themes.
+- The marker is a hairline in the panel's vocabulary, not a colour chip.
+- The plate is the paper: no radius, no shadow, no border, no gradient.
+
 ## Home hero + footer — a wave and a body of water (2026-10-20)
 
 The landing hero and the closing footer carry two black-and-white screens,

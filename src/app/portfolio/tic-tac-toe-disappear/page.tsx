@@ -8,7 +8,6 @@ import {
   ProjectTrustRow,
   ProjectCTA,
 } from "@/components/ui/ProjectLayout";
-import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -53,7 +52,6 @@ export default function TicTacToePage() {
         description="A strategic twist on the classic game where moves vanish after a set number of turns. Think ahead, adapt fast, and outmaneuver your opponent in this dynamic battlefield."
         status={{ label: "In Dev", variant: "soon" }}
         projectId="tic-tac-toe"
-        coverTint={getProjectCoverTint("tic-tac-toe")}
       >
         <ProjectTrustRow items={["React", "Canvas API", "TypeScript"]} />
       </ProjectHero>

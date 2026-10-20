@@ -20,7 +20,6 @@ import {
   ProjectCTA,
 } from "@/components/ui/ProjectLayout";
 import { StaggerReveal } from "@/components/motion/StaggerReveal";
-import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -112,7 +111,6 @@ export default function AitlasPage() {
         description="A modular agentic operating system where you own your keys, connect tools via MCP, and run autonomous agents without trust compromises."
         status={{ label: "In Development", variant: "beta" }}
         projectId="aitlas"
-        coverTint={getProjectCoverTint("aitlas")}
       >
         <div className="flex flex-wrap items-center gap-6">
           <Link

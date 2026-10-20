@@ -35,7 +35,6 @@ interface ProjectHeroProps {
   visual?: ReactNode;
   /** When set, renders the shared hero mock for this project id */
   projectId?: string;
-  coverTint?: string;
 }
 
 export function ProjectHeroSection({
@@ -46,7 +45,6 @@ export function ProjectHeroSection({
   children,
   visual,
   projectId,
-  coverTint,
 }: ProjectHeroProps) {
   const cover =
     visual ??
@@ -57,7 +55,6 @@ export function ProjectHeroSection({
       label={label}
       title={title}
       description={description}
-      coverTint={coverTint}
       visual={cover}
       statusBadge={
         status ? (

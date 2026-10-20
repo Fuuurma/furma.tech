@@ -83,10 +83,7 @@ function StaticRowContent({
 
       <div className="portfolio-list-page__expand" aria-hidden="true">
         <div className="portfolio-list-page__expand-inner">
-          <div
-            className="portfolio-list-page__preview"
-            style={{ "--preview-tint": project.coverTint } as CSSProperties}
-          >
+          <div className="portfolio-list-page__preview">
             <div className="portfolio-list-page__preview-frame">
               <PreviewVisual name={project.name} HeroVisual={HeroVisual} />
             </div>
@@ -164,7 +161,6 @@ function AnimatedRowContent({
         <div className="portfolio-list-page__expand-inner">
           <motion.div
             className="portfolio-list-page__preview"
-            style={{ "--preview-tint": project.coverTint } as CSSProperties}
             variants={expandChildVariants}
           >
             <motion.div

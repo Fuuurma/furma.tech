@@ -13,7 +13,6 @@ interface ProjectHeroProps {
   statusBadge?: ReactNode;
   children?: ReactNode;
   visual?: ReactNode;
-  coverTint?: string;
 }
 
 export function ProjectHero({
@@ -23,7 +22,6 @@ export function ProjectHero({
   statusBadge,
   children,
   visual,
-  coverTint = "#e8e8e8",
 }: ProjectHeroProps) {
   return (
     <>
@@ -36,10 +34,7 @@ export function ProjectHero({
             innerClassName="w-full"
             intensity={0.7}
           >
-            <div
-              className="portfolio-page__cover-frame w-full"
-              style={{ backgroundColor: coverTint }}
-            >
+            <div className="portfolio-page__cover-frame w-full">
               <div className="portfolio-page__cover-inner min-h-[min(52vh,520px)] flex items-center justify-center p-6 md:p-12">
                 {visual ?? (
                   <div className="w-full max-w-lg aspect-[4/3] bg-foreground/[0.04]" />
