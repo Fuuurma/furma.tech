@@ -76,6 +76,14 @@ References (with why):
 - **chafa / libcaca tone rendering** — the same continuous tone resolved on
   a coarse grid of characters, where the character carries the tone instead
   of a pixel.
+- **Bencho Lab's ASCII wake** (vendored in `furma.bloxs-v2`) — the closest
+  precedent for the coarse screen: a grid of numbers, and a number picks a
+  character off a ramp, lightest to densest. That is the whole effect, and it
+  is the model both screens here run on — a tone field, printed as marks.
+  Its one idea that does not travel is the shimmer, where the live part of
+  the field flickers between neighbouring characters the way a terminal
+  redraws. Here the field is printed, not redrawn, so the ordered threshold
+  is the point: a random mix would turn the depth ramp into noise.
 - **Radium Coders' Evil Buttons `DitherButton`** (vendored in
   `furma.bloxs-v2`, Apache-2.0) — a proven canvas dither on a 4px grid; the
   fine screen inherits house craft instead of a tutorial.
