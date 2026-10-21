@@ -11,7 +11,7 @@ export function ErrorBoundary({ error, reset }: ErrorBoundaryProps) {
   return (
     <div className="min-h-[70vh] flex items-center bg-background text-foreground">
       <div className="w-full max-w-[1280px] mx-auto px-6 md:px-12 py-20 md:py-28">
-        <div className="grid grid-cols-12 gap-8">
+        <div className="grid grid-cols-12 gap-x-0 gap-y-8 md:gap-x-8">
           <div className="col-span-12 md:col-span-2">
             <p className="plastic-label">Error</p>
             <p className="plastic-label mt-4">500</p>

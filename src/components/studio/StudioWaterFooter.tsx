@@ -96,7 +96,7 @@ export function StudioWaterFooter({
                   Furma.tech
                 </p>
                 <SplitReveal
-                  as="h3"
+                  as="h2"
                   text="We build sovereign digital futures."
                   className="font-sans text-[clamp(28px,4vw,48px)] font-medium leading-[1.1] tracking-[-0.03em] text-white block mb-4 md:mb-6 [@media(max-height:700px)]:mb-2"
                   trigger={isActive}

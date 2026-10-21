@@ -291,7 +291,7 @@ export function ProjectStatusPlaceholder({
 
   return (
     <ProjectSection>
-      <div className="grid grid-cols-12 gap-8">
+      <div className="grid grid-cols-12 gap-x-0 gap-y-8 md:gap-x-8">
         <div className="col-span-12 md:col-span-8 md:col-start-4 lg:col-start-5">
           <p className="plastic-label mb-6">{label}</p>
           <p className="plastic-paragraph text-foreground/70 mb-12">{message}</p>

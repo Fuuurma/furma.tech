@@ -220,6 +220,7 @@ export function PortfolioNavDropdown() {
           "plastic-reel__portfolio",
           open && "plastic-reel__portfolio--open",
         )}
+        aria-label="Portfolio"
         aria-expanded={open}
         aria-controls="portfolio-nav-panel"
         aria-haspopup="menu"
