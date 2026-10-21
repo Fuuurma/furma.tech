@@ -179,7 +179,7 @@ interface ProviderAcknowledgment {
  * legacy `ok: true` alias, and either a `reference` or an `id` field. See
  * the file header for the full contract.
  */
-export function parseProviderAcknowledgment(
+function parseProviderAcknowledgment(
   body: unknown,
 ): ProviderAcknowledgment {
   if (body === null || typeof body !== "object") {
