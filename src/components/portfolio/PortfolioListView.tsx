@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { HOME_PROJECTS } from "@/lib/home-projects";
 import { PortfolioHero } from "@/components/portfolio/PortfolioHero";
@@ -10,13 +11,26 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StudioWaterFooter } from "@/components/studio/StudioWaterFooter";
 
 export function PortfolioListView() {
+  const itemsRef = useRef<HTMLUListElement>(null);
+
+  /* The rows take hover only once the reader's pointer has moved. A cursor
+     resting over the list on load must not open a row nobody chose. */
+  useEffect(() => {
+    const arm = () => {
+      itemsRef.current?.setAttribute("data-armed", "");
+      window.removeEventListener("pointermove", arm);
+    };
+    window.addEventListener("pointermove", arm, { passive: true });
+    return () => window.removeEventListener("pointermove", arm);
+  }, []);
+
   return (
     <div className="portfolio-list-page">
       <PortfolioHero />
 
       <section className="portfolio-list-page__list" aria-label="Project list">
         <FilmGrain className="portfolio-list-page__grain" />
-        <ul className="portfolio-list-page__items">
+        <ul ref={itemsRef} className="portfolio-list-page__items">
           {HOME_PROJECTS.map((project, i) => (
             <PortfolioListItem
               key={project.id}

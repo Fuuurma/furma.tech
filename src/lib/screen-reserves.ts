@@ -17,7 +17,7 @@ import type { ScreenReserve } from "@/lib/halftone";
  */
 
 /** The clear space the type keeps around itself, in panel pixels. */
-export const RESERVE_MARGIN = 36;
+export const RESERVE_MARGIN = 72;
 
 function boxesFor(element: HTMLElement): DOMRect[] {
   if (element.dataset.screenReserve === "block") {

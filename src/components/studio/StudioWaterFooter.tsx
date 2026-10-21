@@ -1,19 +1,19 @@
 "use client";
 
 /**
- * The site's footer: the studio, the work, and the body of water.
+ * The site's footer: the studio, the work, and a dawn over the sea.
  *
- * The home has carried this closing plate since it was built, and it is the
- * footer's job to close the page the way the page's own idea closes: **the
- * page ends in a body of water.** The type is set on clean paper, the
- * colophon sits on a hairline above the water, and the water is a band of
- * its own — a screen, and the only screen on the page that the reader can
- * put a hand in.
+ * The footer is one plate, not a footer with a picture under it. The whole
+ * panel is the picture: a sky behind the type, a sun low on the horizon, and
+ * a sea at the foot of the page that the reader can put a hand in. The
+ * picture is drawn in characters — the sun is a disc of the heaviest marks,
+ * its path on the water breaks up on the waves, and the type thins the ink
+ * around itself rather than cutting a hole in it.
  *
- * So it is not a footer *of the home*; it is the footer of the site, and it
- * belongs wherever the site ends. The home shows it as a **panel** (the last
- * section of the immersive page, full height); a page in the flow shows it
- * as a **section** (the same plate, set in the page's own flow).
+ * The home shows it as a **panel** (the last section of the immersive page,
+ * full height); a page in the flow shows it as a **section** (the same plate,
+ * set in the page's own flow). The sea is the bottom zone of the plate, and
+ * the colophon is set on it.
  *
  * The type is the house's: the ladder, the hairlines, the tokens. The water
  * is the house's too — the shallow-water solver, the ink ceiling, the
@@ -44,26 +44,52 @@ export function StudioWaterFooter({
   variant = "section",
   className,
 }: StudioWaterFooterProps) {
-  const waterRef = useRef<HTMLDivElement>(null);
+  const plateRef = useRef<HTMLElement>(null);
+  const seaRef = useRef<HTMLDivElement>(null);
 
   return (
     <footer
+      ref={plateRef}
       role="contentinfo"
       className={cn(
-        "flex flex-col bg-foreground text-background overflow-hidden plastic-on-dark relative",
+        "relative flex flex-col bg-black text-white overflow-hidden",
+        variant === "panel" ? "h-full" : "min-h-[640px] md:min-h-[min(100svh,820px)]",
         className,
       )}
     >
+      {/* The plate: sky, sun and sea, behind everything. */}
+      <LiquidAscii
+        surfaceRef={plateRef}
+        zoneRef={seaRef}
+        sun={{ x: 0.86, radius: 0.2, rise: 0.3 }}
+        color="#ffffff"
+        backgroundColor="#000000"
+        fontFamily="var(--font-mono)"
+        characters=" .:-=+*#%@"
+        speed={0.9}
+        cellSize={16}
+        gravity={-1400}
+        flipRatio={0.5}
+        pressureIters={30}
+        separationIters={2}
+        overRelaxation={1.4}
+        cursorRadius={0.55}
+        cursorForce={30}
+        autoWave
+        maxFPS={30}
+        damping={0.7}
+      />
+
       <div className="flex-1 flex flex-col justify-center min-h-0 relative z-10">
-        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 py-8 md:py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 py-8 md:py-12 [@media(max-height:700px)]:py-3">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 [@media(max-height:700px)]:gap-4 [@media(max-height:700px)_and_(min-width:640px)]:grid-cols-2">
             <SlideReveal
               isActive={isActive}
-              className="lg:col-span-5 flex flex-col justify-between gap-6 md:gap-10"
+              className="lg:col-span-5 flex flex-col justify-between gap-6 md:gap-10 [@media(max-height:700px)]:gap-3"
             >
               <div>
                 <p
-                  className="plastic-label plastic-label--inverse-dim mb-6 md:mb-8"
+                  className="plastic-label plastic-label--inverse-dim mb-6 md:mb-8 [@media(max-height:700px)]:mb-2"
                   data-screen-reserve
                 >
                   Furma.tech
@@ -71,13 +97,13 @@ export function StudioWaterFooter({
                 <SplitReveal
                   as="h3"
                   text="We build sovereign digital futures."
-                  className="font-sans text-[clamp(28px,4vw,48px)] font-medium leading-[1.1] tracking-[-0.03em] text-background block mb-4 md:mb-6"
+                  className="font-sans text-[clamp(28px,4vw,48px)] font-medium leading-[1.1] tracking-[-0.03em] text-white block mb-4 md:mb-6 [@media(max-height:700px)]:mb-2"
                   trigger={isActive}
                   delay={40}
                   reserve
                 />
                 <p
-                  className="font-sans text-body text-background/60 max-w-sm leading-relaxed"
+                  className="font-sans text-body text-white/60 max-w-sm leading-relaxed [@media(max-height:700px)]:hidden"
                   data-screen-reserve
                 >
                   Venture studio for industry SaaS and autonomous AI ecosystems.
@@ -86,14 +112,14 @@ export function StudioWaterFooter({
               </div>
               <div className="space-y-3 md:space-y-4">
                 <p
-                  className="plastic-label plastic-label--inverse-dim"
+                  className="plastic-label plastic-label--inverse-dim [@media(max-height:700px)]:hidden"
                   data-screen-reserve
                 >
                   Connect
                 </p>
                 <a
                   href="mailto:hello@furma.tech"
-                  className="text-body font-medium text-background hover:opacity-60 transition-opacity block"
+                  className="text-body font-medium text-white hover:opacity-60 transition-opacity block"
                   data-screen-reserve
                 >
                   hello@furma.tech
@@ -123,21 +149,21 @@ export function StudioWaterFooter({
 
             <SlideReveal
               isActive={isActive}
-              className="lg:col-span-7 border-l border-background/10 pl-8 lg:pl-16"
+              className="lg:col-span-7 border-l border-white/10 pl-8 lg:pl-16"
               delay={0.12}
             >
               <p
-                className="plastic-label plastic-label--inverse-dim mb-6 md:mb-8"
+                className="plastic-label plastic-label--inverse-dim mb-6 md:mb-8 [@media(max-height:700px)]:hidden"
                 data-screen-reserve
               >
                 Portfolio
               </p>
-              <div className="grid grid-cols-2 gap-x-8 gap-y-4 md:gap-y-6">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-4 md:gap-y-6 [@media(max-height:700px)]:gap-y-1.5">
                 {HOME_PROJECTS.map((p) => (
                   <Link
                     key={p.id}
                     href={p.href}
-                    className="text-body font-medium text-background hover:opacity-50 transition-opacity"
+                    className="text-body font-medium text-white hover:opacity-50 transition-opacity"
                     data-screen-reserve
                   >
                     {p.name}
@@ -146,7 +172,7 @@ export function StudioWaterFooter({
               </div>
               <Link
                 href="/portfolio"
-                className="inline-flex items-center gap-2 mt-6 md:mt-10 plastic-label plastic-label--inverse motion-link-subtle"
+                className="inline-flex items-center gap-2 mt-6 md:mt-10 [@media(max-height:700px)]:mt-2 plastic-label plastic-label--inverse motion-link-subtle"
                 data-screen-reserve
               >
                 All projects <span aria-hidden>→</span>
@@ -156,43 +182,25 @@ export function StudioWaterFooter({
         </div>
       </div>
 
-      <div className="shrink-0 px-6 md:px-12 py-5 border-t border-background/10 flex justify-between items-center relative z-10">
-        <span className="plastic-label plastic-label--inverse-dim">© 2026 Furma.tech</span>
-        <span className="plastic-label plastic-label--inverse-dim">Sitges, Catalonia</span>
-      </div>
-
-      {/* The body of water: the page ends in it, and the reader's hand is in
-          it. The band is its own ground, so the type above keeps the clean
-          paper it was set on. */}
+      {/* The sea: the water stands in this zone, and the colophon is set on it. */}
       <div
-        ref={waterRef}
-        className={cn(
-          "relative shrink-0",
-          variant === "panel"
-            ? "h-[30%] min-h-[190px] max-h-[360px]"
-            : "h-[240px] sm:h-[320px]",
-        )}
+        ref={seaRef}
+        className="relative z-10 shrink-0 h-[clamp(112px,18svh,320px)] sm:h-[clamp(190px,32svh,320px)] [@media(max-height:700px)]:h-[88px]! flex items-end"
       >
-        <LiquidAscii
-          surfaceRef={waterRef}
-          color="var(--screen-ink)"
-          backgroundColor="var(--screen-paper)"
-          fontFamily="var(--font-mono)"
-          characters=" .:-=+*#%@"
-          speed={0.9}
-          cellSize={16}
-          gravity={-1400}
-          flipRatio={0.5}
-          pressureIters={30}
-          separationIters={2}
-          overRelaxation={1.4}
-          fillHeight={0.88}
-          cursorRadius={0.55}
-          cursorForce={30}
-          autoWave
-          maxFPS={30}
-          damping={0.7}
-        />
+        <div className="w-full px-6 md:px-12 py-5 flex justify-between items-center">
+          <span
+            className="plastic-label plastic-label--inverse-dim"
+            data-screen-reserve
+          >
+            © 2026 Furma.tech
+          </span>
+          <span
+            className="plastic-label plastic-label--inverse-dim"
+            data-screen-reserve
+          >
+            Sitges, Catalonia
+          </span>
+        </div>
       </div>
     </footer>
   );

@@ -35,7 +35,11 @@ public face until a deliberate cutover.
   none in a house file. The theme's own warm dark paper is the exception,
   and it is a theme, not a hue on the page
 - The hero carries no scroll cue — no label, no rule. The wave is the cue.
-- The footer's water has a band of its own; the type is set on clean paper
+- Full-bleed plates (hero, footer, case-study band) are painted black outright,
+  never with the theme's foreground: the dark theme must not make one white
+- The footer is one plate: a sky behind the type, a sun, and a sea at the foot
+  that the reader can put a hand in. The type thins the ink around itself; it
+  does not cut a hole in it
 - The screens answer the hand — hover, drag, hold, release — and everything
   the hand writes is printed through the same ordered threshold and ink
   ceiling as the picture: printed, never glowed. Reduced motion has no hand
@@ -48,6 +52,92 @@ public face until a deliberate cutover.
 - The shot fills its mount. A picture shown as a thumbnail inside a frame is
   a caption with a picture attached
 - Invoke `design-arsenal` + `impeccable` on UI passes
+
+## Softer screens — a plate for a footer, and no black boxes (2026-10-21)
+
+The owner's second look at the landed pass: *the effect is an improvement; the
+footer is not*; *there is a big, visible black box behind the text — good for
+readability, bad UI/UX, maybe a mix*; and *on the portfolio page use only the
+effect: cut the text, cut the height by half, so the list is clear and
+scrollable*. Also: the studio is a **digital studio**, not a digital venture
+studio.
+
+**1. The type thins the ink; it does not cut a hole in it.** `screenReserve`
+cleared a rectangle to zero and eased back over 36px, and a clean rectangle
+reads as a black box — the eye caught the box, not the words. The ink now
+falls to a floor (`RESERVE_FLOOR`, 14%) behind the words and eases back over a
+72px margin on a smoother-than-smoothstep curve. The picture stays one picture
+with a faint stipple showing through the type's ground, and the halo is round
+(distance is Euclidean). `tests/screen-reserve.test.ts` holds it: some ink
+remains behind the words, nothing changes far from them, the return has no
+step larger than 5% a pixel, and a corner is thinned exactly as a side is.
+
+**2. The footer is one plate.** The old footer was a type block with a band of
+characters stuck on its foot. It is now a single picture: the whole panel is
+printed in characters, with a **sky** behind the type, a **sun** low on the
+right (a dome of the heaviest marks, with a halo and a haze along the
+horizon), and the **sea** in a zone at the foot, where the colophon is set. The
+sun's path on the water breaks up on the waves. The type is set in the sky
+and thins the ink around itself. The hand writes in the sky with ink, and
+moves the water only when it is at the sea. Forms thrown by a release are half
+the hero's size, so they open without crossing the words. `LiquidAscii` gains
+three house props: `zoneRef` (the sea's box), `sun`, and `ink`.
+
+The sun is generated, not a photograph: no image library was found on this
+machine (`~/Projects/images` does not exist), and generating one costs
+quota. The plate takes any tone field, so a photograph or a plate made for
+the footer can replace the sun and sea later without changing the footer.
+
+**3. The portfolio page opens on the effect and nothing else.** The hero keeps
+the tide and loses its words and half its height (`min(40svh, 380px)`). The
+page's name survives as an `sr-only` heading inside it. The list starts calm:
+every row is collapsed and at rest, and nothing opens until the reader hovers,
+focuses or clicks it.
+
+**4. The tagline drops "venture".** The hero reads "Digital studio", and the
+page titles read "Furma.tech — Digital Studio". Other uses of "venture
+studio" (the footer's statement, the descriptions, the privacy policy) are
+untouched until the owner says.
+
+**5. The bookends are black in both themes.** The footer and the case-study
+call-to-action band were painted with the theme's foreground, so the dark
+theme turned each into a white sheet on a dark page — and the band's link,
+fixed white, vanished on it. Both are painted black outright now, like the
+hero. Small inverse callouts (a privacy-policy box, the contact form's button)
+still invert with the theme; they are emphasis, not a plate. The screens'
+paper and ink are literal black and white, so no theme reaches them.
+
+**6. Small screens.** Checked at 320×568, 360×740, 390×844, 430×932, 768×1024
+and 844×390 landscape: no sideways overflow, no clipped element, and the home
+footer fits its panel at every size. On a short screen (under 700px tall) the
+footer compacts: the description and the two section labels go, the gaps
+tighten, the sea shrinks to 88px, and a wide short screen sets the two columns
+side by side. A horizontal swipe in the band draws; a vertical swipe scrolls
+the page.
+
+References (with why):
+- **Printed halftone, the dot-gain edge** — a screened tone fades; it does not
+  stop. Why: the black box was a tone that stopped.
+- **ASCII-art sunsets (the BBS tradition)** — a sun is a disc of the heaviest
+  characters and everything else is gradation. Why: it is the one picture the
+  character set draws well, and it is what a footer in characters should hold.
+- **The studio's own location** — a studio in Sitges, on the Mediterranean,
+  closes its page on a dawn over the sea.
+
+Craft move: **the plate is the footer.** The picture is not under the content
+or beside it; the content is set in the picture's quiet part, and the picture
+makes room for it by thinning, not by clearing.
+
+Catalog pick: **no library.** The sky is thirty lines on the existing
+character lattice, and the water is the house's shallow-water solver.
+
+Rules:
+- Type thins the ink; it never clears a rectangle. A new screen uses
+  `screenReserve`, and its tests assert a floor above zero.
+- The footer's picture is printed across the whole plate; the water stands in
+  its own zone, and the sea's reach is the zone's, not the panel's.
+- A hand in the sky writes in the sky; only a hand at the sea moves the water.
+- The portfolio page's head is the effect alone. Words there are `sr-only`.
 
 ## The hand — the screens answer the reader (2026-10-21)
 
@@ -87,7 +177,8 @@ The hand's ink is printed over the water in characters. The band is taller
 (30% of the panel, 190–360px; 240–320px in a page's flow) because a form
 needs room to open. Volume drift stays inside the 0.2% the water is held to.
 
-**4. The portfolio page has a hero again.** The previous pass removed the
+**4. The portfolio page has a hero again.** *(Revised the same day: see "Softer
+screens" above — the hero keeps the tide and loses its words.)* The previous pass removed the
 intro and left an `sr-only` heading; the owner asked for a hero. It is the
 home's black plate with a *tide* — light that rises from the foot of the
 panel, its crest a slow swell of two waves — and a visible `<h1>`, set large.
@@ -238,7 +329,8 @@ quiet through the middle, and the copy that used to sit in the bottom left is
 gone, so the wave fills the space the words were in rather than arguing with
 them.
 
-**3. The footer's water has a band of its own.** The water used to be printed
+**3. The footer's water has a band of its own.** *(Superseded 2026-10-21 by "Softer
+screens": the whole footer is the plate now.)* The water used to be printed
 behind the whole footer, and the type was reversed out of it — so the type sat
 on a screen and the screen read as a foreign object pasted over the page.
 Now the type is set on clean paper and the water has a band at the foot of the

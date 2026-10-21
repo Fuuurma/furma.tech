@@ -134,7 +134,7 @@ function HeroSlide({
           }
           data-screen-reserve
         >
-          Digital venture studio
+          Digital studio
         </p>
       </div>
 

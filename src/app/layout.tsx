@@ -27,19 +27,19 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Furma.tech — Digital Venture Studio",
+  title: "Furma.tech — Digital Studio",
   description: "Bootstrapped venture studio building industry-grade SaaS tools and the Aitlas AI ecosystem. Estonian OÜ operating globally.",
   keywords: ["venture studio", "SaaS", "AI", "Aitlas", "MCP", "bootstrapped", "Estonia"],
   authors: [{ name: "Furma.tech OÜ" }],
   openGraph: {
-    title: "Furma.tech — Digital Venture Studio",
+    title: "Furma.tech — Digital Studio",
     description: "Building software that works. Two verticals: B2B SaaS + Aitlas AI ecosystem.",
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Furma.tech — Digital Venture Studio",
+    title: "Furma.tech — Digital Studio",
     description: "Building software that works.",
   },
   robots: {
