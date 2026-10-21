@@ -22,7 +22,7 @@ import {
   bayerThreshold,
   ditherLevel,
   measureDotRadii,
-  screenReserve,
+  fillReserveMap,
   type ScreenReserve,
 } from "@/lib/halftone";
 import { sampleField, sampleWaveField, type WaveWarp } from "@/lib/wave-field";
@@ -116,6 +116,12 @@ const INK_GAIN = 1;
 
 /** The ink's grid is this many screen cells to a cell of its own. */
 const INK_GRID = 2;
+
+/** How long a touch screen waits before it invites the hand, in ms. */
+const INVITE_DELAY = 1400;
+
+/** The most frames a second a screen nobody is touching will print. */
+const IDLE_FPS = 30;
 
 /** The longest frame the hand's ink is advanced by, in seconds. */
 const INK_MAX_STEP = 1 / 20;
@@ -272,6 +278,10 @@ export function DitherWave({
     let warpY = new Float32Array(0);
     let lastHandAt = 0;
     let strikes = 0;
+    /** A screen with no hover has no cursor to invite the hand: it invites once. */
+    const touchOnly = hands && window.matchMedia("(hover: none)").matches;
+    let invited = false;
+    let firstPaintAt = 0;
     let unbind: (() => void) | null = null;
 
     /** The reserves are read from the live type, so they are read afresh
@@ -279,6 +289,10 @@ export function DitherWave({
      *  keep the page from laying out on every frame. */
     let reserves: ScreenReserve[] = [];
     let reserveAge = 0;
+    /** The type's halo for every cell, worked out when the type is read. */
+    let reserveKeep = new Float32Array(0);
+    let reserveDirty = true;
+    let reserveShape = "";
 
     let clock = 0;
     let frame = 0;
@@ -358,6 +372,18 @@ export function DitherWave({
         const hand = ink.pointer;
         ink.step(dt);
 
+        // On a touch screen nothing says the picture can be touched, so once,
+        // a moment after it is first seen, it throws one small form on its
+        // own. A hand that has already arrived is invitation enough.
+        if (touchOnly && !invited) {
+          if (firstPaintAt === 0) firstPaintAt = now;
+          if (now - firstPaintAt > INVITE_DELAY && ink.thrown === 0 && !hand.over) {
+            invited = true;
+            ink.strike(rect.width * 0.68, rect.height * 0.62, 0.3);
+            strikes = ink.thrown;
+          }
+        }
+
         if (composition === "corners") {
           if (!lobes) lobes = new Lobes(rect.width, rect.height);
           if (lobes.width !== rect.width || lobes.height !== rect.height) {
@@ -430,6 +456,19 @@ export function DitherWave({
       if (reserveAge >= 6) {
         reserveAge = 0;
         reserves = readReserves(surface);
+        reserveDirty = true;
+      }
+
+      // The type's halo is worked out when the type is read, and looked up
+      // for every cell after that.
+      const shape = `${columns}x${rows}x${cell}`;
+      if (reserveDirty || reserveShape !== shape) {
+        if (reserveKeep.length < columns * rows) {
+          reserveKeep = new Float32Array(columns * rows);
+        }
+        fillReserveMap(reserveKeep, reserves, columns, rows, cell);
+        reserveDirty = false;
+        reserveShape = shape;
       }
 
       // The radii are measured for the cell as it is printed.
@@ -470,7 +509,6 @@ export function DitherWave({
 
       for (let row = 0; row < rows; row++) {
         const v = (row + 0.5) / rows;
-        const cy = (row + 0.5) * cell;
 
         for (let column = 0; column < columns; column++) {
           const u = (column + 0.5) / columns;
@@ -495,24 +533,32 @@ export function DitherWave({
             // printed twice.
             const x = u * rect.width;
             const y = v * rect.height;
+            // The lobe is read first: outside its reach there is no light, and
+            // the wave is only sampled where there is some to print.
+            const topLight = lobe(x, y, topX, topY, topReach);
+            const bottomLight = lobe(x, y, bottomX, bottomY, bottomReach);
             const topRight =
-              sampleField(field, fieldColumns, fieldRows, u, v) *
-              lobe(x, y, topX, topY, topReach) *
-              topGain;
+              topLight > 0
+                ? sampleField(field, fieldColumns, fieldRows, u, v) * topLight * topGain
+                : 0;
             const bottomLeft =
-              sampleField(field, fieldColumns, fieldRows, 1 - u, 1 - v) *
-              lobe(x, y, bottomX, bottomY, bottomReach) *
-              bottomGain;
+              bottomLight > 0
+                ? sampleField(field, fieldColumns, fieldRows, 1 - u, 1 - v) *
+                  bottomLight *
+                  bottomGain
+                : 0;
             light = Math.max(topRight, bottomLeft);
           }
 
           const swellAmount = composition === "corners" ? swell(u, v, swellAt) : 0;
           const handInk = inked ? inkTone[row * columns + column] * INK_GAIN : 0;
-          const tone =
-            (light * (1 + SWELL_GAIN * swellAmount) +
-              SWELL_FLOOR * swellAmount +
-              handInk) *
-            screenReserve(reserves, (column + 0.5) * cell, cy);
+          const lit =
+            light * (1 + SWELL_GAIN * swellAmount) +
+            SWELL_FLOOR * swellAmount +
+            handInk;
+          // Nothing to print: the type's halo is not worked out for it.
+          if (lit <= 0.001) continue;
+          const tone = lit * reserveKeep[row * columns + column];
           if (tone <= 0.001) continue;
 
           const level = ditherLevel(
@@ -565,7 +611,12 @@ export function DitherWave({
       // period they claim, so an interval of exactly one period throws away
       // every other frame and the screen runs at half the rate it was asked
       // for.
-      const interval = (1000 / Math.max(1, maxFPS)) * 0.9;
+      // A screen nobody is touching prints at half the rate: the wave drifts
+      // slowly enough that thirty frames a second is the same picture, and
+      // the other thirty are the difference between a phone's fan and not.
+      const resting = !(ink && ink.active);
+      const rate = resting ? Math.min(maxFPS, IDLE_FPS) : maxFPS;
+      const interval = (1000 / Math.max(1, rate)) * 0.9;
       if (now - lastDraw < interval) {
         schedule();
         return;

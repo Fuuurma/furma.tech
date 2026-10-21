@@ -275,8 +275,11 @@ export function screenReserve(
     // Distance outside the block itself, in margin widths.
     const dx = Math.max(0, Math.abs(x - centreX) - reserve.width / 2);
     const dy = Math.max(0, Math.abs(y - centreY) - reserve.height / 2);
-    const distance = Math.sqrt(dx * dx + dy * dy) / reserve.margin;
-    if (distance >= 1) continue;
+    // Outside the margin there is nothing to work out, and most of the
+    // panel is outside most of the margins: compare squares before the root.
+    const squared = dx * dx + dy * dy;
+    if (squared >= reserve.margin * reserve.margin) continue;
+    const distance = Math.sqrt(squared) / reserve.margin;
 
     // Thin through the block, easing back to full ink at the margin.
     const edge = distance * distance * distance * (distance * (distance * 6 - 15) + 10);
@@ -284,4 +287,33 @@ export function screenReserve(
   }
 
   return keep;
+}
+
+/**
+ * The type's halo, worked out once for a whole lattice.
+ *
+ * A screen asks "how much ink survives here?" of every cell on every frame,
+ * and the answer only changes when the type moves — which the screens already
+ * check every few frames. So the answer is kept in a map, worked out when the
+ * type is read and looked up for every cell after that. `cellY` is the
+ * lattice's height when its cells are not square.
+ */
+export function fillReserveMap(
+  out: Float32Array,
+  reserves: ScreenReserve[],
+  columns: number,
+  rows: number,
+  cellX: number,
+  cellY: number = cellX,
+): void {
+  if (reserves.length === 0) {
+    out.fill(1, 0, columns * rows);
+    return;
+  }
+  for (let row = 0; row < rows; row++) {
+    const y = (row + 0.5) * cellY;
+    for (let column = 0; column < columns; column++) {
+      out[row * columns + column] = screenReserve(reserves, (column + 0.5) * cellX, y);
+    }
+  }
 }

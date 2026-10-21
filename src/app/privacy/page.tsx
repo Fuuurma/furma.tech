@@ -37,7 +37,7 @@ export default function PrivacyPage() {
       </PageHeader>
 
       <section className="px-6 md:px-12 py-16 md:py-20 border-b border-foreground/10">
-        <div className="max-w-[1280px] mx-auto grid grid-cols-12 gap-8">
+        <div className="max-w-[1280px] mx-auto grid grid-cols-12 gap-x-0 gap-y-8 md:gap-x-8">
           <div className="col-span-12 md:col-span-8 md:col-start-4 lg:col-start-5 space-y-14">
             <ScrollReveal>
               <div className="border border-foreground/10 p-6 bg-foreground/[0.02]">

@@ -36,7 +36,7 @@ export function ProjectCTA({
         isDark ? "bg-black text-white border-white/10" : "bg-foreground/[0.02]",
       )}
     >
-      <div className="max-w-[1280px] mx-auto grid grid-cols-12 gap-8 items-end">
+      <div className="max-w-[1280px] mx-auto grid grid-cols-12 gap-x-0 gap-y-8 md:gap-x-8 items-end">
         <ScrollReveal className="col-span-12 md:col-span-8 md:col-start-4 lg:col-start-5">
           <p className={cn("plastic-label mb-6", isDark && "text-white/55")}>
             Get started

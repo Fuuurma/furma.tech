@@ -47,7 +47,7 @@ export function PortfolioListView() {
         aria-labelledby="portfolio-outro-title"
       >
         <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-16 md:py-20">
-          <div className="grid grid-cols-12 gap-8">
+          <div className="grid grid-cols-12 gap-x-0 gap-y-8 md:gap-x-8">
             <ScrollReveal className="col-span-12 md:col-span-2">
               <p className="plastic-label">Contact</p>
             </ScrollReveal>

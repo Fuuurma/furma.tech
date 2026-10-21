@@ -115,12 +115,39 @@ still invert with the theme; they are emphasis, not a plate. The screens'
 paper and ink are literal black and white, so no theme reaches them.
 
 **6. Small screens.** Checked at 320×568, 360×740, 390×844, 430×932, 768×1024
-and 844×390 landscape: no sideways overflow, no clipped element, and the home
-footer fits its panel at every size. On a short screen (under 700px tall) the
-footer compacts: the description and the two section labels go, the gaps
-tighten, the sea shrinks to 88px, and a wide short screen sets the two columns
-side by side. A horizontal swipe in the band draws; a vertical swipe scrolls
-the page.
+and 844×390 landscape, on all seventeen pages. The first pass compared the page
+to the width the phone emulator had already widened it to, and reported no
+overflow while the page was 414px wide on a 390px phone. Corrected, it found two
+real defects, both fixed:
+
+- The header's three cells (brand, portfolio menu, views) need 414px at their
+  desk padding, so the theme button fell off the screen's edge. Below 430px
+  the cells give back their padding; below 360px the menu keeps only its
+  arrow, with `aria-label="Portfolio"` so it still has a name.
+- Seven pages carried a `grid-cols-12 gap-8`: eleven gaps are 352px before a
+  column is laid, so the grid stayed 352px wide on a 320px phone and dragged
+  the page sideways — the portfolio's closing section, every case study's
+  call to action, the privacy policy, the 404. The gap now starts at `md:`.
+  `tests/phone-grids.test.ts` holds it, and fails on the old source.
+
+On a short screen (under 700px tall) the footer compacts: the description and
+the two section labels go, the gaps tighten, the sea shrinks to 88px, and a
+wide short screen sets the two columns side by side. A horizontal swipe in the
+band draws; a vertical swipe scrolls the page.
+
+**7. A touch screen has no cursor to invite the hand.** The hero and the
+portfolio band throw one small form, once, about a second and a half after they
+are first seen, on a device with no hover. Under reduced motion they throw
+nothing, and a hand that has already arrived cancels it.
+
+**8. Cost.** Profiled under a drag, the home hero spent 48% of its time idle,
+29% in the browser's own rasterising, and its largest piece of our own code was
+the type's halo, worked out for every cell on every frame. It is now worked out
+into a map when the type is read (every sixth frame) and looked up per cell; the
+wave is only sampled where a lobe has light; and a screen nobody is touching
+prints at 30 frames a second, 60 when a hand is on it. At 4× CPU throttle the
+home hero's idle frame went from 55ms to 28ms and a drag's long tasks from 171
+to 8.
 
 References (with why):
 - **Printed halftone, the dot-gain edge** — a screened tone fades; it does not
