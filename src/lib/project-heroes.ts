@@ -26,7 +26,3 @@ export const PROJECT_HERO_MAP: Record<string, ProjectHeroVisual> = {
   onetomany: OneToManyHero,
   opengovern: OpenGovernHero,
 };
-
-export function getProjectHero(id: string): ProjectHeroVisual | undefined {
-  return PROJECT_HERO_MAP[id];
-}

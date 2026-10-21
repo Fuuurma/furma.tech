@@ -118,8 +118,3 @@ export const HOME_PROJECTS: HomeProject[] = [
     layout: "editorial-right",
   },
 ];
-
-export function getHomeProjectIndex(id: string): number {
-  return HOME_PROJECTS.findIndex((p) => p.id === id);
-}
-

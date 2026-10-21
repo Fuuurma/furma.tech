@@ -22,7 +22,7 @@ export interface V2Project {
   onColor: string;
 }
 
-export const V2_STATUS_LABELS: Record<V2Status, string> = {
+const V2_STATUS_LABELS: Record<V2Status, string> = {
   "in-dev": "In dev",
   soon: "Soon",
   roadmap: "Roadmap",
