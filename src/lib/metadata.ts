@@ -69,5 +69,5 @@ export function getOgImageUrl(_params: {
   subtitle?: string;
   variant?: "default" | "product" | "aitlas";
 }): string {
-  return "https://furma.tech/og-image.svg";
+  return "https://furma.tech/og.png";
 }

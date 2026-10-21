@@ -149,6 +149,16 @@ prints at 30 frames a second, 60 when a hand is on it. At 4× CPU throttle the
 home hero's idle frame went from 55ms to 28ms and a drag's long tasks from 171
 to 8.
 
+**9. A shared link has a picture.** The share metadata named no image, the
+helper pointed at a file that did not exist, and the only image on disk was an
+SVG, which social platforms do not render: every shared link was a bare title.
+`public/og.png` is a 1200×630 PNG rendered from the real hero — the wordmark,
+the line under it, the two lobes in dither — with the controls taken off, so
+the card is the page and not a screenshot of it. The root layout names it for
+Open Graph and Twitter (with a `metadataBase`), and `tests/share-image.test.ts`
+holds the format, the size and the wiring. Re-render it from the hero if the
+hero's look changes.
+
 References (with why):
 - **Printed halftone, the dot-gain edge** — a screened tone fades; it does not
   stop. Why: the black box was a tone that stopped.
