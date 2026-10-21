@@ -127,6 +127,8 @@ export interface InkFieldOptions {
   reach?: number;
   /** How long a dragged mark lingers, in seconds. */
   linger?: number;
+  /** How large the thrown forms are, against the panel's size. 1 is the hero's. */
+  forms?: number;
 }
 
 const MAX_THROWS = 10;
@@ -149,6 +151,7 @@ export class InkField {
   readonly line: number;
   readonly reach: number;
   readonly linger: number;
+  readonly forms: number;
 
   columns = 1;
   rows = 1;
@@ -204,6 +207,7 @@ export class InkField {
     this.line = options.line ?? 9;
     this.reach = options.reach ?? 56;
     this.linger = options.linger ?? 1.8;
+    this.forms = options.forms ?? 1;
     this.resize(width, height);
   }
 
@@ -322,7 +326,9 @@ export class InkField {
    */
   strike(x: number, y: number, charge = 0): void {
     const longest = Math.hypot(this.width, this.height);
-    const size = 70 + (0.18 + 0.34 * Math.min(1, longest / 1600)) * longest * easeOut(charge);
+    const size =
+      (70 + (0.18 + 0.34 * Math.min(1, longest / 1600)) * longest * easeOut(charge)) *
+      this.forms;
     const kind = FORMS[this.thrown % FORMS.length];
     // The tilt is a function of the throw's number, not a random draw, so the
     // screen's repertoire is the same every time.

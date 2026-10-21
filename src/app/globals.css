@@ -689,9 +689,10 @@ html {
 }
 
 /* A surface painted with --foreground owns --background for its type, and
-   inverts with the theme. The hero and the project slides are painted black
-   outright, so they keep the fixed white above; the footer is painted with
-   the token and follows the theme. */
+   inverts with the theme. Nothing full-bleed uses it now: the hero, the
+   project slides, the footer and the case-study call-to-action are painted
+   black outright and keep the fixed white above, so the dark theme never turns
+   one of them into a white sheet. */
 .plastic-on-dark .plastic-label--inverse {
   color: color-mix(in oklch, var(--background), transparent 35%);
 }
@@ -1615,14 +1616,13 @@ a.studio-chrome__view-link:hover {
   z-index: 2;
 }
 
+/* A fade only. A rise moved every row under a resting cursor on load. */
 @keyframes portfolio-list-item-in {
   from {
     opacity: 0;
-    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -1812,7 +1812,6 @@ a.studio-chrome__view-link:hover {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.25rem;
-  padding-bottom: 1.75rem;
 }
 
 @media (min-width: 768px) {
@@ -1821,8 +1820,10 @@ a.studio-chrome__view-link:hover {
        a share of the full width, and the words take the rest. */
     grid-template-columns: minmax(240px, 45%) minmax(0, 1fr);
     gap: 2rem 2.5rem;
-    padding-bottom: 2.25rem;
     align-items: center;
+  }
+  .portfolio-list-page__expand-inner > .portfolio-list-page__detail {
+    margin-bottom: 2.25rem;
   }
 }
 
@@ -1882,6 +1883,10 @@ a.studio-chrome__view-link:hover {
   flex-direction: column;
   gap: 0.85rem;
   min-width: 0;
+  /* The bottom breathing room lives on the words, not on the expand wrapper:
+     a 0fr track keeps a wrapper's padding, which left a gap under every
+     closed row. */
+  margin-bottom: 1.75rem;
 }
 
 .portfolio-list-page__detail-meta {
@@ -2143,17 +2148,21 @@ a.studio-chrome__view-link:hover {
 }
 
 /* portfolio hero — start */
+/* The band is the effect alone. Its height is about half the old hero's, so
+   the list starts on the first screen and reads as a list. */
 .portfolio-hero {
-  height: min(78svh, 760px);
-  min-height: 520px;
+  height: min(40svh, 380px);
+  min-height: 240px;
 }
 
-.portfolio-hero__title {
-  font-family: var(--font-sans);
-  font-size: clamp(56px, 15vw, 184px);
-  font-weight: 500;
-  line-height: 0.98;
-  letter-spacing: -0.045em;
-  color: #fff;
+/* Until the reader's pointer moves, the rows take no hover. A resting
+   cursor under a row after load is not a choice, so nothing opens for it.
+   PortfolioListView sets data-armed on the first pointer move. */
+/* Only where there is no touch at all: on a laptop with a touchscreen the
+   first tap must land on the row it was aimed at. */
+@media (hover: hover) and (any-pointer: fine) and (not (any-pointer: coarse)) {
+  .portfolio-list-page__items:not([data-armed]) {
+    pointer-events: none;
+  }
 }
 /* portfolio hero — end */

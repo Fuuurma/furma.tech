@@ -159,10 +159,10 @@ function smooth(edge0: number, edge1: number, x: number): number {
  */
 function tide(u: number, v: number, time: number): number {
   const crest =
-    0.56 +
-    0.06 * Math.sin(u * 5.1 + time * 0.55) +
-    0.03 * Math.sin(u * 11.7 - time * 0.9);
-  return smooth(0, 0.5, v - crest);
+    0.36 +
+    0.07 * Math.sin(u * 5.1 + time * 0.55) +
+    0.035 * Math.sin(u * 11.7 - time * 0.9);
+  return smooth(0, 0.55, v - crest);
 }
 
 /**

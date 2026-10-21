@@ -239,12 +239,24 @@ export interface ScreenReserve {
 }
 
 /**
+ * The share of its ink the screen keeps behind a word.
+ *
+ * Type used to knock a clean hole out of the ink, and a clean hole reads as a
+ * black box: the eye sees the rectangle, not the words. The ink now thins to a
+ * faint stipple behind the type instead of vanishing — enough of the print
+ * stays that the picture is one picture, little enough that the words keep
+ * their ground.
+ */
+export const RESERVE_FLOOR = 0.14;
+
+/**
  * How much ink survives at a point, given the blocks of type on the panel.
  *
- * The type knocks a soft hole out of the ink rather than a hard rectangle —
- * the way type reverses out of a screened block on a printed sheet. The whole
- * of the block is cleared, and the ink eases back over the margin around it,
- * so type always sits on clean ground with the texture flowing back into it.
+ * The type thins the ink around it the way a halo does, not the way a
+ * rectangle does: behind the words the ink falls to `RESERVE_FLOOR`, and it
+ * eases back to full over the margin around them on a smoother-than-smoothstep
+ * curve, so there is no edge for the eye to catch. Distance is Euclidean, so
+ * the thinned ground has round corners.
  */
 export function screenReserve(
   reserves: ScreenReserve[],
@@ -266,9 +278,9 @@ export function screenReserve(
     const distance = Math.sqrt(dx * dx + dy * dy) / reserve.margin;
     if (distance >= 1) continue;
 
-    // Clear through the block, easing back to full ink at the margin.
-    const edge = distance * distance * (3 - 2 * distance);
-    keep = Math.min(keep, edge);
+    // Thin through the block, easing back to full ink at the margin.
+    const edge = distance * distance * distance * (distance * (distance * 6 - 15) + 10);
+    keep = Math.min(keep, RESERVE_FLOOR + (1 - RESERVE_FLOOR) * edge);
   }
 
   return keep;

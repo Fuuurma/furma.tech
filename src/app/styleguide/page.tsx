@@ -475,7 +475,7 @@ export default function StyleguidePage() {
                     <Avatar><AvatarFallback>F</AvatarFallback></Avatar>
                     <div className="space-y-1">
                       <h4 className="text-sm font-bold">@FurmaTech</h4>
-                      <p className="text-sm text-muted-foreground">Bootstrapped venture studio building SaaS and AI tools.</p>
+                      <p className="text-sm text-muted-foreground">Bootstrapped studio building SaaS and AI tools.</p>
                     </div>
                   </div>
                 </HoverCardContent>
@@ -734,14 +734,14 @@ export default function StyleguidePage() {
                   <CollapsibleTrigger><Button variant="ghost" size="sm"><ChevronDown className={`h-4 w-4 transition-transform ${collapsibleOpen ? "rotate-180" : ""}`} /></Button></CollapsibleTrigger>
                 </div>
                 <div className="border border-border px-4 py-3 text-sm text-grey-500">
-                  A bootstrapped venture studio building industry-specific SaaS tools and the Aitlas AI ecosystem.
+                  A bootstrapped studio building industry-specific SaaS tools and the Aitlas AI ecosystem.
                 </div>
               </Collapsible>
             </SectionRow>
             <Separator />
             <SectionRow label="Accordion">
               <Accordion className="max-w-xl">
-                <AccordionItem value="a"><AccordionTrigger>What is Furma.tech?</AccordionTrigger><AccordionContent className="text-sm text-grey-500">A bootstrapped venture studio building SaaS and AI tools.</AccordionContent></AccordionItem>
+                <AccordionItem value="a"><AccordionTrigger>What is Furma.tech?</AccordionTrigger><AccordionContent className="text-sm text-grey-500">A bootstrapped studio building SaaS and AI tools.</AccordionContent></AccordionItem>
                 <AccordionItem value="b"><AccordionTrigger>What is Aitlas?</AccordionTrigger><AccordionContent className="text-sm text-grey-500">A sovereign AI platform with BYOK architecture and MCP-first design.</AccordionContent></AccordionItem>
                 <AccordionItem value="c"><AccordionTrigger>How do I get access?</AccordionTrigger><AccordionContent className="text-sm text-grey-500">Join the waitlist through the contact page.</AccordionContent></AccordionItem>
               </Accordion>

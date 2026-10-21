@@ -106,21 +106,31 @@ test("the swell waits for an idle reader and honours reduced motion", () => {
   );
 });
 
-test("the footer's water has its own band, and the type keeps clean paper", () => {
-  // The band is its own element, with the water inside it.
+test("the footer is one plate: the type in the sky, the water in its own zone", () => {
+  // The plate is the whole footer, and the sea is a zone at its foot.
   assert.ok(
-    /ref=\{waterRef\}/.test(footer),
-    "the footer's water must have a band of its own",
+    /<LiquidAscii[\s\S]{0,200}surfaceRef=\{plateRef\}/.test(footer),
+    "the picture must be printed across the whole plate",
   );
   assert.ok(
-    /<LiquidAscii[\s\S]{0,200}surfaceRef=\{waterRef\}/.test(footer),
-    "the water must be printed in the band",
+    /zoneRef=\{seaRef\}/.test(footer) && /ref=\{seaRef\}/.test(footer),
+    "the water must stand in a zone of its own",
+  );
+  assert.ok(
+    /sun=\{\{/.test(footer),
+    "the plate must carry a sun over the sea",
+  );
+  assert.ok(
+    /moon=\{\{/.test(footer),
+    "the plate must carry a moon for the dark theme",
   );
 
-  // The type is above the band, not inside it.
-  const band = footer.indexOf("ref={waterRef}");
+  // The type is above the sea, and the colophon is set on it.
+  const sea = footer.indexOf("ref={seaRef}");
   const type = footer.indexOf("We build sovereign digital futures.");
-  assert.ok(type > 0 && band > type, "the type must be set above the band");
+  const colophon = footer.indexOf("© 2026 Furma.tech");
+  assert.ok(type > 0 && sea > type, "the type must be set above the sea");
+  assert.ok(colophon > sea, "the colophon must be set on the sea");
 
   // The band is the reader's to touch, through the one hand both screens
   // share: it presses, it pulls, it gathers a mound while held, and it
@@ -147,14 +157,20 @@ test("the footer's water has its own band, and the type keeps clean paper", () =
   );
 });
 
-test("the water prints in the screen's own tokens, and the solver is the house's", () => {
+test("the footer is a fixed black plate in both themes, and the solver is the house's", () => {
+  // Like the hero, the footer is painted black outright: the page's dark
+  // theme must not turn it into a white sheet.
   assert.ok(
-    /color="var\(--screen-ink\)"/.test(footer),
-    "the water must print in the screen's ink",
+    /bg-black text-white/.test(footer),
+    "the footer plate must be painted black, not with the theme's token",
   );
   assert.ok(
-    /backgroundColor="var\(--screen-paper\)"/.test(footer),
-    "the water must print on the screen's paper",
+    !/plastic-on-dark|bg-foreground/.test(footer),
+    "the footer must not follow the theme's foreground",
+  );
+  assert.ok(
+    /color="#ffffff"/.test(footer) && /backgroundColor="#000000"/.test(footer),
+    "the water must print white on black in both themes",
   );
 
   // The particle fluid is gone: it lost 94% of its volume and collapsed.
