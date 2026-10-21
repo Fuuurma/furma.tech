@@ -106,7 +106,7 @@ export function V2Hero() {
             transition={{ duration: 0.7, ease: EASE, delay: 1.0 }}
             className="max-w-[42ch] text-[clamp(1rem,1.4vw,1.2rem)] leading-[1.55] font-medium text-[var(--v2-ink-60)]"
           >
-            A bootstrapped venture studio forging{" "}
+            A bootstrapped studio forging{" "}
             <span className="text-[var(--v2-ink)]">11 products</span> across AI,
             SaaS, games and civic tech. No pitch decks. No burn rate.{" "}
             <span className="v2-serif-accent text-[1.1em] text-[var(--v2-ink)]">

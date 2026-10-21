@@ -120,6 +120,10 @@ test("the footer is one plate: the type in the sky, the water in its own zone", 
     /sun=\{\{/.test(footer),
     "the plate must carry a sun over the sea",
   );
+  assert.ok(
+    /moon=\{\{/.test(footer),
+    "the plate must carry a moon for the dark theme",
+  );
 
   // The type is above the sea, and the colophon is set on it.
   const sea = footer.indexOf("ref={seaRef}");

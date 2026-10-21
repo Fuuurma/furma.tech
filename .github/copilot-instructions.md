@@ -16,7 +16,7 @@ pnpm start      # Start production server
 
 ## Project Context
 
-**Furma.tech** is a bootstrapped venture studio (Estonian OÜ, Sitges, Catalonia) with two verticals:
+**Furma.tech** is a bootstrapped studio (Estonian OÜ, Sitges, Catalonia) with two verticals:
 
 - **Industry SaaS** — B2B tools for restaurants/tourism (restauManager, GuideTours)
 - **Aitlas** — Sovereign AI ecosystem (BYOK model, MCP-first, 34+ Actions)

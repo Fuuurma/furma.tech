@@ -79,7 +79,7 @@ export function HeroSection() {
         <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 border border-foreground/10 mb-12 bg-foreground/[0.02]">
             <span className="w-2 h-2 rounded-full bg-foreground animate-pulse"></span>
-            <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase">Venture Studio</span>
+            <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase">Digital Studio</span>
           </div>
 
           <h1 className="font-serif text-[clamp(48px,8vw,96px)] font-semibold leading-[0.9] tracking-tight text-foreground mb-12">

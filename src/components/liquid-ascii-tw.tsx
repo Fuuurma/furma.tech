@@ -123,6 +123,13 @@ export interface LiquidAsciiProps {
    * as the water; its path on the sea breaks up on the waves.
    */
   sun?: { x: number; radius: number; rise?: number };
+  /**
+   * House addition: the night sky. When the page is in its dark theme the
+   * plate shows this moon instead of the sun, with a scatter of stars, and
+   * the moon's path on the water is narrower and fainter. The plate itself is
+   * black in both themes; only what hangs in its sky changes.
+   */
+  moon?: { x: number; radius: number; rise?: number };
 }
 
 /**
@@ -204,6 +211,7 @@ export function LiquidAscii({
   ink: showInk = true,
   zoneRef,
   sun: sunProp,
+  moon: moonProp,
 }: LiquidAsciiProps) {
   // The sun is a small object a caller writes inline; the effect depends on
   // its three numbers, not on the object, so a re-render does not rebuild
@@ -211,6 +219,9 @@ export function LiquidAscii({
   const sunX = sunProp?.x;
   const sunRadius = sunProp?.radius;
   const sunRise = sunProp?.rise ?? 0.15;
+  const moonX = moonProp?.x;
+  const moonRadius = moonProp?.radius;
+  const moonRise = moonProp?.rise ?? 1.5;
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduceMotion = useStableReducedMotion();
@@ -230,6 +241,14 @@ export function LiquidAscii({
       sunX !== undefined && sunRadius !== undefined
         ? { x: sunX, radius: sunRadius, rise: sunRise }
         : null;
+    const moon =
+      moonX !== undefined && moonRadius !== undefined
+        ? { x: moonX, radius: moonRadius, rise: moonRise }
+        : null;
+
+    /** What hangs in the sky right now: the moon in the dark theme. */
+    let skyBody = sun;
+    let night = false;
 
     /** Resolve a CSS colour — including `var(--token)` — into a fill style. */
     const resolve = (value: string): string => {
@@ -345,21 +364,23 @@ export function LiquidAscii({
      * paper.
      */
     /**
-     * The sky: a sun, its halo, and a haze along the horizon, printed as a
-     * tone field on the character lattice. It does not move, so it is
-     * computed when the panel is laid out and copied under the water each
-     * frame.
+     * The sky: a sun by day or a moon by night, its halo, and a haze along
+     * the horizon, printed as a tone field on the character lattice. It does
+     * not move, so it is computed when the panel is laid out (and again when
+     * the theme changes) and copied under the water each frame.
      */
     const printSky = () => {
       const size = columns * rows;
       skyTone = new Float32Array(size);
       toneBuffer = new Float32Array(size);
-      if (!sun) return;
+      night = !!moon && document.documentElement.classList.contains("dark");
+      skyBody = night ? moon : sun;
+      if (!skyBody) return;
 
       const panelHeight = rows * cellHeight;
-      const radius = sun.radius * panelHeight;
-      const centreX = sun.x * columns * cellWidth;
-      const centreY = horizon - sun.rise * radius;
+      const radius = skyBody.radius * panelHeight;
+      const centreX = skyBody.x * columns * cellWidth;
+      const centreY = horizon - skyBody.rise * radius;
 
       for (let row = 0; row < rows; row++) {
         const y = (row + 0.5) * cellHeight;
@@ -367,16 +388,53 @@ export function LiquidAscii({
         for (let column = 0; column < columns; column++) {
           const x = (column + 0.5) * cellWidth;
           const distance = Math.hypot(x - centreX, y - centreY);
+          const index = row * columns + column;
 
-          // The disc, with a soft rim; the halo falling away from it; and a
-          // haze that lies along the horizon and thins upward.
+          if (night) {
+            // A waxing gibbous: a disc with a second disc laid over its
+            // lower left to make the terminator, and soft patches of sea
+            // across it so it reads as a surface and not a coin.
+            const disc = 1 - smoothstep(radius * 0.94, radius, distance);
+            const shadow =
+              1 -
+              smoothstep(
+                radius * 0.9,
+                radius * 1.1,
+                Math.hypot(x - (centreX - radius * 0.42), y - (centreY + radius * 0.1)),
+              );
+            const maria =
+              0.5 + 0.5 * Math.sin(x * 0.05 + 1.7) * Math.sin(y * 0.075 + 0.4);
+            const lit = disc * (1 - 0.9 * shadow) * (0.9 - 0.22 * maria);
+            const halo =
+              distance > radius
+                ? 0.24 * Math.exp(-(((distance - radius) / (radius * 0.65)) ** 2))
+                : 0;
+            const haze = 0.12 * Math.exp(-(((horizon - y) / (radius * 1.4)) ** 2));
+
+            // Stars: a few single marks, far from the moon and off the haze.
+            let star = 0;
+            const seed = (((column * 73856093) ^ (row * 19349663)) >>> 0) % 1000;
+            if (
+              seed < 14 &&
+              distance > radius * 2 &&
+              y < horizon - cellHeight * 3
+            ) {
+              // Light marks only: a star is a dot, never a letter.
+              star = 0.1 + 0.12 * ((seed % 5) / 5);
+            }
+            skyTone[index] = Math.max(lit, halo, haze, star);
+            continue;
+          }
+
+          // The sun: the disc, with a soft rim; the halo falling away from
+          // it; and a haze that lies along the horizon and thins upward.
           const disc = 1 - smoothstep(radius * 0.94, radius, distance);
           const halo =
             distance > radius
               ? 0.42 * Math.exp(-(((distance - radius) / (radius * 0.8)) ** 2))
               : 0;
           const haze = 0.26 * Math.exp(-(((horizon - y) / (radius * 0.75)) ** 2));
-          skyTone[row * columns + column] = Math.max(disc, halo, haze);
+          skyTone[index] = Math.max(disc, halo, haze);
         }
       }
     };
@@ -483,9 +541,10 @@ export function LiquidAscii({
 
       // The sun's path: a lane on the sea beneath the sun that breaks up on
       // the waves, so the light reads as light on water.
-      const laneX = sun ? sun.x * columns * cellWidth : 0;
-      const laneWidth = sun ? sun.radius * rows * cellHeight * 0.95 : 1;
-      const reach = sun ? sun.radius * rows * cellHeight * 1.7 : 1;
+      const laneX = skyBody ? skyBody.x * columns * cellWidth : 0;
+      const laneWidth = skyBody ? skyBody.radius * rows * cellHeight * (night ? 0.6 : 0.95) : 1;
+      const reach = skyBody ? skyBody.radius * rows * cellHeight * (night ? 2.2 : 1.7) : 1;
+      const laneGain = night ? 0.6 : 0.95;
 
       for (let column = 0; column < columns; column++) {
         const surfaceY = water.surfaceY(column);
@@ -508,13 +567,13 @@ export function LiquidAscii({
           );
           let value = falloff * (0.72 + 0.28 * stir);
 
-          if (sun) {
+          if (skyBody) {
             const across = ((column + 0.5) * cellWidth - laneX) / laneWidth;
             const lane = Math.exp(-across * across);
             if (lane > 0.02) {
               const shimmer =
                 0.5 + 0.5 * Math.sin(row * 2.1 + surfaceY * 0.09 + elapsed * 3 + column * 0.31);
-              const glint = lane * shimmer * Math.exp(-depth / reach) * 0.95;
+              const glint = lane * shimmer * Math.exp(-depth / reach) * laneGain;
               if (glint > value) value = glint;
             }
           }
@@ -738,6 +797,8 @@ export function LiquidAscii({
     // The ink follows the theme, so a theme switch repaints the screen.
     const themeObserver = new MutationObserver(() => {
       readColours();
+      // The sky follows the theme: the sun by day, the moon by night.
+      printSky();
       // The ink is baked into the atlas, so the atlas is drawn again.
       buildAtlas(Math.min(2, Math.max(1, window.devicePixelRatio || 1)));
       paint();
@@ -818,6 +879,9 @@ export function LiquidAscii({
     sunX,
     sunRadius,
     sunRise,
+    moonX,
+    moonRadius,
+    moonRise,
     reduceMotion,
   ]);
 

@@ -9,7 +9,7 @@
 - Name three references + one craft move before generating UI. Default shadcn is not done.
 - Hub catalogs: `~/Projects/hub/design/README.md`.
 
-**Context:** Furma.tech is a bootstrapped venture studio (Estonian OÜ, Sitges, Catalonia). 11 products across games, SaaS, AI, finance, and civic tech:
+**Context:** Furma.tech is a bootstrapped studio (Estonian OÜ, Sitges, Catalonia). 11 products across games, SaaS, AI, finance, and civic tech:
 
 **Products:**
 - **Tic-Tac-Toe Disappear** — Vanishing-move strategy game (In Dev)

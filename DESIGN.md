@@ -83,6 +83,12 @@ moves the water only when it is at the sea. Forms thrown by a release are half
 the hero's size, so they open without crossing the words. `LiquidAscii` gains
 three house props: `zoneRef` (the sea's box), `sun`, and `ink`.
 
+**By day a sunset, by night a moon.** The plate is black in both themes, but
+what hangs in its sky follows the theme: the sun in the light theme, and in the
+dark theme a waxing moon with a scatter of single-dot stars and a narrower,
+fainter path on the water. The sky is printed again when the theme changes, and
+the water is not reset by it.
+
 The sun is generated, not a photograph: no image library was found on this
 machine (`~/Projects/images` does not exist), and generating one costs
 quota. The plate takes any tone field, so a photograph or a plate made for
@@ -94,10 +100,11 @@ page's name survives as an `sr-only` heading inside it. The list starts calm:
 every row is collapsed and at rest, and nothing opens until the reader hovers,
 focuses or clicks it.
 
-**4. The tagline drops "venture".** The hero reads "Digital studio", and the
-page titles read "Furma.tech — Digital Studio". Other uses of "venture
-studio" (the footer's statement, the descriptions, the privacy policy) are
-untouched until the owner says.
+**4. "Venture" is gone.** The studio is a *digital studio*: the hero, the page
+titles, the footer's statement, every description and keyword, the privacy
+policy, the share image, the README and the agent notes all say so. The one
+"venture" left is "venture capital" in the v2 concept's "0% VC" stat, which is
+the ethos and not the descriptor.
 
 **5. The bookends are black in both themes.** The footer and the case-study
 call-to-action band were painted with the theme's foreground, so the dark

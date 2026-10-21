@@ -28,8 +28,8 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Furma.tech — Digital Studio",
-  description: "Bootstrapped venture studio building industry-grade SaaS tools and the Aitlas AI ecosystem. Estonian OÜ operating globally.",
-  keywords: ["venture studio", "SaaS", "AI", "Aitlas", "MCP", "bootstrapped", "Estonia"],
+  description: "Bootstrapped studio building industry-grade SaaS tools and the Aitlas AI ecosystem. Estonian OÜ operating globally.",
+  keywords: ["digital studio", "SaaS", "AI", "Aitlas", "MCP", "bootstrapped", "Estonia"],
   authors: [{ name: "Furma.tech OÜ" }],
   openGraph: {
     title: "Furma.tech — Digital Studio",

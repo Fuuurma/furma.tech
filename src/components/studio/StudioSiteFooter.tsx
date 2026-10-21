@@ -13,7 +13,7 @@ export function StudioSiteFooter() {
           <div className="md:col-span-4">
             <p className="plastic-label mb-4">Furma.tech</p>
             <p className="font-sans text-body leading-relaxed text-foreground/65 max-w-sm">
-              Venture studio building industry SaaS and the Aitlas AI ecosystem.
+              Digital studio building industry SaaS and the Aitlas AI ecosystem.
               Bootstrapped from Sitges, Catalonia.
             </p>
           </div>

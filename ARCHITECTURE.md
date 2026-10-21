@@ -1,6 +1,6 @@
 # Furma.tech — Architecture
 
-Marketing and portfolio site for the Furma.tech venture studio. Next.js 16
+Marketing and portfolio site for the Furma.tech studio. Next.js 16
 App Router + React 19 + TypeScript strict + Tailwind v4, dev on
 `http://127.0.0.1:3080`. No database: the only writes are contact/waitlist
 submissions through server actions to a configured provider, with a

@@ -11,7 +11,7 @@ interface MetadataProps {
 
 export function constructMetadata({
   title = "Furma.tech — Digital Studio",
-  description = "Bootstrapped venture studio building industry-grade SaaS tools and the Aitlas AI ecosystem.",
+  description = "Bootstrapped studio building industry-grade SaaS tools and the Aitlas AI ecosystem.",
   image = "/og.png",
   icons = "/favicon.ico",
   noIndex = false,

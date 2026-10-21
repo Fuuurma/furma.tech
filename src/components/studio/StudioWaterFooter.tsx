@@ -62,6 +62,7 @@ export function StudioWaterFooter({
         surfaceRef={plateRef}
         zoneRef={seaRef}
         sun={{ x: 0.86, radius: 0.2, rise: 0.3 }}
+        moon={{ x: 0.89, radius: 0.125, rise: 1.45 }}
         color="#ffffff"
         backgroundColor="#000000"
         fontFamily="var(--font-mono)"
@@ -106,7 +107,7 @@ export function StudioWaterFooter({
                   className="font-sans text-body text-white/60 max-w-sm leading-relaxed [@media(max-height:700px)]:hidden"
                   data-screen-reserve
                 >
-                  Venture studio for industry SaaS and autonomous AI ecosystems.
+                  Digital studio for industry SaaS and autonomous AI ecosystems.
                   Sitges · Global.
                 </p>
               </div>
