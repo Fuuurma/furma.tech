@@ -31,16 +31,27 @@ export const metadata: Metadata = {
   description: "Bootstrapped studio building industry-grade SaaS tools and the Aitlas AI ecosystem. Estonian OÜ operating globally.",
   keywords: ["digital studio", "SaaS", "AI", "Aitlas", "MCP", "bootstrapped", "Estonia"],
   authors: [{ name: "Furma.tech OÜ" }],
+  // Relative share-image URLs resolve against this.
+  metadataBase: new URL("https://furma.tech"),
   openGraph: {
     title: "Furma.tech — Digital Studio",
     description: "Building software that works. Two verticals: B2B SaaS + Aitlas AI ecosystem.",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "furma.tech — Digital studio",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Furma.tech — Digital Studio",
     description: "Building software that works.",
+    images: ["/og.png"],
   },
   robots: {
     index: true,
