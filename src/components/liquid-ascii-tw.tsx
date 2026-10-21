@@ -19,7 +19,16 @@
  *   the water closes over the hollow.
  * - **A pointer dragged through the water** pulls it along, and the wake
  *   keeps sloshing after the hand is lifted.
- * - **A click** strikes the water, and the strike throws a crown.
+ * - **A hold** gathers the water into a mound under the hand, deeper the
+ *   longer the hand rests, and **the release** lets the mound go as a wave.
+ * - **A click** is a hold of no length: it strikes the water, and the strike
+ *   throws a crown.
+ *
+ * The hand also writes in characters. What it leaves — a faint wake on hover,
+ * a flowing stroke on a drag, a swelling blob on a hold, an abstract form
+ * thrown on release — is a tone field like the water's, so it is printed
+ * through the same ramp of characters and the same ink ceiling. See
+ * `lib/ink-field`.
  *
  * The prop names and their meanings follow the React Bits Pro component of
  * the same name, so the licensed file can replace this one without the call
@@ -42,6 +51,7 @@ import {
   type ScreenReserve,
 } from "@/lib/halftone";
 import { Water, type WaterPointer } from "@/lib/water";
+import { InkField, bindPointer } from "@/lib/ink-field";
 import { readReserves } from "@/lib/screen-reserves";
 import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 import { cn } from "@/lib/utils";
@@ -93,6 +103,11 @@ export interface LiquidAsciiProps {
   surfaceRef?: React.RefObject<HTMLElement | null>;
   /** House addition: how much of the wave is let go each second. */
   damping?: number;
+  /**
+   * House addition: whether the hand's ink is printed over the water. The
+   * water answers the hand either way; this is only the characters it writes.
+   */
+  ink?: boolean;
 }
 
 /**
@@ -126,14 +141,20 @@ const MOTION_REFERENCE = 90;
 /** How deep the reader's hand presses the surface, in pixels. */
 const PRESS_DEPTH = 30;
 
+/** How high a held hand gathers the water: where it starts, and what a full
+ *  charge adds, in pixels. A negative force lifts the surface. */
+const MOUND_BASE = 10;
+const MOUND_DEPTH = 46;
+
+/** How far a press may travel and still count as a hold, in pixels. */
+const HOLD_SLOP = 14;
+
 /** How much of a strike is thrown up, in pixels. */
 const SPLASH_DEPTH = 66;
 
 /** How fast the reader's hand may move, in px/s. */
 const MAX_HAND_SPEED = 900;
 
-/** How long the hand's memory of its own speed lasts, in seconds. */
-const HAND_MEMORY = 0.08;
 
 export function LiquidAscii({
   width,
@@ -160,6 +181,7 @@ export function LiquidAscii({
   pauseWhenOffscreen = true,
   surfaceRef,
   damping = 0.7,
+  ink: showInk = true,
 }: LiquidAsciiProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -236,64 +258,17 @@ export function LiquidAscii({
     let visible = true;
     let elapsed = 0;
 
-    /** Where the reader's hand is on the water. */
-    const hand = {
-      x: 0,
-      y: 0,
-      /** The hand's own speed along the surface, in px/s. */
-      speed: 0,
-      /** Where the hand was, and when — the hand remembers a little. */
-      lastX: 0,
-      lastAt: 0,
-      /** Whether the hand is over the water. */
-      over: false,
-      /** Whether the hand is pressing down. */
-      down: false,
-      /** The strike waiting to be thrown. */
-      splash: 0,
-    };
-
-    const onPointerMove = (event: PointerEvent) => {
-      const rect = surface.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      const now = performance.now();
-
-      // The hand's speed is remembered for a moment, so a quick flick keeps
-      // pulling the water after the pointer has stopped.
-      const since = (now - hand.lastAt) / 1000;
-      if (since > 0.0005 && hand.lastAt > 0) {
-        const speed = (x - hand.lastX) / since;
-        const blend = Math.min(1, since / HAND_MEMORY);
-        hand.speed = hand.speed * (1 - blend) + speed * blend;
-        hand.speed = Math.max(
-          -MAX_HAND_SPEED,
-          Math.min(MAX_HAND_SPEED, hand.speed),
-        );
-      }
-      hand.lastX = x;
-      hand.lastAt = now;
-      hand.x = x;
-      hand.y = y;
-      hand.over = true;
-    };
-
-    const onPointerDown = (event: PointerEvent) => {
-      onPointerMove(event);
-      hand.down = true;
-      hand.splash = SPLASH_DEPTH;
-      surface.setPointerCapture?.(event.pointerId);
-    };
-
-    const onPointerUp = () => {
-      hand.down = false;
-    };
-
-    const onPointerLeave = () => {
-      hand.over = false;
-      hand.down = false;
-      hand.speed = 0;
-    };
+    /**
+     * The reader's hand, and the characters it writes. The field keeps the
+     * hand's position, speed and charge; the water reads them to press, pull,
+     * gather and strike, and the ink is printed over it. Under reduced motion
+     * there is no hand at all: the screen is a still frame.
+     */
+    const hands = !reduceMotion;
+    let inkField: InkField | null = null;
+    let inkTone = new Float32Array(0);
+    let strikes = 0;
+    let unbind: (() => void) | null = null;
 
     /**
      * The atlas: every mark, drawn once, at the screen's own resolution.
@@ -375,6 +350,19 @@ export function LiquidAscii({
         .sort((a, b) => a.coverage - b.coverage);
 
       if (!buildAtlas(ratio)) return null;
+
+      if (hands) {
+        if (inkField) {
+          inkField.resize(rect.width, rect.height);
+        } else {
+          inkField = new InkField(rect.width, rect.height, {
+            cell: cellHeight,
+            line: cellHeight * 1.4,
+            reach: Math.max(34, Math.min(72, rect.height * 0.3)),
+          });
+          unbind = bindPointer(surface, inkField);
+        }
+      }
 
       water = new Water({
         width: columns * cellWidth,
@@ -471,6 +459,17 @@ export function LiquidAscii({
 
       const tone = toneField();
 
+      // The hand's ink is a tone field of its own, on the character lattice;
+      // where it is, it prints over the water.
+      if (showInk && inkField?.active) {
+        const size = columns * rows;
+        if (inkTone.length < size) inkTone = new Float32Array(size);
+        inkField.fillTone(inkTone, columns, rows, cellWidth, cellHeight);
+        for (let i = 0; i < size; i++) {
+          if (inkTone[i] > tone[i]) tone[i] = inkTone[i];
+        }
+      }
+
       for (let row = 0; row < rows; row++) {
         for (let column = 0; column < columns; column++) {
           const x = column * cellWidth;
@@ -526,19 +525,44 @@ export function LiquidAscii({
     const pointer = (time: number): WaterPointer | null => {
       const rect = surface.getBoundingClientRect();
       const reach = Math.min(rect.width, rect.height) * cursorRadius;
+      const hand = inkField?.pointer;
 
-      if (hand.over) {
+      if (inkField && hand && hand.over) {
         // A strike is an event, not a force: the hand is not pressing the
-        // surface down at the same time as it is throwing it up.
-        const striking = hand.splash > 0;
-        const splash = striking ? hand.splash : 0;
-        hand.splash = 0;
+        // surface down at the same time as it is throwing it up. How hard it
+        // strikes is how long the hand held.
+        if (inkField.thrown !== strikes) {
+          strikes = inkField.thrown;
+          const last = inkField.throws[inkField.throws.length - 1];
+          const held = last ? Math.max(0, Math.min(1, (last.life - 1.5) / 1.1)) : 0;
+          return {
+            x: hand.x,
+            radius: reach * (1 + 0.5 * held),
+            force: 0,
+            velocity: 0,
+            splash: SPLASH_DEPTH * (0.55 + 1.0 * held),
+          };
+        }
+
+        const dragging = hand.down && hand.travelled > HOLD_SLOP;
+        if (hand.down && !dragging) {
+          // A held hand gathers the water into a mound under it.
+          return {
+            x: hand.x,
+            radius: reach * (1 + 0.6 * inkField.charge),
+            force: -(MOUND_BASE + MOUND_DEPTH * inkField.charge),
+            velocity: 0,
+            splash: 0,
+          };
+        }
+
+        const speed = Math.max(-MAX_HAND_SPEED, Math.min(MAX_HAND_SPEED, hand.vx));
         return {
           x: hand.x,
           radius: reach,
-          force: striking ? 0 : hand.down ? PRESS_DEPTH * 1.6 : PRESS_DEPTH,
-          velocity: striking ? 0 : hand.down ? hand.speed * flipRatio : 0,
-          splash,
+          force: hand.down ? PRESS_DEPTH * 1.6 : PRESS_DEPTH,
+          velocity: hand.down ? speed * flipRatio : 0,
+          splash: 0,
         };
       }
 
@@ -570,8 +594,10 @@ export function LiquidAscii({
         schedule();
         return;
       }
+      const seconds = lastStep > 0 ? Math.min(0.05, (now - lastStep) / 1000) : 1 / 60;
       lastStep = now;
 
+      inkField?.step(seconds);
       elapsed += (1 / 60) * speed;
       water?.step(1 / 60, pointer(elapsed));
       paint();
@@ -627,12 +653,6 @@ export function LiquidAscii({
       intersection.observe(wrapper);
     }
 
-    surface.addEventListener("pointermove", onPointerMove);
-    surface.addEventListener("pointerdown", onPointerDown);
-    surface.addEventListener("pointerup", onPointerUp);
-    surface.addEventListener("pointercancel", onPointerUp);
-    surface.addEventListener("pointerleave", onPointerLeave);
-
     // The water, once the lattice is laid out.
     const body = layout();
     if (!body) return;
@@ -655,11 +675,7 @@ export function LiquidAscii({
       themeObserver.disconnect();
       reserveObserver.disconnect();
       intersection?.disconnect();
-      surface.removeEventListener("pointermove", onPointerMove);
-      surface.removeEventListener("pointerdown", onPointerDown);
-      surface.removeEventListener("pointerup", onPointerUp);
-      surface.removeEventListener("pointercancel", onPointerUp);
-      surface.removeEventListener("pointerleave", onPointerLeave);
+      unbind?.();
     };
   }, [
     surfaceRef,
@@ -681,6 +697,7 @@ export function LiquidAscii({
     maxFPS,
     pauseWhenOffscreen,
     damping,
+    showInk,
     reduceMotion,
   ]);
 

@@ -117,6 +117,7 @@ function HeroSlide({
         maxFPS={60}
         idleCue
         idleCueDelay={5000}
+        interactive
       />
 
       <div className="flex-1 flex flex-col items-center justify-center px-6 relative">
@@ -181,16 +182,41 @@ function PortfolioIndexSlide({
   count: number;
   isActive: boolean;
 }) {
+  const surfaceRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div className="h-full w-full flex flex-col bg-background text-foreground">
-      <div className="flex-1 flex items-center justify-center px-6 md:px-12">
+    <div
+      ref={surfaceRef}
+      className="h-full w-full flex flex-col bg-background text-foreground relative overflow-hidden"
+    >
+      {/* A quiet ground: the same wave, at low gain, printed in the page's own
+          paper and ink so it follows the theme. The reader can write into it;
+          the words keep clean paper around them. */}
+      <DitherWave
+        surfaceRef={surfaceRef}
+        primaryColor="var(--background)"
+        secondaryColor="var(--foreground)"
+        tertiaryColor="var(--foreground)"
+        speed={0.5}
+        scale={4}
+        downScale={0.5}
+        quality="low"
+        maxFPS={45}
+        composition="field"
+        interactive
+      />
+      <div className="flex-1 flex items-center justify-center px-6 md:px-12 relative z-10">
         <div className="max-w-[1280px] w-full grid grid-cols-12 gap-6">
           <SlideReveal isActive={isActive} className="col-span-12 md:col-span-4">
-            <p className="plastic-label">Portfolio</p>
-            <p className="plastic-label mt-6">Index 00</p>
+            <p className="plastic-label" data-screen-reserve>
+              Portfolio
+            </p>
+            <p className="plastic-label mt-6" data-screen-reserve>
+              Index 00
+            </p>
           </SlideReveal>
           <div className="col-span-12 md:col-span-8 md:col-start-5">
-            <h2 className="plastic-headline">
+            <h2 className="plastic-headline" data-screen-reserve>
               <AnimatedNumber value={count} trigger={isActive} className="inline" />
               {" "}
               <SplitReveal
@@ -206,6 +232,7 @@ function PortfolioIndexSlide({
                 type="button"
                 onClick={onStart}
                 className="plastic-cta mt-12"
+                data-screen-reserve
               >
                 Start with {HOME_PROJECTS[0]?.name ?? "projects"}
                 <span aria-hidden>→</span>
@@ -214,6 +241,7 @@ function PortfolioIndexSlide({
                 <Link
                   href="/portfolio"
                   className="plastic-label motion-link-subtle hover:text-foreground"
+                  data-screen-reserve
                 >
                   Or open full index
                 </Link>

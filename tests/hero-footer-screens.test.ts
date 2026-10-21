@@ -33,6 +33,8 @@ const read = (path: string): string =>
 const home = read("../src/components/home/PlasticHome.tsx");
 const wave = read("../src/components/dither-wave-tw.tsx");
 const liquid = read("../src/components/liquid-ascii-tw.tsx");
+/* The hand is shared: one engine reads the pointer for both screens. */
+const hand = read("../src/lib/ink-field.ts");
 const css = read("../src/app/globals.css");
 /* The footer is the site's, not the home's: it lives in one component and
    closes every page that ends in water. */
@@ -73,9 +75,11 @@ test("the wave is held to two opposite corners, one plate printed twice", () => 
     ),
     "the bottom-left lobe must print the wave mirrored",
   );
+  // The light is held by two lobes, one in each corner at rest. That they rest
+  // in opposite corners, and that a hand can take them, is tests/lobes.test.ts.
   assert.ok(
-    /corner\(\s*1 - u,\s*1 - v,\s*width,\s*height,\s*radius\s*\)/.test(wave),
-    "the light must be held to the bottom-left corner as well",
+    /lobes\?\.topRight/.test(wave) && /lobes\?\.bottomLeft/.test(wave),
+    "the light must be held by a top-right and a bottom-left lobe",
   );
 });
 
@@ -118,18 +122,28 @@ test("the footer's water has its own band, and the type keeps clean paper", () =
   const type = footer.indexOf("We build sovereign digital futures.");
   assert.ok(type > 0 && band > type, "the type must be set above the band");
 
-  // The band is the reader's to touch.
+  // The band is the reader's to touch, through the one hand both screens
+  // share: it presses, it pulls, it gathers a mound while held, and it
+  // strikes when the hand is let go.
   assert.ok(
-    /pointerdown/.test(liquid),
-    "the water must answer a click",
+    /bindPointer\(surface, inkField\)/.test(liquid),
+    "the water must read the pointer through the shared hand",
   );
   assert.ok(
-    /pointermove/.test(liquid),
-    "the water must answer the pointer",
+    /pointerdown/.test(hand) && /pointermove/.test(hand),
+    "the shared hand must listen for a press and a move",
   );
   assert.ok(
-    /hand\.speed/.test(liquid),
+    /hand\.vx/.test(liquid),
     "the water must be pulled by a drag",
+  );
+  assert.ok(
+    /MOUND_DEPTH \* inkField\.charge/.test(liquid),
+    "a held hand must gather the water, deeper the longer it is held",
+  );
+  assert.ok(
+    /inkField\.thrown !== strikes/.test(liquid),
+    "a released hand must strike the water",
   );
 });
 

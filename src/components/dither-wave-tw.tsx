@@ -25,7 +25,9 @@ import {
   screenReserve,
   type ScreenReserve,
 } from "@/lib/halftone";
-import { sampleField, sampleWaveField } from "@/lib/wave-field";
+import { sampleField, sampleWaveField, type WaveWarp } from "@/lib/wave-field";
+import { InkField, bindPointer } from "@/lib/ink-field";
+import { Lobes } from "@/lib/lobes";
 import { readReserves } from "@/lib/screen-reserves";
 import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 import { cn } from "@/lib/utils";
@@ -67,6 +69,21 @@ export interface DitherWaveProps {
   idleCue?: boolean;
   /** House addition: how long the reader must leave the page alone, in ms. */
   idleCueDelay?: number;
+  /**
+   * House addition: whether the reader can write into the screen. Hover
+   * leaves a wake, a drag paints, a hold swells a blob and a release throws
+   * an abstract form, and the picture leans with the hand. Off under reduced
+   * motion, whatever this says.
+   */
+  interactive?: boolean;
+  /**
+   * House addition: where the light sits.
+   *
+   * - `corners`: two opposite corners, printed twice, and movable by hand.
+   * - `horizon`: a tide along the foot of the panel, its crest undulating.
+   * - `field`: the whole panel at low gain, a quiet ground for a section.
+   */
+  composition?: "corners" | "horizon" | "field";
 }
 
 /** The tone scale of the screen: how many steps of ink it can print. */
@@ -91,6 +108,18 @@ const OCTAVES: Record<NonNullable<DitherWaveProps["quality"]>, number> = {
   high: 4,
 };
 
+/** How much of the peak tone the quiet ground of a `field` carries. */
+const FIELD_GAIN = 0.4;
+
+/** How strongly the hand's ink prints, against the wave's own tone. */
+const INK_GAIN = 1;
+
+/** The ink's grid is this many screen cells to a cell of its own. */
+const INK_GRID = 2;
+
+/** The longest frame the hand's ink is advanced by, in seconds. */
+const INK_MAX_STEP = 1 / 20;
+
 /**
  * Where the light sits.
  *
@@ -100,34 +129,40 @@ const OCTAVES: Record<NonNullable<DitherWaveProps["quality"]>, number> = {
  * away from them. The page's composition is light at the ends of the
  * diagonal and quiet through the middle, while the picture inside the light
  * now moves.
+ *
+ * A lobe is a light with a centre, a reach and a gain, so the reader can take
+ * it by the hand: the falloff is measured from wherever the lobe is, not from
+ * the corner it rests in.
  */
-function corner(
-  u: number,
-  v: number,
-  width: number,
-  height: number,
+function lobe(
+  x: number,
+  y: number,
+  centreX: number,
+  centreY: number,
   radius: number,
 ): number {
-  const dx = (1 - u) * width;
-  const dy = v * height;
-  const distance = Math.hypot(dx * 0.82, dy) / radius;
+  const distance = Math.hypot((x - centreX) * 0.82, y - centreY) / radius;
   if (distance >= 1) return 0;
   const falloff = 1 - distance;
   return falloff * falloff * (3 - 2 * falloff);
 }
 
-/** The light of both corners, held against each other. */
-function envelope(
-  u: number,
-  v: number,
-  width: number,
-  height: number,
-  radius: number,
-): number {
-  return Math.max(
-    corner(u, v, width, height, radius),
-    corner(1 - u, 1 - v, width, height, radius),
-  );
+function smooth(edge0: number, edge1: number, x: number): number {
+  const t = Math.max(0, Math.min(1, (x - edge0) / (edge1 - edge0)));
+  return t * t * (3 - 2 * t);
+}
+
+/**
+ * The tide: light that rises from the foot of the panel, brightest at the
+ * edge, whose crest — the line where the light begins — is a slow swell of
+ * two waves. `time` moves the crest, so the shore is never still.
+ */
+function tide(u: number, v: number, time: number): number {
+  const crest =
+    0.56 +
+    0.06 * Math.sin(u * 5.1 + time * 0.55) +
+    0.03 * Math.sin(u * 11.7 - time * 0.9);
+  return smooth(0, 0.5, v - crest);
 }
 
 /**
@@ -166,6 +201,8 @@ export function DitherWave({
   cell = 7,
   idleCue = false,
   idleCueDelay = 5000,
+  interactive = false,
+  composition = "corners",
 }: DitherWaveProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -221,6 +258,21 @@ export function DitherWave({
     let field = new Float32Array(0);
     let fieldColumns = 0;
     let fieldRows = 0;
+
+    /**
+     * The reader's hand: the ink it leaves, the push it puts into the wave,
+     * and the lobes it can take. None of it exists under reduced motion — the
+     * screen is a still frame there and nothing may put it back in motion.
+     */
+    const hands = interactive && !reduceMotion;
+    let ink: InkField | null = null;
+    let lobes: Lobes | null = null;
+    let inkTone = new Float32Array(0);
+    let warpX = new Float32Array(0);
+    let warpY = new Float32Array(0);
+    let lastHandAt = 0;
+    let strikes = 0;
+    let unbind: (() => void) | null = null;
 
     /** The reserves are read from the live type, so they are read afresh
      *  every few frames — often enough to follow a reveal, seldom enough to
@@ -278,11 +330,85 @@ export function DitherWave({
       }
       fieldColumns = sampleColumns;
       fieldRows = sampleRows;
-      sampleWaveField(field, fieldColumns, fieldRows, time, {
-        scale,
-        intensity,
-        octaves: OCTAVES[quality],
-      });
+
+      // The hand: advance the ink and the lobes by the time that really
+      // passed, so a slow frame does not slow the ink down.
+      let warp: WaveWarp | undefined;
+      let inked = false;
+      if (hands) {
+        const now = performance.now();
+        const dt = Math.min(
+          INK_MAX_STEP,
+          lastHandAt > 0 ? (now - lastHandAt) / 1000 : 0,
+        );
+        lastHandAt = now;
+
+        if (!ink) {
+          // The hand's reach follows the panel, so a phone and a wide screen
+          // both get a hand the size of a hand.
+          ink = new InkField(rect.width, rect.height, {
+            cell: cell * INK_GRID,
+            line: cell * 1.3,
+            reach: Math.max(40, Math.min(rect.width, rect.height) * 0.075),
+          });
+          unbind = bindPointer(surface, ink, { cursor: "crosshair" });
+        }
+        ink.resize(rect.width, rect.height);
+
+        const hand = ink.pointer;
+        ink.step(dt);
+
+        if (composition === "corners") {
+          if (!lobes) lobes = new Lobes(rect.width, rect.height);
+          if (lobes.width !== rect.width || lobes.height !== rect.height) {
+            lobes.resize(rect.width, rect.height);
+          }
+          // A strike near a lobe knocks it; the ink counts the strikes.
+          if (ink.thrown !== strikes) {
+            strikes = ink.thrown;
+            lobes.kick(hand.x, hand.y);
+          }
+          lobes.step(dt, {
+            x: hand.x,
+            y: hand.y,
+            over: hand.over,
+            down: hand.down,
+            travelled: hand.travelled,
+          });
+        }
+
+        if (ink.active) {
+          const size = columns * rows;
+          if (inkTone.length < size) inkTone = new Float32Array(size);
+          ink.fillTone(inkTone, columns, rows, cell);
+          inked = true;
+        }
+
+        if (ink.dyeMax > 0.004 || ink.throws.length > 0) {
+          const samples = sampleColumns * sampleRows;
+          if (warpX.length < samples) {
+            warpX = new Float32Array(samples);
+            warpY = new Float32Array(samples);
+          }
+          if (ink.fillWarp(warpX, warpY, sampleColumns, sampleRows)) {
+            warp = {
+              x: warpX,
+              y: warpY,
+              unitsX: scale / Math.max(1, rect.width),
+              unitsY: scale / Math.max(1, rect.height),
+            };
+          }
+        }
+      }
+
+      sampleWaveField(
+        field,
+        fieldColumns,
+        fieldRows,
+        time,
+        { scale, intensity, octaves: OCTAVES[quality] },
+        warp,
+      );
 
       const blocks = Array.from(
         surface.querySelectorAll<HTMLElement>("[data-screen-reserve]"),
@@ -329,6 +455,19 @@ export function DitherWave({
       // reader is still there and the swell is not needed.
       const swellAt = swellPosition();
 
+      // The lobes: where the two lights are right now. At rest they sit in
+      // their corners; a reader's hand can take them.
+      const top = lobes?.topRight;
+      const bottom = lobes?.bottomLeft;
+      const topX = top ? top.x : rect.width;
+      const topY = top ? top.y : 0;
+      const topReach = top ? top.radius : radius;
+      const topGain = top ? top.gain : 1;
+      const bottomX = bottom ? bottom.x : 0;
+      const bottomY = bottom ? bottom.y : rect.height;
+      const bottomReach = bottom ? bottom.radius : radius;
+      const bottomGain = bottom ? bottom.gain : 1;
+
       for (let row = 0; row < rows; row++) {
         const v = (row + 0.5) / rows;
         const cy = (row + 0.5) * cell;
@@ -336,20 +475,43 @@ export function DitherWave({
         for (let column = 0; column < columns; column++) {
           const u = (column + 0.5) / columns;
 
-          // The two corners print the same wave: the bottom-left lobe is
-          // the top-right lobe, mirrored, so the page reads as one plate
-          // printed twice.
-          const topRight =
-            sampleField(field, fieldColumns, fieldRows, u, v) *
-            envelope(u, v, rect.width, rect.height, radius);
-          const bottomLeft =
-            sampleField(field, fieldColumns, fieldRows, 1 - u, 1 - v) *
-            envelope(1 - u, 1 - v, rect.width, rect.height, radius);
+          let light: number;
+          if (composition === "horizon") {
+            const shore = tide(u, v, time);
+            light =
+              shore > 0
+                ? shore *
+                  (0.18 + 0.82 * sampleField(field, fieldColumns, fieldRows, u, v))
+                : 0;
+          } else if (composition === "field") {
+            // Only the crests of the wave carry ink; the ground between them
+            // stays clean paper: a field, not a texture. The ridged wave is
+            // high nearly everywhere, so the crests are its top fifth.
+            const crest = sampleField(field, fieldColumns, fieldRows, u, v);
+            light = FIELD_GAIN * smooth(0.76, 0.97, crest);
+          } else {
+            // The two corners print the same wave: the bottom-left lobe is
+            // the top-right lobe, mirrored, so the page reads as one plate
+            // printed twice.
+            const x = u * rect.width;
+            const y = v * rect.height;
+            const topRight =
+              sampleField(field, fieldColumns, fieldRows, u, v) *
+              lobe(x, y, topX, topY, topReach) *
+              topGain;
+            const bottomLeft =
+              sampleField(field, fieldColumns, fieldRows, 1 - u, 1 - v) *
+              lobe(x, y, bottomX, bottomY, bottomReach) *
+              bottomGain;
+            light = Math.max(topRight, bottomLeft);
+          }
 
-          const swellAmount = swell(u, v, swellAt);
+          const swellAmount = composition === "corners" ? swell(u, v, swellAt) : 0;
+          const handInk = inked ? inkTone[row * columns + column] * INK_GAIN : 0;
           const tone =
-            (Math.max(topRight, bottomLeft) * (1 + SWELL_GAIN * swellAmount) +
-              SWELL_FLOOR * swellAmount) *
+            (light * (1 + SWELL_GAIN * swellAmount) +
+              SWELL_FLOOR * swellAmount +
+              handInk) *
             screenReserve(reserves, (column + 0.5) * cell, cy);
           if (tone <= 0.001) continue;
 
@@ -496,6 +658,7 @@ export function DitherWave({
       reserveObserver.disconnect();
       intersection?.disconnect();
       resolution.removeEventListener("change", onResolution);
+      unbind?.();
       if (idleCue) {
         window.removeEventListener("pointermove", noteTouch);
         window.removeEventListener("pointerdown", noteTouch);
@@ -520,6 +683,8 @@ export function DitherWave({
     pauseWhenOffscreen,
     idleCue,
     idleCueDelay,
+    interactive,
+    composition,
     reduceMotion,
   ]);
 

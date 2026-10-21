@@ -68,12 +68,25 @@ export interface WaveFieldOptions {
 }
 
 /**
+ * A push laid over the wave: the hand's displacement, sampled on the same
+ * `columns` × `rows` grid as the wave. `x` and `y` are in pixels of the panel;
+ * `unitsX` and `unitsY` convert them into the wave's domain.
+ */
+export interface WaveWarp {
+  x: Float32Array;
+  y: Float32Array;
+  unitsX: number;
+  unitsY: number;
+}
+
+/**
  * Fill `out` with the wave, one sample per cell of a `columns` × `rows`
  * grid, in 0..1.
  *
  * The domain is `scale` features wide, so the wave's features keep their
  * size whatever the panel measures, and `time` walks the field sideways,
- * which is what makes the waves travel.
+ * which is what makes the waves travel. A `warp` moves the sample points
+ * before the noise is read, so the picture leans where the hand has pushed it.
  */
 export function sampleWaveField(
   out: Float32Array,
@@ -81,15 +94,19 @@ export function sampleWaveField(
   rows: number,
   time: number,
   options: WaveFieldOptions,
+  warp?: WaveWarp,
 ): void {
   const { scale, intensity, octaves } = options;
   const stepX = scale / Math.max(1, columns);
   const stepY = scale / Math.max(1, rows);
 
   for (let row = 0; row < rows; row++) {
-    const y = row * stepY;
+    const y0 = row * stepY;
     for (let column = 0; column < columns; column++) {
-      const x = column * stepX;
+      const x0 = column * stepX;
+      const i = row * columns + column;
+      const x = warp ? x0 + warp.x[i] * warp.unitsX : x0;
+      const y = warp ? y0 + warp.y[i] * warp.unitsY : y0;
 
       // The warp: a second field, drifting against the first, so the waves
       // lean and braid instead of running in parallel.
@@ -103,7 +120,7 @@ export function sampleWaveField(
       const ridge = 1 - Math.abs(n);
       const tone = Math.pow(ridge, 1.9) * intensity;
 
-      out[row * columns + column] = tone > 1 ? 1 : tone;
+      out[i] = tone > 1 ? 1 : tone;
     }
   }
 }

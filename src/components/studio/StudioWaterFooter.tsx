@@ -169,8 +169,8 @@ export function StudioWaterFooter({
         className={cn(
           "relative shrink-0",
           variant === "panel"
-            ? "h-[22%] min-h-[150px] max-h-[280px]"
-            : "h-[170px] sm:h-[220px]",
+            ? "h-[30%] min-h-[190px] max-h-[360px]"
+            : "h-[240px] sm:h-[320px]",
         )}
       >
         <LiquidAscii
