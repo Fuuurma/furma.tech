@@ -4,6 +4,7 @@ import { ProjectLayout, ProjectHero, ProjectStatusPlaceholder } from '@/componen
 import { getOgImageUrl } from '@/lib/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/opengovern" },
   title: 'OpenGovern — Furma.tech',
   description: 'Decentralized governance via polls, forums (Agora), and discussions. Community decision-making made transparent.',
   openGraph: {
@@ -26,10 +27,10 @@ export default function OpenGovernPage() {
         label="Civic Tech"
         title="OpenGovern"
         description="A governance platform where communities make decisions together through polls, forums (Agora), and meaningful discussions — unlike traditional social media's hot takes."
-        status={{ label: 'Roadmap', variant: 'roadmap' }}
+        status={{ label: 'In Development', variant: 'beta' }}
         projectId="opengovern"
       />
-      <ProjectStatusPlaceholder status="roadmap" highlights={highlights} />
+      <ProjectStatusPlaceholder status="soon" highlights={highlights} />
     </ProjectLayout>
   );
 }

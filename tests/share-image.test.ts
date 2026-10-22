@@ -32,8 +32,11 @@ test("the share image is a 1200×630 PNG", () => {
 test("the site's metadata names the card", () => {
   const layout = readFileSync(here("../src/app/layout.tsx"), "utf8");
   assert.ok(/metadataBase:\s*new URL\("https:\/\/furma\.tech"\)/.test(layout), "relative image URLs need a base");
-  assert.ok(/openGraph:[\s\S]*?images:[\s\S]*?url:\s*"\/og\.png"/.test(layout), "Open Graph must name the card");
-  assert.ok(/twitter:[\s\S]*?images:\s*\["\/og\.png"\]/.test(layout), "the Twitter card must name it too");
+  // The card is the dynamic /og PNG route (src/app/og/route.tsx): layout names
+  // it through OG_IMAGE, and getOgImageUrl's /og contract is pinned by
+  // og-metadata.test.ts.
+  assert.ok(/openGraph:[\s\S]*?images:\s*\[OG_IMAGE\]/.test(layout), "Open Graph must name the card");
+  assert.ok(/twitter:[\s\S]*?images:\s*\[OG_IMAGE\]/.test(layout), "the Twitter card must name it too");
   const metadata = readFileSync(here("../src/lib/metadata.ts"), "utf8");
   assert.ok(!/og-image\.svg/.test(metadata), "no metadata may point at the SVG");
 });

@@ -20,6 +20,7 @@ import { StaggerReveal } from "@/components/motion/StaggerReveal";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/guidetours" },
   title: "GuideTours — Tour Operator Platform | Furma.tech",
   description:
     "Multi-tenant SaaS for tour operators. CRM, staff scheduling, real-time availability, Viator & GetYourGuide sync.",
@@ -121,7 +122,7 @@ export default function GuideToursPage() {
 
       <ProjectCTA
         title="Ready to unify your tours?"
-        description="Book a personalized demo. See how GuideTours can save you 8+ hours per week and increase your bookings."
+        description="Book a personalized demo. See how GuideTours can save an estimated 8+ hours per week and increase your bookings."
         primaryHref="/#contact"
         primaryLabel="Book Your Demo"
         secondaryHref="/portfolio"

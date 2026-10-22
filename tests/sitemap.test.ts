@@ -37,6 +37,7 @@ test("sitemap: the URL set is preserved", () => {
   assert.deepEqual(urls, [
     BASE,
     `${BASE}/portfolio`,
+    `${BASE}/showcase`,
     `${BASE}/privacy`,
     `${BASE}/portfolio/aitlas`,
     `${BASE}/portfolio/aitlas/nova`,

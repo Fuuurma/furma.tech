@@ -17,6 +17,7 @@ export default function robots(): MetadataRoute.Robots {
           '/api/',
           '/_next/',
           '/node_modules/',
+          '/styleguide',
         ],
       },
       // Be more restrictive with AI crawlers
@@ -65,9 +66,6 @@ export default function robots(): MetadataRoute.Robots {
           'YouBot',
         ],
         // Allow AI bots but with restrictions
-        allow: [
-          '/og/', // Allow OG image generation
-        ],
         disallow: [
           '/api/',
           '/_next/',

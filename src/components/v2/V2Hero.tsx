@@ -134,7 +134,7 @@ export function V2Hero() {
               </span>
             </a>
             <span className="v2-label hidden sm:block">
-              11 products
+              10 products
               <br />
               2 verticals
             </span>

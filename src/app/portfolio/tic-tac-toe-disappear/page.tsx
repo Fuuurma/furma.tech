@@ -11,6 +11,7 @@ import {
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/tic-tac-toe-disappear" },
   title: "Tic-Tac-Toe Disappear — Furma.tech",
   description:
     "Strategic 3-piece variant TicTacToe. Your oldest piece auto-removes when you place a 4th. Online multiplayer & AI opponent.",
@@ -49,11 +50,21 @@ export default function TicTacToePage() {
       <ProjectHero
         label="Games"
         title="Tic-Tac-Toe Disappear"
-        description="A strategic twist on the classic game where moves vanish after a set number of turns. Think ahead, adapt fast, and outmaneuver your opponent in this dynamic battlefield."
+        description="A strategic twist on the classic game: only 3 pieces per player — place a 4th and your oldest vanishes. Think ahead, adapt fast, and outmaneuver your opponent in this dynamic battlefield."
         status={{ label: "In Dev", variant: "soon" }}
         projectId="tic-tac-toe"
       >
         <ProjectTrustRow items={["React", "Canvas API", "TypeScript"]} />
+        <p className="pt-3 m-0">
+          <a
+            href="https://tic-tac-toe-1ou.pages.dev"
+            target="_blank"
+            rel="noreferrer"
+            className="plastic-label motion-link-subtle hover:text-foreground"
+          >
+            Play the live preview ↗ (early build)
+          </a>
+        </p>
       </ProjectHero>
 
       <ProjectSection>
@@ -83,7 +94,7 @@ export default function TicTacToePage() {
 
       <ProjectCTA
         title="Ready to think ahead?"
-        description="Play the vanishing-move variant — online or against AI."
+        description="The 3-piece variant is in development — online play and AI opponents are on the way."
         primaryHref="/#contact"
         primaryLabel="Get updates"
         secondaryHref="/portfolio"

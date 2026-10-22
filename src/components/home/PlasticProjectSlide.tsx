@@ -41,7 +41,7 @@ function ProjectCover({
       >
         <div
           className={cn(
-            "plastic-cover__frame w-full h-full max-w-[min(100%,1200px)] max-h-full flex items-center justify-center transition-transform duration-700 ease-[var(--ease-out-expo)]",
+            "plastic-cover__frame relative w-full h-full max-w-[min(100%,1200px)] max-h-full flex items-center justify-center transition-transform duration-700 ease-[var(--ease-out-expo)]",
             isActive && "scale-100",
             !isActive && "scale-[0.97]",
             frameClassName,
@@ -51,6 +51,11 @@ function ProjectCover({
             <HeroVisual className="w-full h-full max-h-[min(100%,520px)] object-contain" />
           ) : (
             <div className="w-full aspect-[16/10] bg-foreground/5" />
+          )}
+          {HeroVisual && (
+            <p className="plastic-label absolute bottom-3 left-4 m-0">
+              Concept visual
+            </p>
           )}
         </div>
       </ParallaxFrame>
@@ -144,7 +149,10 @@ function EditorialIntro({
       : "md:col-span-8 md:col-start-1 lg:col-start-2";
 
   return (
-    <div className="plastic-intro shrink-0 border-t border-foreground/10 md:max-h-[42vh] md:overflow-y-auto">
+    <div
+      className="plastic-intro shrink-0 border-t border-foreground/10 md:max-h-[42vh] md:overflow-y-auto"
+      data-section-scroll
+    >
       <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-4 md:py-8">
         <div className="grid grid-cols-12 gap-x-6 gap-y-4 md:gap-y-6">
           <SlideReveal isActive={isActive} className={cn("col-span-12 flex md:flex-col justify-between gap-3 md:gap-4", metaCol)} delay={0.05}>
