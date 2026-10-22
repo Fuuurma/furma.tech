@@ -2,8 +2,9 @@
 
 import type { ReactNode } from "react";
 import { Children } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useInView } from "@/hooks/useScroll";
+import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 import { EASE_OUT_EXPO, motionStagger } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -34,7 +35,7 @@ interface StaggerRevealProps {
 
 export function StaggerReveal({ children, className }: StaggerRevealProps) {
   const [ref, inView] = useInView(0.08);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useStableReducedMotion();
 
   if (reduceMotion) {
     return <div className={className}>{children}</div>;

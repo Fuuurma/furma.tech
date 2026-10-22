@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import {
   motion,
   useInView,
-    useMotionValue,
+  useMotionValue,
   useTransform,
   animate,
 } from "framer-motion";
