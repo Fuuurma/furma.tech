@@ -20,6 +20,7 @@ import {
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio/restauramanager" },
   title: "restauManager — Restaurant Management | Furma.tech",
   description:
     "Complete restaurant management platform with TheFork integration. Floor plans, reservations, and staff coordination.",

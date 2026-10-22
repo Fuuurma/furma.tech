@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # eslint-plugin-react 7 + eslint 10 crash at HEAD (fix in flight on
+      # fix/eslint10-plugin-incompat). Keep the signal, drop the flag when
+      # that branch lands.
+      - run: pnpm lint
+        continue-on-error: true
+
+      - run: npx tsc --noEmit
+      - run: pnpm test
+      - run: pnpm build
+
+      - name: smoke
+        run: |
+          pnpm start &
+          for i in $(seq 1 30); do
+            curl -sf -o /dev/null http://127.0.0.1:4080/ && break
+            sleep 1
+          done
+          node scripts/smoke.mjs http://127.0.0.1:4080

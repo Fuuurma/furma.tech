@@ -53,7 +53,7 @@ export const HOME_PROJECTS: HomeProject[] = [
     category: "Marketing",
     description:
       "AI-generated QR codes that look like art — scannable, beautiful, and fully customizable.",
-    status: "Roadmap",
+    status: "In Development",
     href: "/portfolio/qart",
     layout: "stacked",
   },
@@ -62,7 +62,7 @@ export const HOME_PROJECTS: HomeProject[] = [
     name: "Tic-Tac-Toe",
     category: "Games",
     description:
-      "Strategy game where pieces vanish after each turn — a disappearing-move mechanic that changes everything.",
+      "Strategy game with a 3-piece rule: your oldest piece vanishes when you place a 4th — a disappearing-move mechanic that changes everything.",
     status: "In Development",
     href: "/portfolio/tic-tac-toe-disappear",
     layout: "visual-heavy",
@@ -113,7 +113,7 @@ export const HOME_PROJECTS: HomeProject[] = [
     category: "Civic Tech",
     description:
       "Direct democracy tooling for municipalities — citizen proposals, transparent voting, open governance.",
-    status: "Paused",
+    status: "In Development",
     href: "/portfolio/opengovern",
     layout: "editorial-right",
   },

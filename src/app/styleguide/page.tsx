@@ -96,12 +96,12 @@ function SectionRow({ label, children }: { label: string; children: React.ReactN
 
 export default function StyleguidePage() {
   // Local state for interactive demos
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date | undefined>(new Date(2025, 5, 12));
   const [otp, setOtp] = useState("");
   const [sliderVal, setSliderVal] = useState([35]);
   const [collapsibleOpen, setCollapsibleOpen] = useState(false);
   const [cmdkOpen, setCmdkOpen] = useState(false);
-  const [calendarMonth, setCalendarMonth] = useState<Date>(new Date());
+  const [calendarMonth, setCalendarMonth] = useState<Date>(new Date(2025, 5, 1));
   const [toggleGroupVal, setToggleGroupVal] = useState<string[]>(["bold"]);
 
   return (

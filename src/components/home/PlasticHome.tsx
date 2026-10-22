@@ -212,7 +212,7 @@ function PortfolioIndexSlide({
               Portfolio
             </p>
             <p className="plastic-label mt-6" data-screen-reserve>
-              Index 00
+              Guided tour
             </p>
           </SlideReveal>
           <div className="col-span-12 md:col-span-8 md:col-start-5">
@@ -243,7 +243,7 @@ function PortfolioIndexSlide({
                   className="plastic-label motion-link-subtle hover:text-foreground"
                   data-screen-reserve
                 >
-                  Or open full index
+                  Or skip the tour — open full index
                 </Link>
               </div>
             </SlideReveal>
