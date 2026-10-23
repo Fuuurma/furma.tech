@@ -10,11 +10,12 @@ import {
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { HOME_PROJECTS, type HomeProject } from "@/lib/home-projects";
 import { EASE_OUT_EXPO, motionDuration } from "@/lib/motion";
 import { nextMenuIndex, type MenuNavKey } from "@/lib/section-scroll";
 import { cn } from "@/lib/utils";
+import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 
 function menuItems(): HTMLElement[] {
   return Array.from(
@@ -63,11 +64,7 @@ function ProjectMenuCell({
       )}
       onClick={onNavigate}
     >
-      <span
-        className="studio-portfolio-panel__swatch"
-        style={{ backgroundColor: project.coverTint }}
-        aria-hidden
-      />
+      <span className="studio-portfolio-panel__swatch" aria-hidden />
       <span className="studio-portfolio-panel__index" aria-hidden>
         {String(index + 1).padStart(2, "0")}
       </span>
@@ -90,7 +87,7 @@ export function PortfolioNavDropdown() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLAnchorElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useStableReducedMotion();
 
   const syncPanelPosition = useCallback(() => {
     const chrome = wrapRef.current?.closest(".studio-chrome");
@@ -248,6 +245,7 @@ export function PortfolioNavDropdown() {
           "plastic-reel__portfolio",
           open && "plastic-reel__portfolio--open",
         )}
+        aria-label="Portfolio"
         aria-expanded={open}
         aria-controls="portfolio-nav-panel"
         aria-haspopup="menu"

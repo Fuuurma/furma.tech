@@ -1,6 +1,7 @@
 "use client";
+import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 
-import { motion, useReducedMotion, useSpring } from "framer-motion";
+import { motion, useSpring } from "framer-motion";
 
 interface ScrollProgressProps {
   activeIndex: number;
@@ -8,7 +9,7 @@ interface ScrollProgressProps {
 }
 
 export function ScrollProgress({ activeIndex, total }: ScrollProgressProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useStableReducedMotion();
   const progress = total <= 1 ? 0 : activeIndex / (total - 1);
   const height = useSpring(progress, {
     stiffness: 90,

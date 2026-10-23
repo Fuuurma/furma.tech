@@ -1,8 +1,13 @@
 "use client";
 
+// Immersive full-page home: section-navigated panels with focus managed per panel
+// (focus moves with content via preventScroll), a validated contact form that
+// moves focus to its status on send, and body-scroll lock while mounted.
+
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useReducedMotion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+
 import { submitContactForm } from "@/lib/server-actions";
 import { contactFormSchema, validateForm } from "@/lib/schemas";
 import { HOME_PROJECTS } from "@/lib/home-projects";
@@ -14,12 +19,15 @@ import {
 import { HOME_RESET_EVENT } from "@/components/home/PlasticBrandLink";
 import { SectionReelBar } from "@/components/home/SectionReelBar";
 import { StudioChrome } from "@/components/studio/StudioChrome";
+import { StudioWaterFooter } from "@/components/studio/StudioWaterFooter";
 import { ScrollProgress } from "@/components/home/ScrollProgress";
 import { PlasticProjectSlide } from "@/components/home/PlasticProjectSlide";
 import { PROJECT_HERO_MAP } from "@/lib/project-heroes";
 import { AnimatedNumber } from "@/components/motion/AnimatedNumber";
 import { SlideReveal } from "@/components/motion/SlideReveal";
 import { SplitReveal } from "@/components/motion/SplitReveal";
+import { DitherWave } from "@/components/dither-wave-tw";
+import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 import {
   useSmoothSectionScroll,
   type GoToOptions,
@@ -59,9 +67,9 @@ function sectionLabel(index: number): string {
 }
 
 function LetterSpacedTitle({ text }: { text: string }) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useStableReducedMotion();
   return (
-    <h1 className="plastic-hero-title" aria-label={text}>
+    <h1 className="plastic-hero-title" aria-label={text} data-screen-reserve>
       {text.split("").map((char, i) => (
         <span
           key={`${char}-${i}`}
@@ -83,6 +91,31 @@ function LetterSpacedTitle({ text }: { text: string }) {
   );
 }
 
+// Home-only projection of the existing Aitlas concept: legible modules, no simulated UI.
+function AitlasEntryVisual() {
+  const modules = [
+    { x: 90, name: "Nova", role: "Workspace" },
+    { x: 260, name: "Nexus", role: "Runtime" },
+    { x: 430, name: "Agents", role: "Marketplace" },
+  ];
+  return (
+    <svg viewBox="0 0 520 340" className="plastic-entry-preview" xmlns="http://www.w3.org/2000/svg">
+      <g className="plastic-entry-preview-lines">
+        <circle cx="260" cy="60" r="28" />
+        <path d="M260 88V120H90V150 M260 120V150 M260 120H430V150" />
+        {modules.map(({ x, name }) => <circle key={name} cx={x} cy="190" r="40" />)}
+      </g>
+      <text x="260" y="67" className="plastic-entry-preview-root">MCP</text>
+      {modules.map(({ x, name, role }) => (
+        <g key={name}>
+          <text x={x} y="198" className="plastic-entry-preview-name">{name}</text>
+          <text x={x} y="268" className="plastic-entry-preview-role">{role}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 function HeroSlide({
   onEnterWork,
   onContact,
@@ -90,72 +123,70 @@ function HeroSlide({
   onEnterWork: () => void;
   onContact: () => void;
 }) {
-  const reduceMotion = useReducedMotion();
+  const project = HOME_PROJECTS[0];
+  const HeroVisual = project ? PROJECT_HERO_MAP[project.id] : undefined;
+  const surfaceRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="h-full w-full flex flex-col bg-black text-white relative overflow-hidden">
-      <div className="flex-1 flex flex-col items-center justify-center px-6">
-        <LetterSpacedTitle text="furma.tech" />
-        <p
-          className={cn(
-            "mt-10 font-sans text-[11px] uppercase tracking-[0.2em] text-white/60",
-            !reduceMotion && "opacity-0 animate-fade-up",
+    <div className="plastic-entry-frame" ref={surfaceRef}>
+      {/* The hero is the house's wave: it prints the swell that says the page
+          continues, and the swell waits for an idle reader. The entry's own
+          type keeps clean paper around itself on the plate. */}
+      <DitherWave
+        surfaceRef={surfaceRef}
+        primaryColor="#000000"
+        secondaryColor="#ffffff"
+        tertiaryColor="#ffffff"
+        speed={0.6}
+        intensity={1}
+        scale={5}
+        downScale={0.5}
+        quality="medium"
+        maxFPS={60}
+        idleCue
+        idleCueDelay={5000}
+        interactive
+      />
+      <div className="plastic-entry" data-section-scroll>
+        <div className="plastic-entry-layout">
+          <div className="plastic-entry-copy">
+            <LetterSpacedTitle text="furma.tech" />
+            <p className="plastic-entry-kind" data-screen-reserve>
+              Digital studio
+            </p>
+            <div className="plastic-entry-actions">
+              <button type="button" onClick={onEnterWork} className="plastic-cta plastic-cta--inverse">
+                See projects <span aria-hidden>↓</span>
+              </button>
+              <button type="button" onClick={onContact} className="plastic-cta plastic-cta--inverse plastic-cta--quiet">
+                Contact
+              </button>
+              <Link href="/portfolio" className="plastic-cta plastic-cta--inverse plastic-cta--quiet">
+                Full index
+              </Link>
+            </div>
+          </div>
+
+          {project && (
+            <figure className="plastic-entry-project">
+              <div className="plastic-entry-project-meta">
+                <span>{project.category}</span>
+                <span>{project.status}</span>
+              </div>
+              <Link href={project.href} className="plastic-entry-project-visual" aria-label={`Open ${project.name} project`}>
+                {HeroVisual && <div aria-hidden="true">{project.id === "aitlas" ? <AitlasEntryVisual /> : <HeroVisual />}</div>}
+              </Link>
+              <figcaption className="plastic-entry-project-caption">
+                <Link href={project.href} className="plastic-entry-project-name">
+                  {project.name}<ArrowUpRight aria-hidden="true" />
+                </Link>
+                <span className="plastic-entry-project-note">Concept visual</span>
+                <span className="sr-only">{project.description}</span>
+              </figcaption>
+            </figure>
           )}
-          style={
-            reduceMotion
-              ? undefined
-              : { animationDelay: "1.2s", animationFillMode: "forwards" }
-          }
-        >
-          Digital venture studio
-        </p>
-      </div>
-
-      <div
-        className={cn(
-          "shrink-0 border-t border-white/10 px-6 md:px-12 py-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6",
-          !reduceMotion && "opacity-0 animate-fade-up",
-        )}
-        style={
-          reduceMotion
-            ? undefined
-            : { animationDelay: "1.5s", animationFillMode: "forwards" }
-        }
-      >
-        <p className="plastic-paragraph text-white max-w-md !text-[clamp(18px,2.2vw,26px)] !leading-[1.35]">
-          Bootstrapped studio building industry SaaS and the Aitlas AI ecosystem.
-        </p>
-        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-          <button
-            type="button"
-            onClick={onEnterWork}
-            className="plastic-cta plastic-cta--inverse"
-          >
-            See projects
-            <span aria-hidden>↓</span>
-          </button>
-          <button
-            type="button"
-            onClick={onContact}
-            className="plastic-cta plastic-cta--inverse plastic-cta--quiet"
-          >
-            Contact
-          </button>
         </div>
       </div>
-
-      {!reduceMotion && (
-        <div
-          className="plastic-hero-scroll-cue absolute bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none opacity-0 animate-fade-up"
-          style={{ animationDelay: "2s", animationFillMode: "forwards" }}
-          aria-hidden="true"
-        >
-          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/50">
-            Scroll
-          </span>
-          <span className="block w-px h-8 bg-white/40 animate-pulse" />
-        </div>
-      )}
     </div>
   );
 }
@@ -169,16 +200,41 @@ function PortfolioIndexSlide({
   count: number;
   isActive: boolean;
 }) {
+  const surfaceRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div className="h-full w-full flex flex-col bg-background text-foreground">
-      <div className="flex-1 flex items-center justify-center px-6 md:px-12">
+    <div
+      ref={surfaceRef}
+      className="h-full w-full flex flex-col bg-background text-foreground relative overflow-hidden"
+    >
+      {/* A quiet ground: the same wave, at low gain, printed in the page's own
+          paper and ink so it follows the theme. The reader can write into it;
+          the words keep clean paper around them. */}
+      <DitherWave
+        surfaceRef={surfaceRef}
+        primaryColor="var(--background)"
+        secondaryColor="var(--foreground)"
+        tertiaryColor="var(--foreground)"
+        speed={0.5}
+        scale={4}
+        downScale={0.5}
+        quality="low"
+        maxFPS={45}
+        composition="field"
+        interactive
+      />
+      <div className="flex-1 flex items-center justify-center px-6 md:px-12 relative z-10">
         <div className="max-w-[1280px] w-full grid grid-cols-12 gap-6">
           <SlideReveal isActive={isActive} className="col-span-12 md:col-span-4">
-            <p className="plastic-label">Portfolio</p>
-            <p className="plastic-label mt-6">Guided tour</p>
+            <p className="plastic-label" data-screen-reserve>
+              Portfolio
+            </p>
+            <p className="plastic-label mt-6" data-screen-reserve>
+              Guided tour
+            </p>
           </SlideReveal>
           <div className="col-span-12 md:col-span-8 md:col-start-5">
-            <h2 className="plastic-headline">
+            <h2 className="plastic-headline" data-screen-reserve>
               <AnimatedNumber value={count} trigger={isActive} className="inline" />
               {" "}
               <SplitReveal
@@ -194,6 +250,7 @@ function PortfolioIndexSlide({
                 type="button"
                 onClick={onStart}
                 className="plastic-cta mt-12"
+                data-screen-reserve
               >
                 Start with {HOME_PROJECTS[0]?.name ?? "projects"}
                 <span aria-hidden>→</span>
@@ -202,6 +259,7 @@ function PortfolioIndexSlide({
                 <Link
                   href="/portfolio"
                   className="plastic-label motion-link-subtle hover:text-foreground"
+                  data-screen-reserve
                 >
                   Or skip the tour — open full index
                 </Link>
@@ -338,7 +396,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                       rel={
                         label === "GitHub" ? "noopener noreferrer" : undefined
                       }
-                      className="text-[14px] text-foreground border-b border-foreground/20 pb-0.5 hover:border-foreground transition-colors"
+                      className="text-body text-foreground border-b border-foreground/20 pb-0.5 hover:border-foreground transition-colors"
                     >
                       {text}
                     </a>
@@ -392,7 +450,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                       placeholder={f.placeholder}
                       autoComplete={f.autoComplete}
                       className={cn(
-                        "plastic-field w-full border-b bg-transparent pb-2.5 pt-1 font-mono text-[13px] text-foreground placeholder:text-foreground/35 outline-none transition-colors",
+                        "plastic-field w-full border-b bg-transparent pb-2.5 pt-1 font-mono text-small text-foreground placeholder:text-foreground/60 outline-none transition-colors",
                         hasError
                           ? "border-foreground plastic-field--invalid"
                           : "border-foreground/25 focus-visible:border-foreground",
@@ -420,7 +478,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                   rows={3}
                   placeholder="Tell us what you're building…"
                   className={cn(
-                    "plastic-field w-full resize-none border-b bg-transparent pb-2.5 pt-1 font-mono text-[13px] text-foreground placeholder:text-foreground/35 outline-none transition-colors",
+                    "plastic-field w-full resize-none border-b bg-transparent pb-2.5 pt-1 font-mono text-small text-foreground placeholder:text-foreground/60 outline-none transition-colors",
                     fieldErrors.message
                       ? "border-foreground plastic-field--invalid"
                       : "border-foreground/25 focus-visible:border-foreground",
@@ -449,7 +507,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                 aria-live="polite"
                 tabIndex={-1}
                 className={cn(
-                  "font-mono text-[11px] uppercase tracking-[0.12em] outline-none min-h-[1.25rem]",
+                  "font-mono text-meta uppercase tracking-[0.12em] outline-none min-h-[1.25rem]",
                   status === "idle"
                     ? "sr-only"
                     : status === "error"
@@ -469,7 +527,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                 type="submit"
                 disabled={fieldsLocked}
                 className={cn(
-                  "plastic-submit h-12 w-full font-mono text-[11px] uppercase tracking-[0.12em] transition-opacity duration-300",
+                  "plastic-submit h-12 w-full font-mono text-meta uppercase tracking-[0.12em] transition-opacity duration-300",
                   status === "sent"
                     ? "bg-foreground/80 text-background"
                     : "bg-foreground text-background hover:opacity-80",
@@ -492,89 +550,17 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
 
 function FooterSlide({ isActive }: { isActive: boolean }) {
   return (
-    <div className="h-full w-full flex flex-col bg-foreground text-background overflow-hidden plastic-on-dark">
-      <div className="flex-1 flex flex-col justify-center min-h-0 relative z-10">
-        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 py-8 md:py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-            <SlideReveal isActive={isActive} className="lg:col-span-5 flex flex-col justify-between gap-10">
-              <div>
-                <p className="plastic-label text-background/40 mb-8">Furma.tech</p>
-                <SplitReveal
-                  as="h3"
-                  text="We build sovereign digital futures."
-                  className="font-sans text-[clamp(28px,4vw,48px)] font-medium leading-[1.1] tracking-[-0.03em] text-background block mb-6"
-                  trigger={isActive}
-                  delay={40}
-                />
-                <p className="font-sans text-[14px] text-background/50 max-w-sm leading-relaxed">
-                  Venture studio for industry SaaS and autonomous AI ecosystems.
-                  Sitges · Global.
-                </p>
-              </div>
-              <div className="space-y-4">
-                <p className="plastic-label text-background/40">Connect</p>
-                <a
-                  href="mailto:hello@furma.tech"
-                  className="text-[17px] font-medium text-background hover:opacity-60 transition-opacity block"
-                >
-                  hello@furma.tech
-                </a>
-                <div className="flex gap-6">
-                  <a
-                    href="https://github.com/Fuuurma"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="plastic-label text-background/55 hover:text-background"
-                  >
-                    GitHub
-                  </a>
-                  <a
-                    href="https://twitter.com/fuuurma"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="plastic-label text-background/55 hover:text-background"
-                  >
-                    Twitter
-                  </a>
-                </div>
-              </div>
-            </SlideReveal>
-
-            <SlideReveal isActive={isActive} className="lg:col-span-7 border-l border-background/10 pl-8 lg:pl-16" delay={0.12}>
-              <p className="plastic-label text-background/40 mb-8">Portfolio</p>
-              <div className="grid grid-cols-2 gap-x-8 gap-y-6">
-                {HOME_PROJECTS.map((p) => (
-                  <Link
-                    key={p.id}
-                    href={p.href}
-                    className="text-[15px] font-medium text-background hover:opacity-50 transition-opacity"
-                  >
-                    {p.name}
-                  </Link>
-                ))}
-              </div>
-              <Link
-                href="/portfolio"
-                className="inline-flex items-center gap-2 mt-10 plastic-label text-background/50 hover:text-background motion-link-subtle"
-              >
-                All projects <span aria-hidden>→</span>
-              </Link>
-            </SlideReveal>
-          </div>
-        </div>
-      </div>
-
-      <div className="shrink-0 px-6 md:px-12 py-5 border-t border-background/10 flex justify-between items-center">
-        <span className="plastic-label text-background/40">© 2026 Furma.tech</span>
-        <span className="plastic-label text-background/40">Sitges, Catalonia</span>
-      </div>
-    </div>
+    <StudioWaterFooter
+      isActive={isActive}
+      variant="panel"
+      className="h-full w-full"
+    />
   );
 }
 
 export default function PlasticHome() {
   const { activeIndex, goTo, setFocusHandler } = useSmoothSectionScroll(TOTAL);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useStableReducedMotion();
   const panelRefs = useRef<(HTMLElement | null)[]>([]);
   const preferContactFormFocus = useRef(false);
   const announcement = `Section ${activeIndex + 1} of ${TOTAL}: ${sectionLabel(activeIndex)}`;

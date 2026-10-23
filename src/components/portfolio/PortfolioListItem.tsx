@@ -3,7 +3,7 @@
 import type { CSSProperties, ComponentType } from "react";
 import { useState } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import type { HomeProject } from "@/lib/home-projects";
 import { PROJECT_HERO_MAP } from "@/lib/project-heroes";
 import {
@@ -13,17 +13,12 @@ import {
   previewVisualVariants,
 } from "@/components/portfolio/portfolio-list-motion";
 import { cn } from "@/lib/utils";
+import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 
 interface PortfolioListItemProps {
   project: HomeProject;
   index: number;
   itemIndex: number;
-}
-
-function statusTone(status: string): string {
-  if (status === "In Development") return "portfolio-list-page__status--dev";
-  if (status === "Roadmap") return "portfolio-list-page__status--roadmap";
-  return "portfolio-list-page__status--paused";
 }
 
 function PreviewVisual({
@@ -89,10 +84,7 @@ function StaticRowContent({
 
       <div className="portfolio-list-page__expand" aria-hidden="true">
         <div className="portfolio-list-page__expand-inner">
-          <div
-            className="portfolio-list-page__preview"
-            style={{ "--preview-tint": project.coverTint } as CSSProperties}
-          >
+          <div className="portfolio-list-page__preview">
             <div className="portfolio-list-page__preview-frame">
               <PreviewVisual name={project.name} HeroVisual={HeroVisual} />
             </div>
@@ -100,12 +92,7 @@ function StaticRowContent({
           <div className="portfolio-list-page__detail">
             <div className="portfolio-list-page__detail-meta">
               <span className="plastic-label">{project.category}</span>
-              <span
-                className={cn(
-                  "portfolio-list-page__status",
-                  statusTone(project.status),
-                )}
-              >
+              <span className="portfolio-list-page__status">
                 {project.status}
               </span>
             </div>
@@ -170,7 +157,6 @@ function AnimatedRowContent({
         <div className="portfolio-list-page__expand-inner">
           <motion.div
             className="portfolio-list-page__preview"
-            style={{ "--preview-tint": project.coverTint } as CSSProperties}
             variants={expandChildVariants}
           >
             <motion.div
@@ -187,12 +173,7 @@ function AnimatedRowContent({
           >
             <div className="portfolio-list-page__detail-meta">
               <span className="plastic-label">{project.category}</span>
-              <span
-                className={cn(
-                  "portfolio-list-page__status",
-                  statusTone(project.status),
-                )}
-              >
+              <span className="portfolio-list-page__status">
                 {project.status}
               </span>
             </div>
@@ -215,7 +196,7 @@ export function PortfolioListItem({
   index,
   itemIndex,
 }: PortfolioListItemProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useStableReducedMotion();
   const [expanded, setExpanded] = useState(false);
   const HeroVisual = PROJECT_HERO_MAP[project.id];
 

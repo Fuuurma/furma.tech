@@ -35,7 +35,6 @@ interface ProjectHeroProps {
   visual?: ReactNode;
   /** When set, renders the shared hero mock for this project id */
   projectId?: string;
-  coverTint?: string;
 }
 
 export function ProjectHeroSection({
@@ -46,7 +45,6 @@ export function ProjectHeroSection({
   children,
   visual,
   projectId,
-  coverTint,
 }: ProjectHeroProps) {
   const cover =
     visual ??
@@ -57,7 +55,6 @@ export function ProjectHeroSection({
       label={label}
       title={title}
       description={description}
-      coverTint={coverTint}
       visual={cover}
       statusBadge={
         status ? (
@@ -134,10 +131,10 @@ export function ProjectFeatures({
                 aria-hidden
               />
             )}
-            <h3 className="font-sans text-[15px] font-semibold tracking-tight mb-2">
+            <h3 className="font-sans text-body font-semibold tracking-tight mb-2">
               {feature.title}
             </h3>
-            <p className="font-mono text-[11px] leading-relaxed text-foreground/60">
+            <p className="font-mono text-meta leading-relaxed text-foreground/60">
               {feature.desc}
             </p>
           </div>
@@ -188,9 +185,9 @@ export function ProjectTrustRow({ items }: ProjectTrustRowProps) {
       {items.map((item) => (
         <li
           key={item}
-          className="font-mono text-[11px] text-foreground/60 tracking-[0.04em]"
+          className="font-mono text-meta text-foreground/60 tracking-[0.04em]"
         >
-          <span className="text-foreground/35 mr-2" aria-hidden>
+          <span className="text-foreground/45 mr-2" aria-hidden>
             ✓
           </span>
           {item}
@@ -230,18 +227,18 @@ export function ProjectPricing({ tiers }: ProjectPricingProps) {
     >
       {tiers.map((tier) => (
         <div key={tier.name} className="motion-card bg-background p-8">
-          <h3 className="font-sans text-[15px] font-semibold tracking-tight">
+          <h3 className="font-sans text-body font-semibold tracking-tight">
             {tier.name}
           </h3>
           <p className="plastic-label mt-2 mb-6">{tier.subtitle}</p>
           <div className="font-sans text-[clamp(28px,4vw,36px)] font-medium tracking-[-0.03em] leading-none mb-1">
             {tier.price}
-            <span className="font-mono text-[12px] text-foreground/55 font-normal ml-1">
+            <span className="font-mono text-small text-foreground/60 font-normal ml-1">
               {tier.period}
             </span>
           </div>
           {tier.annual && (
-            <p className="font-mono text-[11px] text-foreground/55 mb-6">
+            <p className="font-mono text-meta text-foreground/60 mb-6">
               {tier.annual}
             </p>
           )}
@@ -249,9 +246,9 @@ export function ProjectPricing({ tiers }: ProjectPricingProps) {
             {tier.features.map((feature) => (
               <li
                 key={feature}
-                className="flex items-start gap-2 font-mono text-[11px] text-foreground/65 leading-relaxed"
+                className="flex items-start gap-2 font-mono text-meta text-foreground/65 leading-relaxed"
               >
-                <span className="text-foreground/35 mt-0.5" aria-hidden>
+                <span className="text-foreground/45 mt-0.5" aria-hidden>
                   ✓
                 </span>
                 {feature}
@@ -294,7 +291,7 @@ export function ProjectStatusPlaceholder({
 
   return (
     <ProjectSection>
-      <div className="grid grid-cols-12 gap-8">
+      <div className="grid grid-cols-12 gap-x-0 gap-y-8 md:gap-x-8">
         <div className="col-span-12 md:col-span-8 md:col-start-4 lg:col-start-5">
           <p className="plastic-label mb-6">{label}</p>
           <p className="plastic-paragraph text-foreground/70 mb-12">{message}</p>
@@ -308,10 +305,10 @@ export function ProjectStatusPlaceholder({
                     strokeWidth={1.5}
                     aria-hidden
                   />
-                  <h3 className="font-sans text-[14px] font-semibold mb-2">
+                  <h3 className="font-sans text-body font-semibold mb-2">
                     {highlight.title}
                   </h3>
-                  <p className="font-mono text-[11px] text-foreground/60 leading-relaxed">
+                  <p className="font-mono text-meta text-foreground/60 leading-relaxed">
                     {highlight.desc}
                   </p>
                 </div>

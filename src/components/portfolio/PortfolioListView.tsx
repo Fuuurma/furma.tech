@@ -1,49 +1,34 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { HOME_PROJECTS } from "@/lib/home-projects";
+import { PortfolioHero } from "@/components/portfolio/PortfolioHero";
 import { PortfolioListItem } from "@/components/portfolio/PortfolioListItem";
 import { FilmGrain } from "@/components/motion/FilmGrain";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { StudioWaterFooter } from "@/components/studio/StudioWaterFooter";
 import { ProjectFilm } from "@/components/ui/project/ProjectFilm";
 import { STUDIO_REEL } from "@/lib/showcase-films";
 
 export function PortfolioListView() {
+  const itemsRef = useRef<HTMLUListElement>(null);
+
+  /* The rows take hover only once the reader's pointer has moved. A cursor
+     resting over the list on load must not open a row nobody chose. */
+  useEffect(() => {
+    const arm = () => {
+      itemsRef.current?.setAttribute("data-armed", "");
+      window.removeEventListener("pointermove", arm);
+    };
+    window.addEventListener("pointermove", arm, { passive: true });
+    return () => window.removeEventListener("pointermove", arm);
+  }, []);
+
   return (
     <div className="portfolio-list-page">
-      <section className="portfolio-list-page__intro" aria-labelledby="portfolio-list-title">
-        <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-10 md:py-14">
-          <div className="grid grid-cols-12 gap-6">
-            <ScrollReveal className="col-span-12 md:col-span-2" delay={0}>
-              <p className="plastic-label">Portfolio</p>
-              <p className="plastic-label mt-4">Index 00</p>
-            </ScrollReveal>
-            <div className="col-span-12 md:col-span-8 md:col-start-4 lg:col-start-5">
-              <SplitReveal
-                as="h1"
-                id="portfolio-list-title"
-                text={`${HOME_PROJECTS.length} products`}
-                className="portfolio-list-page__title block"
-                delay={80}
-              />
-              <ScrollReveal delay={280}>
-                <p className="plastic-paragraph text-foreground/65 max-w-lg mt-4">
-                  Bootstrapped from Sitges. 0% VC. Preview a project, then open
-                  the case study.
-                </p>
-                <Link
-                  href="/showcase"
-                  className="plastic-cta motion-link inline-flex mt-6"
-                >
-                  Watch every product in motion
-                  <span aria-hidden>→</span>
-                </Link>
-              </ScrollReveal>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PortfolioHero />
 
       <section className="portfolio-list-page__reel" aria-label="Studio reel">
         <div className="max-w-[1280px] mx-auto px-6 md:px-12 pb-10 md:pb-14">
@@ -56,7 +41,7 @@ export function PortfolioListView() {
 
       <section className="portfolio-list-page__list" aria-label="Project list">
         <FilmGrain className="portfolio-list-page__grain" />
-        <ul className="portfolio-list-page__items">
+        <ul ref={itemsRef} className="portfolio-list-page__items">
           {HOME_PROJECTS.map((project, i) => (
             <PortfolioListItem
               key={project.id}
@@ -73,7 +58,7 @@ export function PortfolioListView() {
         aria-labelledby="portfolio-outro-title"
       >
         <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-16 md:py-20">
-          <div className="grid grid-cols-12 gap-8">
+          <div className="grid grid-cols-12 gap-x-0 gap-y-8 md:gap-x-8">
             <ScrollReveal className="col-span-12 md:col-span-2">
               <p className="plastic-label">Contact</p>
             </ScrollReveal>
@@ -105,6 +90,8 @@ export function PortfolioListView() {
           </div>
         </div>
       </section>
+
+      <StudioWaterFooter />
     </div>
   );
 }

@@ -2,7 +2,14 @@
 
 **Purpose:** Instructions for AI coding assistants working in this codebase.
 
-**Context:** Furma.tech is a bootstrapped venture studio (Estonian OÜ, Sitges, Catalonia). 10 products across games, SaaS, AI, finance, and civic tech:
+## Design
+
+- Contract: `DESIGN.md` (this repo). Notes: `.impeccable.md` for `/v2`.
+- Invoke `design-arsenal`, then `design-taste-frontend` / `hallmark` / `impeccable`.
+- Name three references + one craft move before generating UI. Default shadcn is not done.
+- Hub catalogs: `~/Projects/hub/design/README.md`.
+
+**Context:** Furma.tech is a bootstrapped studio (Estonian OÜ, Sitges, Catalonia). 11 products across games, SaaS, AI, finance, and civic tech:
 
 **Products:**
 - **Tic-Tac-Toe Disappear** — Vanishing-move strategy game (In Dev)
@@ -11,7 +18,7 @@
 - **restauManager** — Restaurant management with TheFork integration (In Dev)
 - **FinanceHub** — Market data & portfolio monitoring (Paused)
 - **OneToMany** — Goal setting & habit tracking (Paused)
-- **OpenGovern** — Direct democracy tooling for municipalities (In Dev)
+- **OpenGovern** — Direct democracy tooling for municipalities (Roadmap)
 - **LinkUp** — Short-video professional matching (Paused)
 - **PicksTracker** — Sports pick tracking with social predictions (Roadmap)
 - **Aitlas** — Sovereign AI ecosystem: Nova workspace, Nexus runtime, Agents marketplace (In Dev)
@@ -22,7 +29,7 @@ Alternate UI concept: `/v2` — "The Workshop" (warm editorial, self-contained: 
 
 Core ethos: 0% VC, profitable before flashy, "build software that works."
 
-**Stack:** Next.js 16.2.11 | React 19.2.8 | TypeScript (strict) | Tailwind v4 | Zod | Radix UI | Lucide
+**Stack:** Next.js 16.2.1 | React 19.2.3 | TypeScript (strict) | Tailwind v4 | Zod | Radix UI | Lucide
 
 ---
 
@@ -34,9 +41,9 @@ pnpm dev --turbo  # Force Turbopack (default in 16.2)
 pnpm build        # Production build
 pnpm start        # Start production server
 pnpm lint         # Run ESLint
-pnpm test         # node:test contract suites in tests/
-pnpm test:smoke   # Runtime smoke gate (needs pnpm start on :4080)
 ```
+
+**Note:** No test framework configured yet. When adding tests, use Vitest + RTL.
 
 ### Dev Server Lock
 ```bash
@@ -59,8 +66,7 @@ src/
 │   └── ui/                # Primitive UI components
 ├── lib/                   # Utilities (camelCase)
 │   └── utils.ts           # cn() helper using clsx + tailwind-merge
-tests/                     # node:test contract suites (run via pnpm test)
-scripts/                   # Zero-dep ops scripts (smoke.mjs runtime gate)
+└── styles/                # (unused, globals.css is in app/)
 ```
 
 ---
@@ -77,7 +83,7 @@ import type { Metadata } from "next";
 // 3. Third-party (Radix, Lucide, class-variance-authority, Zod)
 import { clsx, type ClassValue } from "clsx";
 // 4. Internal @/ aliases
-import { LayoutChrome } from "@/components/LayoutChrome";
+import Navigation from "@/components/Navigation";
 // 5. Relative imports (rarely used)
 ```
 
@@ -161,14 +167,16 @@ export default function MyComponent({ defaultValue = "", onSubmit }: Props) {
 .animate-ticker          /* Horizontal ticker (pauses on hover) */
 .reveal / .reveal.visible  /* Scroll reveal (add .visible via JS) */
 /* Directional reveals: .reveal-up, .reveal-down, .reveal-left, .reveal-right */
-.section                 /* padding: 100px 0 (60px mobile) */
+.section                 /* padding: 120px 0 (80px mobile) */
 ```
 
 ### Glass & Effects
 ```css
 .glass         /* backdrop-filter blur + semi-transparent bg */
-.hover-lift    /* translateY(-2px) on hover */
+.hover-lift    /* translateY(-4px) on hover */
 .card-hover    /* subtle shadow lift on hover */
+.gradient-text /* amber→orange→pink text gradient */
+.glow-amber-sm /* amber glow effect */
 ```
 
 ---
@@ -223,30 +231,33 @@ try {
 
 ## 8. Testing Guidelines
 
-Zero-dependency `node:test` contract suites under `tests/` — no framework
-install. Suites import pure `src/lib` modules directly and read component
-source with `readFileSync` to pin product decisions (copy, a11y, config).
+No test framework is configured yet. When adding tests:
 
+**Framework:** Vitest + React Testing Library
 **Running tests:**
 ```bash
-pnpm test        # All contract suites (listed in package.json)
-pnpm test:smoke  # Runtime smoke gate against a running server
+pnpm test           # Run tests in watch mode
+pnpm test:run      # Run tests once (CI mode)
+pnpm test:coverage # Generate coverage report
 ```
 
-**Test file naming:** `tests/<area>.test.ts`
+**Test file naming:**
+- Unit tests: `ComponentName.test.tsx`
+- Integration tests: `api.endpoint.test.ts`
+- E2E tests: `*.e2e.test.ts`
 
-**Test pattern:**
+**Test patterns:**
 ```typescript
-import { test } from "node:test";
-import assert from "node:assert/strict";
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
 
-test("the contract holds", () => {
-  assert.equal(actual, expected);
+describe("ComponentName", () => {
+  it("renders correctly", () => {
+    render(<ComponentName />);
+    expect(screen.getByText("Expected")).toBeInTheDocument();
+  });
 });
 ```
-
-Add new suites to the `test` script list in `package.json`. For DOM-level
-testing, install Vitest + RTL first — nothing renders components today.
 
 ---
 
@@ -316,3 +327,13 @@ refactor/<short-description> # Code improvements
 | `src/lib/utils.ts` | `cn()` utility for Tailwind class merging |
 | `src/components/ThemeProvider.tsx` | Dark mode state management |
 | `eslint.config.mjs` | ESLint config (Next core-web-vitals + TypeScript) |
+
+### Engineering foundation
+
+Before implementation, debugging, architecture work, agent-instruction edits,
+or knowledge curation, invoke `hub-foundation` from `.devin/skills/`.
+If the harness cannot invoke it, read `.devin/skills/hub-foundation/SKILL.md`
+explicitly and follow only the references relevant to the approved task.
+The foundation supplements this repository's rules; it grants no additional
+permissions. `retro` is owner-invoked, and raw session history stays local.
+Provenance: `.devin/skills/mattpocock-source.json`.

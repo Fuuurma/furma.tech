@@ -20,7 +20,6 @@ import {
   ProjectCTA,
 } from "@/components/ui/ProjectLayout";
 import { StaggerReveal } from "@/components/motion/StaggerReveal";
-import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -113,7 +112,6 @@ export default function AitlasPage() {
         description="A modular agentic operating system where you own your keys, connect tools via MCP, and run autonomous agents without trust compromises."
         status={{ label: "In Development", variant: "beta" }}
         projectId="aitlas"
-        coverTint={getProjectCoverTint("aitlas")}
       >
         <div className="flex flex-wrap items-center gap-6">
           <Link
@@ -173,7 +171,7 @@ export default function AitlasPage() {
                 </span>
               </div>
 
-              <p className="font-mono text-[12px] text-foreground/60 mb-8 leading-relaxed">
+              <p className="font-mono text-small text-foreground/60 mb-8 leading-relaxed">
                 {product.description}
               </p>
 
@@ -181,7 +179,7 @@ export default function AitlasPage() {
                 {product.features.map((feature) => (
                   <li
                     key={feature}
-                    className="flex items-center gap-2 font-mono text-[11px] text-foreground/45 group-hover:text-foreground/70 transition-colors"
+                    className="flex items-center gap-2 font-mono text-meta text-foreground/60 group-hover:text-foreground/70 transition-colors"
                   >
                     <span className="w-1 h-1 bg-foreground/25" aria-hidden />
                     {feature}

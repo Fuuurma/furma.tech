@@ -61,8 +61,8 @@ export function AitlasHero({ className = "" }: { className?: string }) {
         </g>
       ))}
 
-      {/* Nexus status bar */}
-      <rect x="20" y="290" width="220" height="30" rx="0 0 8 8" fill="rgba(255,255,255,0.025)" />
+      {/* Nexus status bar — square at the top, rounded at the foot */}
+      <path d="M20 290 H240 V312 A8 8 0 0 1 232 320 H28 A8 8 0 0 1 20 312 Z" fill="rgba(255,255,255,0.025)" />
       <rect x="20" y="290" width="220" height="1" fill="rgba(255,255,255,0.05)" />
       <text x="36" y="308" fontSize="6" fill="rgba(255,255,255,0.2)" fontFamily="JetBrains Mono, monospace">nexus</text>
       <text x="36" y="316" fontSize="5.5" fill="rgba(255,255,255,0.12)" fontFamily="JetBrains Mono, monospace">elixir · phoenix · liveview</text>

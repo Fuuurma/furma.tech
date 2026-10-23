@@ -4,7 +4,7 @@ This file provides essential context, architecture overview, and development sta
 
 ## Project Overview
 
-**Furma.tech** is a bootstrapped venture studio (Estonian OÜ) based in Sitges, Catalonia. It operates in two main verticals:
+**Furma.tech** is a bootstrapped studio (Estonian OÜ) based in Sitges, Catalonia. It operates in two main verticals:
 - **Industry SaaS:** B2B tools for restaurants and tourism (e.g., restauManager, GuideTours).
 - **Aitlas:** A sovereign AI ecosystem featuring a BYOK model and MCP-first architecture with 34+ Actions.
 

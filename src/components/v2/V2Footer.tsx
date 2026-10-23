@@ -11,7 +11,7 @@ export function V2Footer() {
             Furma<sup className="text-[0.6em]">®</sup>
           </p>
           <p className="mt-4 max-w-[34ch] text-[0.9rem] leading-[1.6] text-[var(--v2-ink-60)]">
-            A bootstrapped venture studio. Estonian OÜ, forged in Sitges,
+            A bootstrapped studio. Estonian OÜ, forged in Sitges,
             shipping worldwide. Software that works — since before it was cool.
           </p>
         </div>

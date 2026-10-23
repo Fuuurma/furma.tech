@@ -1,6 +1,6 @@
 import { HOME_PROJECTS } from "@/lib/home-projects";
 
-export function getPortfolioPageTitle(pathname: string): string {
+function getPortfolioPageTitle(pathname: string): string {
   if (pathname === "/portfolio") return "All projects";
 
   const match = HOME_PROJECTS.find(

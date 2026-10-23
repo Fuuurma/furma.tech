@@ -1,7 +1,8 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 import { EASE_OUT_EXPO, motionDuration } from "@/lib/motion";
 
 interface SlideRevealProps {
@@ -10,6 +11,8 @@ interface SlideRevealProps {
   className?: string;
   delay?: number;
   y?: number;
+  /** Reserve this block out of the background plate's ink. */
+  reserve?: boolean;
 }
 
 /** One-shot enter when a fullscreen section becomes active */
@@ -19,12 +22,14 @@ export function SlideReveal({
   className,
   delay = 0,
   y = 24,
+  reserve = false,
 }: SlideRevealProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useStableReducedMotion();
 
   return (
     <motion.div
       className={className}
+      data-screen-reserve={reserve || undefined}
       initial={false}
       animate={
         reduceMotion || isActive

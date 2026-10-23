@@ -88,7 +88,7 @@ import {
 function SectionRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-start">
-      <div className="font-mono text-[10px] text-grey-400 uppercase tracking-widest pt-2">{label}</div>
+      <div className="font-mono text-label text-grey-400 uppercase tracking-widest pt-2">{label}</div>
       <div className="md:col-span-3">{children}</div>
     </div>
   );
@@ -112,7 +112,7 @@ export default function StyleguidePage() {
         <Container size="full">
           <ScrollReveal>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-background text-foreground mb-8">
-              <span className="font-mono text-[9px] font-bold uppercase tracking-[0.2em]">System v2.0</span>
+              <span className="font-mono text-label font-bold uppercase tracking-[0.2em]">System v2.0</span>
             </div>
             <h1 className="font-serif text-[clamp(48px,8vw,96px)] font-semibold leading-[0.95] tracking-tight mb-8">
               Design<br />
@@ -131,7 +131,7 @@ export default function StyleguidePage() {
           <SectionHeader label="01 / Foundation" title="Typography" description="Syne (UI), Cormorant (headlines), JetBrains Mono (data)." />
           <div className="space-y-16 mt-12">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-start">
-              <div className="font-mono text-[10px] text-grey-400 uppercase tracking-widest pt-2">Serif</div>
+              <div className="font-mono text-label text-grey-400 uppercase tracking-widest pt-2">Serif</div>
               <div className="md:col-span-3 space-y-6">
                 <h1 className="font-serif text-6xl font-semibold tracking-tight">Headline H1</h1>
                 <h2 className="font-serif text-5xl font-semibold tracking-tight">Headline H2</h2>
@@ -141,7 +141,7 @@ export default function StyleguidePage() {
             </div>
             <Separator />
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-start">
-              <div className="font-mono text-[10px] text-grey-400 uppercase tracking-widest pt-2">Sans</div>
+              <div className="font-mono text-label text-grey-400 uppercase tracking-widest pt-2">Sans</div>
               <div className="md:col-span-3 space-y-4">
                 <div className="text-xl font-bold tracking-tight">Bold UI Text (20px)</div>
                 <p className="text-grey-600 dark:text-grey-400 max-w-xl leading-relaxed">The quick brown fox jumps over the lazy dog. Primary UI font — clean, geometric, modern.</p>
@@ -151,7 +151,7 @@ export default function StyleguidePage() {
             </div>
             <Separator />
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-start">
-              <div className="font-mono text-[10px] text-grey-400 uppercase tracking-widest pt-2">Mono</div>
+              <div className="font-mono text-label text-grey-400 uppercase tracking-widest pt-2">Mono</div>
               <div className="md:col-span-3 space-y-4">
                 <div className="font-mono text-sm bg-grey-50 dark:bg-grey-900 p-4 border border-border">
                   {`const system = "Furma.tech";`}<br />
@@ -177,13 +177,13 @@ export default function StyleguidePage() {
               { name: "Accent", cls: "bg-accent", text: "text-accent-foreground", border: "border-border" },
             ].map(c => (
               <div key={c.name} className="space-y-3">
-                <div className={`h-20 w-full border ${c.cls} flex items-center justify-center font-bold text-[10px] uppercase tracking-widest ${c.text}`}>{c.name}</div>
-                <div className="font-mono text-[9px] text-grey-500 uppercase tracking-widest">{c.name}</div>
+                <div className={`h-20 w-full border ${c.cls} flex items-center justify-center font-bold text-label uppercase tracking-widest ${c.text}`}>{c.name}</div>
+                <div className="font-mono text-label text-grey-500 uppercase tracking-widest">{c.name}</div>
               </div>
             ))}
           </div>
           <div className="mt-12">
-            <div className="font-mono text-[10px] text-grey-400 uppercase tracking-widest mb-4">Grey Scale</div>
+            <div className="font-mono text-label text-grey-400 uppercase tracking-widest mb-4">Grey Scale</div>
             <div className="grid grid-cols-5 sm:grid-cols-10 gap-2">
               {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map(s => (
                 <div key={s} className="space-y-2">
@@ -475,7 +475,7 @@ export default function StyleguidePage() {
                     <Avatar><AvatarFallback>F</AvatarFallback></Avatar>
                     <div className="space-y-1">
                       <h4 className="text-sm font-bold">@FurmaTech</h4>
-                      <p className="text-sm text-muted-foreground">Bootstrapped venture studio building SaaS and AI tools.</p>
+                      <p className="text-sm text-muted-foreground">Bootstrapped studio building SaaS and AI tools.</p>
                     </div>
                   </div>
                 </HoverCardContent>
@@ -734,14 +734,14 @@ export default function StyleguidePage() {
                   <CollapsibleTrigger><Button variant="ghost" size="sm"><ChevronDown className={`h-4 w-4 transition-transform ${collapsibleOpen ? "rotate-180" : ""}`} /></Button></CollapsibleTrigger>
                 </div>
                 <div className="border border-border px-4 py-3 text-sm text-grey-500">
-                  A bootstrapped venture studio building industry-specific SaaS tools and the Aitlas AI ecosystem.
+                  A bootstrapped studio building industry-specific SaaS tools and the Aitlas AI ecosystem.
                 </div>
               </Collapsible>
             </SectionRow>
             <Separator />
             <SectionRow label="Accordion">
               <Accordion className="max-w-xl">
-                <AccordionItem value="a"><AccordionTrigger>What is Furma.tech?</AccordionTrigger><AccordionContent className="text-sm text-grey-500">A bootstrapped venture studio building SaaS and AI tools.</AccordionContent></AccordionItem>
+                <AccordionItem value="a"><AccordionTrigger>What is Furma.tech?</AccordionTrigger><AccordionContent className="text-sm text-grey-500">A bootstrapped studio building SaaS and AI tools.</AccordionContent></AccordionItem>
                 <AccordionItem value="b"><AccordionTrigger>What is Aitlas?</AccordionTrigger><AccordionContent className="text-sm text-grey-500">A sovereign AI platform with BYOK architecture and MCP-first design.</AccordionContent></AccordionItem>
                 <AccordionItem value="c"><AccordionTrigger>How do I get access?</AccordionTrigger><AccordionContent className="text-sm text-grey-500">Join the waitlist through the contact page.</AccordionContent></AccordionItem>
               </Accordion>
@@ -880,13 +880,13 @@ export default function StyleguidePage() {
           <SectionHeader label="19 / Utilities" title="CSS Effects" description="Custom CSS classes for premium interaction feel." />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12">
             <div className="space-y-4">
-              <div className="font-mono text-[10px] text-grey-400 uppercase tracking-widest">Glassmorphism</div>
+              <div className="font-mono text-label text-grey-400 uppercase tracking-widest">Glassmorphism</div>
               <div className="h-40 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80')] bg-cover bg-center flex items-center justify-center p-8">
-                <div className="glass p-6 text-center w-full"><div className="font-bold">.glass</div><div className="text-[10px] uppercase tracking-widest mt-1 opacity-60">Blur + Translucency</div></div>
+                <div className="glass p-6 text-center w-full"><div className="font-bold">.glass</div><div className="text-label uppercase tracking-widest mt-1 opacity-60">Blur + Translucency</div></div>
               </div>
             </div>
             <div className="space-y-4">
-              <div className="font-mono text-[10px] text-grey-400 uppercase tracking-widest">Interactions</div>
+              <div className="font-mono text-label text-grey-400 uppercase tracking-widest">Interactions</div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="hover-lift h-40 border border-border flex items-center justify-center font-bold bg-card cursor-pointer">.hover-lift</div>
                 <div className="card-hover h-40 border border-border flex items-center justify-center font-bold bg-card cursor-pointer">.card-hover</div>
@@ -894,11 +894,11 @@ export default function StyleguidePage() {
             </div>
           </div>
           <div className="mt-16 space-y-4">
-            <div className="font-mono text-[10px] text-grey-400 uppercase tracking-widest">Scroll Reveal</div>
+            <div className="font-mono text-label text-grey-400 uppercase tracking-widest">Scroll Reveal</div>
             <StaggerChildren className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {[1, 2, 3].map(i => (<div key={i} className="p-12 border border-border text-center font-serif text-2xl italic opacity-30">Item {i}</div>))}
             </StaggerChildren>
-            <p className="text-[11px] text-grey-500 uppercase tracking-widest text-center mt-4">Refresh the page to see the stagger animation.</p>
+            <p className="text-meta text-grey-500 uppercase tracking-widest text-center mt-4">Refresh the page to see the stagger animation.</p>
           </div>
         </Container>
       </Section>
@@ -961,7 +961,7 @@ export default function StyleguidePage() {
               ].map((comp, i) => (
                 <div key={i} className="p-4 border border-border hover:border-foreground/30 transition-colors">
                   <div className="font-bold text-sm mb-2">{comp.name}</div>
-                  <div className="text-[11px] text-grey-500 space-y-1">
+                  <div className="text-meta text-grey-500 space-y-1">
                     {comp.variants && <div>Variants: {comp.variants.join(", ")}</div>}
                     {comp.sizes && <div>Sizes: {comp.sizes.join(", ")}</div>}
                     {comp.states && <div>States: {comp.states.join(", ")}</div>}

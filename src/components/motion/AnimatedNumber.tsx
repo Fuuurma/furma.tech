@@ -4,13 +4,13 @@ import { useEffect, useRef } from "react";
 import {
   motion,
   useInView,
-  useReducedMotion,
   useMotionValue,
   useTransform,
   animate,
 } from "framer-motion";
 import { EASE_OUT_EXPO, motionDuration } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 
 interface AnimatedNumberProps {
   value: number;
@@ -27,7 +27,7 @@ export function AnimatedNumber({
   duration = 1.1,
   trigger,
 }: AnimatedNumberProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useStableReducedMotion();
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.6 });
   const shouldRun = trigger ?? inView;

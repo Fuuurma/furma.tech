@@ -21,13 +21,11 @@ type LayoutProps = PlasticProjectSlideProps & {
 };
 
 function ProjectCover({
-  project,
   HeroVisual,
   className,
   frameClassName,
   isActive = false,
 }: {
-  project: HomeProject;
   HeroVisual: ComponentType<{ className?: string }> | undefined;
   className?: string;
   frameClassName?: string;
@@ -48,7 +46,6 @@ function ProjectCover({
             !isActive && "scale-[0.97]",
             frameClassName,
           )}
-          style={{ backgroundColor: project.coverTint }}
         >
           {HeroVisual ? (
             <HeroVisual className="w-full h-full max-h-[min(100%,520px)] object-contain" />
@@ -83,7 +80,7 @@ function ProjectMeta({
         <p className="plastic-label">{project.category}</p>
         <p className="plastic-label mt-3">
           Index <span className="text-foreground">{indexLabel}</span>
-          <span className="text-foreground/30"> / {total}</span>
+          <span className="text-foreground/60"> / {total}</span>
         </p>
       </div>
       <p className="plastic-label">{project.status}</p>
@@ -174,7 +171,7 @@ function LayoutEditorialRight(props: LayoutProps) {
   const { project, total, HeroVisual, indexLabel, isActive } = props;
   return (
     <article className="plastic-project plastic-project--editorial-right h-full min-h-0 grid grid-rows-[1fr_auto]">
-      <ProjectCover project={project} HeroVisual={HeroVisual} isActive={isActive} />
+      <ProjectCover HeroVisual={HeroVisual} isActive={isActive} />
       <EditorialIntro
         project={project}
         indexLabel={indexLabel}
@@ -191,7 +188,6 @@ function LayoutEditorialLeft(props: LayoutProps) {
   return (
     <article className="plastic-project plastic-project--editorial-left h-full min-h-0 grid grid-rows-[1fr_auto]">
       <ProjectCover
-        project={project}
         HeroVisual={HeroVisual}
         frameClassName="ml-auto max-w-[90%]"
         isActive={isActive}
@@ -212,7 +208,6 @@ function LayoutVisualHeavy(props: LayoutProps) {
   return (
     <article className="plastic-project plastic-project--visual-heavy h-full min-h-0 grid grid-rows-[minmax(0,1fr)_auto]">
       <ProjectCover
-        project={project}
         HeroVisual={HeroVisual}
         frameClassName="max-w-[min(100%,1100px)]"
         isActive={isActive}
@@ -232,7 +227,7 @@ function LayoutVisualHeavy(props: LayoutProps) {
               />
               <p className="plastic-label md:hidden mt-2">
                 {project.category}
-                <span className="text-foreground/30"> · </span>
+                <span className="text-foreground/60"> · </span>
                 {project.status}
               </p>
             </div>
@@ -257,7 +252,6 @@ function LayoutStacked(props: LayoutProps) {
         <ProjectMeta project={project} indexLabel={indexLabel} total={total} />
       </SlideReveal>
       <ProjectCover
-        project={project}
         HeroVisual={HeroVisual}
         className="flex-1 min-h-[28%]"
         frameClassName="max-w-[720px] mx-auto rounded-sm"
@@ -274,7 +268,7 @@ function LayoutOverlay(props: LayoutProps) {
   const { project, total, HeroVisual, indexLabel, isActive } = props;
   return (
     <article className="plastic-project plastic-project--overlay relative h-full min-h-0 bg-black">
-      <ProjectCover project={project} HeroVisual={HeroVisual} className="absolute inset-0" isActive={isActive} />
+      <ProjectCover HeroVisual={HeroVisual} className="absolute inset-0" isActive={isActive} />
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -291,17 +285,17 @@ function LayoutOverlay(props: LayoutProps) {
               total={total}
               className="plastic-meta--on-dark max-md:hidden"
             />
-            <p className="plastic-label text-white/55 md:hidden">
+            <p className="plastic-label plastic-label--inverse md:hidden">
               {project.category}
-              <span className="text-white/30"> · </span>
+              <span className="text-white/60"> · </span>
               {project.status}
             </p>
           </SlideReveal>
           <SlideReveal isActive={isActive} className="col-span-12 md:col-span-9" delay={0.14}>
-            <h2 className="plastic-headline text-white text-[clamp(26px,4vw,44px)] mb-3 md:mb-4">
+            <h2 className="plastic-headline plastic-headline--inverse text-[clamp(26px,4vw,44px)] mb-3 md:mb-4">
               {project.name}
             </h2>
-            <p className="plastic-paragraph text-white max-w-2xl line-clamp-3 md:line-clamp-none">
+            <p className="plastic-paragraph plastic-paragraph--inverse max-w-2xl line-clamp-3 md:line-clamp-none">
               {project.description}
             </p>
             <div className="mt-6 md:mt-8 flex flex-wrap gap-4 md:gap-6">

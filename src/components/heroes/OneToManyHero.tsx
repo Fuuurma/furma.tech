@@ -71,7 +71,7 @@ export function OneToManyHero({ className = "" }: { className?: string }) {
         { label: "Your rank", val: "#3" },
         { label: "Community", val: "156 members" },
       ].map((stat, i) => (
-        <g key={stat.label} transform={`translate(${20 + i * 120}, 268)}`}>
+        <g key={stat.label} transform={`translate(${20 + i * 120}, 268)`}>
           <text x="0" y="0" fontSize="5.5" fill="rgba(255,255,255,0.2)" fontFamily="JetBrains Mono, monospace">{stat.label}</text>
           <text x="0" y="18" fontSize="13" fill="rgba(255,255,255,0.7)" fontFamily="JetBrains Mono, monospace" fontWeight="700">{stat.val}</text>
         </g>

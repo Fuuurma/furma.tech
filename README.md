@@ -1,6 +1,6 @@
 # Furma.tech
 
-**Bootstrapped venture studio building profitable SaaS and the Aitlas AI ecosystem.**
+**Bootstrapped studio building profitable SaaS and the Aitlas AI ecosystem.**
 
 - **Industry SaaS** — B2B tools for restaurants/tourism (restauManager, GuideTours)
 - **Aitlas** — Sovereign AI platform (BYOK, MCP-first, 34+ Actions)

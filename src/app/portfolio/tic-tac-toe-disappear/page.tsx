@@ -8,7 +8,6 @@ import {
   ProjectTrustRow,
   ProjectCTA,
 } from "@/components/ui/ProjectLayout";
-import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -54,7 +53,6 @@ export default function TicTacToePage() {
         description="A strategic twist on the classic game: only 3 pieces per player — place a 4th and your oldest vanishes. Think ahead, adapt fast, and outmaneuver your opponent in this dynamic battlefield."
         status={{ label: "In Dev", variant: "soon" }}
         projectId="tic-tac-toe"
-        coverTint={getProjectCoverTint("tic-tac-toe")}
       >
         <ProjectTrustRow items={["React", "Canvas API", "TypeScript"]} />
         <p className="pt-3 m-0">
@@ -84,7 +82,10 @@ export default function TicTacToePage() {
           description="Place. Vanish. Adapt. The classic board with a strategic twist."
         />
         <div className="border border-foreground/10 bg-background p-12 md:p-16 flex flex-col items-center justify-center gap-4">
-          <p className="font-sans text-[clamp(64px,12vw,120px)] font-medium tracking-[-0.04em] leading-none text-foreground/15">
+          <p
+            className="font-sans text-[clamp(64px,12vw,120px)] font-medium tracking-[-0.04em] leading-none text-foreground/15"
+            aria-hidden="true"
+          >
             3×3
           </p>
           <p className="plastic-label">Vanishing grid</p>

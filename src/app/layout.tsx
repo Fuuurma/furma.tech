@@ -33,16 +33,17 @@ const OG_IMAGE = getOgImageUrl({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://furma.tech"),
-  title: "Furma.tech — Digital Venture Studio",
-  description: "Bootstrapped venture studio building industry-grade SaaS tools and the Aitlas AI ecosystem. Estonian OÜ operating globally.",
-  keywords: ["venture studio", "SaaS", "AI", "Aitlas", "MCP", "bootstrapped", "Estonia"],
+  title: "Furma.tech — Digital Studio",
+  description: "Bootstrapped studio building industry-grade SaaS tools and the Aitlas AI ecosystem. Estonian OÜ operating globally.",
+  keywords: ["digital studio", "SaaS", "AI", "Aitlas", "MCP", "bootstrapped", "Estonia"],
   authors: [{ name: "Furma.tech OÜ" }],
+  // Relative share-image URLs resolve against this.
+  metadataBase: new URL("https://furma.tech"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Furma.tech — Digital Venture Studio",
+    title: "Furma.tech — Digital Studio",
     description: "Building software that works. Two verticals: B2B SaaS + Aitlas AI ecosystem.",
     type: "website",
     locale: "en_US",
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Furma.tech — Digital Venture Studio",
+    title: "Furma.tech — Digital Studio",
     description: "Building software that works.",
     images: [OG_IMAGE],
   },

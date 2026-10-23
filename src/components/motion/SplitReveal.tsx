@@ -1,8 +1,9 @@
 "use client";
 
 import type { RefObject } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useInView } from "@/hooks/useScroll";
+import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 import { EASE_OUT_EXPO, motionDuration, motionStagger } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +15,8 @@ interface SplitRevealProps {
   by?: "word" | "line";
   /** When set, overrides scroll-in-view (e.g. fullscreen section active) */
   trigger?: boolean;
+  /** Reserve this block out of the background plate's ink. */
+  reserve?: boolean;
   id?: string;
 }
 
@@ -24,10 +27,11 @@ export function SplitReveal({
   delay = 0,
   by = "word",
   trigger,
+  reserve = false,
   id,
 }: SplitRevealProps) {
   const [ref, isInView] = useInView(0.15);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useStableReducedMotion();
   const isVisible = trigger ?? isInView;
   const units =
     by === "line"
@@ -40,6 +44,7 @@ export function SplitReveal({
         id={id}
         ref={ref as RefObject<HTMLHeadingElement>}
         className={className}
+        data-screen-reserve={reserve ? "block" : undefined}
       >
         {text}
       </Tag>
@@ -52,6 +57,7 @@ export function SplitReveal({
       ref={ref as RefObject<HTMLHeadingElement>}
       className={cn("split-reveal", className)}
       aria-label={text}
+      data-screen-reserve={reserve ? "block" : undefined}
     >
       {units.map((unit, i) => (
         <span key={`${unit}-${i}`} className="split-reveal__unit">

@@ -26,7 +26,6 @@ import {
   ProjectCTA,
 } from "@/components/ui/ProjectLayout";
 import { StaggerReveal } from "@/components/motion/StaggerReveal";
-import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -191,7 +190,6 @@ export default function NexusPage() {
         description="Durable execution for autonomous AI agents. Run long-running tasks without server timeouts. Built for production-grade reliability."
         status={{ label: "In Development", variant: "beta" }}
         projectId="aitlas"
-        coverTint={getProjectCoverTint("aitlas")}
       >
         <div className="flex flex-wrap items-center gap-6">
           <Link href="/#contact" className="plastic-cta motion-link">
@@ -242,10 +240,10 @@ export default function NexusPage() {
           {howItWorks.map((step) => (
             <div key={step.step} className="motion-card bg-background p-6 md:p-8">
               <p className="plastic-label mb-4">{step.step}</p>
-              <h3 className="font-sans text-[15px] font-semibold tracking-tight mb-2">
+              <h3 className="font-sans text-body font-semibold tracking-tight mb-2">
                 {step.title}
               </h3>
-              <p className="font-mono text-[11px] text-foreground/60 leading-relaxed">
+              <p className="font-mono text-meta text-foreground/60 leading-relaxed">
                 {step.desc}
               </p>
             </div>

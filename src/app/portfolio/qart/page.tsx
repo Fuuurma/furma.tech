@@ -6,7 +6,6 @@ import {
   ProjectFeatures,
   ProjectCTA,
 } from "@/components/ui/ProjectLayout";
-import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -51,7 +50,6 @@ export default function QArtPage() {
         description="Transform any QR code into stunning visual art. AI-powered design generation while maintaining 100% scannability. Perfect for brands and marketing."
         status={{ label: "In Development", variant: "beta" }}
         projectId="qart"
-        coverTint={getProjectCoverTint("qart")}
       />
 
       <ProjectSection>

@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/portfolio" },
   title: "Portfolio — Furma.tech",
   description:
-    "Bootstrapped products across AI, SaaS, games, and civic tech. Explore the Furma.tech venture studio portfolio.",
+    "Bootstrapped products across AI, SaaS, games, and civic tech. Explore the Furma.tech portfolio.",
 };
 
 export default function PortfolioPage() {

@@ -2,6 +2,25 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* The chrome's type ladder. Every small size on the v1 pages comes from one
+   of these four steps: 10 for the house's mono meta label, 11 for small meta
+   and links, 13 for the smallest step that is still read as text, 15 for
+   small body copy. The band used to carry ten sizes between 8px and 17px —
+   8, 9, 10, 10.4, 11, 12, 13, 14, 16 and 17 — most of them a pixel apart,
+   and two of them below the floor a label can be read at.
+
+   These live in a plain @theme, not in the @theme inline block below, so the
+   `text-label` / `text-meta` / `text-small` / `text-body` utilities reference
+   the token instead of freezing its value at build time. The larger sizes
+   stay where they are: each has one role, and the display sizes are locked
+   by the hero. */
+@theme {
+  --text-label: 10px;
+  --text-meta: 11px;
+  --text-small: 13px;
+  --text-body: 15px;
+}
+
 /* Accessibility: Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -9,6 +28,7 @@
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
@@ -95,6 +115,13 @@
 }
 
 :root {
+  /* The chrome's type ladder lives in the @theme block at the top of this
+     file: --text-label, --text-meta, --text-small, --text-body. */
+
+  --surface-dark-foreground: oklch(1 0 0);
+  --surface-dark: oklch(0 0 0);
+  --surface-dark-muted: oklch(0.76 0 0);
+  --surface-dark-line: oklch(0.38 0 0);
   --radius: 0.25rem; /* More minimalistic, sharper corners */
 
   /* Light mode - Strictly Black & White */
@@ -128,6 +155,41 @@
   --grey-700: oklch(0.3 0 0);
   --grey-800: oklch(0.2 0 0);
   --grey-900: oklch(0.1 0 0);
+
+  /* The mount: the sheet a product's picture is printed on.
+     It used to be a pastel per project — a decorative wash that carried a hue
+     the studio's brand does not have, ignored the theme, and split the home
+     into three worlds between the two black-and-white screens. One neutral
+     plate instead: the page keeps its colour in the products, and the
+     products keep theirs inside their own pictures.
+
+     The plate sits on a black ground in both themes, so it does not invert
+     with them — which is why it is its own token and not an alias of the
+     grey scale, whose steps flip in the dark theme (and carry its hue).
+
+     Its lightness is the mean of the ten washes it replaces: those pastels
+     ran OKLCH L 0.879–0.939, mean 0.918. 0.92 is the house's own `--grey-200`
+     step, so the sheet keeps the value it had and no product's picture
+     changes contrast against it. */
+  --mount: oklch(0.92 0 0);
+
+  /* The screens print in black and white.
+     The page's paper and ink may carry a hue — the dark theme's paper is a
+     warm off-white — and a screen that prints a token verbatim prints that
+     hue with it, which is how a warm cream panel got into a black-and-white
+     footer. So the screens take the token's lightness and leave its hue
+     behind: the same lightness in grey reads as the same colour without the
+     colour. A browser without relative colour syntax keeps the token, which
+     is the old behaviour and no worse. */
+  --screen-paper: var(--foreground);
+  --screen-ink: var(--background);
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --screen-paper: oklch(from var(--foreground) l 0 h);
+    --screen-ink: oklch(from var(--background) l 0 h);
+  }
 }
 
 .dark {
@@ -311,7 +373,7 @@ select:focus-visible {
   background: var(--foreground);
   color: var(--background);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-meta);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
@@ -406,7 +468,7 @@ html {
   align-items: center;
   gap: 0.375rem;
   padding: 0.2rem 0.6rem;
-  font-size: 0.65rem;
+  font-size: var(--text-meta);
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -547,7 +609,7 @@ html {
 
 .plastic-label {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: var(--text-label);
   line-height: 1.48;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -584,6 +646,61 @@ html {
   color: var(--foreground);
 }
 
+/* Inverse surfaces own their text colour.
+   The rules above are unlayered, so they beat Tailwind's layered `text-white`
+   utility — on a dark surface that renders black-on-black. These tokens are
+   the supported way to put type on an inverse surface. */
+.plastic-paragraph--inverse {
+  color: var(--surface-dark-foreground);
+}
+
+.plastic-headline--inverse {
+  color: #fff;
+}
+
+/* The inverse ladder: type on a ground of the opposite colour, in three
+   steps. The steps are the same as the ones on the page's own surface —
+   65%, 60%, 55% of the opposite colour — and each clears 4.5:1 on both a
+   black ground and a white one, so a surface that inverts with the theme
+   does not lose its contrast when it does. The steps used to be 55%, 40%
+   and 30%, and the lower two failed AA on either ground. */
+.plastic-label--inverse {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.plastic-label--inverse:hover {
+  color: #fff;
+}
+
+.plastic-label--inverse-dim {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.plastic-label--inverse-faint {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* A surface painted with --foreground owns --background for its type, and
+   inverts with the theme. Nothing full-bleed uses it now: the hero, the
+   project slides, the footer and the case-study call-to-action are painted
+   black outright and keep the fixed white above, so the dark theme never turns
+   one of them into a white sheet. */
+.plastic-on-dark .plastic-label--inverse {
+  color: color-mix(in oklch, var(--background), transparent 35%);
+}
+
+.plastic-on-dark .plastic-label--inverse:hover {
+  color: var(--background);
+}
+
+.plastic-on-dark .plastic-label--inverse-dim {
+  color: color-mix(in oklch, var(--background), transparent 40%);
+}
+
+.plastic-on-dark .plastic-label--inverse-faint {
+  color: color-mix(in oklch, var(--background), transparent 45%);
+}
+
 .plastic-cta {
   display: inline-flex;
   align-items: center;
@@ -591,7 +708,7 @@ html {
   gap: 0.5rem;
   min-height: 44px;
   font-family: var(--font-sans);
-  font-size: 11px;
+  font-size: var(--text-meta);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--foreground);
@@ -634,7 +751,7 @@ html {
 .plastic-field-error {
   margin: 0.45rem 0 0;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-meta);
   letter-spacing: 0.06em;
   line-height: 1.4;
   color: color-mix(in oklch, var(--foreground), transparent 25%);
@@ -652,6 +769,217 @@ html {
 .plastic-submit:focus-visible {
   outline: 1px solid var(--foreground);
   outline-offset: 3px;
+}
+
+/* The public opening puts the studio premise and one actual project together.
+   The frame is the hero's black plate and carries the wave; the entry is the
+   scroll region above it, so a swipe inside it scrolls the entry rather than
+   advancing the tour. */
+.plastic-entry-frame {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: var(--surface-dark);
+}
+
+.plastic-entry {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  color: var(--surface-dark-foreground);
+  padding: clamp(24px, 4vw, 64px);
+  display: flex;
+  align-items: center;
+}
+
+.plastic-entry-layout {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 80px);
+}
+
+.plastic-entry-copy {
+  min-width: 0;
+}
+
+.plastic-entry .plastic-hero-title {
+  justify-content: flex-start;
+  font-size: clamp(40px, 6vw, 88px);
+  color: var(--surface-dark-foreground);
+}
+
+.plastic-entry .plastic-hero-letter {
+  animation-duration: 0.45s;
+}
+
+.plastic-entry-kind {
+  font-size: var(--text-small);
+  line-height: 1.5;
+  color: var(--surface-dark-muted);
+  margin-top: 12px;
+}
+
+.plastic-entry-premise {
+  font-size: clamp(24px, 2.5vw, 36px);
+  line-height: 1.3;
+  max-width: 25ch;
+  margin-top: clamp(24px, 3vw, 40px);
+  text-wrap: pretty;
+}
+
+.plastic-entry-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 24px;
+}
+
+.plastic-entry .plastic-cta--inverse {
+  color: var(--surface-dark-foreground);
+  border-color: var(--surface-dark-line);
+}
+
+.plastic-entry .plastic-cta:hover {
+  opacity: 1;
+  border-color: var(--surface-dark-foreground);
+}
+
+.plastic-entry .plastic-cta:focus-visible,
+.plastic-entry-project a:focus-visible {
+  outline: 2px solid var(--surface-dark-foreground);
+  outline-offset: 5px;
+}
+
+.plastic-entry-project {
+  min-width: 0;
+  margin: 0;
+}
+
+.plastic-entry-project-meta,
+.plastic-entry-project-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.plastic-entry-project-meta {
+  color: var(--surface-dark-muted);
+  font-size: var(--text-meta);
+  line-height: 1.5;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--surface-dark-line);
+}
+
+.plastic-entry-project-visual {
+  display: block;
+  aspect-ratio: 520 / 340;
+  margin-block: 16px;
+}
+
+.plastic-entry-project-visual > div {
+  width: 100%;
+  height: 100%;
+}
+
+.plastic-entry-preview {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-sans);
+  text-anchor: middle;
+}
+
+.plastic-entry-preview-lines {
+  fill: none;
+  stroke: var(--surface-dark-line);
+  stroke-width: 1.5;
+}
+
+.plastic-entry-preview-root,
+.plastic-entry-preview-name {
+  fill: var(--surface-dark-foreground);
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.plastic-entry-preview-root {
+  font-size: 20px;
+}
+
+.plastic-entry-preview-role {
+  fill: var(--surface-dark-muted);
+  font-size: 20px;
+}
+
+.plastic-entry-project-caption {
+  padding-top: 16px;
+  border-top: 1px solid var(--surface-dark-line);
+}
+
+.plastic-entry-project-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 24px;
+  line-height: 1.2;
+  min-height: 44px;
+}
+
+.plastic-entry-project-name svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 180ms var(--ease-out-expo);
+}
+
+.plastic-entry-project-name:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.plastic-entry-project-note {
+  color: var(--surface-dark-muted);
+  font-size: var(--text-meta);
+}
+
+@media (max-width: 900px) {
+  .plastic-entry {
+    align-items: flex-start;
+    padding: 24px;
+  }
+  .plastic-entry-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+  .plastic-entry-premise {
+    font-size: clamp(22px, 3.5vw, 28px);
+    max-width: 35ch;
+    margin-top: 24px;
+  }
+  .plastic-entry-actions {
+    margin-top: 16px;
+  }
+  .plastic-entry-project-visual {
+    aspect-ratio: auto;
+    height: clamp(140px, 23svh, 230px);
+    margin-block: 8px;
+  }
+  .plastic-entry-project-meta {
+    padding-bottom: 8px;
+  }
+  .plastic-entry-project-caption {
+    padding-top: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plastic-entry-project-name svg {
+    transition: none;
+  }
 }
 
 .plastic-hero-title {
@@ -706,12 +1034,6 @@ html {
   }
 }
 
-@media (max-width: 768px) {
-  .plastic-hero-scroll-cue {
-    display: none;
-  }
-}
-
 .plastic-cover__aspect {
   padding-top: 62.5%;
 }
@@ -733,7 +1055,7 @@ html {
   padding: 0 1.25rem;
   border-right: 1px solid color-mix(in oklch, var(--foreground), transparent 90%);
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: var(--text-label);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: color-mix(in oklch, var(--foreground), transparent 45%);
@@ -761,7 +1083,7 @@ html {
 .plastic-reel__portfolio-chevron {
   display: inline-block;
   margin-left: 0.35rem;
-  font-size: 8px;
+  font-size: var(--text-label);
   opacity: 0.45;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -805,7 +1127,7 @@ html {
 
 .studio-portfolio-panel__title {
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: var(--text-small);
   font-weight: 500;
   letter-spacing: -0.02em;
   color: #fff;
@@ -847,13 +1169,13 @@ html {
   }
 
   .studio-portfolio-panel__name {
-    font-size: 17px;
+    font-size: var(--text-body);
   }
 }
 
 .studio-portfolio-panel__cell {
   display: grid;
-  grid-template-columns: 3px 1.75rem minmax(0, 1fr) auto;
+  grid-template-columns: 1px 1.75rem minmax(0, 1fr) auto;
   align-items: center;
   column-gap: 0.85rem;
   padding: 0.9rem 1rem;
@@ -870,20 +1192,21 @@ html {
   }
 }
 
+/* A hairline, not a colour chip: the panel is black in both themes, and the
+   studio's brand has no hue to spend. The line marks the project you are on. */
 .studio-portfolio-panel__swatch {
   display: block;
-  width: 3px;
+  width: 1px;
   height: 100%;
   min-height: 2.25rem;
-  border-radius: 1px;
-  opacity: 0.9;
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .studio-portfolio-panel__index {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: var(--text-label);
   letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.6);
   transition: color 0.3s ease;
 }
 
@@ -908,17 +1231,17 @@ html {
 
 .studio-portfolio-panel__meta {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: var(--text-label);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.6);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .studio-portfolio-panel__arrow {
-  font-size: 12px;
+  font-size: var(--text-small);
   opacity: 0;
   transform: translateX(-6px);
   transition:
@@ -934,7 +1257,7 @@ html {
 
   .studio-portfolio-panel__cell:hover .studio-portfolio-panel__index,
   .studio-portfolio-panel__cell:hover .studio-portfolio-panel__meta {
-    color: rgba(0, 0, 0, 0.45);
+    color: rgba(0, 0, 0, 0.6);
   }
 
   .studio-portfolio-panel__cell:hover .studio-portfolio-panel__arrow {
@@ -948,7 +1271,7 @@ html {
 }
 
 .studio-portfolio-panel__cell--active .studio-portfolio-panel__swatch {
-  opacity: 1;
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .studio-portfolio-panel a:focus-visible,
@@ -965,7 +1288,7 @@ html {
 
 .studio-portfolio-panel__cell:focus-visible .studio-portfolio-panel__index,
 .studio-portfolio-panel__cell:focus-visible .studio-portfolio-panel__meta {
-  color: rgba(0, 0, 0, 0.45);
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .studio-portfolio-panel__cell:focus-visible .studio-portfolio-panel__arrow {
@@ -991,10 +1314,10 @@ html {
   align-items: center;
   gap: 0.45rem;
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: var(--text-label);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
   transition: color 0.25s ease;
   flex-shrink: 0;
@@ -1029,7 +1352,7 @@ html {
 
 .plastic-reel__brand-text {
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: var(--text-small);
   font-weight: 500;
   line-height: 1.3;
   letter-spacing: -0.02em;
@@ -1145,7 +1468,7 @@ html {
 
 .plastic-reel__project-name {
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: var(--text-small);
   font-weight: 600;
   line-height: 1.3;
   letter-spacing: -0.02em;
@@ -1162,7 +1485,7 @@ html {
   justify-content: space-between;
   gap: 0.5rem;
   font-family: var(--font-mono);
-  font-size: 8px;
+  font-size: var(--text-label);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: color-mix(in oklch, var(--foreground), transparent 55%);
@@ -1230,7 +1553,7 @@ html {
   align-items: center;
   min-height: 44px;
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: var(--text-small);
   font-weight: 500;
   letter-spacing: -0.02em;
   color: color-mix(in oklch, var(--foreground), transparent 30%);
@@ -1273,7 +1596,7 @@ a.studio-chrome__view-link:hover {
   min-height: 44px;
   padding: 0 0.35rem;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-meta);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: color-mix(in oklch, var(--foreground), transparent 30%);
@@ -1443,6 +1766,12 @@ a.studio-chrome__view-link:hover {
   position: relative;
 }
 
+/* The sheet the product's picture is printed on. */
+.plastic-cover__frame,
+.portfolio-page__cover-frame {
+  background: var(--mount);
+}
+
 .portfolio-page__cover-grain {
   z-index: 1;
   opacity: 0.05;
@@ -1468,8 +1797,11 @@ a.studio-chrome__view-link:hover {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-width: 1280px;
-  margin-inline: auto;
+  /* The index is the width of the screen. The lines that separate the ten
+     projects are the page's rules, so they run edge to edge; the rows keep
+     the page's own margin, and the work stays stacked top to bottom. */
+  max-width: none;
+  margin-inline: 0;
   position: relative;
   z-index: 2;
 }
@@ -1487,14 +1819,13 @@ a.studio-chrome__view-link:hover {
   z-index: 2;
 }
 
+/* A fade only. A rise moved every row under a resting cursor on load. */
 @keyframes portfolio-list-item-in {
   from {
     opacity: 0;
-    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -1550,7 +1881,7 @@ a.studio-chrome__view-link:hover {
 
 .portfolio-list-page__index {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-label);
   letter-spacing: 0.1em;
   opacity: 0.35;
   transition: opacity 0.35s ease;
@@ -1586,7 +1917,7 @@ a.studio-chrome__view-link:hover {
 
 .portfolio-list-page__tags {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: var(--text-label);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-align: right;
@@ -1612,7 +1943,7 @@ a.studio-chrome__view-link:hover {
 .portfolio-list-page__row:focus-visible .portfolio-list-page__tags,
 .portfolio-list-page__row--expanded .portfolio-list-page__tags,
 .portfolio-list-page__row:active .portfolio-list-page__tags {
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .portfolio-list-page__tag-sep {
@@ -1625,7 +1956,7 @@ a.studio-chrome__view-link:hover {
   margin: 0;
   padding: 0 0 0.35rem 3rem;
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: var(--text-label);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.55);
@@ -1637,7 +1968,7 @@ a.studio-chrome__view-link:hover {
   margin: 0;
   padding: 0 0 1.25rem 3rem;
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: var(--text-body);
   line-height: 1.55;
   letter-spacing: -0.01em;
   color: rgba(255, 255, 255, 0.62);
@@ -1684,15 +2015,18 @@ a.studio-chrome__view-link:hover {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.25rem;
-  padding-bottom: 1.75rem;
 }
 
 @media (min-width: 768px) {
   .portfolio-list-page__expand-inner {
-    grid-template-columns: minmax(200px, 38%) minmax(0, 1fr);
+    /* The opened project takes the room the page now gives it: the shot gets
+       a share of the full width, and the words take the rest. */
+    grid-template-columns: minmax(240px, 45%) minmax(0, 1fr);
     gap: 2rem 2.5rem;
-    padding-bottom: 2.25rem;
     align-items: center;
+  }
+  .portfolio-list-page__expand-inner > .portfolio-list-page__detail {
+    margin-bottom: 2.25rem;
   }
 }
 
@@ -1700,7 +2034,7 @@ a.studio-chrome__view-link:hover {
   position: relative;
   border-radius: 2px;
   overflow: hidden;
-  background: color-mix(in oklch, var(--preview-tint, #e8e8e8), #fff 12%);
+  background: color-mix(in oklch, var(--mount), #fff 12%);
   border: 1px solid rgba(0, 0, 0, 0.08);
   clip-path: inset(0 0 0 0 round 2px);
   transition: clip-path var(--motion-duration-slow) var(--ease-out-expo);
@@ -1716,7 +2050,11 @@ a.studio-chrome__view-link:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 16 / 10;
+  /* The shot fills its mount: the frame takes the column's width and the
+     heroes are drawn on a 520 × 340 field, so the mount is cut to that
+     ratio and the picture fills it edge to edge. */
+  width: 100%;
+  aspect-ratio: 520 / 340;
   padding: 1.25rem;
 }
 
@@ -1742,12 +2080,35 @@ a.studio-chrome__view-link:hover {
   left: 0.5rem;
 }
 
+@media (min-width: 768px) {
+  /* The shot is the reason the row opens. It is shown as large as the mount
+     allows, not as a thumbnail inside it. */
+  .portfolio-list-page__preview-visual {
+    max-height: none;
+  }
+}
+
+.portfolio-list-page__preview-art {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.portfolio-list-page__preview-caption {
+  position: absolute;
+  bottom: 0.35rem;
+  left: 0.5rem;
+}
+
 .portfolio-list-page__preview-fallback {
   font-family: var(--font-sans);
   font-size: 1.25rem;
   font-weight: 500;
   letter-spacing: -0.03em;
-  color: rgba(0, 0, 0, 0.35);
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .portfolio-list-page__detail {
@@ -1755,6 +2116,10 @@ a.studio-chrome__view-link:hover {
   flex-direction: column;
   gap: 0.85rem;
   min-width: 0;
+  /* The bottom breathing room lives on the words, not on the expand wrapper:
+     a 0fr track keeps a wrapper's padding, which left a gap under every
+     closed row. */
+  margin-bottom: 1.75rem;
 }
 
 .portfolio-list-page__detail-meta {
@@ -1765,34 +2130,23 @@ a.studio-chrome__view-link:hover {
 }
 
 .portfolio-list-page__detail-meta .plastic-label {
-  color: rgba(0, 0, 0, 0.45);
+  color: rgba(0, 0, 0, 0.6);
 }
 
+/* The status tag: one treatment for every state. It used to carry a hue —
+   green for "In Development", amber for "Roadmap" — which was the last
+   colour on the page outside a product's own picture, and the state was
+   already on the page twice over in words. The tag is a tag: a hairline
+   frame and the word. */
 .portfolio-list-page__status {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: var(--text-label);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 0.35rem 0.55rem;
+  color: rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 2px;
-}
-
-.portfolio-list-page__status--dev {
-  color: #0a5c36;
-  border-color: color-mix(in oklch, #0a5c36, transparent 70%);
-  background: color-mix(in oklch, #0a5c36, transparent 92%);
-}
-
-.portfolio-list-page__status--roadmap {
-  color: #5c3d0a;
-  border-color: color-mix(in oklch, #5c3d0a, transparent 70%);
-  background: color-mix(in oklch, #5c3d0a, transparent 92%);
-}
-
-.portfolio-list-page__status--paused {
-  color: rgba(0, 0, 0, 0.5);
-  border-color: rgba(0, 0, 0, 0.12);
   background: rgba(0, 0, 0, 0.04);
 }
 
@@ -1811,10 +2165,10 @@ a.studio-chrome__view-link:hover {
   align-items: center;
   gap: 0.5rem;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-meta);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.45);
+  color: rgba(0, 0, 0, 0.6);
   margin-top: 0.25rem;
   transition: color 0.25s ease, gap 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -1827,7 +2181,7 @@ a.studio-chrome__view-link:hover {
 }
 
 .portfolio-list-page__arrow {
-  font-size: 14px;
+  font-size: var(--text-small);
   opacity: 0;
   transform: translateX(-8px);
   transition:
@@ -1931,7 +2285,7 @@ a.studio-chrome__view-link:hover {
   }
 
   .studio-chrome__view-link {
-    font-size: 12px;
+    font-size: var(--text-small);
   }
 }
 
@@ -1976,7 +2330,7 @@ a.studio-chrome__view-link:hover {
     border-right: 1px solid color-mix(in oklch, var(--foreground), transparent 90%);
     background: transparent;
     color: var(--foreground);
-    font-size: 16px;
+    font-size: var(--text-body);
     line-height: 1;
     cursor: pointer;
   }
@@ -2000,3 +2354,80 @@ a.studio-chrome__view-link:hover {
     display: none;
   }
 }
+
+
+/* ─── The home screens ───
+   The hero prints a wave on a fine screen of dots; the footer holds a body
+   of water printed in characters. Both are decorative, so the artwork carries
+   no meaning for assistive technology — the real headings stay in the DOM.
+   The water is stirred by the pointer, so it listens on the panel itself and
+   the canvas above it stays out of the way. */
+
+.dither-wave,
+.liquid-ascii {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.dither-wave__canvas,
+.liquid-ascii__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* portfolio hero — start */
+/* The band is the effect alone. Its height is about half the old hero's, so
+   the list starts on the first screen and reads as a list. */
+.portfolio-hero {
+  height: min(40svh, 380px);
+  min-height: 240px;
+}
+
+/* Until the reader's pointer moves, the rows take no hover. A resting
+   cursor under a row after load is not a choice, so nothing opens for it.
+   PortfolioListView sets data-armed on the first pointer move. */
+/* Only where there is no touch at all: on a laptop with a touchscreen the
+   first tap must land on the row it was aimed at. */
+@media (hover: hover) and (any-pointer: fine) and (not (any-pointer: coarse)) {
+  .portfolio-list-page__items:not([data-armed]) {
+    pointer-events: none;
+  }
+}
+/* portfolio hero — end */
+
+/* phone chrome — start */
+/* The three cells of the header (brand, portfolio menu, views) need 414px at
+   their desk padding, so on a phone the page was wider than the screen and
+   the theme button fell off its edge. Below 430px the cells keep their words
+   and give back their padding; below 360px the menu keeps only its arrow. */
+@media (max-width: 430px) {
+  .studio-chrome__row .plastic-reel__brand {
+    padding: 0 0.75rem;
+  }
+
+  .studio-chrome__row .plastic-reel__portfolio {
+    padding: 0 0.5rem;
+  }
+
+  .studio-chrome__row .studio-chrome__views {
+    gap: 0.25rem;
+    padding: 0 0.25rem;
+  }
+}
+
+@media (max-width: 359px) {
+  .studio-chrome__row .plastic-reel__portfolio > span:first-child {
+    display: none;
+  }
+
+  .studio-chrome__row .plastic-reel__portfolio-chevron {
+    margin-left: 0;
+    opacity: 0.8;
+  }
+}
+/* phone chrome — end */

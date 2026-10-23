@@ -31,12 +31,14 @@ export function ProjectCTA({
     <section
       className={cn(
         "portfolio-page__section px-6 md:px-12 py-20 md:py-24 border-b border-foreground/10",
-        isDark ? "bg-foreground text-background plastic-on-dark" : "bg-foreground/[0.02]",
+        // The dark band is painted black outright, like the hero and the footer:
+        // the page's dark theme must not turn it into a cream sheet.
+        isDark ? "bg-black text-white border-white/10" : "bg-foreground/[0.02]",
       )}
     >
-      <div className="max-w-[1280px] mx-auto grid grid-cols-12 gap-8 items-end">
+      <div className="max-w-[1280px] mx-auto grid grid-cols-12 gap-x-0 gap-y-8 md:gap-x-8 items-end">
         <ScrollReveal className="col-span-12 md:col-span-8 md:col-start-4 lg:col-start-5">
-          <p className={cn("plastic-label mb-6", isDark && "text-background/55")}>
+          <p className={cn("plastic-label mb-6", isDark && "text-white/55")}>
             Get started
           </p>
           <SplitReveal
@@ -44,14 +46,14 @@ export function ProjectCTA({
             text={title}
             className={cn(
               "plastic-headline mb-6 block",
-              isDark ? "text-background" : "text-foreground",
+              isDark ? "text-white" : "text-foreground",
             )}
             delay={50}
           />
           <p
             className={cn(
               "plastic-paragraph text-[clamp(16px,2vw,22px)] max-w-xl mb-10",
-              isDark ? "text-background/70" : "text-foreground/70",
+              isDark ? "text-white/70" : "text-foreground/70",
             )}
           >
             {description}
@@ -72,7 +74,7 @@ export function ProjectCTA({
                 href={secondaryHref}
                 className={cn(
                   "plastic-label motion-link-subtle hover:opacity-100 transition-opacity",
-                  isDark ? "text-background/55 hover:text-background" : "",
+                  isDark ? "text-white/55 hover:text-white" : "",
                 )}
               >
                 {secondaryLabel}

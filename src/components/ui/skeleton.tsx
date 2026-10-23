@@ -45,7 +45,7 @@ function PageSkeleton() {
     >
       <span className="sr-only">Loading page</span>
       <div className="w-full max-w-[1280px] mx-auto px-6 md:px-12 py-16 md:py-24">
-        <div className="grid grid-cols-12 gap-8">
+        <div className="grid grid-cols-12 gap-x-0 gap-y-8 md:gap-x-8">
           <div className="col-span-12 md:col-span-2 space-y-4">
             <Skeleton className="h-3 w-16 bg-foreground/10" />
             <Skeleton className="h-3 w-12 bg-foreground/10" />

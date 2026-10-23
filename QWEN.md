@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**Furma.tech** is a bootstrapped venture studio (Estonian OÜ, based in Sitges, Catalonia) building two main verticals:
+**Furma.tech** is a bootstrapped studio (Estonian OÜ, based in Sitges, Catalonia) building two main verticals:
 
 - **Industry SaaS** — B2B tools for restaurants and tourism (restauManager, GuideTours)
 - **Aitlas** — Sovereign AI ecosystem (BYOK model, MCP-first, 34+ Actions)
@@ -53,7 +53,7 @@ src/
 
 ```bash
 pnpm install        # Install dependencies
-pnpm dev            # Start dev server (http://localhost:3000, Turbopack enabled)
+pnpm dev            # Start dev server (http://127.0.0.1:3080, Turbopack enabled)
 pnpm build          # Production build
 pnpm start          # Start production server
 pnpm lint           # Run ESLint

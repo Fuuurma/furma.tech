@@ -1,3 +1,12 @@
+---
+name: ui-ux-pro-max
+description: >-
+  Design-reference database for web and mobile UI: 67 styles, 96 color
+  palettes, 57 font pairings, 99 UX guidelines, 25 chart types across 13
+  stacks. Use when picking colors, fonts, style presets, or checking UX
+  rules before building an interface.
+---
+
 # ui-ux-pro-max
 
 Comprehensive design guide for web and mobile applications. Contains 67 styles, 96 color palettes, 57 font pairings, 99 UX guidelines, and 25 chart types across 13 technology stacks. Searchable database with priority-based recommendations.

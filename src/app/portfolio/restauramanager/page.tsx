@@ -17,7 +17,6 @@ import {
   ProjectTrustRow,
   ProjectCTA,
 } from "@/components/ui/ProjectLayout";
-import { getProjectCoverTint } from "@/lib/home-projects";
 import { getOgImageUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -110,7 +109,6 @@ export default function RestauManagerPage() {
         description="Complete restaurant management platform with TheFork integration. Floor plans, reservations, staff coordination, and analytics. Built for Catalonia, designed to scale."
         status={{ label: "In Development", variant: "beta" }}
         projectId="restauramanager"
-        coverTint={getProjectCoverTint("restauramanager")}
       >
         <ProjectTrustRow items={["TheFork ready", "EU based", "GDPR compliant"]} />
       </ProjectHero>
