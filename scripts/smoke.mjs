@@ -7,17 +7,32 @@
  *
  *   node scripts/smoke.mjs [base-url]
  *
- * Defaults to http://127.0.0.1:3271. Asserts that every required content route
- * serves 200 with the main landmark + a heading, that /v2 stays noindex, that
- * the sitemap lists the canonical portfolio routes and excludes /v2, and that
- * the landing contact surface + direct mailto alternative are present. The
- * known-broken dynamic /og route is reported as an informational line (it does
- * not gate the primary experience).
+ * The default base URL is the port `pnpm start` binds, read from package.json's
+ * start script — not a copy of the number. Three copies of a port once lived
+ * here (3271), in the CI workflow (4080) and in the start script (3080), and
+ * every one of them drifted from the others.
+ *
+ * Asserts that every required content route serves 200 with the main landmark
+ * + a heading, that /v2 stays noindex, that the sitemap lists the canonical
+ * portfolio routes and excludes /v2, and that the landing contact surface +
+ * direct mailto alternative are present. The known-broken dynamic /og route is
+ * reported as an informational line (it does not gate the primary experience).
  */
 
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 
-const baseUrl = (process.argv[2] ?? "http://127.0.0.1:3271").replace(/\/$/, "");
+const pkg = JSON.parse(
+  readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+);
+const startPort = pkg.scripts.start.match(/--port (\d+)/)?.[1];
+if (!startPort) {
+  throw new Error(
+    `no --port in the start script: ${pkg.scripts.start}. The smoke gate ` +
+      `cannot guess which port the server binds.`,
+  );
+}
+const baseUrl = (process.argv[2] ?? `http://127.0.0.1:${startPort}`).replace(/\/$/, "");
 
 async function get(path, { headers } = {}) {
   const response = await fetch(`${baseUrl}${path}`, { headers });
