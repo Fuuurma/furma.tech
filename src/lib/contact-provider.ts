@@ -187,13 +187,16 @@ function parseProviderAcknowledgment(
   }
 
   const record = body as Record<string, unknown>;
-  const acknowledgedFlag =
-    record.acknowledged === true || record.ok === true;
-  if (!acknowledgedFlag) {
+  const canonical = record.acknowledged === true;
+  const okAlias = record.ok === true;
+  if (!canonical && !okAlias) {
     return { acknowledged: false };
   }
 
   const reference = readNonEmptyString(record.reference ?? record.id);
+  if (okAlias && !canonical && reference === undefined) {
+    return { acknowledged: false };
+  }
   return { acknowledged: true, reference };
 }
 
