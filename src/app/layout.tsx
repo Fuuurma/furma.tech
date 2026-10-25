@@ -15,10 +15,20 @@ const syne = Syne({
 
 const cormorant = Cormorant({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600"],
   variable: "--font-serif",
   display: "swap",
-  style: ["normal", "italic"],
+  style: "normal",
+});
+
+// Italic Cormorant is used on the brand and styleguide routes, so keep it out of the global preload.
+const cormorantItalic = Cormorant({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-serif",
+  display: "swap",
+  style: "italic",
+  preload: false,
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -88,7 +98,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${syne.variable} ${cormorant.variable} ${jetbrainsMono.variable} scroll-smooth`} suppressHydrationWarning>
+    <html lang="en" className={`${syne.variable} ${cormorant.variable} ${cormorantItalic.variable} ${jetbrainsMono.variable} scroll-smooth`} suppressHydrationWarning>
       <body className="font-sans antialiased min-h-screen flex flex-col">
         <script
           type="application/ld+json"
