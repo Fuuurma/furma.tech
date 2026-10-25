@@ -14,9 +14,8 @@
  *
  * Asserts that every required content route serves 200 with the main landmark
  * + a heading, that /v2 stays noindex, that the sitemap lists the canonical
- * portfolio routes and excludes /v2, and that the landing contact surface +
- * direct mailto alternative are present. The known-broken dynamic /og route is
- * reported as an informational line (it does not gate the primary experience).
+ * portfolio routes and excludes /v2, that the landing contact surface +
+ * direct mailto alternative are present, and that /og serves its PNG response.
  */
 
 import assert from "node:assert/strict";
@@ -118,10 +117,20 @@ try {
   console.error(`  FAIL / contact: ${error.message}`);
 }
 
-// Informational: the dynamic /og route is absent (social previews only).
-{
-  const { status } = await get("/og");
-  console.log(`  info  /og -> ${status} (no dynamic OG route; static og-image.svg is used)`);
+// The dynamic /og response is the site's social image origin and must stay live.
+try {
+  const response = await fetch(`${baseUrl}/og`);
+  const contentType = response.headers.get("content-type")?.split(";")[0];
+  await response.body?.cancel();
+  assert.equal(response.status, 200, "/og should be 200");
+  must(
+    contentType === "image/png",
+    `/og should return image/png (got ${contentType ?? "no content-type"})`,
+  );
+  console.log("  ok  /og (200, image/png)");
+} catch (error) {
+  failures += 1;
+  console.error(`  FAIL /og: ${error.message}`);
 }
 
 if (failures > 0) {
