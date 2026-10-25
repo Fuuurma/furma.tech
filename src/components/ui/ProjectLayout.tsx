@@ -262,7 +262,7 @@ export function ProjectPricing({ tiers }: ProjectPricingProps) {
 }
 
 interface ProjectStatusPlaceholderProps {
-  status: "paused" | "roadmap" | "soon";
+  status: "paused" | "roadmap" | "soon" | "development";
   highlights?: { icon: LucideIcon; title: string; desc: string }[];
 }
 
@@ -284,6 +284,10 @@ export function ProjectStatusPlaceholder({
     soon: {
       label: "Coming Soon",
       message: "We're actively working on this. Stay tuned for updates.",
+    },
+    development: {
+      label: "In Development",
+      message: "We're actively building this. Stay tuned for updates.",
     },
   };
 

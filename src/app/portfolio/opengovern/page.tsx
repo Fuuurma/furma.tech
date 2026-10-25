@@ -30,7 +30,7 @@ export default function OpenGovernPage() {
         status={{ label: 'In Development', variant: 'beta' }}
         projectId="opengovern"
       />
-      <ProjectStatusPlaceholder status="soon" highlights={highlights} />
+      <ProjectStatusPlaceholder status="development" highlights={highlights} />
     </ProjectLayout>
   );
 }
