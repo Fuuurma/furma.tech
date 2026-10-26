@@ -65,17 +65,107 @@ export function checkRateLimit(
 
   buckets.set(key, { hits });
 
-  // Opportunistic eviction of stale buckets when the map is large.
+  // Eviction when the map is large — CPU-bounded by design (FURMA-CONTACT-
+  // RATE-BOUND-01): the old sweep walked the WHOLE map (10k entries) on
+  // every call once the cap was hit, letting an attacker who pins the cap
+  // tax every subsequent request. The scan now visits at most
+  // MAX_EVICTION_SCAN oldest keys (Map preserves insertion order), deletes
+  // the expired ones among them, and hard-drops oldest entries until the
+  // map is under the cap again. Memory stays bounded; so does the work per
+  // accepted or denied call.
   if (buckets.size > MAX_BUCKETS) {
+    let scanned = 0;
+    const droppable: string[] = [];
     for (const [mapKey, bucket] of buckets) {
-      if (bucket.hits.every((timestamp) => timestamp <= cutoff)) {
-        buckets.delete(mapKey);
+      if (scanned >= MAX_EVICTION_SCAN) break;
+      scanned += 1;
+      if (mapKey !== key && bucket.hits.every((h) => h <= cutoff)) {
+        droppable.push(mapKey);
       }
-      if (buckets.size <= MAX_BUCKETS) break;
+    }
+    for (const mapKey of droppable) buckets.delete(mapKey);
+    while (buckets.size > MAX_BUCKETS) {
+      const oldest = buckets.keys().next().value;
+      if (oldest === undefined) break;
+      buckets.delete(oldest);
     }
   }
 
   return { allowed, remaining, resetAt, windowMs, limit };
+}
+
+/** The eviction scan never visits more keys than this per call. */
+const MAX_EVICTION_SCAN = 200;
+
+export interface ScopedLimit {
+  key: string;
+  limit: number;
+  windowMs: number;
+}
+
+export interface ScopedDecision {
+  allowed: boolean;
+  /** When the binding scope frees, in ms since epoch. */
+  resetAt: number;
+  /** The scope that refused the call, when denied. */
+  deniedScope: string | null;
+}
+
+/**
+ * All-or-nothing decision across several scopes of the same action (FURMA-
+ * CONTACT-RATE-BOUND-01): an email scope binds the address, a caller scope
+ * binds the network origin, so rotating addresses cannot dilute the
+ * throttle. Decides against every scope BEFORE recording anything — a
+ * denied call leaves every bucket untouched (no burned allowance) — and on
+ * acceptance records exactly one hit in every scope. Each scope is a plain
+ * sliding window with the same semantics as checkRateLimit.
+ */
+export function checkScopedRateLimit(
+  scopes: ReadonlyArray<ScopedLimit>,
+  now: number = Date.now(),
+): ScopedDecision {
+  const evaluations = scopes.map((scope) => ({
+    scope,
+    ...evaluateScope(scope.key, scope.limit, scope.windowMs, now),
+  }));
+
+  const denied = evaluations.find((e) => !e.allowed);
+  if (denied) {
+    return {
+      allowed: false,
+      resetAt: denied.resetAt,
+      deniedScope: denied.scope.key,
+    };
+  }
+
+  let resetAt = 0;
+  for (const e of evaluations) {
+    recordScope(e.scope.key, e.hits, now);
+    resetAt = Math.max(resetAt, e.resetAt);
+  }
+  return { allowed: true, resetAt, deniedScope: null };
+}
+
+function evaluateScope(
+  key: string,
+  limit: number,
+  windowMs: number,
+  now: number,
+): { hits: number[]; allowed: boolean; resetAt: number } {
+  const resolvedKey = key || "anonymous";
+  const cutoff = now - windowMs;
+  const existing = buckets.get(resolvedKey);
+  const hits = existing
+    ? existing.hits.filter((timestamp) => timestamp > cutoff)
+    : [];
+  const allowed = hits.length < limit;
+  const oldest = hits.length > 0 ? hits[0] : now;
+  return { hits, allowed, resetAt: oldest + windowMs };
+}
+
+function recordScope(key: string, hits: number[], now: number): void {
+  hits.push(now);
+  buckets.set(key || "anonymous", { hits });
 }
 
 /** Reset all limiter state. Test-only — exported so suites stay deterministic. */
