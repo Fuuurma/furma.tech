@@ -4,15 +4,8 @@
 // (focus moves with content via preventScroll), a validated contact form that
 // moves focus to its status on send, and body-scroll lock while mounted.
 
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  useSyncExternalStore,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 
 import { submitContactForm } from "@/lib/server-actions";
 import { contactFormSchema, validateForm } from "@/lib/schemas";
@@ -97,64 +90,6 @@ function LetterSpacedTitle({ text }: { text: string }) {
   );
 }
 
-// Home-only projection of the existing Aitlas concept: legible modules, no simulated UI.
-function AitlasEntryVisual() {
-  const modules = [
-    { x: 90, name: "Nova", role: "Workspace" },
-    { x: 260, name: "Nexus", role: "Runtime" },
-    { x: 430, name: "Agents", role: "Marketplace" },
-  ];
-  return (
-    <svg viewBox="0 0 520 340" className="plastic-entry-preview" xmlns="http://www.w3.org/2000/svg">
-      <g className="plastic-entry-preview-lines">
-        <circle cx="260" cy="60" r="28" />
-        <path d="M260 88V120H90V150 M260 120V150 M260 120H430V150" />
-        {modules.map(({ x, name }) => <circle key={name} cx={x} cy="190" r="40" />)}
-      </g>
-      <text x="260" y="67" className="plastic-entry-preview-root">MCP</text>
-      {modules.map(({ x, name, role }) => (
-        <g key={name}>
-          <text x={x} y="198" className="plastic-entry-preview-name">{name}</text>
-          <text x={x} y="268" className="plastic-entry-preview-role">{role}</text>
-        </g>
-      ))}
-    </svg>
-  );
-}
-
-// The studio's local time. Rendered after hydration (the server snapshot is
-// empty) so the markup agrees on both sides, then kept to the minute.
-const SITGES_CLOCK = new Intl.DateTimeFormat("en-GB", {
-  hour: "2-digit",
-  minute: "2-digit",
-  hour12: false,
-  timeZone: "Europe/Madrid",
-});
-
-function subscribeToMinute(onChange: () => void) {
-  const id = window.setInterval(onChange, 15_000);
-  return () => window.clearInterval(id);
-}
-
-function SitgesClock() {
-  const time = useSyncExternalStore(
-    subscribeToMinute,
-    () => SITGES_CLOCK.format(new Date()),
-    () => "",
-  );
-  return (
-    <p className="plastic-entry-place" data-screen-reserve>
-      Sitges, Catalonia
-      {time && (
-        <>
-          <span aria-hidden> · </span>
-          <time>{time}</time> local
-        </>
-      )}
-    </p>
-  );
-}
-
 function HeroSlide({
   onEnterWork,
   onContact,
@@ -162,8 +97,6 @@ function HeroSlide({
   onEnterWork: () => void;
   onContact: () => void;
 }) {
-  const project = HOME_PROJECTS[0];
-  const HeroVisual = project ? PROJECT_HERO_MAP[project.id] : undefined;
   const surfaceRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -186,45 +119,22 @@ function HeroSlide({
         idleCueDelay={5000}
         interactive
       />
-      <SitgesClock />
       <div className="plastic-entry" data-section-scroll>
-        <div className="plastic-entry-layout">
-          <div className="plastic-entry-copy">
-            <LetterSpacedTitle text="furma.tech" />
-            <p className="plastic-entry-kind" data-screen-reserve>
-              Digital studio
-            </p>
-            <div className="plastic-entry-actions">
-              <button type="button" onClick={onEnterWork} className="plastic-cta plastic-cta--primary">
-                See projects <span aria-hidden className="plastic-cta__arrow">↓</span>
-              </button>
-              <button type="button" onClick={onContact} className="plastic-cta plastic-cta--inverse plastic-cta--quiet">
-                Contact
-              </button>
-              <Link href="/portfolio" className="plastic-cta plastic-cta--inverse plastic-cta--quiet">
-                Full index
-              </Link>
-            </div>
+        <div className="plastic-entry-center">
+          <LetterSpacedTitle text="furma.tech" />
+          <p className="plastic-entry-kind" data-screen-reserve>
+            Digital studio
+          </p>
+        </div>
+        <div className="plastic-entry-foot">
+          <div className="plastic-entry-actions">
+            <button type="button" onClick={onEnterWork} className="plastic-cta plastic-cta--inverse">
+              See projects <span aria-hidden>↓</span>
+            </button>
+            <button type="button" onClick={onContact} className="plastic-cta plastic-cta--inverse plastic-cta--quiet">
+              Contact
+            </button>
           </div>
-
-          {project && (
-            <figure className="plastic-entry-project">
-              <div className="plastic-entry-project-meta">
-                <span>{project.category}</span>
-                <span>{project.status}</span>
-              </div>
-              <Link href={project.href} className="plastic-entry-project-visual" aria-label={`Open ${project.name} project`}>
-                {HeroVisual && <div aria-hidden="true">{project.id === "aitlas" ? <AitlasEntryVisual /> : <HeroVisual />}</div>}
-              </Link>
-              <figcaption className="plastic-entry-project-caption">
-                <Link href={project.href} className="plastic-entry-project-name">
-                  {project.name}<ArrowUpRight aria-hidden="true" />
-                </Link>
-                <span className="plastic-entry-project-note">Concept visual</span>
-                <span className="sr-only">{project.description}</span>
-              </figcaption>
-            </figure>
-          )}
         </div>
       </div>
     </div>

@@ -934,10 +934,10 @@ html {
   outline-offset: 3px;
 }
 
-/* The public opening puts the studio premise and one actual project together.
-   The frame is the hero's black plate and carries the wave; the entry is the
-   scroll region above it, so a swipe inside it scrolls the entry rather than
-   advancing the tour. */
+/* The public opening is one centred line on the wave: the studio's name, and
+   the two ways in at the foot of the plate. The frame is the hero's black plate
+   and carries the wave; the entry is the scroll region above it, so a swipe
+   inside it scrolls the entry rather than advancing the tour. */
 .plastic-entry-frame {
   position: relative;
   height: 100%;
@@ -954,26 +954,20 @@ html {
   color: var(--surface-dark-foreground);
   padding: clamp(24px, 4vw, 64px);
   display: flex;
-  align-items: center;
+  flex-direction: column;
 }
 
-.plastic-entry-layout {
-  width: 100%;
-  max-width: 1280px;
-  margin-inline: auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+.plastic-entry-center {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: clamp(32px, 5vw, 80px);
-}
-
-.plastic-entry-copy {
-  min-width: 0;
+  justify-content: center;
+  text-align: center;
 }
 
 .plastic-entry .plastic-hero-title {
-  justify-content: flex-start;
-  font-size: clamp(40px, 6vw, 88px);
   color: var(--surface-dark-foreground);
 }
 
@@ -988,19 +982,21 @@ html {
   margin-top: 12px;
 }
 
-.plastic-entry-premise {
-  font-size: clamp(24px, 2.5vw, 36px);
-  line-height: 1.3;
-  max-width: 25ch;
-  margin-top: clamp(24px, 3vw, 40px);
-  text-wrap: pretty;
+.plastic-entry-foot {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: clamp(24px, 4vh, 40px);
+  padding-top: clamp(14px, 2.5vh, 24px);
+  border-top: 1px solid var(--surface-dark-line);
 }
 
 .plastic-entry-actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 8px 24px;
-  margin-top: 24px;
 }
 
 .plastic-entry .plastic-cta--inverse {
@@ -1013,205 +1009,18 @@ html {
   border-color: var(--surface-dark-foreground);
 }
 
-/* The way in is a button, not a caption: the page's one solid action on the
-   black plate, painted in the plate's own two tones. */
-.plastic-entry .plastic-cta--primary {
-  min-height: 48px;
-  padding: 0 22px;
-  gap: 14px;
-  font-size: var(--text-small);
-  letter-spacing: 0.1em;
-  color: var(--surface-dark);
-  background: var(--surface-dark-foreground);
-  border: 1px solid var(--surface-dark-foreground);
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
-}
-
-.plastic-entry .plastic-cta--primary:hover {
-  color: var(--surface-dark-foreground);
-  background: transparent;
-}
-
-.plastic-cta__arrow {
-  display: inline-block;
-  transition: transform 0.25s var(--ease-out-expo);
-}
-
-.plastic-cta:hover .plastic-cta__arrow {
-  transform: translateY(2px);
-}
-
 .plastic-entry .plastic-cta--quiet {
   font-size: var(--text-small);
 }
 
-.plastic-entry-actions {
-  align-items: center;
-}
-
-.plastic-entry-place {
-  position: absolute;
-  z-index: 2;
-  left: clamp(24px, 4vw, 64px);
-  bottom: clamp(16px, 3vh, 32px);
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: var(--text-label);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--surface-dark-muted);
-}
-
-.plastic-entry-place time {
-  font-variant-numeric: tabular-nums;
-}
-
-@media (max-height: 640px) {
-  .plastic-entry-place {
-    display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .plastic-cta__arrow {
-    transition: none;
-  }
-  .plastic-cta:hover .plastic-cta__arrow {
-    transform: none;
-  }
-}
-
-.plastic-entry .plastic-cta:focus-visible,
-.plastic-entry-project a:focus-visible {
+.plastic-entry .plastic-cta:focus-visible {
   outline: 2px solid var(--surface-dark-foreground);
   outline-offset: 5px;
 }
 
-.plastic-entry-project {
-  min-width: 0;
-  margin: 0;
-}
-
-.plastic-entry-project-meta,
-.plastic-entry-project-caption {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-}
-
-.plastic-entry-project-meta {
-  color: var(--surface-dark-muted);
-  font-size: var(--text-meta);
-  line-height: 1.5;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--surface-dark-line);
-}
-
-.plastic-entry-project-visual {
-  display: block;
-  aspect-ratio: 520 / 340;
-  margin-block: 16px;
-}
-
-.plastic-entry-project-visual > div {
-  width: 100%;
-  height: 100%;
-}
-
-.plastic-entry-preview {
-  width: 100%;
-  height: 100%;
-  font-family: var(--font-sans);
-  text-anchor: middle;
-}
-
-.plastic-entry-preview-lines {
-  fill: none;
-  stroke: var(--surface-dark-line);
-  stroke-width: 1.5;
-}
-
-.plastic-entry-preview-root,
-.plastic-entry-preview-name {
-  fill: var(--surface-dark-foreground);
-  font-size: 24px;
-  font-weight: 500;
-}
-
-.plastic-entry-preview-root {
-  font-size: 20px;
-}
-
-.plastic-entry-preview-role {
-  fill: var(--surface-dark-muted);
-  font-size: 20px;
-}
-
-.plastic-entry-project-caption {
-  padding-top: 16px;
-  border-top: 1px solid var(--surface-dark-line);
-}
-
-.plastic-entry-project-name {
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-  font-size: 24px;
-  line-height: 1.2;
-  min-height: 44px;
-}
-
-.plastic-entry-project-name svg {
-  width: 20px;
-  height: 20px;
-  transition: transform 180ms var(--ease-out-expo);
-}
-
-.plastic-entry-project-name:hover svg {
-  transform: translate(2px, -2px);
-}
-
-.plastic-entry-project-note {
-  color: var(--surface-dark-muted);
-  font-size: var(--text-meta);
-}
-
 @media (max-width: 900px) {
   .plastic-entry {
-    align-items: flex-start;
     padding: 24px;
-  }
-  .plastic-entry-layout {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
-  }
-  .plastic-entry-premise {
-    font-size: clamp(22px, 3.5vw, 28px);
-    max-width: 35ch;
-    margin-top: 24px;
-  }
-  .plastic-entry-actions {
-    margin-top: 16px;
-  }
-  .plastic-entry-project-visual {
-    aspect-ratio: auto;
-    height: clamp(140px, 23svh, 230px);
-    margin-block: 8px;
-  }
-  .plastic-entry-project-meta {
-    padding-bottom: 8px;
-  }
-  .plastic-entry-project-caption {
-    padding-top: 8px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .plastic-entry-project-name svg {
-    transition: none;
   }
 }
 

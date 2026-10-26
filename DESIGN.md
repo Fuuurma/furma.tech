@@ -56,15 +56,14 @@ public face until a deliberate cutover.
 
 ### Public opening
 
-The studio's work and one actual project share the first viewport. The hero
-keeps the house's wave as its picture — the swell still waits for an idle
-reader — and the entry's own type keeps clean paper around it on the plate.
-Project name, category, status and destination come from `HOME_PROJECTS`;
-concepts stay labeled. The existing guided tour, direct index and contact
-remain available. The entry is a scroll region, so a swipe that begins inside
-it scrolls the entry instead of advancing the tour. V1 motion reads media
-preference through the SSR-safe hook so server markup and the first client
-render agree.
+The first viewport is one centred line on the wave: the studio's name, the kind
+of studio under it, and the two ways in at the foot of the plate — See projects
+and Contact, right aligned over a hairline. No project shares the opening; the
+work begins one section later, in the contents index. The wave stays the
+picture, and the swell still waits for an idle reader. The entry is a scroll
+region, so a swipe that begins inside it scrolls the entry instead of advancing
+the tour. V1 motion reads media preference through the SSR-safe hook so server
+markup and the first client render agree.
 
 ## The way in — plate, contents, address (2026-10-26)
 
@@ -93,7 +92,8 @@ project. The tour had a way to start and no way to choose; the reel bar only
 appears after the first project. The rows run down the column first (01–05,
 06–10) and are real buttons with a 44px target.
 
-**4. The hero's way in is a button.** "See projects" is the one solid action on
+**4. The hero's way in is a button.** *(Superseded 2026-10-27 — see "The entry
+is one line" below.)* "See projects" is the one solid action on
 the black plate, in the plate's own two tones; Contact and Full index stay
 quiet underlines at the small step. A mono line sets the studio's local time
 (`Europe/Madrid`, rendered after hydration, kept to the minute) at the foot of
@@ -131,6 +131,41 @@ Rules:
 - No slide sets type over a picture.
 - A form field is 16px or more on a touch screen.
 - Anything that reads `location.hash` on mount runs before anything that writes it.
+
+## The entry is one line — the project leaves the opening (2026-10-27)
+
+Owner's read of the landed opening: *the right side is all off — the Aitlas
+project; it was only centred: furma.tech, two buttons bottom right, contact and
+projects, and the background and effects were the same. Way more minimalistic.*
+
+The 2026-10-04 pass had put one project's plate beside the name so the first
+viewport showed work as well as claim. On the real page that made a two-column
+opening whose second column carried a caption, a concept label, a category, a
+status and a link — five pieces of furniture around the name, and the name
+pushed left off centre. The opening is not the place to prove the work; the
+contents index one section later does that in ten rows.
+
+What the opening is now:
+
+- the name, centred, at the title step on the wave — no override shrinks it
+  back to a two-column size;
+- one small step under it, "Digital studio";
+- a hairline at the foot of the plate with the two ways in right aligned:
+  **See projects** (the tour) and **Contact** (the form). Both are quiet
+  outlines; the solid fill, the third link and the local-time line are gone.
+
+Removed with it: `AitlasEntryVisual`, `.plastic-entry-project*`,
+`.plastic-entry-preview*`, `.plastic-entry-layout`, `.plastic-entry-copy`,
+`.plastic-entry-premise`, the `plastic-cta--primary` fill and the
+`plastic-cta__arrow`. The wave, its two lobes, the idle swell and the hand are
+untouched — the effects were the part that worked.
+
+Rules:
+- The opening carries the name and the two ways in. Nothing else.
+- A change to the first viewport keeps the name centred; a second column in
+  the entry is not a design option.
+- The project's plate, its caption and its ratio belong to the project slides,
+  not to the hero.
 
 ## Softer screens — a plate for a footer, and no black boxes (2026-10-21)
 
