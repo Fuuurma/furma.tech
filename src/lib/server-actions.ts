@@ -13,9 +13,10 @@
 
 "use server";
 
+import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { contactFormSchema, waitlistSchema, validateForm } from "./schemas";
-import { checkRateLimit } from "./rate-limit";
+import { checkScopedRateLimit } from "./rate-limit";
 import {
   resolveContactProvider,
   submitToProvider,
@@ -33,6 +34,11 @@ const CONTACT_RATE_LIMIT = 5;
 const CONTACT_RATE_WINDOW_MS = 60_000;
 const WAITLIST_RATE_LIMIT = 5;
 const WAITLIST_RATE_WINDOW_MS = 60_000;
+// The caller scope binds the network origin, so rotating addresses cannot
+// dilute the per-address throttle (FURMA-CONTACT-RATE-BOUND-01). Generous
+// enough for a shared office NAT, tight enough that rotation buys nothing.
+const CALLER_RATE_LIMIT = 15;
+const CALLER_RATE_WINDOW_MS = 60_000;
 
 /**
  * Truthful copy shown when no durable provider is configured (or the provider
@@ -49,6 +55,46 @@ function rateLimitIdentifier(formData: FormData): string {
     .trim()
     .toLowerCase();
   return email || "anonymous";
+}
+
+/**
+ * The network-origin scope. Behind the reverse proxy the client IP arrives
+ * in x-forwarded-for (first hop) or x-real-ip; anything else shares one
+ * "anonymous" bucket, which still bounds rotation from unproxied callers.
+ */
+async function callerScope(): Promise<string> {
+  const h = await headers();
+  const forwarded = h.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const ip = forwarded || h.get("x-real-ip")?.trim() || "";
+  return ip || "anonymous";
+}
+
+/**
+ * Two scopes per submission: the address and the caller. Both must allow
+ * before anything is recorded, so a fresh address behind an exhausted
+ * caller is still throttled (FURMA-CONTACT-RATE-BOUND-01).
+ */
+function contactScopes(
+  channel: "contact" | "waitlist",
+  email: string,
+  caller: string,
+) {
+  const perAddress =
+    channel === "contact"
+      ? { limit: CONTACT_RATE_LIMIT, windowMs: CONTACT_RATE_WINDOW_MS }
+      : { limit: WAITLIST_RATE_LIMIT, windowMs: WAITLIST_RATE_WINDOW_MS };
+  return [
+    {
+      key: `${channel}:${email || "anonymous"}`,
+      limit: perAddress.limit,
+      windowMs: perAddress.windowMs,
+    },
+    {
+      key: `${channel}:caller:${caller}`,
+      limit: CALLER_RATE_LIMIT,
+      windowMs: CALLER_RATE_WINDOW_MS,
+    },
+  ];
 }
 
 function fieldErrorMap(
@@ -83,12 +129,14 @@ export async function submitContactForm(
     return { success: false, error: first, fieldErrors };
   }
 
-  const rate = checkRateLimit(
-    `contact:${rateLimitIdentifier(formData)}`,
-    CONTACT_RATE_LIMIT,
-    CONTACT_RATE_WINDOW_MS,
+  const scope = checkScopedRateLimit(
+    contactScopes(
+      "contact",
+      rateLimitIdentifier(formData),
+      await callerScope(),
+    ),
   );
-  if (!rate.allowed) {
+  if (!scope.allowed) {
     return { success: false, error: RATE_LIMIT_MESSAGE };
   }
 
@@ -128,12 +176,14 @@ export async function submitWaitlistSignup(
     return { success: false, error: "Please enter a valid email address." };
   }
 
-  const rate = checkRateLimit(
-    `waitlist:${rateLimitIdentifier(formData)}`,
-    WAITLIST_RATE_LIMIT,
-    WAITLIST_RATE_WINDOW_MS,
+  const scope = checkScopedRateLimit(
+    contactScopes(
+      "waitlist",
+      rateLimitIdentifier(formData),
+      await callerScope(),
+    ),
   );
-  if (!rate.allowed) {
+  if (!scope.allowed) {
     return { success: false, error: RATE_LIMIT_MESSAGE };
   }
 
