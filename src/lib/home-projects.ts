@@ -3,8 +3,7 @@ export type HomeProjectLayout =
   | "editorial-right"
   | "editorial-left"
   | "visual-heavy"
-  | "stacked"
-  | "overlay";
+  | "stacked";
 
 export interface HomeProject {
   id: string;
@@ -45,7 +44,7 @@ export const HOME_PROJECTS: HomeProject[] = [
       "Tour operator platform with live GPS routes, multi-language guides, and Viator / GetYourGuide sync.",
     status: "In Development",
     href: "/portfolio/guidetours",
-    layout: "overlay",
+    layout: "editorial-right",
   },
   {
     id: "qart",
@@ -95,7 +94,7 @@ export const HOME_PROJECTS: HomeProject[] = [
       "Short-video professional matching — swipe, connect, and collaborate with verified peers.",
     status: "Paused",
     href: "/portfolio/linkup",
-    layout: "overlay",
+    layout: "visual-heavy",
   },
   {
     id: "onetomany",
