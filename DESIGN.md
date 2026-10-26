@@ -50,7 +50,8 @@ public face until a deliberate cutover.
 - The index is the width of the screen: the rules that separate the work run
   edge to edge, and the work stays stacked top to bottom
 - The shot fills its mount. A picture shown as a thumbnail inside a frame is
-  a caption with a picture attached
+  a caption with a picture attached. The home's plate is the picture's own box
+  (520:340) with one even margin of paper; no bar on any side
 - Invoke `design-arsenal` + `impeccable` on UI passes
 
 ### Public opening
@@ -64,6 +65,72 @@ remain available. The entry is a scroll region, so a swipe that begins inside
 it scrolls the entry instead of advancing the tour. V1 motion reads media
 preference through the SSR-safe hook so server markup and the first client
 render agree.
+
+## The way in — plate, contents, address (2026-10-26)
+
+A look at the live home, section by section, found five things the contract
+already promised and the page did not do.
+
+**1. The plate is the picture's own box.** The cover gave each concept visual a
+frame the size of the room it sat in, and the 520:340 drawing letterboxed
+inside it: a grey bar down two sides on a desk, a grey slab above and below on
+a phone, and a caption half-hidden behind the picture ("CONCEP"). That is the
+"thumbnail in a frame" the index rule forbids. The plate is now sized from the
+picture's ratio with container-query units, and the sheet (`--mount`) is its
+border, so the paper is one even margin on all four sides. The caption sits
+under the plate on the black ground. The pictures are lifted
+(`brightness(1.6)`): they were drawn at 4–8% white and read as a dark
+rectangle. `tests/project-plate.test.ts` fails if a picture leaves 520:340.
+
+**2. One layout fewer.** The `overlay` layout set a title and a paragraph over
+the picture's lower half, on a gradient. It is gone; its two projects take
+`editorial-right` and `visual-heavy`, and nothing in the slides sets type over a
+picture now.
+
+**3. The intro is a contents page.** "10 products across…" opens on a lead
+headline and ten hairline rows (number, name, status) that jump the tour to a
+project. The tour had a way to start and no way to choose; the reel bar only
+appears after the first project. The rows run down the column first (01–05,
+06–10) and are real buttons with a 44px target.
+
+**4. The hero's way in is a button.** "See projects" is the one solid action on
+the black plate, in the plate's own two tones; Contact and Full index stay
+quiet underlines at the small step. A mono line sets the studio's local time
+(`Europe/Madrid`, rendered after hydration, kept to the minute) at the foot of
+the plate — a real fact about where the studio is, not a claim.
+
+**5. The address is the contact.** `hello@furma.tech` is set at headline size
+with a Copy control; the fields are the body step on a desk and 16px on a touch
+screen (anything smaller makes iOS zoom the page on focus); a label lights with
+its field. The panel centres with `min-h-full`, not `items-center` on the
+scroller, which clipped the top of the form on a short screen.
+
+**Fixed on the way: `/#contact` opened the hero.** On mount the effect that
+syncs the hash saw section 0 and stripped `#contact` before the effect that
+reads an incoming hash ran, so a fresh load of the site's contact address — and
+the portfolio's "Get in touch" — never reached the form. The read now runs
+first; a test holds the order.
+
+References (with why):
+- **gionatannese.com** — nerdy, true details. Why: the local-time line is the
+  kind of thing that says where the studio is without a sentence.
+- **Experimental Jetset** — one structure, many members. Why: ten products
+  share one plate instead of each arranging its picture its own way.
+- **The Swiss contents page** — number, title, status, hairline. Why: a list
+  of ten that reads as an index and asks nothing but a click.
+
+Craft move: **the sheet is the border.** The paper margin is not a wrapper
+with padding around a picture that may not fill it; it is the picture's own
+edge, so the two can never disagree about their size.
+
+Catalog pick: **none.** Container-query units and `aspect-ratio`.
+
+Rules:
+- A picture's plate takes the picture's ratio. A new picture is drawn at
+  520:340, or the plate changes for all of them.
+- No slide sets type over a picture.
+- A form field is 16px or more on a touch screen.
+- Anything that reads `location.hash` on mount runs before anything that writes it.
 
 ## Softer screens — a plate for a footer, and no black boxes (2026-10-21)
 

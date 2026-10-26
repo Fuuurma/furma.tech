@@ -23,40 +23,42 @@ type LayoutProps = PlasticProjectSlideProps & {
 function ProjectCover({
   HeroVisual,
   className,
-  frameClassName,
   isActive = false,
 }: {
   HeroVisual: ComponentType<{ className?: string }> | undefined;
   className?: string;
-  frameClassName?: string;
   isActive?: boolean;
 }) {
   return (
     <div className={cn("plastic-cover min-h-0 bg-black relative overflow-hidden", className)}>
       <ParallaxFrame
         enabled={isActive}
-        className="absolute inset-0 flex items-center justify-center p-4 md:p-8"
-        innerClassName="w-full h-full flex items-center justify-center"
+        className="absolute inset-0"
+        innerClassName="w-full h-full"
         intensity={0.85}
       >
-        <div
-          className={cn(
-            "plastic-cover__frame relative w-full h-full max-w-[min(100%,1200px)] max-h-full flex items-center justify-center transition-transform duration-700 ease-[var(--ease-out-expo)]",
-            isActive && "scale-100",
-            !isActive && "scale-[0.97]",
-            frameClassName,
-          )}
-        >
-          {HeroVisual ? (
-            <HeroVisual className="w-full h-full max-h-[min(100%,520px)] object-contain" />
-          ) : (
-            <div className="w-full aspect-[16/10] bg-foreground/5" />
-          )}
-          {HeroVisual && (
-            <p className="plastic-label absolute bottom-3 left-4 m-0">
-              Concept visual
-            </p>
-          )}
+        {/* The plate is the picture's own box: 520:340, sized to the room the
+            cover has, with one even margin of paper on all four sides. */}
+        <div className="plastic-cover__stage">
+          <figure
+            className={cn(
+              "plastic-cover__figure",
+              !isActive && "plastic-cover__figure--rest",
+            )}
+          >
+            <div className="plastic-cover__frame">
+              {HeroVisual ? (
+                <HeroVisual className="block w-full h-full" />
+              ) : (
+                <div className="w-full h-full bg-foreground/5" />
+              )}
+            </div>
+            {HeroVisual && (
+              <figcaption className="plastic-label plastic-label--inverse plastic-cover__caption">
+                Concept visual
+              </figcaption>
+            )}
+          </figure>
         </div>
       </ParallaxFrame>
     </div>
@@ -187,11 +189,7 @@ function LayoutEditorialLeft(props: LayoutProps) {
   const { project, total, HeroVisual, indexLabel, isActive } = props;
   return (
     <article className="plastic-project plastic-project--editorial-left h-full min-h-0 grid grid-rows-[1fr_auto]">
-      <ProjectCover
-        HeroVisual={HeroVisual}
-        frameClassName="ml-auto max-w-[90%]"
-        isActive={isActive}
-      />
+      <ProjectCover HeroVisual={HeroVisual} isActive={isActive} />
       <EditorialIntro
         project={project}
         indexLabel={indexLabel}
@@ -207,11 +205,7 @@ function LayoutVisualHeavy(props: LayoutProps) {
   const { project, total, HeroVisual, indexLabel, isActive } = props;
   return (
     <article className="plastic-project plastic-project--visual-heavy h-full min-h-0 grid grid-rows-[minmax(0,1fr)_auto]">
-      <ProjectCover
-        HeroVisual={HeroVisual}
-        frameClassName="max-w-[min(100%,1100px)]"
-        isActive={isActive}
-      />
+      <ProjectCover HeroVisual={HeroVisual} isActive={isActive} />
       <SlideReveal isActive={isActive} className="plastic-intro shrink-0 border-t border-foreground/10">
         <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-4 md:py-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -254,7 +248,6 @@ function LayoutStacked(props: LayoutProps) {
       <ProjectCover
         HeroVisual={HeroVisual}
         className="flex-1 min-h-[28%]"
-        frameClassName="max-w-[720px] mx-auto rounded-sm"
         isActive={isActive}
       />
       <SlideReveal isActive={isActive} className="shrink-0 px-6 md:px-12 py-6 md:py-8 border-t border-foreground/10" delay={0.12}>
@@ -264,58 +257,11 @@ function LayoutStacked(props: LayoutProps) {
   );
 }
 
-function LayoutOverlay(props: LayoutProps) {
-  const { project, total, HeroVisual, indexLabel, isActive } = props;
-  return (
-    <article className="plastic-project plastic-project--overlay relative h-full min-h-0 bg-black">
-      <ProjectCover HeroVisual={HeroVisual} className="absolute inset-0" isActive={isActive} />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.5) 45%, transparent 72%)",
-        }}
-      />
-      <div className="absolute inset-x-0 bottom-0 z-10 px-6 md:px-12 pb-6 md:pb-10 pt-16 md:pt-24">
-        <div className="max-w-[1280px] mx-auto grid grid-cols-12 gap-4 md:gap-6 items-end">
-          <SlideReveal isActive={isActive} className="col-span-12 md:col-span-3" delay={0.06}>
-            <ProjectMeta
-              project={project}
-              indexLabel={indexLabel}
-              total={total}
-              className="plastic-meta--on-dark max-md:hidden"
-            />
-            <p className="plastic-label plastic-label--inverse md:hidden">
-              {project.category}
-              <span className="text-white/60"> · </span>
-              {project.status}
-            </p>
-          </SlideReveal>
-          <SlideReveal isActive={isActive} className="col-span-12 md:col-span-9" delay={0.14}>
-            <h2 className="plastic-headline plastic-headline--inverse text-[clamp(26px,4vw,44px)] mb-3 md:mb-4">
-              {project.name}
-            </h2>
-            <p className="plastic-paragraph plastic-paragraph--inverse max-w-2xl line-clamp-3 md:line-clamp-none">
-              {project.description}
-            </p>
-            <div className="mt-6 md:mt-8 flex flex-wrap gap-4 md:gap-6">
-              <Link href={project.href} className="plastic-cta plastic-cta--inverse">
-                View project <span aria-hidden>→</span>
-              </Link>
-            </div>
-          </SlideReveal>
-        </div>
-      </div>
-    </article>
-  );
-}
-
 const LAYOUT_RENDERERS: Record<HomeProjectLayout, ComponentType<LayoutProps>> = {
   "editorial-right": LayoutEditorialRight,
   "editorial-left": LayoutEditorialLeft,
   "visual-heavy": LayoutVisualHeavy,
   stacked: LayoutStacked,
-  overlay: LayoutOverlay,
 };
 
 export function PlasticProjectSlide(props: PlasticProjectSlideProps) {

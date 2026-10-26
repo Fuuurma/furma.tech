@@ -394,6 +394,78 @@ select:focus-visible {
   box-shadow: 0 1px 0 0 var(--foreground);
 }
 
+/* The field's own size is the body step on a desk and 16px on a touch screen:
+   anything smaller makes iOS zoom the page when the field takes focus. */
+.plastic-field {
+  font-size: var(--text-body);
+  line-height: 1.5;
+}
+
+@media (pointer: coarse), (max-width: 900px) {
+  .plastic-field {
+    font-size: max(16px, var(--text-body));
+  }
+}
+
+/* The label lights up with the field it names. */
+.plastic-field-group .plastic-label {
+  transition: color 0.2s ease;
+}
+
+.plastic-field-group:focus-within .plastic-label {
+  color: var(--foreground);
+}
+
+/* The address is the contact's headline. */
+.plastic-mail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+}
+
+.plastic-mail__link {
+  font-family: var(--font-sans);
+  font-size: clamp(22px, 2.6vw, 34px);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--foreground);
+  border-bottom: 1px solid color-mix(in oklch, var(--foreground), transparent 70%);
+  padding-bottom: 2px;
+}
+
+.plastic-mail__link:hover {
+  border-bottom-color: var(--foreground);
+}
+
+.plastic-mail__copy {
+  min-height: 44px;
+  padding: 0 14px;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--foreground), transparent 38%);
+  background: transparent;
+  border: 1px solid color-mix(in oklch, var(--foreground), transparent 75%);
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.plastic-mail__copy:hover,
+.plastic-mail__copy:focus-visible {
+  color: var(--foreground);
+  border-color: var(--foreground);
+}
+
+.plastic-mail__copy:focus-visible,
+.plastic-mail__link:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 3px;
+}
+
 /* Improved link transitions */
 a {
   transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
@@ -748,6 +820,97 @@ html {
   opacity: 1;
 }
 
+/* The lead headline: the one sentence a slide is built around. */
+.plastic-headline--lead {
+  font-size: clamp(32px, 5.4vw, 68px);
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+/* The contents: ten hairline rows that jump the tour to a project. They run
+   down the column first (01–05, then 06–10), so the order reads as a list. */
+.plastic-contents {
+  list-style: none;
+  margin: clamp(28px, 5vh, 56px) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-rows: repeat(5, auto);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  column-gap: clamp(20px, 3vw, 48px);
+  border-top: 1px solid var(--foreground);
+}
+
+.plastic-contents__row {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 0 10px;
+  text-align: left;
+  color: var(--foreground);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid color-mix(in oklch, var(--foreground), transparent 82%);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.plastic-contents__row:hover,
+.plastic-contents__row:focus-visible {
+  border-bottom-color: var(--foreground);
+}
+
+.plastic-contents__row:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: -2px;
+}
+
+.plastic-contents__no,
+.plastic-contents__status {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--foreground), transparent 38%);
+}
+
+.plastic-contents__name {
+  font-family: var(--font-sans);
+  font-size: clamp(15px, 1.5vw, 19px);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  transition: transform 0.25s var(--ease-out-expo);
+}
+
+.plastic-contents__row:hover .plastic-contents__name,
+.plastic-contents__row:focus-visible .plastic-contents__name {
+  transform: translateX(4px);
+}
+
+@media (max-width: 900px) {
+  .plastic-contents__status {
+    display: none;
+  }
+  .plastic-contents__row {
+    grid-template-columns: 1.75rem minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plastic-contents__row,
+  .plastic-contents__name {
+    transition: none;
+  }
+  .plastic-contents__row:hover .plastic-contents__name,
+  .plastic-contents__row:focus-visible .plastic-contents__name {
+    transform: none;
+  }
+}
+
 .plastic-field-error {
   margin: 0.45rem 0 0;
   font-family: var(--font-mono);
@@ -848,6 +1011,76 @@ html {
 .plastic-entry .plastic-cta:hover {
   opacity: 1;
   border-color: var(--surface-dark-foreground);
+}
+
+/* The way in is a button, not a caption: the page's one solid action on the
+   black plate, painted in the plate's own two tones. */
+.plastic-entry .plastic-cta--primary {
+  min-height: 48px;
+  padding: 0 22px;
+  gap: 14px;
+  font-size: var(--text-small);
+  letter-spacing: 0.1em;
+  color: var(--surface-dark);
+  background: var(--surface-dark-foreground);
+  border: 1px solid var(--surface-dark-foreground);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.plastic-entry .plastic-cta--primary:hover {
+  color: var(--surface-dark-foreground);
+  background: transparent;
+}
+
+.plastic-cta__arrow {
+  display: inline-block;
+  transition: transform 0.25s var(--ease-out-expo);
+}
+
+.plastic-cta:hover .plastic-cta__arrow {
+  transform: translateY(2px);
+}
+
+.plastic-entry .plastic-cta--quiet {
+  font-size: var(--text-small);
+}
+
+.plastic-entry-actions {
+  align-items: center;
+}
+
+.plastic-entry-place {
+  position: absolute;
+  z-index: 2;
+  left: clamp(24px, 4vw, 64px);
+  bottom: clamp(16px, 3vh, 32px);
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--surface-dark-muted);
+}
+
+.plastic-entry-place time {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-height: 640px) {
+  .plastic-entry-place {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plastic-cta__arrow {
+    transition: none;
+  }
+  .plastic-cta:hover .plastic-cta__arrow {
+    transform: none;
+  }
 }
 
 .plastic-entry .plastic-cta:focus-visible,
@@ -1770,6 +2003,60 @@ a.studio-chrome__view-link:hover {
 .plastic-cover__frame,
 .portfolio-page__cover-frame {
   background: var(--mount);
+}
+
+/* The plate is the picture's own box (520:340), sized to the room the cover
+   has. The sheet is its border, so the paper is one even margin on all four
+   sides and no side is a bar. The caption sits under the plate, on the black
+   ground, aligned to the plate's left edge. */
+.plastic-cover__stage {
+  --plate-margin: clamp(8px, 1.2vw, 16px);
+  --plate-caption: 30px;
+  container-type: size;
+  width: 100%;
+  height: 100%;
+  padding: clamp(12px, 2.2vw, 28px);
+  display: grid;
+  place-items: center;
+}
+
+.plastic-cover__figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.7s var(--ease-out-expo);
+}
+
+.plastic-cover__figure--rest {
+  transform: scale(0.97);
+}
+
+.plastic-cover__frame {
+  box-sizing: content-box;
+  border: var(--plate-margin) solid var(--mount);
+  aspect-ratio: 520 / 340;
+  width: min(
+    calc(100cqw - 2 * var(--plate-margin)),
+    calc((100cqh - var(--plate-caption) - 2 * var(--plate-margin)) * 520 / 340)
+  );
+}
+
+/* The pictures were drawn at 4–8% white on near-black: a dark rectangle at a
+   glance. A lift keeps their own colours and brings the drawing up to read. */
+.plastic-cover__frame > svg {
+  filter: brightness(1.6) contrast(1.1);
+}
+
+.plastic-cover__caption {
+  margin: 0;
+  padding-top: 12px;
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plastic-cover__figure {
+    transition: none;
+  }
 }
 
 .portfolio-page__cover-grain {

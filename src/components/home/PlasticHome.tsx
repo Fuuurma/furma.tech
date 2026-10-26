@@ -4,7 +4,13 @@
 // (focus moves with content via preventScroll), a validated contact form that
 // moves focus to its status on send, and body-scroll lock while mounted.
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
@@ -116,6 +122,39 @@ function AitlasEntryVisual() {
   );
 }
 
+// The studio's local time. Rendered after hydration (the server snapshot is
+// empty) so the markup agrees on both sides, then kept to the minute.
+const SITGES_CLOCK = new Intl.DateTimeFormat("en-GB", {
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+  timeZone: "Europe/Madrid",
+});
+
+function subscribeToMinute(onChange: () => void) {
+  const id = window.setInterval(onChange, 15_000);
+  return () => window.clearInterval(id);
+}
+
+function SitgesClock() {
+  const time = useSyncExternalStore(
+    subscribeToMinute,
+    () => SITGES_CLOCK.format(new Date()),
+    () => "",
+  );
+  return (
+    <p className="plastic-entry-place" data-screen-reserve>
+      Sitges, Catalonia
+      {time && (
+        <>
+          <span aria-hidden> · </span>
+          <time>{time}</time> local
+        </>
+      )}
+    </p>
+  );
+}
+
 function HeroSlide({
   onEnterWork,
   onContact,
@@ -147,6 +186,7 @@ function HeroSlide({
         idleCueDelay={5000}
         interactive
       />
+      <SitgesClock />
       <div className="plastic-entry" data-section-scroll>
         <div className="plastic-entry-layout">
           <div className="plastic-entry-copy">
@@ -155,8 +195,8 @@ function HeroSlide({
               Digital studio
             </p>
             <div className="plastic-entry-actions">
-              <button type="button" onClick={onEnterWork} className="plastic-cta plastic-cta--inverse">
-                See projects <span aria-hidden>↓</span>
+              <button type="button" onClick={onEnterWork} className="plastic-cta plastic-cta--primary">
+                See projects <span aria-hidden className="plastic-cta__arrow">↓</span>
               </button>
               <button type="button" onClick={onContact} className="plastic-cta plastic-cta--inverse plastic-cta--quiet">
                 Contact
@@ -193,10 +233,12 @@ function HeroSlide({
 
 function PortfolioIndexSlide({
   onStart,
+  onSelect,
   count,
   isActive,
 }: {
   onStart: () => void;
+  onSelect: (projectIndex: number) => void;
   count: number;
   isActive: boolean;
 }) {
@@ -223,8 +265,11 @@ function PortfolioIndexSlide({
         composition="field"
         interactive
       />
-      <div className="flex-1 flex items-center justify-center px-6 md:px-12 relative z-10">
-        <div className="max-w-[1280px] w-full grid grid-cols-12 gap-6">
+      <div
+        className="flex-1 min-h-0 relative z-10 overflow-y-auto overscroll-contain px-6 md:px-12"
+        data-section-scroll
+      >
+        <div className="max-w-[1280px] w-full mx-auto my-auto grid grid-cols-12 gap-x-6 gap-y-8 py-10 min-h-full content-center">
           <SlideReveal isActive={isActive} className="col-span-12 md:col-span-4">
             <p className="plastic-label" data-screen-reserve>
               Portfolio
@@ -234,8 +279,12 @@ function PortfolioIndexSlide({
             </p>
           </SlideReveal>
           <div className="col-span-12 md:col-span-8 md:col-start-5">
-            <h2 className="plastic-headline" data-screen-reserve>
-              <AnimatedNumber value={count} trigger={isActive} className="inline" />
+            <h2 className="plastic-headline plastic-headline--lead" data-screen-reserve>
+              <AnimatedNumber
+                value={count}
+                trigger={isActive}
+                className="inline normal-nums"
+              />
               {" "}
               <SplitReveal
                 as="span"
@@ -246,28 +295,90 @@ function PortfolioIndexSlide({
               />
             </h2>
             <SlideReveal isActive={isActive} delay={0.2}>
-              <button
-                type="button"
-                onClick={onStart}
-                className="plastic-cta mt-12"
-                data-screen-reserve
-              >
-                Start with {HOME_PROJECTS[0]?.name ?? "projects"}
-                <span aria-hidden>→</span>
-              </button>
-              <div className="mt-6">
+              <div className="mt-8 md:mt-10 flex flex-wrap items-center gap-x-8 gap-y-2">
+                <button
+                  type="button"
+                  onClick={onStart}
+                  className="plastic-cta"
+                  data-screen-reserve
+                >
+                  Start with {HOME_PROJECTS[0]?.name ?? "projects"}
+                  <span aria-hidden>→</span>
+                </button>
                 <Link
                   href="/portfolio"
-                  className="plastic-label motion-link-subtle hover:text-foreground"
+                  className="plastic-label motion-link-subtle hover:text-foreground py-3"
                   data-screen-reserve
                 >
                   Or skip the tour — open full index
                 </Link>
               </div>
             </SlideReveal>
+            <SlideReveal isActive={isActive} delay={0.3}>
+              <ol className="plastic-contents" aria-label="Jump to a project">
+                {HOME_PROJECTS.map((project, i) => (
+                  <li key={project.id}>
+                    <button
+                      type="button"
+                      className="plastic-contents__row"
+                      onClick={() => onSelect(i)}
+                      data-screen-reserve
+                    >
+                      <span className="plastic-contents__no" aria-hidden>
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="plastic-contents__name">{project.name}</span>
+                      <span className="plastic-contents__status">{project.status}</span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </SlideReveal>
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+const CONTACT_EMAIL = "hello@furma.tech";
+
+// The address is the contact's headline: one tap opens a mail client, and a
+// second control copies it for the reader who has none.
+function CopyEmail() {
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!copied) return;
+    const id = window.setTimeout(() => setCopied(false), 2200);
+    return () => window.clearTimeout(id);
+  }, [copied]);
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(CONTACT_EMAIL);
+      setCopied(true);
+    } catch {
+      // No clipboard permission: the mailto link above still works.
+    }
+  }
+
+  return (
+    <div className="plastic-mail">
+      <a href={`mailto:${CONTACT_EMAIL}`} className="plastic-mail__link">
+        {CONTACT_EMAIL}
+      </a>
+      <button
+        type="button"
+        onClick={copy}
+        className="plastic-mail__copy"
+        aria-label="Copy email address"
+      >
+        {copied ? "Copied ✓" : "Copy"}
+      </button>
+      <span className="sr-only" role="status" aria-live="polite">
+        {copied ? "Email address copied" : ""}
+      </span>
     </div>
   );
 }
@@ -362,9 +473,10 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
 
   return (
     <div
-      className="h-full w-full flex items-center bg-background overflow-y-auto"
+      className="h-full w-full bg-background overflow-y-auto overscroll-contain"
       data-section-scroll
     >
+      <div className="min-h-full flex items-center">
       <div className="w-full max-w-[1280px] mx-auto px-6 md:px-12 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           <div className="lg:col-span-5">
@@ -383,25 +495,22 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                 Interested in our products, a collaboration, or integrating
                 sovereign AI? We read every message.
               </p>
-              <div className="flex gap-10">
-                {[
-                  ["Email", "hello@furma.tech", "mailto:hello@furma.tech"],
-                  ["GitHub", "@Fuuurma", "https://github.com/Fuuurma"],
-                ].map(([label, text, href]) => (
-                  <div key={label} className="flex flex-col gap-1">
-                    <span className="plastic-label">{label}</span>
-                    <a
-                      href={href}
-                      target={label === "GitHub" ? "_blank" : undefined}
-                      rel={
-                        label === "GitHub" ? "noopener noreferrer" : undefined
-                      }
-                      className="text-body text-foreground border-b border-foreground/20 pb-0.5 hover:border-foreground transition-colors"
-                    >
-                      {text}
-                    </a>
-                  </div>
-                ))}
+              <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-2">
+                  <span className="plastic-label">Email</span>
+                  <CopyEmail />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <span className="plastic-label">GitHub</span>
+                  <a
+                    href="https://github.com/Fuuurma"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="self-start text-body text-foreground border-b border-foreground/20 pb-0.5 hover:border-foreground transition-colors"
+                  >
+                    @Fuuurma
+                  </a>
+                </div>
               </div>
             </SlideReveal>
           </div>
@@ -439,7 +548,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                 const errorId = `${f.id}-error`;
                 const hasError = Boolean(fieldErrors[f.name]);
                 return (
-                  <div key={f.id}>
+                  <div key={f.id} className="plastic-field-group">
                     <label htmlFor={f.id} className="plastic-label block mb-2">
                       {f.label}
                     </label>
@@ -468,7 +577,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                   </div>
                 );
               })}
-              <div>
+              <div className="plastic-field-group">
                 <label htmlFor="contact-message" className="plastic-label block mb-2">
                   Message
                 </label>
@@ -544,6 +653,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
           </SlideReveal>
         </div>
       </div>
+      </div>
     </div>
   );
 }
@@ -611,10 +721,6 @@ export default function PlasticHome() {
   }, [setFocusHandler]);
 
   useEffect(() => {
-    syncContactHash(activeIndex);
-  }, [activeIndex, syncContactHash]);
-
-  useEffect(() => {
     document.body.style.overflow = "hidden";
     document.documentElement.setAttribute("data-plastic-home", "true");
     return () => {
@@ -645,6 +751,13 @@ export default function PlasticHome() {
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, [navigate]);
+
+  // Declared after the effect that reads the incoming hash: effects run in
+  // order, and on mount this one sees section 0 and would strip "#contact"
+  // before a deep link to it had been read.
+  useEffect(() => {
+    syncContactHash(activeIndex);
+  }, [activeIndex, syncContactHash]);
 
   const handleReelSelect = (reelIndex: number) => {
     const target = HOME_REEL_ITEMS[reelIndex];
@@ -734,6 +847,12 @@ export default function PlasticHome() {
                     count={HOME_PROJECTS.length}
                     onStart={() =>
                       navigate(FIRST_PROJECT_SECTION, {
+                        force: true,
+                        focus: true,
+                      })
+                    }
+                    onSelect={(projectIndex) =>
+                      navigate(FIRST_PROJECT_SECTION + projectIndex, {
                         force: true,
                         focus: true,
                       })
