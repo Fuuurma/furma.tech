@@ -25,7 +25,7 @@ export function ProjectHero({
 }: ProjectHeroProps) {
   return (
     <>
-      <section className="portfolio-page__cover bg-black border-b border-foreground/10 relative overflow-hidden">
+      <section className="portfolio-page__cover bg-background border-b border-foreground/10 relative overflow-hidden">
         <FilmGrain className="portfolio-page__cover-grain" />
         <div className="max-w-[1280px] mx-auto relative z-[2]">
           <ParallaxFrame
