@@ -27,6 +27,7 @@ import { LiquidAscii } from "@/components/liquid-ascii-tw";
 import { SlideReveal } from "@/components/motion/SlideReveal";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/components/ThemeProvider";
 
 export interface StudioWaterFooterProps {
   /** Whether the footer's type has arrived. */
@@ -46,25 +47,30 @@ export function StudioWaterFooter({
 }: StudioWaterFooterProps) {
   const plateRef = useRef<HTMLElement>(null);
   const seaRef = useRef<HTMLDivElement>(null);
+  // The plate is painted per theme, and the screen is remounted on a switch:
+  // its ink and paper are resolved once when it mounts, and a fresh mount is
+  // cheaper than proving every repaint path re-reads them.
+  const { theme } = useTheme();
 
   return (
     <footer
       ref={plateRef}
       role="contentinfo"
       className={cn(
-        "relative flex flex-col bg-black text-white overflow-hidden",
+        "studio-plate relative flex flex-col overflow-hidden",
         variant === "panel" ? "h-full" : "min-h-[640px] md:min-h-[min(100svh,820px)]",
         className,
       )}
     >
       {/* The plate: sky, sun and sea, behind everything. */}
       <LiquidAscii
+        key={theme}
         surfaceRef={plateRef}
         zoneRef={seaRef}
-        sun={{ x: 0.86, radius: 0.2, rise: 0.3 }}
+        sun={{ x: 0.82, radius: 0.115, rise: 0.04 }}
         moon={{ x: 0.89, radius: 0.125, rise: 1.45 }}
-        color="#ffffff"
-        backgroundColor="#000000"
+        color="var(--plate-water)"
+        backgroundColor="var(--plate-paper)"
         fontFamily="var(--font-mono)"
         characters=" .:-=+*#%@"
         speed={0.9}
@@ -90,7 +96,7 @@ export function StudioWaterFooter({
             >
               <div>
                 <p
-                  className="plastic-label plastic-label--inverse-dim mb-6 md:mb-8 [@media(max-height:700px)]:mb-2"
+                  className="plastic-label studio-plate__dim mb-6 md:mb-8 [@media(max-height:700px)]:mb-2"
                   data-screen-reserve
                 >
                   Furma.tech
@@ -98,13 +104,13 @@ export function StudioWaterFooter({
                 <SplitReveal
                   as="h2"
                   text="We build sovereign digital futures."
-                  className="font-sans text-[clamp(28px,4vw,48px)] font-medium leading-[1.1] tracking-[-0.03em] text-white block mb-4 md:mb-6 [@media(max-height:700px)]:mb-2"
+                  className="font-sans text-[clamp(28px,4vw,48px)] font-medium leading-[1.1] tracking-[-0.03em] studio-plate__ink block mb-4 md:mb-6 [@media(max-height:700px)]:mb-2"
                   trigger={isActive}
                   delay={40}
                   reserve
                 />
                 <p
-                  className="font-sans text-body text-white/60 max-w-sm leading-relaxed [@media(max-height:700px)]:hidden"
+                  className="font-sans text-body studio-plate__dim max-w-sm leading-relaxed [@media(max-height:700px)]:hidden"
                   data-screen-reserve
                 >
                   Digital studio for industry SaaS and autonomous AI ecosystems.
@@ -113,14 +119,14 @@ export function StudioWaterFooter({
               </div>
               <div className="space-y-3 md:space-y-4">
                 <p
-                  className="plastic-label plastic-label--inverse-dim [@media(max-height:700px)]:hidden"
+                  className="plastic-label studio-plate__dim [@media(max-height:700px)]:hidden"
                   data-screen-reserve
                 >
                   Connect
                 </p>
                 <a
                   href="mailto:hello@furma.tech"
-                  className="text-body font-medium text-white hover:opacity-60 transition-opacity block"
+                  className="text-body font-medium studio-plate__ink hover:opacity-60 transition-opacity block"
                   data-screen-reserve
                 >
                   hello@furma.tech
@@ -130,7 +136,7 @@ export function StudioWaterFooter({
                     href="https://github.com/Fuuurma"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="plastic-label plastic-label--inverse"
+                    className="plastic-label studio-plate__ink"
                     data-screen-reserve
                   >
                     GitHub
@@ -139,7 +145,7 @@ export function StudioWaterFooter({
                     href="https://twitter.com/fuuurma"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="plastic-label plastic-label--inverse"
+                    className="plastic-label studio-plate__ink"
                     data-screen-reserve
                   >
                     Twitter
@@ -150,11 +156,11 @@ export function StudioWaterFooter({
 
             <SlideReveal
               isActive={isActive}
-              className="lg:col-span-7 border-l border-white/10 pl-8 lg:pl-16"
+              className="lg:col-span-7 border-l studio-plate__line pl-8 lg:pl-16"
               delay={0.12}
             >
               <p
-                className="plastic-label plastic-label--inverse-dim mb-6 md:mb-8 [@media(max-height:700px)]:hidden"
+                className="plastic-label studio-plate__dim mb-6 md:mb-8 [@media(max-height:700px)]:hidden"
                 data-screen-reserve
               >
                 Portfolio
@@ -164,7 +170,7 @@ export function StudioWaterFooter({
                   <Link
                     key={p.id}
                     href={p.href}
-                    className="text-body font-medium text-white hover:opacity-50 transition-opacity"
+                    className="text-body font-medium studio-plate__ink hover:opacity-50 transition-opacity"
                     data-screen-reserve
                   >
                     {p.name}
@@ -173,7 +179,7 @@ export function StudioWaterFooter({
               </div>
               <Link
                 href="/portfolio"
-                className="inline-flex items-center gap-2 mt-6 md:mt-10 [@media(max-height:700px)]:mt-2 plastic-label plastic-label--inverse motion-link-subtle"
+                className="inline-flex items-center gap-2 mt-6 md:mt-10 [@media(max-height:700px)]:mt-2 plastic-label studio-plate__ink motion-link-subtle"
                 data-screen-reserve
               >
                 All projects <span aria-hidden>→</span>
@@ -190,13 +196,13 @@ export function StudioWaterFooter({
       >
         <div className="w-full px-6 md:px-12 py-5 flex justify-between items-center">
           <span
-            className="plastic-label plastic-label--inverse-dim"
+            className="plastic-label studio-plate__dim"
             data-screen-reserve
           >
             © 2026 Furma.tech
           </span>
           <span
-            className="plastic-label plastic-label--inverse-dim"
+            className="plastic-label studio-plate__dim"
             data-screen-reserve
           >
             Sitges, Catalonia

@@ -251,44 +251,6 @@ const CONTACT_EMAIL = "hello@furma.tech";
 
 // The address is the contact's headline: one tap opens a mail client, and a
 // second control copies it for the reader who has none.
-function CopyEmail() {
-  const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    if (!copied) return;
-    const id = window.setTimeout(() => setCopied(false), 2200);
-    return () => window.clearTimeout(id);
-  }, [copied]);
-
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(CONTACT_EMAIL);
-      setCopied(true);
-    } catch {
-      // No clipboard permission: the mailto link above still works.
-    }
-  }
-
-  return (
-    <div className="plastic-mail">
-      <a href={`mailto:${CONTACT_EMAIL}`} className="plastic-mail__link">
-        {CONTACT_EMAIL}
-      </a>
-      <button
-        type="button"
-        onClick={copy}
-        className="plastic-mail__copy"
-        aria-label="Copy email address"
-      >
-        {copied ? "Copied ✓" : "Copy"}
-      </button>
-      <span className="sr-only" role="status" aria-live="polite">
-        {copied ? "Email address copied" : ""}
-      </span>
-    </div>
-  );
-}
-
 function ContactSlide({ isActive }: { isActive: boolean }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle",
@@ -393,26 +355,172 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
       data-section-scroll
     >
       <div className="min-h-full flex items-center">
-        <div className="w-full max-w-[1280px] mx-auto px-6 md:px-12 py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-            <div className="lg:col-span-5">
-              <SlideReveal isActive={isActive}>
-                <p className="plastic-label mb-6">Contact</p>
-                <SplitReveal
-                  as="h2"
-                  text="Let's build something together."
-                  className="plastic-headline block mb-6"
-                  delay={60}
-                  trigger={isActive}
-                />
-              </SlideReveal>
-              <SlideReveal isActive={isActive} delay={0.12}>
-                <p className="plastic-paragraph text-foreground/70 max-w-sm">
-                  Products, a collaboration, or integrating sovereign AI — write
-                  once and it reaches a person, not a queue.
+        <div className="w-full max-w-[880px] mx-auto px-6 md:px-12 py-14">
+          <SlideReveal isActive={isActive}>
+            <p className="plastic-label">Contact</p>
+            <SplitReveal
+              as="h2"
+              text="Write to us."
+              className="plastic-letter__title block"
+              delay={60}
+              trigger={isActive}
+            />
+            <p className="plastic-letter__lede">
+              One person reads this. Products, a collaboration, or integrating
+              sovereign AI — say what you are making and why it matters.
+            </p>
+          </SlideReveal>
+
+          <SlideReveal isActive={isActive} delay={0.12}>
+            {status === "sent" ? (
+              <div
+                ref={statusRef}
+                tabIndex={-1}
+                role="status"
+                aria-live="polite"
+                className="plastic-letter__sent outline-none"
+              >
+                <p className="plastic-letter__label">Sent</p>
+                <p className="plastic-letter__title plastic-letter__title--sent">
+                  Thank you.
                 </p>
-                <div className="plastic-contact-ways">
-                  <CopyEmail />
+                <p className="plastic-letter__lede">
+                  {sentTo ? (
+                    <>
+                      Your message reached us from{" "}
+                      <span className="text-foreground">{sentTo}</span>.{" "}
+                    </>
+                  ) : (
+                    "Your message reached us. "
+                  )}
+                  You&apos;ll get a reply within two working days.
+                </p>
+                <button type="button" onClick={writeAnother} className="plastic-letter__again">
+                  Write another <span aria-hidden>→</span>
+                </button>
+              </div>
+            ) : (
+              <form
+                ref={formRef}
+                onSubmit={handleSubmit}
+                className="plastic-letter"
+                noValidate
+                aria-busy={status === "sending"}
+              >
+                <input type="hidden" name="subject" value="general" />
+
+                <div className="plastic-letter__field">
+                  <label htmlFor="contact-name" className="plastic-letter__label">
+                    Who is writing
+                  </label>
+                  <input
+                    id="contact-name"
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                    placeholder="Your name"
+                    required
+                    className={cn(
+                      "plastic-letter__input",
+                      fieldErrors.name && "plastic-letter__input--invalid",
+                    )}
+                    aria-invalid={fieldErrors.name ? true : undefined}
+                    aria-describedby={fieldErrors.name ? "contact-name-error" : undefined}
+                    disabled={fieldsLocked}
+                    onChange={() => clearFieldError("name")}
+                  />
+                  {fieldErrors.name && (
+                    <p id="contact-name-error" className="plastic-field-error" role="alert">
+                      {fieldErrors.name}
+                    </p>
+                  )}
+                </div>
+
+                <div className="plastic-letter__field">
+                  <label htmlFor="contact-email" className="plastic-letter__label">
+                    Where to write back
+                  </label>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    inputMode="email"
+                    placeholder="you@company.com"
+                    required
+                    className={cn(
+                      "plastic-letter__input",
+                      fieldErrors.email && "plastic-letter__input--invalid",
+                    )}
+                    aria-invalid={fieldErrors.email ? true : undefined}
+                    aria-describedby={fieldErrors.email ? "contact-email-error" : undefined}
+                    disabled={fieldsLocked}
+                    onChange={() => clearFieldError("email")}
+                  />
+                  {fieldErrors.email && (
+                    <p id="contact-email-error" className="plastic-field-error" role="alert">
+                      {fieldErrors.email}
+                    </p>
+                  )}
+                </div>
+
+                <div className="plastic-letter__field">
+                  <label htmlFor="contact-message" className="plastic-letter__label">
+                    What are we making
+                  </label>
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    rows={3}
+                    placeholder="A paragraph is plenty. A link is welcome."
+                    required
+                    className={cn(
+                      "plastic-letter__input plastic-letter__input--area",
+                      fieldErrors.message && "plastic-letter__input--invalid",
+                    )}
+                    aria-invalid={fieldErrors.message ? true : undefined}
+                    aria-describedby={
+                      fieldErrors.message
+                        ? "contact-message-error contact-message-hint"
+                        : "contact-message-hint"
+                    }
+                    disabled={fieldsLocked}
+                    onChange={() => clearFieldError("message")}
+                  />
+                  {fieldErrors.message && (
+                    <p id="contact-message-error" className="plastic-field-error" role="alert">
+                      {fieldErrors.message}
+                    </p>
+                  )}
+                  <p id="contact-message-hint" className="plastic-letter__hint">
+                    All three fields are required. Only used to reply — no list,
+                    no sharing.
+                  </p>
+                </div>
+
+                {status === "error" && (
+                  <p role="alert" className="plastic-form-alert">
+                    {errorMessage}
+                  </p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={fieldsLocked}
+                  className={cn("plastic-send", fieldsLocked && "plastic-send--busy")}
+                >
+                  <span>{status === "sending" ? "Sending…" : "Send message"}</span>
+                  <span aria-hidden className="plastic-send__arrow">
+                    →
+                  </span>
+                </button>
+
+                <p className="plastic-letter__elsewhere">
+                  Or write to{" "}
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="plastic-facts__link">
+                    {CONTACT_EMAIL}
+                  </a>
+                  <span aria-hidden> · </span>
                   <a
                     href="https://github.com/Fuuurma"
                     target="_blank"
@@ -421,181 +529,10 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                   >
                     github.com/Fuuurma
                   </a>
-                </div>
-              </SlideReveal>
-            </div>
-
-            <SlideReveal
-              isActive={isActive}
-              className="lg:col-span-6 lg:col-start-7"
-              delay={0.18}
-            >
-              {status === "sent" ? (
-                <div
-                  ref={statusRef}
-                  tabIndex={-1}
-                  role="status"
-                  aria-live="polite"
-                  className="plastic-sent outline-none"
-                >
-                  <p className="plastic-label">Sent</p>
-                  <p className="plastic-sent__title">Thank you.</p>
-                  <p className="plastic-paragraph text-foreground/70 max-w-[46ch]">
-                    {sentTo ? (
-                      <>
-                        Your message reached us from{" "}
-                        <span className="text-foreground">{sentTo}</span>.{" "}
-                      </>
-                    ) : (
-                      "Your message reached us. "
-                    )}
-                    You&apos;ll get a reply within two working days.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={writeAnother}
-                    className="plastic-link-button"
-                  >
-                    Write another <span aria-hidden>→</span>
-                  </button>
-                </div>
-              ) : (
-                <form
-                  ref={formRef}
-                  onSubmit={handleSubmit}
-                  className="plastic-contact-form"
-                  noValidate
-                  aria-busy={status === "sending"}
-                >
-                  <input type="hidden" name="subject" value="general" />
-
-                  <div className="plastic-contact-form__row">
-                    <div className="plastic-field-group">
-                      <label htmlFor="contact-name" className="plastic-label block mb-2">
-                        Name
-                      </label>
-                      <input
-                        id="contact-name"
-                        name="name"
-                        type="text"
-                        autoComplete="name"
-                        placeholder="Your name"
-                        required
-                        className={cn(
-                          "plastic-field w-full border-b bg-transparent pb-2.5 pt-1 text-foreground outline-none transition-colors",
-                          fieldErrors.name
-                            ? "border-foreground plastic-field--invalid"
-                            : "border-foreground/25 focus-visible:border-foreground",
-                        )}
-                        aria-invalid={fieldErrors.name ? true : undefined}
-                        aria-describedby={
-                          fieldErrors.name ? "contact-name-error" : undefined
-                        }
-                        disabled={fieldsLocked}
-                        onChange={() => clearFieldError("name")}
-                      />
-                      {fieldErrors.name && (
-                        <p id="contact-name-error" className="plastic-field-error" role="alert">
-                          {fieldErrors.name}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="plastic-field-group">
-                      <label htmlFor="contact-email" className="plastic-label block mb-2">
-                        Email
-                      </label>
-                      <input
-                        id="contact-email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        inputMode="email"
-                        placeholder="you@company.com"
-                        required
-                        className={cn(
-                          "plastic-field w-full border-b bg-transparent pb-2.5 pt-1 text-foreground outline-none transition-colors",
-                          fieldErrors.email
-                            ? "border-foreground plastic-field--invalid"
-                            : "border-foreground/25 focus-visible:border-foreground",
-                        )}
-                        aria-invalid={fieldErrors.email ? true : undefined}
-                        aria-describedby={
-                          fieldErrors.email ? "contact-email-error" : undefined
-                        }
-                        disabled={fieldsLocked}
-                        onChange={() => clearFieldError("email")}
-                      />
-                      {fieldErrors.email && (
-                        <p id="contact-email-error" className="plastic-field-error" role="alert">
-                          {fieldErrors.email}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="plastic-field-group">
-                    <label htmlFor="contact-message" className="plastic-label block mb-2">
-                      Message
-                    </label>
-                    <textarea
-                      id="contact-message"
-                      name="message"
-                      rows={5}
-                      placeholder="What you are building…"
-                      required
-                      className={cn(
-                        "plastic-field plastic-field--area w-full resize-none border-b bg-transparent pb-2.5 pt-1 text-foreground outline-none transition-colors",
-                        fieldErrors.message
-                          ? "border-foreground plastic-field--invalid"
-                          : "border-foreground/25 focus-visible:border-foreground",
-                      )}
-                      aria-invalid={fieldErrors.message ? true : undefined}
-                      aria-describedby={
-                        fieldErrors.message
-                          ? "contact-message-error contact-message-hint"
-                          : "contact-message-hint"
-                      }
-                      disabled={fieldsLocked}
-                      onChange={() => clearFieldError("message")}
-                    />
-                    {fieldErrors.message && (
-                      <p id="contact-message-error" className="plastic-field-error" role="alert">
-                        {fieldErrors.message}
-                      </p>
-                    )}
-                    <p id="contact-message-hint" className="plastic-hint">
-                      A link is welcome. All fields are required.
-                    </p>
-                  </div>
-
-                  {status === "error" && (
-                    <p role="alert" className="plastic-form-alert">
-                      {errorMessage}
-                    </p>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={fieldsLocked}
-                    className={cn(
-                      "plastic-send",
-                      fieldsLocked && "plastic-send--busy",
-                    )}
-                  >
-                    <span>{status === "sending" ? "Sending…" : "Send message"}</span>
-                    <span aria-hidden className="plastic-send__arrow">
-                      →
-                    </span>
-                  </button>
-
-                  <p className="plastic-hint">
-                    Only used to reply. No list, no sharing.
-                  </p>
-                </form>
-              )}
-            </SlideReveal>
-          </div>
+                </p>
+              </form>
+            )}
+          </SlideReveal>
         </div>
       </div>
     </div>

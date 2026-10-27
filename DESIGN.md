@@ -344,78 +344,63 @@ Rules:
 - A new project enters the catalogue with a page, a visual and a description
   written from evidence, never from ambition.
 
-## The contact is a page of facts and one form (2026-10-27)
+## The contact is a letter (2026-10-27, second cut)
 
-Owner's read: *now it's bad & slop.* The panel was two columns of type with
-underlined fields and a black slab for a button: no promise of a reply, no
-privacy line, no error design beyond a border, and an action that read like a
-banner ad.
+First cut was facts on the left and a form on the right. Owner: *still slop.*
+Fair — it was the stock two-column contact with better manners.
 
-**Direction:** the locked quiet mono editorial (this file). **References:**
-Stripe's `contact/sales` — context on the left, form on the right, one column of
-fields; Linear's lead form — one primary action, no placeholder standing in for
-a label; gionatannese.com — the page is rules and type, no boxes, no shadows.
-**Craft move:** *a field is a rule, not a box* — the label fills with ink as the
-field takes focus, and the error doubles the rule instead of colouring it
-(there is no hue on this page). **Catalog pick:** none — the form is native
-plus the schema the repo already had.
+The panel is now one letter, 880px wide, in one column. The question sits in
+the margin as a mono label; the answer is written on the rule beside it, at
+reading size in the page's own face. Three questions, one action, and the two
+other ways to reach a person under the last rule. No boxes, no table, no second
+column to fill.
 
-What the panel is now:
-
-- **Left: the facts.** Email (with Copy), GitHub, **Reply — within two working
-  days**, **Based in — Sitges**, as a hairline table. A stranger learns who
-  answers and when before deciding to write.
-- **Right: the form.** Name and Email share one row (they are one fact each);
-  Message is the only field that is a sheet rather than a rule — a hairline box
-  with a breath of paper in it, because a paragraph needs a place. Labels are
-  the mono small step above every field; placeholders show shape, never the
-  label.
-- **The action is a rule of its own.** Full width, hairlines above and below, the
-  ink inverting on hover, the arrow stepping right. Not a filled slab.
-- **The states are designed.** Inline error under the field it belongs to plus a
-  summary band above the action; `sending` locks the fields and says so; `sent`
-  replaces the form with a page — "Thank you", the address the message came from,
-  and when the reply arrives — with one way back (Write another). The message is
-  only ever claimed as sent when the provider acknowledged it (the contract in
-  `src/lib/contact-provider.ts`).
-- **The end of the form answers "what happens now".** Only used to reply, no
-  list, no sharing, and the address itself for anyone who prefers mail.
+- **Who is writing** · **Where to write back** · **What are we making** — the
+  labels are questions, because a label is a question the reader answers.
+- The answer is type, not a control: the field has no box, only the rule under
+  it, and the rule is part of the row.
+- **Send message** is the last rule: full width, inverting on hover.
+- Errors: said once where the mistake is, once above the action.
+- Sent: the form is replaced by "Thank you", the address it came from, and when
+  the reply arrives, with one way back. Success is still only claimed when the
+  provider acknowledged it.
 
 Rules:
-- A form that asks for a message promises an answer. No promise, no form.
-- Fields are rules; the action is a rule. A filled slab is another site's
-  language.
-- Errors are said twice: once where the mistake is, once where the action is.
-- Success is a page, not a toast, and it never claims more than the provider
-  acknowledged.
+- A contact page is one column. Two columns is a form beside a text block, and
+  the reader has to choose which one to read first.
+- The question lives in the margin; the answer is type on the page, not an
+  input box.
+- The action is a rule, not a slab.
 
-## Every letter has to finish — the face changes (2026-10-27)
+## The footer: a sunset on paper, a moon on black (2026-10-27)
 
-Owner's read, twice, on the contact page and on the type: *see the g letters, it's
-happening always, they cannot finish the bottom of the g, on none ever.*
+The plate was painted black in both themes. Owner: *the light theme is the
+sunset — it should be whitish and not black; on dark where it's the moonlight,
+that's good, no change there.*
 
-It was not a rendering bug. Syne draws its `g` with a severed descender — a
-deliberate quirk of the typeface. Proof: the same word set in the Google Fonts
-original file (`gstatic` v24 woff2) at 90px, outside this codebase and this
-browser's stack, draws the identical cut bowl and stub tail. No stylistic set
-changes it (`ss01`–`ss05`, `salt`, all tested): the glyph has one shape.
+The footer now reads two tokens — `--plate-paper` and `--plate-ink` — and the
+screen resolves them, so the same solver draws both plates. On the dark theme
+they are the black plate and white ink, and the moon (unchanged). On the light
+theme they are a warm paper (`oklch(0.965 0.008 88)`) and near-black ink, and
+the sun sits low on the right at radius 0.115 — a sunset printed on paper.
 
-A typeface whose `g` reads as broken cannot carry a studio's own site, at
-paragraph size or at 190px. **The face is now Instrument Sans**, one family for
-display and running text (next/font, `--font-sans`), with Cormorant for the
-serif and JetBrains Mono for labels unchanged. Syne is gone from the bundle.
+**The sea is lighter than the type on paper.** `--plate-water` is the ink at
+62% transparency in the light theme and the full ink in the dark one: on black
+the water and the type are the same white, on paper a field of heavy marks would
+read as a stain, not as water.
 
-What that costs, and what it buys: the geometric width and the quirk of Syne are
-lost, and with them the one thing that made the page's big type unmistakably
-its own. What it buys is that every word on the page finishes — which, on a
-site whose argument is craft, is the higher bar.
+**The tokens live on the root, not on the plate.** The screen resolves a colour
+by probing a detached element in the body, so a token scoped to the footer
+resolved to the fallback (black) and the light plate stayed black. And the
+screen is remounted on a theme switch (`key={theme}`): its inks are resolved
+when it mounts, and a fresh mount is cheaper than proving every repaint path.
 
 Rules:
-- No letterform may read as a defect. A quirk is a feature only when it reads
-  as intent at the size it is used.
-- One family for display and text unless a second face earns a job.
-- A font decision is proven on the real page at 12px, 16px and 190px, not in a
-  specimen.
+- A plate that is painted has its own tokens; it does not borrow the page's
+  foreground.
+- The light plate is a sunset, the dark plate is a night; both are the same
+  drawing with the paper and ink swapped.
+- Water is never heavier than the type it sits under.
 
 ## Softer screens — a plate for a footer, and no black boxes (2026-10-21)
 

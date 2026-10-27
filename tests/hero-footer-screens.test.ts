@@ -157,20 +157,33 @@ test("the footer is one plate: the type in the sky, the water in its own zone", 
   );
 });
 
-test("the footer is a fixed black plate in both themes, and the solver is the house's", () => {
-  // Like the hero, the footer is painted black outright: the page's dark
-  // theme must not turn it into a white sheet.
-  assert.ok(
-    /bg-black text-white/.test(footer),
-    "the footer plate must be painted black, not with the theme's token",
+test("the footer is moonlight on black, and a sunset on light paper", () => {
+  // The plate is painted, not themed with the page: black with the moon in the
+  // dark theme, warm paper with the sun in the light one. Both read the same
+  // two tokens, so the solver draws either without knowing which it is in.
+  assert.match(footer, /studio-plate/);
+  assert.match(
+    footer,
+    /color="var\(--plate-water\)"/,
+    "the water must print in the plate's water token",
+  );
+  assert.match(
+    footer,
+    /backgroundColor="var\(--plate-paper\)"/,
+    "the water must print on the plate's paper token",
+  );
+  assert.match(
+    css,
+    /html\.light \{[^}]*--plate-paper: var\(--plate-sunset-paper\)/,
+    "the light theme is the sunset: warm paper, not black",
+  );
+  assert.match(
+    css,
+    /html\.light \{[^}]*--plate-ink: var\(--plate-sunset-ink\)/,
   );
   assert.ok(
-    !/plastic-on-dark|bg-foreground/.test(footer),
-    "the footer must not follow the theme's foreground",
-  );
-  assert.ok(
-    /color="#ffffff"/.test(footer) && /backgroundColor="#000000"/.test(footer),
-    "the water must print white on black in both themes",
+    !/bg-black text-white/.test(footer),
+    "the plate must not hardcode black and white any more",
   );
 
   // The particle fluid is gone: it lost 94% of its volume and collapsed.
