@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
-import { Syne, Cormorant, JetBrains_Mono } from "next/font/google";
+import { Cormorant, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LayoutChrome } from "@/components/LayoutChrome";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Analytics } from "@/components/Analytics";
 import { getOgImageUrl } from "@/lib/metadata";
 
-const syne = Syne({
+// The face the site is set in. It was Syne, whose `g` has a severed descender
+// by design — the Google Fonts original draws it the same way, so it is not a
+// rendering bug, it is the typeface, and at any size it reads as an unfinished
+// letter. Furma's 2026-10-27 call: every letter has to finish.
+const instrument = Instrument_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
-  weight: ["400", "500", "600", "700"],
 });
 
 const cormorant = Cormorant({
@@ -88,7 +91,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${syne.variable} ${cormorant.variable} ${jetbrainsMono.variable} scroll-smooth`} suppressHydrationWarning>
+    <html lang="en" className={`${cormorant.variable} ${jetbrainsMono.variable} ${instrument.variable} scroll-smooth`} suppressHydrationWarning>
       <body className="font-sans antialiased min-h-screen flex flex-col">
         <script
           type="application/ld+json"

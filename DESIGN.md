@@ -4,9 +4,9 @@
 
 ## Direction
 
-**Quiet mono editorial (v1 public home)** — Syne / Cormorant / JetBrains,
-B/W. `/v2` Workshop (cream + orange) is an alternate concept, not the default
-public face until a deliberate cutover.
+**Quiet mono editorial (v1 public home)** — Instrument Sans / Cormorant /
+JetBrains Mono, B/W. `/v2` Workshop (cream + orange) is an alternate concept,
+not the default public face until a deliberate cutover.
 
 ### References
 - gionatannese.com — nerdy details, restraint
@@ -343,6 +343,79 @@ Rules:
   says as much in its own words.
 - A new project enters the catalogue with a page, a visual and a description
   written from evidence, never from ambition.
+
+## The contact is a page of facts and one form (2026-10-27)
+
+Owner's read: *now it's bad & slop.* The panel was two columns of type with
+underlined fields and a black slab for a button: no promise of a reply, no
+privacy line, no error design beyond a border, and an action that read like a
+banner ad.
+
+**Direction:** the locked quiet mono editorial (this file). **References:**
+Stripe's `contact/sales` — context on the left, form on the right, one column of
+fields; Linear's lead form — one primary action, no placeholder standing in for
+a label; gionatannese.com — the page is rules and type, no boxes, no shadows.
+**Craft move:** *a field is a rule, not a box* — the label fills with ink as the
+field takes focus, and the error doubles the rule instead of colouring it
+(there is no hue on this page). **Catalog pick:** none — the form is native
+plus the schema the repo already had.
+
+What the panel is now:
+
+- **Left: the facts.** Email (with Copy), GitHub, **Reply — within two working
+  days**, **Based in — Sitges**, as a hairline table. A stranger learns who
+  answers and when before deciding to write.
+- **Right: the form.** Name and Email share one row (they are one fact each);
+  Message is the only field that is a sheet rather than a rule — a hairline box
+  with a breath of paper in it, because a paragraph needs a place. Labels are
+  the mono small step above every field; placeholders show shape, never the
+  label.
+- **The action is a rule of its own.** Full width, hairlines above and below, the
+  ink inverting on hover, the arrow stepping right. Not a filled slab.
+- **The states are designed.** Inline error under the field it belongs to plus a
+  summary band above the action; `sending` locks the fields and says so; `sent`
+  replaces the form with a page — "Thank you", the address the message came from,
+  and when the reply arrives — with one way back (Write another). The message is
+  only ever claimed as sent when the provider acknowledged it (the contract in
+  `src/lib/contact-provider.ts`).
+- **The end of the form answers "what happens now".** Only used to reply, no
+  list, no sharing, and the address itself for anyone who prefers mail.
+
+Rules:
+- A form that asks for a message promises an answer. No promise, no form.
+- Fields are rules; the action is a rule. A filled slab is another site's
+  language.
+- Errors are said twice: once where the mistake is, once where the action is.
+- Success is a page, not a toast, and it never claims more than the provider
+  acknowledged.
+
+## Every letter has to finish — the face changes (2026-10-27)
+
+Owner's read, twice, on the contact page and on the type: *see the g letters, it's
+happening always, they cannot finish the bottom of the g, on none ever.*
+
+It was not a rendering bug. Syne draws its `g` with a severed descender — a
+deliberate quirk of the typeface. Proof: the same word set in the Google Fonts
+original file (`gstatic` v24 woff2) at 90px, outside this codebase and this
+browser's stack, draws the identical cut bowl and stub tail. No stylistic set
+changes it (`ss01`–`ss05`, `salt`, all tested): the glyph has one shape.
+
+A typeface whose `g` reads as broken cannot carry a studio's own site, at
+paragraph size or at 190px. **The face is now Instrument Sans**, one family for
+display and running text (next/font, `--font-sans`), with Cormorant for the
+serif and JetBrains Mono for labels unchanged. Syne is gone from the bundle.
+
+What that costs, and what it buys: the geometric width and the quirk of Syne are
+lost, and with them the one thing that made the page's big type unmistakably
+its own. What it buys is that every word on the page finishes — which, on a
+site whose argument is craft, is the higher bar.
+
+Rules:
+- No letterform may read as a defect. A quirk is a feature only when it reads
+  as intent at the size it is used.
+- One family for display and text unless a second face earns a job.
+- A font decision is proven on the real page at 12px, 16px and 190px, not in a
+  specimen.
 
 ## Softer screens — a plate for a footer, and no black boxes (2026-10-21)
 

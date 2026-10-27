@@ -295,8 +295,9 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
   );
   const [errorMessage, setErrorMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [sentTo, setSentTo] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
-  const statusRef = useRef<HTMLParagraphElement>(null);
+  const statusRef = useRef<HTMLDivElement>(null);
 
   function clearFieldError(field: string) {
     setFieldErrors((prev) => {
@@ -313,7 +314,9 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
       email: "contact-email",
       message: "contact-message",
     };
-    const first = (["name", "email", "message"] as const).find((key) => errors[key]);
+    const first = (["name", "email", "message"] as const).find(
+      (key) => errors[key],
+    );
     if (!first || !formRef.current) return;
     formRef.current.querySelector<HTMLElement>(`#${ids[first]}`)?.focus();
   }
@@ -362,20 +365,27 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
         else statusRef.current?.focus();
         return;
       }
+      setSentTo(payload.email);
       setStatus("sent");
       formRef.current?.reset();
-      window.setTimeout(() => setStatus("idle"), 6000);
     } catch {
       setStatus("error");
       setErrorMessage("Couldn't send right now. Please try again in a moment.");
     }
   }
 
+  function writeAnother() {
+    setStatus("idle");
+    setSentTo("");
+    setErrorMessage("");
+    setFieldErrors({});
+  }
+
   useEffect(() => {
     if (status === "sent") statusRef.current?.focus();
   }, [status]);
 
-  const fieldsLocked = status === "sending" || status === "sent";
+  const fieldsLocked = status === "sending";
 
   return (
     <div
@@ -383,182 +393,210 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
       data-section-scroll
     >
       <div className="min-h-full flex items-center">
-      <div className="w-full max-w-[1280px] mx-auto px-6 md:px-12 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          <div className="lg:col-span-5">
-            <SlideReveal isActive={isActive}>
-              <p className="plastic-label mb-6">Contact</p>
-              <SplitReveal
-                as="h2"
-                text="Let's build something together."
-                className="plastic-headline block mb-6"
-                delay={60}
-                trigger={isActive}
-              />
-            </SlideReveal>
-            <SlideReveal isActive={isActive} delay={0.12}>
-              <p className="plastic-paragraph text-foreground/70 max-w-sm mb-8">
-                Interested in our products, a collaboration, or integrating
-                sovereign AI? We read every message.
-              </p>
-              <div className="flex flex-col gap-6">
-                <div className="flex flex-col gap-2">
-                  <span className="plastic-label">Email</span>
+        <div className="w-full max-w-[1280px] mx-auto px-6 md:px-12 py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            <div className="lg:col-span-5">
+              <SlideReveal isActive={isActive}>
+                <p className="plastic-label mb-6">Contact</p>
+                <SplitReveal
+                  as="h2"
+                  text="Let's build something together."
+                  className="plastic-headline block mb-6"
+                  delay={60}
+                  trigger={isActive}
+                />
+              </SlideReveal>
+              <SlideReveal isActive={isActive} delay={0.12}>
+                <p className="plastic-paragraph text-foreground/70 max-w-sm">
+                  Products, a collaboration, or integrating sovereign AI — write
+                  once and it reaches a person, not a queue.
+                </p>
+                <div className="plastic-contact-ways">
                   <CopyEmail />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className="plastic-label">GitHub</span>
                   <a
                     href="https://github.com/Fuuurma"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="self-start text-body text-foreground border-b border-foreground/20 pb-0.5 hover:border-foreground transition-colors"
+                    className="plastic-facts__link"
                   >
-                    @Fuuurma
+                    github.com/Fuuurma
                   </a>
                 </div>
-              </div>
-            </SlideReveal>
-          </div>
-          <SlideReveal
-            isActive={isActive}
-            className="lg:col-span-6 lg:col-start-7"
-            delay={0.18}
-          >
-            <form
-              ref={formRef}
-              onSubmit={handleSubmit}
-              className="flex flex-col gap-6"
-              noValidate
-              aria-busy={status === "sending"}
+              </SlideReveal>
+            </div>
+
+            <SlideReveal
+              isActive={isActive}
+              className="lg:col-span-6 lg:col-start-7"
+              delay={0.18}
             >
-              <input type="hidden" name="subject" value="general" />
-              {[
-                {
-                  id: "contact-name",
-                  name: "name",
-                  label: "Name",
-                  type: "text",
-                  placeholder: "Your name",
-                  autoComplete: "name",
-                },
-                {
-                  id: "contact-email",
-                  name: "email",
-                  label: "Email",
-                  type: "email",
-                  placeholder: "your@email.com",
-                  autoComplete: "email",
-                },
-              ].map((f) => {
-                const errorId = `${f.id}-error`;
-                const hasError = Boolean(fieldErrors[f.name]);
-                return (
-                  <div key={f.id} className="plastic-field-group">
-                    <label htmlFor={f.id} className="plastic-label block mb-2">
-                      {f.label}
+              {status === "sent" ? (
+                <div
+                  ref={statusRef}
+                  tabIndex={-1}
+                  role="status"
+                  aria-live="polite"
+                  className="plastic-sent outline-none"
+                >
+                  <p className="plastic-label">Sent</p>
+                  <p className="plastic-sent__title">Thank you.</p>
+                  <p className="plastic-paragraph text-foreground/70 max-w-[46ch]">
+                    {sentTo ? (
+                      <>
+                        Your message reached us from{" "}
+                        <span className="text-foreground">{sentTo}</span>.{" "}
+                      </>
+                    ) : (
+                      "Your message reached us. "
+                    )}
+                    You&apos;ll get a reply within two working days.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={writeAnother}
+                    className="plastic-link-button"
+                  >
+                    Write another <span aria-hidden>→</span>
+                  </button>
+                </div>
+              ) : (
+                <form
+                  ref={formRef}
+                  onSubmit={handleSubmit}
+                  className="plastic-contact-form"
+                  noValidate
+                  aria-busy={status === "sending"}
+                >
+                  <input type="hidden" name="subject" value="general" />
+
+                  <div className="plastic-contact-form__row">
+                    <div className="plastic-field-group">
+                      <label htmlFor="contact-name" className="plastic-label block mb-2">
+                        Name
+                      </label>
+                      <input
+                        id="contact-name"
+                        name="name"
+                        type="text"
+                        autoComplete="name"
+                        placeholder="Your name"
+                        required
+                        className={cn(
+                          "plastic-field w-full border-b bg-transparent pb-2.5 pt-1 text-foreground outline-none transition-colors",
+                          fieldErrors.name
+                            ? "border-foreground plastic-field--invalid"
+                            : "border-foreground/25 focus-visible:border-foreground",
+                        )}
+                        aria-invalid={fieldErrors.name ? true : undefined}
+                        aria-describedby={
+                          fieldErrors.name ? "contact-name-error" : undefined
+                        }
+                        disabled={fieldsLocked}
+                        onChange={() => clearFieldError("name")}
+                      />
+                      {fieldErrors.name && (
+                        <p id="contact-name-error" className="plastic-field-error" role="alert">
+                          {fieldErrors.name}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="plastic-field-group">
+                      <label htmlFor="contact-email" className="plastic-label block mb-2">
+                        Email
+                      </label>
+                      <input
+                        id="contact-email"
+                        name="email"
+                        type="email"
+                        autoComplete="email"
+                        inputMode="email"
+                        placeholder="you@company.com"
+                        required
+                        className={cn(
+                          "plastic-field w-full border-b bg-transparent pb-2.5 pt-1 text-foreground outline-none transition-colors",
+                          fieldErrors.email
+                            ? "border-foreground plastic-field--invalid"
+                            : "border-foreground/25 focus-visible:border-foreground",
+                        )}
+                        aria-invalid={fieldErrors.email ? true : undefined}
+                        aria-describedby={
+                          fieldErrors.email ? "contact-email-error" : undefined
+                        }
+                        disabled={fieldsLocked}
+                        onChange={() => clearFieldError("email")}
+                      />
+                      {fieldErrors.email && (
+                        <p id="contact-email-error" className="plastic-field-error" role="alert">
+                          {fieldErrors.email}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="plastic-field-group">
+                    <label htmlFor="contact-message" className="plastic-label block mb-2">
+                      Message
                     </label>
-                    <input
-                      id={f.id}
-                      name={f.name}
-                      type={f.type}
-                      placeholder={f.placeholder}
-                      autoComplete={f.autoComplete}
+                    <textarea
+                      id="contact-message"
+                      name="message"
+                      rows={5}
+                      placeholder="What you are building…"
+                      required
                       className={cn(
-                        "plastic-field w-full border-b bg-transparent pb-2.5 pt-1 font-mono text-small text-foreground placeholder:text-foreground/60 outline-none transition-colors",
-                        hasError
+                        "plastic-field plastic-field--area w-full resize-none border-b bg-transparent pb-2.5 pt-1 text-foreground outline-none transition-colors",
+                        fieldErrors.message
                           ? "border-foreground plastic-field--invalid"
                           : "border-foreground/25 focus-visible:border-foreground",
                       )}
-                      aria-invalid={hasError || undefined}
-                      aria-describedby={hasError ? errorId : undefined}
+                      aria-invalid={fieldErrors.message ? true : undefined}
+                      aria-describedby={
+                        fieldErrors.message
+                          ? "contact-message-error contact-message-hint"
+                          : "contact-message-hint"
+                      }
                       disabled={fieldsLocked}
-                      onChange={() => clearFieldError(f.name)}
+                      onChange={() => clearFieldError("message")}
                     />
-                    {hasError && (
-                      <p id={errorId} className="plastic-field-error" role="alert">
-                        {fieldErrors[f.name]}
+                    {fieldErrors.message && (
+                      <p id="contact-message-error" className="plastic-field-error" role="alert">
+                        {fieldErrors.message}
                       </p>
                     )}
+                    <p id="contact-message-hint" className="plastic-hint">
+                      A link is welcome. All fields are required.
+                    </p>
                   </div>
-                );
-              })}
-              <div className="plastic-field-group">
-                <label htmlFor="contact-message" className="plastic-label block mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="contact-message"
-                  name="message"
-                  rows={3}
-                  placeholder="Tell us what you're building…"
-                  className={cn(
-                    "plastic-field w-full resize-none border-b bg-transparent pb-2.5 pt-1 font-mono text-small text-foreground placeholder:text-foreground/60 outline-none transition-colors",
-                    fieldErrors.message
-                      ? "border-foreground plastic-field--invalid"
-                      : "border-foreground/25 focus-visible:border-foreground",
+
+                  {status === "error" && (
+                    <p role="alert" className="plastic-form-alert">
+                      {errorMessage}
+                    </p>
                   )}
-                  aria-invalid={fieldErrors.message ? true : undefined}
-                  aria-describedby={
-                    fieldErrors.message ? "contact-message-error" : undefined
-                  }
-                  disabled={fieldsLocked}
-                  onChange={() => clearFieldError("message")}
-                />
-                {fieldErrors.message && (
-                  <p
-                    id="contact-message-error"
-                    className="plastic-field-error"
-                    role="alert"
+
+                  <button
+                    type="submit"
+                    disabled={fieldsLocked}
+                    className={cn(
+                      "plastic-send",
+                      fieldsLocked && "plastic-send--busy",
+                    )}
                   >
-                    {fieldErrors.message}
+                    <span>{status === "sending" ? "Sending…" : "Send message"}</span>
+                    <span aria-hidden className="plastic-send__arrow">
+                      →
+                    </span>
+                  </button>
+
+                  <p className="plastic-hint">
+                    Only used to reply. No list, no sharing.
                   </p>
-                )}
-              </div>
-              <p
-                ref={statusRef}
-                id="contact-form-status"
-                role="status"
-                aria-live="polite"
-                tabIndex={-1}
-                className={cn(
-                  "font-mono text-meta uppercase tracking-[0.12em] outline-none min-h-[1.25rem]",
-                  status === "idle"
-                    ? "sr-only"
-                    : status === "error"
-                      ? "text-foreground"
-                      : "text-foreground/70",
-                )}
-              >
-                {status === "sending"
-                  ? "Sending your message…"
-                  : status === "sent"
-                    ? "Message sent. We'll get back to you soon."
-                    : status === "error"
-                      ? errorMessage
-                      : ""}
-              </p>
-              <button
-                type="submit"
-                disabled={fieldsLocked}
-                className={cn(
-                  "plastic-submit h-12 w-full font-mono text-meta uppercase tracking-[0.12em] transition-opacity duration-300",
-                  status === "sent"
-                    ? "bg-foreground/80 text-background"
-                    : "bg-foreground text-background hover:opacity-80",
-                  fieldsLocked && "cursor-not-allowed",
-                )}
-              >
-                {status === "sending"
-                  ? "Sending…"
-                  : status === "sent"
-                    ? "Sent ✓"
-                    : "Send message →"}
-              </button>
-            </form>
-          </SlideReveal>
+                </form>
+              )}
+            </SlideReveal>
+          </div>
         </div>
-      </div>
       </div>
     </div>
   );
