@@ -52,7 +52,7 @@
 
 @theme inline {
   --font-serif: var(--font-cormorant);
-  --font-sans: var(--font-syne);
+  --font-sans: var(--font-instrument);
   --font-mono: var(--font-jetbrains);
 
   --color-background: var(--background);
@@ -353,6 +353,7 @@ body {
 .font-sans {
   font-family: var(--font-sans);
 }
+
 
 /* Focus styles for accessibility */
 a:focus-visible,
@@ -1008,37 +1009,19 @@ html {
    fills with ink as the field takes focus, and the action is a rule that
    inverts on hover. No hue anywhere — the house has none. */
 
-.plastic-facts {
-  margin: clamp(24px, 4vh, 40px) 0 0;
-  border-top: 1px solid var(--foreground);
-}
-
-.plastic-facts__row {
-  display: grid;
-  grid-template-columns: 7.5rem minmax(0, 1fr);
-  gap: 8px 16px;
-  align-items: baseline;
-  padding: 12px 0;
-  border-bottom: 1px solid color-mix(in oklch, var(--foreground), transparent 84%);
-}
-
-.plastic-facts dt {
-  font-family: var(--font-mono);
-  font-size: var(--text-label);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: color-mix(in oklch, var(--foreground), transparent 40%);
-}
-
-.plastic-facts dd {
-  margin: 0;
-  min-width: 0;
-  font-size: var(--text-small);
-  line-height: 1.4;
+/* Two ways to reach a person, set as themselves: the address at its own size
+   with Copy beside it, the handle under it. No table, no labels, no furniture. */
+.plastic-contact-ways {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  margin-top: clamp(28px, 4vh, 44px);
 }
 
 .plastic-facts__link {
   color: var(--foreground);
+  font-size: var(--text-small);
   border-bottom: 1px solid color-mix(in oklch, var(--foreground), transparent 65%);
   transition: border-color 0.2s ease;
 }
@@ -1046,17 +1029,6 @@ html {
 .plastic-facts__link:hover,
 .plastic-facts__link:focus-visible {
   border-bottom-color: var(--foreground);
-}
-
-.plastic-facts .plastic-mail__link {
-  font-size: inherit;
-  font-family: var(--font-mono);
-  letter-spacing: -0.01em;
-}
-
-.plastic-facts .plastic-mail__copy {
-  font-size: var(--text-label);
-  padding: 2px 8px;
 }
 
 .plastic-contact-form {

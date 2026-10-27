@@ -4,9 +4,9 @@
 
 ## Direction
 
-**Quiet mono editorial (v1 public home)** — Syne / Cormorant / JetBrains,
-B/W. `/v2` Workshop (cream + orange) is an alternate concept, not the default
-public face until a deliberate cutover.
+**Quiet mono editorial (v1 public home)** — Instrument Sans / Cormorant /
+JetBrains Mono, B/W. `/v2` Workshop (cream + orange) is an alternate concept,
+not the default public face until a deliberate cutover.
 
 ### References
 - gionatannese.com — nerdy details, restraint
@@ -388,6 +388,34 @@ Rules:
 - Errors are said twice: once where the mistake is, once where the action is.
 - Success is a page, not a toast, and it never claims more than the provider
   acknowledged.
+
+## Every letter has to finish — the face changes (2026-10-27)
+
+Owner's read, twice, on the contact page and on the type: *see the g letters, it's
+happening always, they cannot finish the bottom of the g, on none ever.*
+
+It was not a rendering bug. Syne draws its `g` with a severed descender — a
+deliberate quirk of the typeface. Proof: the same word set in the Google Fonts
+original file (`gstatic` v24 woff2) at 90px, outside this codebase and this
+browser's stack, draws the identical cut bowl and stub tail. No stylistic set
+changes it (`ss01`–`ss05`, `salt`, all tested): the glyph has one shape.
+
+A typeface whose `g` reads as broken cannot carry a studio's own site, at
+paragraph size or at 190px. **The face is now Instrument Sans**, one family for
+display and running text (next/font, `--font-sans`), with Cormorant for the
+serif and JetBrains Mono for labels unchanged. Syne is gone from the bundle.
+
+What that costs, and what it buys: the geometric width and the quirk of Syne are
+lost, and with them the one thing that made the page's big type unmistakably
+its own. What it buys is that every word on the page finishes — which, on a
+site whose argument is craft, is the higher bar.
+
+Rules:
+- No letterform may read as a defect. A quirk is a feature only when it reads
+  as intent at the size it is used.
+- One family for display and text unless a second face earns a job.
+- A font decision is proven on the real page at 12px, 16px and 190px, not in a
+  specimen.
 
 ## Softer screens — a plate for a footer, and no black boxes (2026-10-21)
 

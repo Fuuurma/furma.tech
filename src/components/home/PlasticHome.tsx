@@ -411,35 +411,17 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                   Products, a collaboration, or integrating sovereign AI — write
                   once and it reaches a person, not a queue.
                 </p>
-                <dl className="plastic-facts">
-                  <div className="plastic-facts__row">
-                    <dt>Email</dt>
-                    <dd>
-                      <CopyEmail />
-                    </dd>
-                  </div>
-                  <div className="plastic-facts__row">
-                    <dt>GitHub</dt>
-                    <dd>
-                      <a
-                        href="https://github.com/Fuuurma"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="plastic-facts__link"
-                      >
-                        @Fuuurma
-                      </a>
-                    </dd>
-                  </div>
-                  <div className="plastic-facts__row">
-                    <dt>Reply</dt>
-                    <dd>Within two working days</dd>
-                  </div>
-                  <div className="plastic-facts__row">
-                    <dt>Based in</dt>
-                    <dd>Sitges, Catalonia</dd>
-                  </div>
-                </dl>
+                <div className="plastic-contact-ways">
+                  <CopyEmail />
+                  <a
+                    href="https://github.com/Fuuurma"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="plastic-facts__link"
+                  >
+                    github.com/Fuuurma
+                  </a>
+                </div>
               </SlideReveal>
             </div>
 
@@ -608,10 +590,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                   </button>
 
                   <p className="plastic-hint">
-                    Only used to reply. No list, no sharing. Prefer email?{" "}
-                    <a href={`mailto:${CONTACT_EMAIL}`} className="plastic-facts__link">
-                      {CONTACT_EMAIL}
-                    </a>
+                    Only used to reply. No list, no sharing.
                   </p>
                 </form>
               )}
