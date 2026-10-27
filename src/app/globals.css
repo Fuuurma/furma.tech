@@ -890,6 +890,7 @@ html {
 }
 
 .plastic-float-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -900,6 +901,15 @@ html {
   color: color-mix(in oklch, var(--foreground), transparent 30%);
   transform-style: preserve-3d;
   will-change: transform;
+}
+
+/* The edge lights as the pointer comes near, before the card moves: the
+   approach is legible even when the pointer is only passing by. */
+.plastic-float-glow {
+  position: absolute;
+  inset: -1px;
+  border: 1px solid color-mix(in oklch, var(--foreground), transparent 46%);
+  pointer-events: none;
 }
 
 .plastic-float-no {

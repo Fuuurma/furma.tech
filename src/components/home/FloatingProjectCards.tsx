@@ -3,14 +3,19 @@
 /**
  * Five project windows float on the index panel's wave.
  *
+ * Each window answers the pointer on its own: the distance from the pointer to
+ * that card's centre decides how much it tilts toward it, how far it lifts, and
+ * how strongly its edge lights. No two cards share a spring, so they never move
+ * as one block — the near card answers first and strongest, the far ones trail.
+ *
  * Decoration, not navigation: the field is `aria-hidden`, takes no pointer
  * events, and listens for nothing a gesture needs — the tour keeps every wheel
- * and touch, and the wave keeps the hand. Tilt follows the mechanic studied in
- * `furma.bloxs` `3d-card`: the pointer's offset from the centre is a degree of
- * rotation per 25px under a 1000px perspective, so depth reads as parallax.
+ * and touch, and the wave keeps the hand. The tilt mechanic is the one studied
+ * in `furma.bloxs` `3d-card`: an offset from the centre is a degree of rotation
+ * per 25px under a 1000px perspective.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionValue,
@@ -22,13 +27,12 @@ import {
 import type { HomeProject } from "@/lib/home-projects";
 import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 
-/** Pointer falloff: px of offset from the centre per degree of tilt. */
-const FALLOFF = 25;
-/** How far the tilt may travel, in degrees. */
-const TILT = 14;
-
-const clamp = (value: number, min: number, max: number) =>
-  Math.max(min, Math.min(max, value));
+/** Offscreen, so a field with no pointer has every card at rest. */
+const NO_POINTER = -10_000;
+/** Degrees of tilt a card takes at the far edge of its reach. */
+const TILT = 16;
+/** How far a card drifts toward the pointer, in px, at its centre. */
+const MAGNET = 12;
 
 type Placement = {
   /** Centre of the card, in % of the stage. */
@@ -44,37 +48,77 @@ type Placement = {
   lift: number;
   breath: number;
   delay: number;
-  /** Cards past the third stay off a narrow screen. */
+  /** Reach of the pointer's pull, in px, and how hard this card answers. */
+  reach: number;
+  answer: number;
+  /** Cards past the second stay off a narrow screen. */
   narrow: boolean;
 };
 
 const PLACEMENTS: readonly Placement[] = [
-  { x: 20, y: 33, depth: 0, rotateX: 6, rotateY: 14, rotateZ: -4, lift: 10, breath: 11, delay: 0, narrow: true },
-  { x: 81, y: 26, depth: -120, rotateX: -5, rotateY: -16, rotateZ: 3, lift: 8, breath: 13, delay: 1.4, narrow: true },
-  { x: 13, y: 72, depth: -200, rotateX: 4, rotateY: 10, rotateZ: 4, lift: 7, breath: 15, delay: 2.6, narrow: false },
-  { x: 88, y: 71, depth: -280, rotateX: -3, rotateY: -12, rotateZ: -3, lift: 6, breath: 12, delay: 0.8, narrow: false },
-  { x: 50, y: 86, depth: -160, rotateX: 5, rotateY: 6, rotateZ: 1, lift: 9, breath: 14, delay: 2, narrow: false },
+  { x: 20, y: 33, depth: 0, rotateX: 6, rotateY: 14, rotateZ: -4, lift: 10, breath: 11, delay: 0, reach: 340, answer: 1, narrow: true },
+  { x: 81, y: 26, depth: -120, rotateX: -5, rotateY: -16, rotateZ: 3, lift: 8, breath: 13, delay: 1.4, reach: 300, answer: 0.8, narrow: true },
+  { x: 13, y: 72, depth: -200, rotateX: 4, rotateY: 10, rotateZ: 4, lift: 7, breath: 15, delay: 2.6, reach: 270, answer: 0.66, narrow: false },
+  { x: 88, y: 71, depth: -280, rotateX: -3, rotateY: -12, rotateZ: -3, lift: 6, breath: 12, delay: 0.8, reach: 250, answer: 0.55, narrow: false },
+  { x: 50, y: 86, depth: -160, rotateX: 5, rotateY: 6, rotateZ: 1, lift: 9, breath: 14, delay: 2, reach: 230, answer: 0.72, narrow: false },
 ];
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.max(min, Math.min(max, value));
+
+type Size = { width: number; height: number };
 
 function FloatCard({
   project,
   placement,
   index,
-  pointX,
-  pointY,
+  pointerX,
+  pointerY,
+  size,
   still,
 }: {
   project: HomeProject;
   placement: Placement;
   index: number;
-  pointX: MotionValue<number>;
-  pointY: MotionValue<number>;
+  pointerX: MotionValue<number>;
+  pointerY: MotionValue<number>;
+  size: Size;
   still: boolean;
 }) {
-  // The field turns with the pointer; every card's own depth turns that into
-  // parallax without a per-card listener.
-  const rotateY = useTransform(pointX, [-TILT, TILT], [placement.rotateY + 7, placement.rotateY - 7]);
-  const rotateX = useTransform(pointY, [-TILT, TILT], [placement.rotateX - 5, placement.rotateX + 5]);
+  // Every card smooths the pointer with its own spring, so a quick sweep leaves
+  // them strung out behind one another instead of arriving together. The
+  // springs run on unit-space values (−1…1 across the card's reach, 0…1 near),
+  // never on raw pointer pixels: a spring over a coordinate that starts
+  // offscreen would spend a second travelling in from 10,000px.
+  const stiffness = 34 + index * 9;
+  const damping = 13 + index * 2.5;
+  const settle = { stiffness, damping, mass: 0.6 } as const;
+
+  const centreX = (size.width * placement.x) / 100;
+  const centreY = (size.height * placement.y) / 100;
+  const reach = placement.reach;
+  const answer = placement.answer;
+
+  const rawX = useTransform(pointerX, (px) => clamp((px - centreX) / reach, -1, 1));
+  const rawY = useTransform(pointerY, (py) => clamp((py - centreY) / reach, -1, 1));
+  const rawNear = useTransform([pointerX, pointerY], ([px, py]: number[]) => {
+    const distance = Math.hypot(px - centreX, py - centreY);
+    const falloff = clamp(1 - distance / reach, 0, 1);
+    return falloff * falloff;
+  });
+
+  const nx = useSpring(rawX, settle);
+  const ny = useSpring(rawY, settle);
+  const near = useSpring(rawNear, settle);
+
+  const rotateY = useTransform([nx, near], ([n, p]: number[]) => placement.rotateY + n * TILT * answer * p);
+  const rotateX = useTransform([ny, near], ([n, p]: number[]) => placement.rotateX - n * TILT * answer * p);
+  const z = useTransform(near, [0, 1], [placement.depth, placement.depth + 140 * answer]);
+  const nudgeX = useTransform([nx, near], ([n, p]: number[]) => n * MAGNET * answer * p);
+  const nudgeY = useTransform([ny, near], ([n, p]: number[]) => n * MAGNET * answer * p);
+  // The edge lights before the card moves: the approach is legible even when
+  // the pointer is only passing by.
+  const glow = useTransform(near, (p) => clamp(p * 1.6, 0, 1));
 
   return (
     <div
@@ -100,12 +144,15 @@ function FloatCard({
           className="plastic-float-card"
           style={{
             transformPerspective: 1000,
+            x: nudgeX,
+            y: nudgeY,
+            z,
             rotateX,
             rotateY,
             rotateZ: placement.rotateZ,
-            z: placement.depth,
           }}
         >
+          <motion.span className="plastic-float-glow" style={{ opacity: glow }} aria-hidden />
           <span className="plastic-float-no" aria-hidden>
             {String(index + 1).padStart(2, "0")}
           </span>
@@ -129,68 +176,67 @@ export function FloatingProjectCards({
 }) {
   const reduceMotion = useStableReducedMotion();
   const stageRef = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const pointX = useSpring(x, { stiffness: 45, damping: 18, mass: 0.7 });
-  const pointY = useSpring(y, { stiffness: 45, damping: 18, mass: 0.7 });
+  const [size, setSize] = useState<Size>({ width: 0, height: 0 });
+  const pointerX = useMotionValue(NO_POINTER);
+  const pointerY = useMotionValue(NO_POINTER);
 
   const still = reduceMotion || !isActive;
 
   useEffect(() => {
-    if (still) {
-      x.set(0);
-      y.set(0);
-      return;
-    }
     const stage = stageRef.current;
     if (!stage) return;
-
-    const onMove = (event: PointerEvent) => {
+    const measure = () => {
       const rect = stage.getBoundingClientRect();
-      if (rect.width === 0 || rect.height === 0) return;
-      // Degrees, exactly as studied: the pointer's offset from the centre,
-      // divided by the falloff, held inside the tilt budget.
-      x.set(clamp((event.clientX - rect.left - rect.width / 2) / FALLOFF, -TILT, TILT));
-      y.set(clamp((event.clientY - rect.top - rect.height / 2) / FALLOFF, -TILT, TILT));
+      setSize({ width: rect.width, height: rect.height });
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (still) {
+      pointerX.set(NO_POINTER);
+      pointerY.set(NO_POINTER);
+      return;
+    }
+    const onMove = (event: PointerEvent) => {
+      const stage = stageRef.current;
+      if (!stage) return;
+      const rect = stage.getBoundingClientRect();
+      pointerX.set(event.clientX - rect.left);
+      pointerY.set(event.clientY - rect.top);
     };
     const onLeave = () => {
-      x.set(0);
-      y.set(0);
+      pointerX.set(NO_POINTER);
+      pointerY.set(NO_POINTER);
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
-    stage.addEventListener("pointerleave", onLeave);
+    document.addEventListener("pointerleave", onLeave);
     return () => {
       window.removeEventListener("pointermove", onMove);
-      stage.removeEventListener("pointerleave", onLeave);
+      document.removeEventListener("pointerleave", onLeave);
     };
-  }, [still, x, y]);
-
-  const fieldRotateY = useTransform(pointX, [-TILT, TILT], [7, -7]);
-  const fieldRotateX = useTransform(pointY, [-TILT, TILT], [-4.5, 4.5]);
+  }, [still, pointerX, pointerY]);
 
   return (
-    <div
-      ref={stageRef}
-      className="plastic-float-stage"
-      aria-hidden="true"
-    >
-      <motion.div
-        className="plastic-float-field"
-        style={{ transformPerspective: 1400, rotateX: fieldRotateX, rotateY: fieldRotateY }}
-      >
+    <div ref={stageRef} className="plastic-float-stage" aria-hidden="true">
+      <div className="plastic-float-field">
         {projects.slice(0, PLACEMENTS.length).map((project, index) => (
           <FloatCard
             key={project.id}
             project={project}
             placement={PLACEMENTS[index]}
             index={index}
-            pointX={pointX}
-            pointY={pointY}
+            pointerX={pointerX}
+            pointerY={pointerY}
+            size={size}
             still={still}
           />
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }

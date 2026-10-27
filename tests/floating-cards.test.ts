@@ -39,16 +39,29 @@ test("the field is decoration, never a control", () => {
   );
 });
 
-test("the cards read from one pointer tilt, in degrees", () => {
-  assert.match(field, /const FALLOFF = 25;/);
-  assert.match(field, /const TILT = 14;/);
-  assert.match(field, /\/ FALLOFF, -TILT, TILT\)/);
-  assert.match(field, /useSpring\(x,/);
+test("every card answers the pointer on its own", () => {
+  // One pointer, five springs: the cards must not arrive together.
+  assert.match(field, /const stiffness = 34 \+ index \* 9;/);
+  assert.match(field, /const damping = 13 \+ index \* 2\.5;/);
+  assert.match(field, /const nx = useSpring\(rawX, settle\);/);
+  assert.match(field, /const near = useSpring\(rawNear, settle\);/);
+  assert.match(field, /const settle = \{ stiffness, damping, mass: 0\.6 \} as const;/);
+  assert.doesNotMatch(field, /fieldRotate|plastic-float-field"\s+style=\{\{/);
+});
+
+test("the answer falls off with distance, and is felt before it lands", () => {
+  assert.match(field, /const falloff = clamp\(1 - distance \/ reach, 0, 1\);/);
+  assert.match(field, /return falloff \* falloff;/);
+  assert.match(field, /const TILT = 16;/);
+  assert.match(field, /const MAGNET = 12;/);
+  assert.match(field, /placement\.depth \+ 140 \* answer/);
+  assert.match(field, /clamp\(p \* 1\.6, 0, 1\)/, "the edge lights before the card moves");
 });
 
 test("the field stands still when asked, and when the panel is away", () => {
   assert.match(field, /const still = reduceMotion \|\| !isActive;/);
   assert.match(field, /animate=\{still \? undefined : \{ y: \[0, -placement\.lift, 0\] \}\}/);
+  assert.match(field, /pointerX\.set\(NO_POINTER\)/, "a still field rests offscreen");
   assert.match(css, /@media \(prefers-reduced-motion: reduce\) \{\s*\.plastic-float-card \{/);
 });
 

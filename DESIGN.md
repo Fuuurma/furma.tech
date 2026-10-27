@@ -236,12 +236,25 @@ tour keeps every gesture; it is `aria-hidden`, because the same projects are
 readable one panel later. The cards breathe on their own (11–15s, staggered) and
 the whole field tilts with the pointer.
 
-**The tilt is the studied mechanic, not an invention.** `furma.bloxs` `3d-card`
-turns the pointer's offset from the centre into degrees at 25px per degree under
-a 1000px perspective. Here that offset (clamped to ±14°) turns the field ±7° and
-each card a further ±7° against its own resting tilt, and each card's `z` does
-the rest: depth becomes parallax without a listener per card, and no card can
-drift from the physics of the others.
+**Each card answers alone.** The field is not one board that tilts. Every card
+measures the pointer's distance to *its own* centre and answers on its own
+spring: the nearer it is, the more it lifts on `z` (up to +140px), the more it
+turns toward the pointer (up to 16° at the edge of its reach) and the more it
+drifts toward it (up to 12px). Its edge lights before it moves — the glow is
+full at about three-fifths of the way in — so an approach is legible even when
+the pointer is only passing by.
+
+Reach and strength differ per card (230–340px, 0.55–1.0), and so do stiffness
+and damping, so a sweep strings them out instead of arriving as one block:
+measured mid-sweep, the near card sat at `z 129` fully lit while the next was
+only 26% lit and the rest were untouched.
+
+**The springs run in unit space.** `−1…1` across a card's reach and `0…1` near,
+never on raw pointer pixels: a spring over a coordinate that starts offscreen
+spends a second travelling in from 10,000px, which reads as a card that ignores
+the pointer entirely. The tilt itself is still the studied `furma.bloxs`
+`3d-card` mechanic — an offset from the centre is a degree of rotation per 25px
+under a 1000px perspective — folded into that unit-space answer.
 
 **Five becomes two on a phone.** Below 760px the three furthest cards are
 dropped and the status line goes with them: a 132px window cannot hold
@@ -252,6 +265,8 @@ Rules:
   click target on the field in this phase.
 - The field breathes, it does not bounce: one slow cycle per card, `easeInOut`,
   staggered, and nothing that repeats faster than ten seconds.
+- Two cards never share a spring. If a change makes them move as one, it is the
+  wrong change.
 - Depth is one 3D stage. A card's size comes from its `z`, never from a scale
   typed next to it.
 - Reduced motion stops the breath and the tilt; the cards stay where they are.
