@@ -86,7 +86,8 @@ the picture's lower half, on a gradient. It is gone; its two projects take
 `editorial-right` and `visual-heavy`, and nothing in the slides sets type over a
 picture now.
 
-**3. The intro is a contents page.** "10 products across…" opens on a lead
+**3. The intro is a contents page.** *(Superseded 2026-10-27 — see "The index is
+one sentence" below.)* "10 products across…" opens on a lead
 headline and ten hairline rows (number, name, status) that jump the tour to a
 project. The tour had a way to start and no way to choose; the reel bar only
 appears after the first project. The rows run down the column first (01–05,
@@ -166,6 +167,95 @@ Rules:
   the entry is not a design option.
 - The project's plate, its caption and its ratio belong to the project slides,
   not to the hero.
+
+## The index is one sentence (2026-10-27)
+
+Owner's read of the tour's first panel: *this section now. we gonna change it a
+lot. the main text about what we build. rotating text, animated. it will be
+changing between the different types so no x,y,z. center it. get rid of all the
+other text on that section/screen.*
+
+The panel had grown into a page: two labels at the left ("Portfolio", "Guided
+tour"), a lead sentence listing four kinds, a "Start with Aitlas" button, a skip
+link to the full index, and ten hairline rows of the work. Every one of those was
+a different idea competing for the same screen.
+
+What the panel is now — one word, centred, set as the page's title:
+
+- **AI**, **SaaS**, **games**, **civic tech** in the page's biggest type
+  (`clamp(56px, 19vw, 190px)`), changing every 2.6s with a 0.36s roll (`y`
+  0.35em → 0, opacity 0 → 1, `EASE_OUT_EXPO`, the old kind leaves first);
+- nothing else — no count line, no labels, no buttons, no list, no link. The
+  "10 products across" frame the first pass kept was removed on sight: the
+  rotating word is the title.
+
+**The slot is sized by its longest word.** `.plastic-index__type` is an
+`inline-grid` with one grid area; an invisible sizer holds the longest kind and
+the moving word shares its cell, so the centred word does not shift sideways
+when "AI" becomes "civic tech". Measured: the word's centre is the viewport's
+centre for all four, at 1440, 390 and 320.
+
+**Nothing is clipped.** The first cut masked the roll with `overflow: hidden`,
+and at 190px Syne's ink reaches past the line box, so the tops of `f` and the
+tails of `g` were cut at the mask edge. The mask is gone: the word rises 0.35em
+and fades, which reads as a roll without a hard edge crossing a glyph.
+
+**The kinds are read once, not four times.** The moving copy is `aria-hidden`;
+the headline carries the list in one `sr-only` string. Under
+`prefers-reduced-motion` the word does not move and the four kinds are set once,
+allowed to wrap.
+
+Checked the component libraries before writing it: Magic UI's `word-rotate`,
+KokonutUI's `dynamic-text` and react-bits' `RotatingText` are all the same shape
+— `AnimatePresence` + a keyed `motion.span` with `y`/`opacity` — and we already
+ship `framer-motion` 12. Copying one would have added a dependency and a second
+motion idiom for the same twenty lines, so the component lives in
+`PlasticHome.tsx` on the house's own tokens.
+
+Rules:
+- The index states the claim once, centred. A second column, a list or a CTA on
+  this panel is a regression.
+- Anything that changes on a timer sizes its slot from its longest value.
+- A moving word is decoration: the same words are readable once in text.
+- The motion stops when the panel is not active and when the reader asked for
+  less motion.
+
+## The field of windows — five projects float behind the title (2026-10-27)
+
+Owner's call, after the index settled on one rotating word: *3dcard — make the bg
+to have floating 3dcards. lets start with 5.*
+
+The index panel's background is now a field of five project windows around the
+centred type: name, kind, status, hairline on paper, each at its own depth. It
+is the first slice of the project showcase; five is the smallest number that
+reads as a field rather than a stack.
+
+**It is decoration and it stays out of the way.** The stage takes no pointer
+events, so the wave keeps the hand; it carries no wheel or touch handler, so the
+tour keeps every gesture; it is `aria-hidden`, because the same projects are
+readable one panel later. The cards breathe on their own (11–15s, staggered) and
+the whole field tilts with the pointer.
+
+**The tilt is the studied mechanic, not an invention.** `furma.bloxs` `3d-card`
+turns the pointer's offset from the centre into degrees at 25px per degree under
+a 1000px perspective. Here that offset (clamped to ±14°) turns the field ±7° and
+each card a further ±7° against its own resting tilt, and each card's `z` does
+the rest: depth becomes parallax without a listener per card, and no card can
+drift from the physics of the others.
+
+**Five becomes two on a phone.** Below 760px the three furthest cards are
+dropped and the status line goes with them: a 132px window cannot hold
+"AI Infrastructure · In Development", and a shrunk one is worse than none.
+
+Rules:
+- A floating card is never a control until it is asked to be. No hover, focus or
+  click target on the field in this phase.
+- The field breathes, it does not bounce: one slow cycle per card, `easeInOut`,
+  staggered, and nothing that repeats faster than ten seconds.
+- Depth is one 3D stage. A card's size comes from its `z`, never from a scale
+  typed next to it.
+- Reduced motion stops the breath and the tilt; the cards stay where they are.
+- The title keeps the centre. A card that covers the word is a placement bug.
 
 ## Softer screens — a plate for a footer, and no black boxes (2026-10-21)
 

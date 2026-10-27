@@ -98,23 +98,40 @@ test("FinanceHub cache claim reads as a target, not a measured rate", () => {
   assert.match(financehubDetail, /target(ing|ed)?[^.]{0,40}85-95% hit rate/i);
 });
 
-// FT-UX-02: the hero's "See projects" lands on an interstitial that
-// starts a guided tour — that step must name itself as a tour and
-// offer the direct index as an explicit skip, never a mystery gate.
+// The index is one word about what the studio builds, set as the page's title.
+// The kind changes at a walk's pace so the panel says one thing at a time
+// instead of listing four. The screen carries nothing else — no count line, no
+// tour button, no skip link, no contents list — and the kinds are exposed once,
+// as the headline's own text.
 
 const plasticHome = readFileSync(
   new URL("../src/components/home/PlasticHome.tsx", import.meta.url),
   "utf8",
 );
 
-test("Tour interstitial names itself as a guided tour", () => {
-  assert.match(plasticHome, /Guided tour/);
-  assert.doesNotMatch(plasticHome, /Index 00/);
+test("the index states what the studio builds, one kind at a time", () => {
+  assert.match(
+    plasticHome,
+    /STUDIO_TYPES = \["AI", "SaaS", "games", "civic tech"\]/,
+    "the four kinds the index rotates through",
+  );
+  assert.match(
+    plasticHome,
+    /sr-only">\{STUDIO_TYPES\.join\(", "\)\}/,
+    "the kinds must be readable once, not four times as decoration",
+  );
+  assert.doesNotMatch(
+    plasticHome,
+    /products across/,
+    "the index carries the rotating word and nothing else",
+  );
 });
 
-test("Tour interstitial offers skipping to the full index", () => {
-  assert.match(plasticHome, /skip the tour/i);
-  assert.match(plasticHome, /open full index/i);
+test("the index carries nothing but that sentence", () => {
+  assert.doesNotMatch(plasticHome, /Start with \{/);
+  assert.doesNotMatch(plasticHome, /skip the tour/i);
+  assert.doesNotMatch(plasticHome, /plastic-contents/);
+  assert.doesNotMatch(plasticHome, /<p className="plastic-label" data-screen-reserve>\s*Portfolio\s*<\/p>/);
 });
 
 // FT-CONTENT-04: every hero is bespoke SVG artwork — no surface shows

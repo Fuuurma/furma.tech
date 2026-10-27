@@ -5,11 +5,12 @@
 // moves focus to its status on send, and body-scroll lock while mounted.
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { submitContactForm } from "@/lib/server-actions";
 import { contactFormSchema, validateForm } from "@/lib/schemas";
 import { HOME_PROJECTS } from "@/lib/home-projects";
+import { EASE_OUT_EXPO } from "@/lib/motion";
 import {
   buildHomeReelItems,
   HOME_SECTION,
@@ -22,10 +23,10 @@ import { StudioWaterFooter } from "@/components/studio/StudioWaterFooter";
 import { ScrollProgress } from "@/components/home/ScrollProgress";
 import { PlasticProjectSlide } from "@/components/home/PlasticProjectSlide";
 import { PROJECT_HERO_MAP } from "@/lib/project-heroes";
-import { AnimatedNumber } from "@/components/motion/AnimatedNumber";
 import { SlideReveal } from "@/components/motion/SlideReveal";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { DitherWave } from "@/components/dither-wave-tw";
+import { FloatingProjectCards } from "@/components/home/FloatingProjectCards";
 import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 import {
   useSmoothSectionScroll,
@@ -46,9 +47,7 @@ const SECTIONS = [
 ];
 
 const TOTAL = SECTIONS.length;
-const FIRST_PROJECT_SECTION = HOME_SECTION.firstProject;
 const CONTACT_SECTION = HOME_SECTION.contact;
-
 const HOME_REEL_ITEMS = buildHomeReelItems();
 
 function sectionLabel(index: number): string {
@@ -141,17 +140,61 @@ function HeroSlide({
   );
 }
 
-function PortfolioIndexSlide({
-  onStart,
-  onSelect,
-  count,
-  isActive,
-}: {
-  onStart: () => void;
-  onSelect: (projectIndex: number) => void;
-  count: number;
-  isActive: boolean;
-}) {
+/* What the studio builds, one kind at a time. The sentence stays put and only
+   the kind changes, so the line reads as a claim about one kind of work at a
+   time instead of a list. */
+const STUDIO_TYPES = ["AI", "SaaS", "games", "civic tech"] as const;
+const STUDIO_TYPE_HOLD = 2600;
+
+// The kind set in the biggest type on the page. It changes under the reader at
+// a walk's pace; the slot is sized for the longest kind so the centred line
+// never shifts sideways between words. The list is exposed once, in the
+// headline's own text, and the moving copy is decoration for the eye.
+function RotatingType({ isActive }: { isActive: boolean }) {
+  const reduceMotion = useStableReducedMotion();
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (!isActive || reduceMotion) return;
+    const id = window.setInterval(
+      () => setIndex((current) => (current + 1) % STUDIO_TYPES.length),
+      STUDIO_TYPE_HOLD,
+    );
+    return () => window.clearInterval(id);
+  }, [isActive, reduceMotion]);
+
+  if (reduceMotion) {
+    return (
+      <span className="plastic-index__word plastic-index__word--static">
+        {STUDIO_TYPES.join(", ")}
+      </span>
+    );
+  }
+
+  return (
+    <span className="plastic-index__type">
+      <span className="plastic-index__sizer" aria-hidden="true">
+        {STUDIO_TYPES.reduce((longest, type) =>
+          type.length > longest.length ? type : longest,
+        )}
+      </span>
+      <AnimatePresence initial={false} mode="wait">
+        <motion.span
+          key={STUDIO_TYPES[index]}
+          className="plastic-index__word"
+          initial={{ y: "0.35em", opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: "-0.3em", opacity: 0 }}
+          transition={{ duration: 0.36, ease: EASE_OUT_EXPO }}
+        >
+          {STUDIO_TYPES[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
+
+function PortfolioIndexSlide({ isActive }: { isActive: boolean }) {
   const surfaceRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -175,77 +218,20 @@ function PortfolioIndexSlide({
         composition="field"
         interactive
       />
+      <FloatingProjectCards
+        projects={HOME_PROJECTS}
+        isActive={isActive}
+      />
       <div
         className="flex-1 min-h-0 relative z-10 overflow-y-auto overscroll-contain px-6 md:px-12"
         data-section-scroll
       >
-        <div className="max-w-[1280px] w-full mx-auto my-auto grid grid-cols-12 gap-x-6 gap-y-8 py-10 min-h-full content-center">
-          <SlideReveal isActive={isActive} className="col-span-12 md:col-span-4">
-            <p className="plastic-label" data-screen-reserve>
-              Portfolio
-            </p>
-            <p className="plastic-label mt-6" data-screen-reserve>
-              Guided tour
-            </p>
-          </SlideReveal>
-          <div className="col-span-12 md:col-span-8 md:col-start-5">
-            <h2 className="plastic-headline plastic-headline--lead" data-screen-reserve>
-              <AnimatedNumber
-                value={count}
-                trigger={isActive}
-                className="inline normal-nums"
-              />
-              {" "}
-              <SplitReveal
-                as="span"
-                text="products across AI, SaaS, games, and civic tech."
-                className="inline"
-                delay={120}
-                trigger={isActive}
-              />
-            </h2>
-            <SlideReveal isActive={isActive} delay={0.2}>
-              <div className="mt-8 md:mt-10 flex flex-wrap items-center gap-x-8 gap-y-2">
-                <button
-                  type="button"
-                  onClick={onStart}
-                  className="plastic-cta"
-                  data-screen-reserve
-                >
-                  Start with {HOME_PROJECTS[0]?.name ?? "projects"}
-                  <span aria-hidden>→</span>
-                </button>
-                <Link
-                  href="/portfolio"
-                  className="plastic-label motion-link-subtle hover:text-foreground py-3"
-                  data-screen-reserve
-                >
-                  Or skip the tour — open full index
-                </Link>
-              </div>
-            </SlideReveal>
-            <SlideReveal isActive={isActive} delay={0.3}>
-              <ol className="plastic-contents" aria-label="Jump to a project">
-                {HOME_PROJECTS.map((project, i) => (
-                  <li key={project.id}>
-                    <button
-                      type="button"
-                      className="plastic-contents__row"
-                      onClick={() => onSelect(i)}
-                      data-screen-reserve
-                    >
-                      <span className="plastic-contents__no" aria-hidden>
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span className="plastic-contents__name">{project.name}</span>
-                      <span className="plastic-contents__status">{project.status}</span>
-                    </button>
-                  </li>
-                ))}
-              </ol>
-            </SlideReveal>
-          </div>
-        </div>
+        <h2 className="plastic-index min-h-full" data-screen-reserve>
+          <span className="plastic-index__type-row" aria-hidden="true">
+            <RotatingType isActive={isActive} />
+          </span>
+          <span className="sr-only">{STUDIO_TYPES.join(", ")}.</span>
+        </h2>
       </div>
     </div>
   );
@@ -753,22 +739,7 @@ export default function PlasticHome() {
                   />
                 )}
                 {section.type === "portfolio-index" && (
-                  <PortfolioIndexSlide
-                    count={HOME_PROJECTS.length}
-                    onStart={() =>
-                      navigate(FIRST_PROJECT_SECTION, {
-                        force: true,
-                        focus: true,
-                      })
-                    }
-                    onSelect={(projectIndex) =>
-                      navigate(FIRST_PROJECT_SECTION + projectIndex, {
-                        force: true,
-                        focus: true,
-                      })
-                    }
-                    isActive={isActive}
-                  />
+                  <PortfolioIndexSlide isActive={isActive} />
                 )}
                 {section.type === "project" &&
                   (() => {
