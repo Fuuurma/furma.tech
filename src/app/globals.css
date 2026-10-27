@@ -1147,6 +1147,99 @@ html.light {
   color: color-mix(in oklch, var(--foreground), transparent 42%);
 }
 
+/* The corner door on a case page whose product is open. Fixed, small, quiet:
+   a reader who is already convinced should not have to hunt. */
+.plastic-live {
+  position: fixed;
+  right: clamp(16px, 2vw, 28px);
+  bottom: clamp(16px, 2vw, 28px);
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid var(--foreground);
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.plastic-live:hover,
+.plastic-live:focus-visible {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.plastic-live:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 4px;
+}
+
+.plastic-live__arrow {
+  letter-spacing: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plastic-live {
+    transition: none;
+  }
+}
+
+/* The way into a product from its case page: the same rule as the contact's
+   send, pointing outward. A case page is a shop window; this is the door. */
+.plastic-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 52px;
+  padding: 0 18px;
+  border: 1px solid var(--foreground);
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.plastic-open:hover,
+.plastic-open:focus-visible {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.plastic-open:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 4px;
+}
+
+.plastic-open__arrow {
+  letter-spacing: 0;
+  transition: transform 0.25s var(--ease-out-expo);
+}
+
+.plastic-open:hover .plastic-open__arrow {
+  transform: translate(3px, -3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plastic-open,
+  .plastic-open__arrow {
+    transition: none;
+  }
+  .plastic-open:hover .plastic-open__arrow {
+    transform: none;
+  }
+}
+
 /* The last row of the letter: the question, then the action. */
 .plastic-send {
   display: flex;
@@ -1242,57 +1335,6 @@ html.light {
   font-size: var(--text-meta);
   letter-spacing: 0.04em;
   color: color-mix(in oklch, var(--foreground), transparent 42%);
-}
-
-/* The action is a rule of its own: full width, hairlines above and below, the
-   ink inverting on hover. */
-.plastic-send {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  width: 100%;
-  min-height: 60px;
-  padding: 0 2px;
-  border: 0;
-  border-top: 1px solid var(--foreground);
-  border-bottom: 1px solid var(--foreground);
-  background: transparent;
-  color: var(--foreground);
-  font-family: var(--font-mono);
-  font-size: var(--text-small);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
-}
-
-.plastic-send:hover,
-.plastic-send:focus-visible {
-  background: var(--foreground);
-  color: var(--background);
-}
-
-.plastic-send:focus-visible {
-  outline: 2px solid var(--foreground);
-  outline-offset: 4px;
-}
-
-.plastic-send__arrow {
-  font-size: 1.05em;
-  letter-spacing: 0;
-  transition: transform 0.25s var(--ease-out-expo);
-}
-
-.plastic-send:hover .plastic-send__arrow {
-  transform: translateX(4px);
-}
-
-.plastic-send--busy {
-  cursor: progress;
-  opacity: 0.7;
 }
 
 /* Two ways to reach a person, set as themselves. */
