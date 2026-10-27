@@ -27,8 +27,6 @@ import { SlideReveal } from "@/components/motion/SlideReveal";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { DitherWave } from "@/components/dither-wave-tw";
 import { FloatingProjectCards } from "@/components/home/FloatingProjectCards";
-import { Glass } from "glisse";
-import "glisse/styles.css";
 import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 import {
   useSmoothSectionScroll,
@@ -113,7 +111,7 @@ function HeroSlide({
   const surfaceRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="plastic-entry-frame" ref={surfaceRef} data-glisse-backdrop>
+    <div className="plastic-entry-frame" ref={surfaceRef}>
       {/* The hero is the house's wave: it prints the swell that says the page
           continues, and the swell waits for an idle reader. The entry's own
           type keeps clean paper around itself on the plate. */}
@@ -134,12 +132,14 @@ function HeroSlide({
       />
       <div className="plastic-entry" data-section-scroll>
         <div className="plastic-entry-center">
-          <Glass className="plastic-hero-glass">
+          {/* One reserve around both lines: the ink thins behind the words as a
+              soft halo, not as a box behind a label. */}
+          <div className="plastic-entry-name" data-screen-reserve>
             <LetterSpacedTitle text="furma.tech" reserve={false} />
-            <p className="plastic-entry-kind plastic-entry-kind--in-glass">
+            <p className="plastic-entry-kind plastic-entry-kind--under-name">
               Digital studio
             </p>
-          </Glass>
+          </div>
         </div>
         <div className="plastic-entry-foot">
           <div className="plastic-entry-actions">

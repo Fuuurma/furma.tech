@@ -133,35 +133,30 @@ Rules:
 - A form field is 16px or more on a touch screen.
 - Anything that reads `location.hash` on mount runs before anything that writes it.
 
-## The name is a lens (2026-10-27)
+## The lens was tried and dropped — the reserve is better (2026-10-27)
 
-Owner's brief: keep the ASCII/dither plate, add glass — *test it on the hero*,
-put the title inside it, and see whether the lens does the job the ink-mask was
-doing. Library: **glisse** (`0kzh/glisse`, MIT, 0.4.3) — IOS 26 liquid glass as a
-React component, refraction from an SVG displacement filter built on the
-client, so it samples the live backdrop rather than a screenshot.
+Owner's read after the glass went in: *what a weird effect… it doesn't feel like
+it… also the dither still hurts the title and subtitle.* Both true, for the same
+reason.
 
-What landed:
+**Why the glass read as a card.** A lens has nothing to show unless the thing
+behind it has structure. `glisse` refracts the live backdrop faithfully, and on
+this plate the backdrop under the pill was near-black: the result was a dark
+lozenge with a bright rim — a card wearing a glass costume. Over a photograph or
+a dense field it would read; here it could not. It was removed, and the library
+came out of `package.json` with it.
 
-- The hero frame carries `data-glisse-backdrop` and the name sits inside
-  `<Glass className="plastic-hero-glass">` — a lens the width of the type, dark
-  glass on a dark plate (`--lg-glass: rgb(255 255 255 / 0.04)`, a bright rim, no
-  drop shadow), `--lg-blur: 0px`, bezel 25px, thickness 50px, zoom 1.13.
-- **"Digital studio" moved inside the lens** with the name. A label half on the
-  glass and half on the wave read as two objects.
-- **The screen reserve is off inside the lens** (`reserve={false}` on the title,
-  no `data-screen-reserve` on the label): the glass is the thing that keeps the
-  words legible, and letting the wave run through it is the point. Measured with
-  the swell crossing the pill — the dots pass behind the type and the type still
-  reads; what the reserve was buying (a clean rectangle) is now bought by the
-  lens, and without a visible box.
+**Readability is the reserve's job, and it was doing it.** The title and the
+small step under it now share **one** `data-screen-reserve` block, so the wave
+thins behind both as a single soft halo instead of a small box behind a label —
+the box was what looked broken, not the thinning. Measured with the swell
+crossing the name: the dots fall away under the words and return around them
+without an edge you can point at.
 
 Rules:
-- A lens is a material, not a card: it takes no fill of its own beyond a rim and
-  a breath of tint, and it never casts a shadow on this page.
-- Text on a lens does not also get the ink mask. One mechanism per text block.
-- The wave keeps moving through the glass. A glass that freezes its backdrop has
-  become a picture of glass.
+- A material needs a picture to work on. Glass over a black field is a border.
+- One reserve per block of type, sized to the block, never per element.
+- If type stops reading, fix the ink around it; do not put a surface under it.
 
 ## The entry is one line — the project leaves the opening (2026-10-27)
 

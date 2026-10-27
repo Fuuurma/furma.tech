@@ -1426,39 +1426,22 @@ html.light {
   animation-duration: 0.45s;
 }
 
-/* The name sits in a lens: iOS 26 liquid glass (glisse) refracting the wave
-   under it. The glass is the plate's own material — no fill, no blur — so what
-   moves inside the lens is the picture, not a copy of it. */
-.plastic-hero-glass {
+/* The name and the small step under it share one ink reserve: the wave thins
+   behind the words as a halo, so the type reads without a plate behind it. */
+.plastic-entry-name {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: clamp(300px, 46vw, 620px);
-  height: clamp(140px, 21vh, 232px);
-  border-radius: 999px;
-  background: none;
-  /* The lens is dark glass on a dark plate: almost no fill, a bright rim, and
-     no drop shadow — what you see inside it is the wave, magnified. */
-  --lg-glass: rgb(255 255 255 / 0.04);
-  --lg-edge: rgb(255 255 255 / 0.28);
-  --lg-drop: rgb(0 0 0 / 0);
-  --lg-blur: 0px;
-  --lg-bezel: 25px;
-  --lg-thickness: 50px;
-  --lg-zoom: 1.13;
-  --lg-rim-saturation: 9;
+  gap: 14px;
+  padding: 18px 26px;
 }
 
-.plastic-hero-glass .plastic-hero-title {
-  font-size: clamp(30px, 4.4vw, 62px);
+.plastic-entry-name .plastic-hero-title {
+  font-size: clamp(38px, 8vw, 118px);
 }
 
-/* Inside the lens the small step sits on the glass, not on the wave. */
-.plastic-entry-kind--in-glass {
+.plastic-entry-kind--under-name {
   margin-top: 0;
-  color: color-mix(in oklch, var(--surface-dark-foreground), transparent 22%);
 }
 
 .plastic-entry-kind {

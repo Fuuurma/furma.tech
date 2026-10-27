@@ -32,9 +32,6 @@ importers:
       framer-motion:
         specifier: ^12.42.2
         version: 12.43.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      glisse:
-        specifier: ^0.4.3
-        version: 0.4.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       input-otp:
         specifier: ^1.4.2
         version: 1.5.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -1599,12 +1596,6 @@ packages:
 
   get-tsconfig@4.14.3:
     resolution: {integrity: sha512-++QEw4DIY7WGoukz+/+A/8dGYPT9l9yIadnmSgZ8Rjr3YVSVDipQSO9CdnJo9ePqFqUUqh+wk9uIaoiAwsiPkA==}
-
-  glisse@0.4.3:
-    resolution: {integrity: sha512-m0G5BQ7nPZD17WDW/OfFy9nr6Ub0Lw3brbgE1Y5Exv0Ew2Qk9q1mmqTwbYlykZVyFNxrTBr+mwji9VOHCc+uEg==}
-    peerDependencies:
-      react: '>=18'
-      react-dom: '>=18'
 
   glob-parent@5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
@@ -4064,11 +4055,6 @@ snapshots:
   get-tsconfig@4.14.3:
     dependencies:
       resolve-pkg-maps: 1.0.0
-
-  glisse@0.4.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
-    dependencies:
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
 
   glob-parent@5.1.2:
     dependencies:
