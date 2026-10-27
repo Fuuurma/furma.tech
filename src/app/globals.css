@@ -120,7 +120,39 @@
 
   --surface-dark-foreground: oklch(1 0 0);
   --surface-dark: oklch(0 0 0);
-  /* The one control on the opening: the theme, in the corner, out of the way. */
+  /* A touch pointer gets the same targets as a mouse, at a size a thumb can hit:
+   44px is the floor for anything you are meant to press. */
+@media (pointer: coarse) {
+  .studio-chrome__theme {
+    min-height: 44px;
+    padding: 4px;
+  }
+  .studio-chrome__theme > button {
+    width: 40px;
+    height: 40px;
+  }
+  footer a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .studio-chrome__view-link,
+  .studio-chrome__action,
+  .plastic-facts__link,
+  .plastic-live,
+  .plastic-letter__again,
+  .plastic-open {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .plastic-reel__brand,
+  .plastic-reel__project {
+    min-height: 44px;
+  }
+}
+
+/* The one control on the opening: the theme, in the corner, out of the way. */
 .plastic-entry-theme {
   position: absolute;
   right: clamp(16px, 3vw, 32px);
@@ -2423,8 +2455,8 @@ a.studio-chrome__view-link:hover {
 
 .portfolio-list-page__list {
   position: relative;
-  background: #000;
-  color: #fff;
+  background: var(--background);
+  color: var(--foreground);
   overflow: hidden;
 }
 
@@ -2565,7 +2597,7 @@ a.studio-chrome__view-link:hover {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-align: right;
-  color: rgba(255, 255, 255, 0.55);
+  color: color-mix(in oklch, var(--foreground), transparent 45%);
   line-height: 1.5;
   transition: color 0.35s ease;
 }
@@ -2603,7 +2635,7 @@ a.studio-chrome__view-link:hover {
   font-size: var(--text-label);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
+  color: color-mix(in oklch, var(--foreground), transparent 45%);
   line-height: 1.5;
 }
 
@@ -2615,7 +2647,12 @@ a.studio-chrome__view-link:hover {
   font-size: var(--text-body);
   line-height: 1.55;
   letter-spacing: -0.01em;
-  color: rgba(255, 255, 255, 0.62);
+  color: color-mix(in oklch, var(--foreground), transparent 38%);
+}
+
+/* Hidden where a pointer can hover: the picture is the reveal. */
+.portfolio-list-page__thumb {
+  display: none;
 }
 
 @media (hover: none) {
@@ -2630,6 +2667,17 @@ a.studio-chrome__view-link:hover {
 
   .portfolio-list-page__expand {
     display: none;
+  }
+
+  /* The hover picture, printed once as a thumb: no reveal, no motion. */
+  .portfolio-list-page__thumb {
+    display: block;
+    width: min(22rem, calc(100% - 3rem));
+    aspect-ratio: 520 / 340;
+    margin: 0 0 1.25rem 3rem;
+    overflow: hidden;
+    border: 1px solid color-mix(in oklch, var(--foreground), transparent 86%);
+    background: color-mix(in oklch, var(--foreground), transparent 96%);
   }
 }
 

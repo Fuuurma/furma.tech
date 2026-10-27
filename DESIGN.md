@@ -134,6 +134,47 @@ Rules:
 - A form field is 16px or more on a touch screen.
 - Anything that reads `location.hash` on mount runs before anything that writes it.
 
+## Care for the hand that is not a mouse (2026-10-27)
+
+Owner's brief: *accessibility, layout, responsive — the index projects are
+hoverable, on mobile that effect is lost, and like that with more.*
+
+**The audit first.** axe-core (WCAG 2 A/AA, 2.1 A/AA) over `/`, `/portfolio`,
+`/portfolio/gambit-deck` and `/#contact` at 1440×900 and 390×844: **zero
+violations** at both widths. The gaps were not detectable by a rule engine —
+they were interaction and material gaps.
+
+**What was wrong, and is now fixed:**
+
+- **The list was a black page in both themes.** `.portfolio-list-page__list`
+  was `background: #000; color: #fff` with `rgba(255,255,255,…)` ink. It reads
+  from `--background` / `--foreground` now, like every other plate.
+- **The list's pictures were hover-only.** A desktop reader who hovers sees the
+  project; a thumb got nothing. On `(hover: none)` each row now carries a static
+  thumbnail (the same visual the reveal uses), sized by the row, no motion.
+- **Touch targets.** Anything meant to be pressed is 44px on `(pointer: coarse)`:
+  the theme switch's two buttons (40×40), every footer link, the chromes'
+  actions, the corner play door, the letter's "write another".
+- **The footer's sun sat under the project links on a phone.** The sky's body is
+  now smaller and lower below 760px (sun radius 0.055 at rise 0.4, moon 0.07 at
+  1.7) so the picture stays in its own zone.
+- **The hero's wave was chunky on a phone.** The lattice scale drops from 5 to
+  3.4 below 760px — the same drawing at a finer screen, not a different one.
+- **The footer claimed a landmark it could not have.** `role="contentinfo"` on a
+  footer nested inside `main` is a violation; the element is a plain `<footer>`
+  and the rule is gone.
+
+**What still needs a human:** VoiceOver/TalkBack passes on a real device, 200%
+text zoom, and the touch gestures on the canvas (the wave answers a finger, but
+nothing here was tested on hardware).
+
+Rules:
+- A hover-only affordance needs a second life on `(hover: none)`. If the hover
+  gave information, the touch version shows it without asking.
+- 44px on coarse pointers, always — including a 26px icon inside a pill.
+- A picture that shares space with type moves out of it on a phone; it does not
+  get smaller in the same place.
+
 ## Two themes, on every plate (2026-10-27)
 
 Owner's read: *the hero is always dark — two themes, white and black, as the

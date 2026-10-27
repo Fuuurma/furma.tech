@@ -102,6 +102,19 @@ function LetterSpacedTitle({
   );
 }
 
+/** True on a phone-width viewport; the wave prints finer there. */
+function useCompactViewport() {
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 760px)");
+    const sync = () => setCompact(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+  return compact;
+}
+
 function HeroSlide({
   onEnterWork,
   onContact,
@@ -110,6 +123,7 @@ function HeroSlide({
   onContact: () => void;
 }) {
   const surfaceRef = useRef<HTMLDivElement>(null);
+  const compact = useCompactViewport();
 
   return (
     <div className="plastic-entry-frame" ref={surfaceRef}>
@@ -123,7 +137,7 @@ function HeroSlide({
         tertiaryColor="var(--entry-ink)"
         speed={0.6}
         intensity={1}
-        scale={5}
+        scale={compact ? 3.4 : 5}
         downScale={0.5}
         quality="medium"
         maxFPS={60}
