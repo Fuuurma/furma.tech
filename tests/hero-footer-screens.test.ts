@@ -173,6 +173,16 @@ test("the footer is moonlight on black, and a sunset on light paper", () => {
     "the water must print on the plate's paper token",
   );
   assert.match(
+    footer,
+    /skyInk="var\(--plate-ink\)"/,
+    "the sun prints solid while the sea prints as a wash",
+  );
+  assert.match(
+    css,
+    /--plate-water: color-mix\(in oklch, var\(--plate-ink\), transparent 76%\)/,
+    "paper wants a wash, not a field of marks",
+  );
+  assert.match(
     css,
     /html\.light \{[^}]*--plate-paper: var\(--plate-sunset-paper\)/,
     "the light theme is the sunset: warm paper, not black",

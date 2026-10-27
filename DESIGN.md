@@ -384,10 +384,19 @@ they are the black plate and white ink, and the moon (unchanged). On the light
 theme they are a warm paper (`oklch(0.965 0.008 88)`) and near-black ink, and
 the sun sits low on the right at radius 0.115 — a sunset printed on paper.
 
-**The sea is lighter than the type on paper.** `--plate-water` is the ink at
-62% transparency in the light theme and the full ink in the dark one: on black
-the water and the type are the same white, on paper a field of heavy marks would
-read as a stain, not as water.
+**Two inks, because one cannot be both.** On paper the sun and the sea need
+different weights: a tone faint enough to read as water is too faint to read as
+a sun. The screen paints two atlases — `skyInk` for everything above the
+horizon, `color` for the sea — so the sun prints solid and the sea prints as a
+wash. `--plate-water` is the ink at 76% transparency on paper and the full ink
+on black; `--plate-ink` is the sun (and the moon) and the type.
+
+**A sunset is not the moon with the colours swapped.** The light plate carries
+its own numbers: the sun is small (radius 0.07 against the moon's 0.115) and
+half-set (`rise` 0.6, where the moon's 1.45 puts it well up the sky), its halo
+falls to 0.24 and its haze to 0.03 — a haze strong enough for a night sky prints
+as a band of dust on paper. The night path is untouched: white marks, the moon,
+the stars, the full-tone sea.
 
 **The tokens live on the root, not on the plate.** The screen resolves a colour
 by probing a detached element in the body, so a token scoped to the footer

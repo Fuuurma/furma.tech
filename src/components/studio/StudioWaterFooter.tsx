@@ -51,6 +51,7 @@ export function StudioWaterFooter({
   // its ink and paper are resolved once when it mounts, and a fresh mount is
   // cheaper than proving every repaint path re-reads them.
   const { theme } = useTheme();
+  const sunset = theme === "light";
 
   return (
     <footer
@@ -67,9 +68,15 @@ export function StudioWaterFooter({
         key={theme}
         surfaceRef={plateRef}
         zoneRef={seaRef}
-        sun={{ x: 0.82, radius: 0.115, rise: 0.04 }}
+        // A sunset is smaller and cleaner than the moon's night: a low disc,
+        // a short halo and almost no haze, because on paper a low tone reads
+        // as dust rather than as light.
+        sun={{ x: 0.82, radius: sunset ? 0.07 : 0.115, rise: sunset ? 0.6 : 0.04 }}
+        sunHalo={sunset ? 0.24 : 0.42}
+        sunHaze={sunset ? 0.03 : 0.26}
         moon={{ x: 0.89, radius: 0.125, rise: 1.45 }}
         color="var(--plate-water)"
+        skyInk="var(--plate-ink)"
         backgroundColor="var(--plate-paper)"
         fontFamily="var(--font-mono)"
         characters=" .:-=+*#%@"
@@ -192,7 +199,7 @@ export function StudioWaterFooter({
       {/* The sea: the water stands in this zone, and the colophon is set on it. */}
       <div
         ref={seaRef}
-        className="relative z-10 shrink-0 h-[clamp(112px,18svh,320px)] sm:h-[clamp(190px,32svh,320px)] [@media(max-height:700px)]:h-[88px]! flex items-end"
+        className="studio-plate__sea relative z-10 shrink-0 h-[clamp(112px,18svh,320px)] sm:h-[clamp(190px,32svh,320px)] [@media(max-height:700px)]:h-[88px]! flex items-end"
       >
         <div className="w-full px-6 md:px-12 py-5 flex justify-between items-center">
           <span
