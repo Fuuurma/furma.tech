@@ -20,7 +20,7 @@
  * screen's own tokens, so no theme's hue ever reaches it.
  */
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { HOME_PROJECTS } from "@/lib/home-projects";
 import { LiquidAscii } from "@/components/liquid-ascii-tw";
@@ -40,6 +40,20 @@ export interface StudioWaterFooterProps {
   className?: string;
 }
 
+/** True on a phone: the sky's body is smaller and lower, so it stays out of
+ *  the type instead of sitting under the project links. */
+function useCompactViewport() {
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 760px)");
+    const sync = () => setCompact(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+  return compact;
+}
+
 export function StudioWaterFooter({
   isActive = true,
   variant = "section",
@@ -52,11 +66,11 @@ export function StudioWaterFooter({
   // cheaper than proving every repaint path re-reads them.
   const { theme } = useTheme();
   const sunset = theme === "light";
+  const compact = useCompactViewport();
 
   return (
     <footer
       ref={plateRef}
-      role="contentinfo"
       className={cn(
         "studio-plate relative flex flex-col overflow-hidden",
         variant === "panel" ? "h-full" : "min-h-[640px] md:min-h-[min(100svh,820px)]",
@@ -71,10 +85,18 @@ export function StudioWaterFooter({
         // A sunset is smaller and cleaner than the moon's night: a low disc,
         // a short halo and almost no haze, because on paper a low tone reads
         // as dust rather than as light.
-        sun={{ x: 0.82, radius: sunset ? 0.1 : 0.115, rise: sunset ? 0.62 : 0.04 }}
+        sun={{
+          x: compact ? 0.84 : 0.82,
+          radius: compact ? 0.055 : sunset ? 0.1 : 0.115,
+          rise: sunset ? (compact ? 0.4 : 0.62) : 0.04,
+        }}
         sunHalo={sunset ? 0.16 : 0.42}
         sunHaze={sunset ? 0.03 : 0.26}
-        moon={{ x: 0.89, radius: 0.125, rise: 1.45 }}
+        moon={{
+          x: compact ? 0.86 : 0.89,
+          radius: compact ? 0.07 : 0.125,
+          rise: compact ? 1.7 : 1.45,
+        }}
         color="var(--plate-water)"
         skyInk="var(--plate-ink)"
         backgroundColor="var(--plate-paper)"
