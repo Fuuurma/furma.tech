@@ -133,6 +133,31 @@ Rules:
 - A form field is 16px or more on a touch screen.
 - Anything that reads `location.hash` on mount runs before anything that writes it.
 
+## The lens was tried and dropped — the reserve is better (2026-10-27)
+
+Owner's read after the glass went in: *what a weird effect… it doesn't feel like
+it… also the dither still hurts the title and subtitle.* Both true, for the same
+reason.
+
+**Why the glass read as a card.** A lens has nothing to show unless the thing
+behind it has structure. `glisse` refracts the live backdrop faithfully, and on
+this plate the backdrop under the pill was near-black: the result was a dark
+lozenge with a bright rim — a card wearing a glass costume. Over a photograph or
+a dense field it would read; here it could not. It was removed, and the library
+came out of `package.json` with it.
+
+**Readability is the reserve's job, and it was doing it.** The title and the
+small step under it now share **one** `data-screen-reserve` block, so the wave
+thins behind both as a single soft halo instead of a small box behind a label —
+the box was what looked broken, not the thinning. Measured with the swell
+crossing the name: the dots fall away under the words and return around them
+without an edge you can point at.
+
+Rules:
+- A material needs a picture to work on. Glass over a black field is a border.
+- One reserve per block of type, sized to the block, never per element.
+- If type stops reading, fix the ink around it; do not put a surface under it.
+
 ## The entry is one line — the project leaves the opening (2026-10-27)
 
 Owner's read of the landed opening: *the right side is all off — the Aitlas

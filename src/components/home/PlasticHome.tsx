@@ -65,10 +65,21 @@ function sectionLabel(index: number): string {
   return `Section ${index + 1}`;
 }
 
-function LetterSpacedTitle({ text }: { text: string }) {
+function LetterSpacedTitle({
+  text,
+  reserve = true,
+}: {
+  text: string;
+  /** The wave thins its ink behind the words. A lens does that job itself. */
+  reserve?: boolean;
+}) {
   const reduceMotion = useStableReducedMotion();
   return (
-    <h1 className="plastic-hero-title" aria-label={text} data-screen-reserve>
+    <h1
+      className="plastic-hero-title"
+      aria-label={text}
+      data-screen-reserve={reserve || undefined}
+    >
       {text.split("").map((char, i) => (
         <span
           key={`${char}-${i}`}
@@ -121,10 +132,14 @@ function HeroSlide({
       />
       <div className="plastic-entry" data-section-scroll>
         <div className="plastic-entry-center">
-          <LetterSpacedTitle text="furma.tech" />
-          <p className="plastic-entry-kind" data-screen-reserve>
-            Digital studio
-          </p>
+          {/* One reserve around both lines: the ink thins behind the words as a
+              soft halo, not as a box behind a label. */}
+          <div className="plastic-entry-name" data-screen-reserve>
+            <LetterSpacedTitle text="furma.tech" reserve={false} />
+            <p className="plastic-entry-kind plastic-entry-kind--under-name">
+              Digital studio
+            </p>
+          </div>
         </div>
         <div className="plastic-entry-foot">
           <div className="plastic-entry-actions">
