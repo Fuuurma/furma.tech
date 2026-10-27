@@ -120,8 +120,8 @@ export function StudioWaterFooter({
                   className="font-sans text-body studio-plate__dim max-w-sm leading-relaxed [@media(max-height:700px)]:hidden"
                   data-screen-reserve
                 >
-                  Digital studio for industry SaaS and autonomous AI ecosystems.
-                  Sitges · Global.
+                  Digital studio for industry SaaS and autonomous AI
+                  ecosystems.
                 </p>
               </div>
               <div className="space-y-3 md:space-y-4">
@@ -207,12 +207,6 @@ export function StudioWaterFooter({
             data-screen-reserve
           >
             © 2026 Furma.tech
-          </span>
-          <span
-            className="plastic-label studio-plate__dim"
-            data-screen-reserve
-          >
-            Sitges, Catalonia
           </span>
         </div>
       </div>

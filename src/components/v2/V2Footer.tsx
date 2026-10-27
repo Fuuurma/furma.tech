@@ -11,7 +11,7 @@ export function V2Footer() {
             Furma<sup className="text-[0.6em]">®</sup>
           </p>
           <p className="mt-4 max-w-[34ch] text-[0.9rem] leading-[1.6] text-[var(--v2-ink-60)]">
-            A bootstrapped studio. Estonian OÜ, forged in Sitges,
+            A bootstrapped studio. Estonian OÜ,
             shipping worldwide. Software that works — since before it was cool.
           </p>
         </div>
@@ -94,7 +94,7 @@ export function V2Footer() {
       </div>
 
       <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t border-[var(--v2-line)] pt-6 sm:flex-row sm:items-center">
-        <p className="v2-label">© 2026 Furma.tech OÜ — Tallinn · Sitges</p>
+        <p className="v2-label">© 2026 Furma.tech OÜ — Tallinn</p>
         <p className="v2-label">
           Concept v2 —{" "}
           <span className="v2-serif-accent text-[0.85rem] normal-case">

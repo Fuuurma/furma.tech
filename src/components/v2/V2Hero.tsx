@@ -58,7 +58,6 @@ export function V2Hero() {
         className="relative z-10 flex items-center justify-between px-[var(--v2-gutter)] pt-6"
       >
         <p className="v2-label">Est. OÜ — Tallinn</p>
-        <p className="v2-label hidden md:block">41.23°N, 1.81°E — Sitges, CAT</p>
         <p className="v2-label">Portfolio ℅ 2026</p>
       </motion.div>
 

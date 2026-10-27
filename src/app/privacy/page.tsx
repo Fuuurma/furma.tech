@@ -55,8 +55,8 @@ export default function PrivacyPage() {
               <div>
                 <SectionHeading>1. Who we are</SectionHeading>
                 <Body>
-                  Furma.tech OÜ is a digital studio based in Sitges,
-                  Catalonia, operating as an Estonian company (e-Residency). We
+                  Furma.tech OÜ is a digital studio operating as an Estonian
+                  company (e-Residency). We
                   build and operate software products including industry SaaS
                   tools and the Aitlas AI ecosystem.
                 </Body>

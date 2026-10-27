@@ -4,7 +4,7 @@
 
 - **Industry SaaS** — B2B tools for restaurants/tourism (restauManager, GuideTours)
 - **Aitlas** — Sovereign AI platform (BYOK, MCP-first, 34+ Actions)
-- **0% VC** | Estonian OÜ | Based in Sitges, Catalonia
+- **0% VC** | Estonian OÜ
 
 ---
 
