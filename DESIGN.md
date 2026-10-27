@@ -180,21 +180,25 @@ tour"), a lead sentence listing four kinds, a "Start with Aitlas" button, a skip
 link to the full index, and ten hairline rows of the work. Every one of those was
 a different idea competing for the same screen.
 
-What the panel is now — one sentence about the studio, centred:
+What the panel is now — one word, centred, set as the page's title:
 
-- the frame, at the mono small step: **10 products across** (the number still
-  counts up when the panel becomes active);
-- underneath it, in the page's biggest type, the one kind it means this moment:
-  **AI**, **SaaS**, **games**, **civic tech**, changing every 2.6s with a 0.42s
-  roll (`y` 0.55em → 0, opacity 0 → 1, `EASE_OUT_EXPO`, old kind leaves first).
-
-Nothing else. No labels, no buttons, no list, no link.
+- **AI**, **SaaS**, **games**, **civic tech** in the page's biggest type
+  (`clamp(56px, 19vw, 190px)`), changing every 2.6s with a 0.36s roll (`y`
+  0.35em → 0, opacity 0 → 1, `EASE_OUT_EXPO`, the old kind leaves first);
+- nothing else — no count line, no labels, no buttons, no list, no link. The
+  "10 products across" frame the first pass kept was removed on sight: the
+  rotating word is the title.
 
 **The slot is sized by its longest word.** `.plastic-index__type` is an
 `inline-grid` with one grid area; an invisible sizer holds the longest kind and
-the moving word shares its cell, so the centred line does not shift sideways
-when "AI" becomes "civic tech". Measured at 1440: the word's centre is 720 for
-all four.
+the moving word shares its cell, so the centred word does not shift sideways
+when "AI" becomes "civic tech". Measured: the word's centre is the viewport's
+centre for all four, at 1440, 390 and 320.
+
+**Nothing is clipped.** The first cut masked the roll with `overflow: hidden`,
+and at 190px Syne's ink reaches past the line box, so the tops of `f` and the
+tails of `g` were cut at the mask edge. The mask is gone: the word rises 0.35em
+and fades, which reads as a roll without a hard edge crossing a glyph.
 
 **The kinds are read once, not four times.** The moving copy is `aria-hidden`;
 the headline carries the list in one `sr-only` string. Under

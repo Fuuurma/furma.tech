@@ -23,7 +23,6 @@ import { StudioWaterFooter } from "@/components/studio/StudioWaterFooter";
 import { ScrollProgress } from "@/components/home/ScrollProgress";
 import { PlasticProjectSlide } from "@/components/home/PlasticProjectSlide";
 import { PROJECT_HERO_MAP } from "@/lib/project-heroes";
-import { AnimatedNumber } from "@/components/motion/AnimatedNumber";
 import { SlideReveal } from "@/components/motion/SlideReveal";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { DitherWave } from "@/components/dither-wave-tw";
@@ -182,10 +181,10 @@ function RotatingType({ isActive }: { isActive: boolean }) {
         <motion.span
           key={STUDIO_TYPES[index]}
           className="plastic-index__word"
-          initial={{ y: "0.55em", opacity: 0 }}
+          initial={{ y: "0.35em", opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: "-0.55em", opacity: 0 }}
-          transition={{ duration: 0.42, ease: EASE_OUT_EXPO }}
+          exit={{ y: "-0.3em", opacity: 0 }}
+          transition={{ duration: 0.36, ease: EASE_OUT_EXPO }}
         >
           {STUDIO_TYPES[index]}
         </motion.span>
@@ -194,13 +193,7 @@ function RotatingType({ isActive }: { isActive: boolean }) {
   );
 }
 
-function PortfolioIndexSlide({
-  count,
-  isActive,
-}: {
-  count: number;
-  isActive: boolean;
-}) {
+function PortfolioIndexSlide({ isActive }: { isActive: boolean }) {
   const surfaceRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -229,14 +222,6 @@ function PortfolioIndexSlide({
         data-section-scroll
       >
         <h2 className="plastic-index min-h-full" data-screen-reserve>
-          <span className="plastic-index__frame">
-            <AnimatedNumber
-              value={count}
-              trigger={isActive}
-              className="normal-nums"
-            />{" "}
-            products across
-          </span>
           <span className="plastic-index__type-row" aria-hidden="true">
             <RotatingType isActive={isActive} />
           </span>
@@ -749,10 +734,7 @@ export default function PlasticHome() {
                   />
                 )}
                 {section.type === "portfolio-index" && (
-                  <PortfolioIndexSlide
-                    count={HOME_PROJECTS.length}
-                    isActive={isActive}
-                  />
+                  <PortfolioIndexSlide isActive={isActive} />
                 )}
                 {section.type === "project" &&
                   (() => {

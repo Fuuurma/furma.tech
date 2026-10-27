@@ -820,46 +820,34 @@ html {
   opacity: 1;
 }
 
-/* The index is one sentence about the studio. The frame states the count and
-   the claim; the kind underneath is the page's biggest type and it changes at a
-   walk's pace, so the line says one thing at a time instead of listing four.
-   The slot is as wide as the longest kind, so the centred line never shifts
-   sideways between words. */
+/* The index is one word about the studio, set as the page's title: the kind of
+   work it means this moment, changing at a walk's pace. The slot is as wide as
+   the longest kind, so the centred word never shifts sideways, and its clip is
+   taller than the line box so Syne's ascenders and descenders are never cut. */
 .plastic-index {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: clamp(8px, 1.6vh, 20px);
   padding-block: clamp(32px, 8vh, 96px);
   min-height: 100%;
-}
-
-.plastic-index__frame {
-  font-family: var(--font-mono);
-  font-size: var(--text-small);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: color-mix(in oklch, var(--foreground), transparent 42%);
-  font-variant-numeric: tabular-nums;
 }
 
 .plastic-index__type-row {
   display: block;
   font-family: var(--font-sans);
-  font-size: clamp(52px, 11vw, 132px);
+  font-size: clamp(56px, 19vw, 190px);
   font-weight: 500;
   line-height: 1.02;
   letter-spacing: -0.045em;
 }
 
+/* No mask: at this size a clip edge cuts the tops of f and the tails of g. The
+   word rises and fades instead, and nothing is ever cropped. */
 .plastic-index__type {
   display: inline-grid;
   grid-template-areas: "kind";
-  overflow: hidden;
-  padding-block: 0.06em;
-  margin-block: -0.06em;
 }
 
 .plastic-index__type > * {
