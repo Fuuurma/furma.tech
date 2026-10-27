@@ -230,11 +230,24 @@ centred type: name, kind, status, hairline on paper, each at its own depth. It
 is the first slice of the project showcase; five is the smallest number that
 reads as a field rather than a stack.
 
-**It is decoration and it stays out of the way.** The stage takes no pointer
-events, so the wave keeps the hand; it carries no wheel or touch handler, so the
-tour keeps every gesture; it is `aria-hidden`, because the same projects are
-readable one panel later. The cards breathe on their own (11–15s, staggered) and
-the whole field tilts with the pointer.
+**The windows are the way into the work.** Each one is a real button: the
+pointer lifts it, an `Open →` line appears once it has actually come forward,
+and activating it walks the tour to that project's panel (`navigate` — the same
+move the old "Start with…" button made). The keyboard reaches them in reading
+order, and a focused window comes forward exactly as a hovered one does. The
+stage around them still takes no pointer events, so the wave keeps the plate
+between the windows, and the field still carries no wheel or touch handler, so
+the tour keeps every gesture.
+
+**Something happens before the pointer.** Until a pointer is seen — a touch
+screen, or a visitor who has not moved yet — the field offers one window at a
+time (3.6s each), so the interaction is discoverable rather than waiting to be
+guessed. Any real pointer takes over from the offer.
+
+**The title keeps the middle.** A card whose home is close to the centre of the
+plate answers less (`clearance`, down to 0.45), so a lift never grows into the
+word. Measured: the two outer windows answer at full strength, the centre-bottom
+one at about half.
 
 **Each card answers alone.** The field is not one board that tilts. Every card
 measures the pointer's distance to *its own* centre and answers on its own
@@ -261,13 +274,19 @@ the pointer entirely. The tilt itself is still the studied `furma.bloxs`
 `3d-card` mechanic — an offset from the centre is a degree of rotation per 25px
 under a 1000px perspective — folded into that unit-space answer.
 
-**Five becomes two on a phone.** Below 760px the three furthest cards are
-dropped and the status line goes with them: a 132px window cannot hold
-"AI Infrastructure · In Development", and a shrunk one is worse than none.
+**One card wins.** The falloff is cubed, not squared: the nearest window is
+clearly forward and the others trail well behind, so the field never has two of
+them shouting at once. The invitation line waits for 62% of the glow, so a card
+merely within reach keeps a lit edge and nothing else.
+
+**Five becomes three on a phone.** Below 760px the two furthest windows are
+dropped, the status line goes with them, and the remaining three move inside the
+frame — a card half off the glass reads as a bug, not as depth.
 
 Rules:
-- A floating card is never a control until it is asked to be. No hover, focus or
-  click target on the field in this phase.
+- A window that looks pressable is pressable: every card in the field is a
+  button that opens its project. A field that lifts and does nothing is the
+  defect this record exists to prevent.
 - The field breathes, it does not bounce: one slow cycle per card, `easeInOut`,
   staggered, and nothing that repeats faster than ten seconds.
 - A phone keeps three windows and moves them inside the frame; a card half off

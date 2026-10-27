@@ -8,10 +8,11 @@
  * how strongly its edge lights. No two cards share a spring, so they never move
  * as one block — the near card answers first and strongest, the far ones trail.
  *
- * Decoration, not navigation: the field is `aria-hidden`, takes no pointer
- * events, and listens for nothing a gesture needs — the tour keeps every wheel
- * and touch, and the wave keeps the hand. The tilt mechanic is the one studied
- * in `furma.bloxs` `3d-card`: an offset from the centre is a degree of rotation
+ * The windows are the way into the work: each one is a button that walks the
+ * tour to its project, and the card says so with an "Open" line once it is
+ * lifted. They take no wheel or touch gesture — the tour keeps those, and the
+ * wave keeps the plate around them. The tilt mechanic is the one studied in
+ * `furma.bloxs` `3d-card`: an offset from the centre is a degree of rotation
  * per 25px under a 1000px perspective.
  */
 
@@ -95,6 +96,8 @@ function FloatCard({
   active,
   reduceMotion,
   compact,
+  onOpen,
+  highlight,
 }: {
   project: HomeProject;
   placement: Placement;
@@ -105,7 +108,10 @@ function FloatCard({
   active: boolean;
   reduceMotion: boolean;
   compact: boolean;
+  onOpen: (index: number) => void;
+  highlight: MotionValue<number>;
 }) {
+  const [focused, setFocused] = useState(false);
   const spot = compact && placement.compact ? placement.compact : placement;
   const still = reduceMotion || !active;
   // Every card smooths the pointer with its own spring, so a quick sweep leaves
@@ -120,28 +126,49 @@ function FloatCard({
   const centreX = (size.width * spot.x) / 100;
   const centreY = (size.height * spot.y) / 100;
   const reach = placement.reach;
-  const answer = placement.answer;
+  // The title owns the middle. A card whose home is close to it answers less,
+  // so a lift never grows into the word.
+  const fromTitle = Math.hypot(
+    centreX - size.width / 2,
+    centreY - size.height / 2,
+  );
+  const clearance = clamp((fromTitle - 180) / 260, 0.45, 1);
+  const answer = placement.answer * clearance;
 
   const rawX = useTransform(pointerX, (px) => clamp((px - centreX) / reach, -1, 1));
   const rawY = useTransform(pointerY, (py) => clamp((py - centreY) / reach, -1, 1));
   const rawNear = useTransform([pointerX, pointerY], ([px, py]: number[]) => {
     const distance = Math.hypot(px - centreX, py - centreY);
     const falloff = clamp(1 - distance / reach, 0, 1);
-    return falloff * falloff;
+    // Cubed, not squared: the nearest card wins clearly and the others trail
+    // well behind it, so the field never has two of them shouting at once.
+    return falloff * falloff * falloff;
   });
 
   const nx = useSpring(rawX, settle);
   const ny = useSpring(rawY, settle);
   const near = useSpring(rawNear, settle);
 
+  // With no pointer (a touch screen, or a reader who has not moved yet) the
+  // field offers one window at a time, so the interaction is discoverable.
+  const offered = useTransform(highlight, (value): number => (value === index ? 0.72 : 0));
+  // A focused window comes forward exactly as a hovered one does, so the
+  // keyboard gets the same cue as the pointer.
+  const pull = useTransform([near, offered], ([n, o]: number[]) =>
+    Math.max(n, o, focused ? 0.8 : 0),
+  );
+
   const rotateY = useTransform([nx, near], ([n, p]: number[]) => placement.rotateY + n * TILT * answer * p);
   const rotateX = useTransform([ny, near], ([n, p]: number[]) => placement.rotateX - n * TILT * answer * p);
-  const z = useTransform(near, [0, 1], [placement.depth, placement.depth + LIFT * answer]);
+  const z = useTransform(pull, [0, 1], [placement.depth, placement.depth + LIFT * answer]);
   const nudgeX = useTransform([nx, near], ([n, p]: number[]) => n * MAGNET * answer * p);
   const nudgeY = useTransform([ny, near], ([n, p]: number[]) => n * MAGNET * answer * p);
   // The edge lights before the card moves: the approach is legible even when
   // the pointer is only passing by.
-  const glow = useTransform(near, (p) => clamp(p * 1.6, 0, 1));
+  const glow = useTransform(pull, (p) => clamp(p * 1.6, 0, 1));
+  // The invitation belongs to the card that has actually come forward: a card
+  // merely within reach keeps the lit edge and nothing else.
+  const invitation = useTransform(glow, [0.62, 0.92], [0, 1]);
 
   return (
     <motion.div
@@ -166,8 +193,12 @@ function FloatCard({
               }
         }
       >
-        <motion.div
+        <motion.button
+          type="button"
           className="plastic-float-card"
+          onClick={() => onOpen(index)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
           style={{
             // A window further back is printed lighter: the field reads as
             // depth at rest, before the pointer moves anything.
@@ -190,7 +221,10 @@ function FloatCard({
             <span>{project.category}</span>
             <span>{project.status}</span>
           </span>
-        </motion.div>
+          <motion.span className="plastic-float-open" style={{ opacity: invitation }} aria-hidden>
+            Open <span aria-hidden>→</span>
+          </motion.span>
+        </motion.button>
       </motion.div>
     </motion.div>
   );
@@ -199,16 +233,21 @@ function FloatCard({
 export function FloatingProjectCards({
   projects,
   isActive,
+  onOpen,
 }: {
   projects: HomeProject[];
   isActive: boolean;
+  /** Called with the project's place in the list; the home walks the tour to it. */
+  onOpen: (index: number) => void;
 }) {
   const reduceMotion = useStableReducedMotion();
   const stageRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<Size>({ width: 0, height: 0 });
   const pointerX = useMotionValue(NO_POINTER);
   const pointerY = useMotionValue(NO_POINTER);
+  const highlight = useMotionValue(-1);
   const compact = useCompact();
+  const [wantsHelp, setWantsHelp] = useState(true);
 
   const still = reduceMotion || !isActive;
 
@@ -225,6 +264,22 @@ export function FloatingProjectCards({
     return () => observer.disconnect();
   }, []);
 
+  // Before the reader has moved a pointer — a touch screen, or simply a visitor
+  // who has not moved yet — one window at a time is offered, then another.
+  useEffect(() => {
+    if (!wantsHelp || still) {
+      highlight.set(-1);
+      return;
+    }
+    let step = 0;
+    highlight.set(0);
+    const id = window.setInterval(() => {
+      step = (step + 1) % PLACEMENTS.length;
+      highlight.set(step);
+    }, 3600);
+    return () => window.clearInterval(id);
+  }, [wantsHelp, still, highlight]);
+
   useEffect(() => {
     if (still) {
       pointerX.set(NO_POINTER);
@@ -234,6 +289,8 @@ export function FloatingProjectCards({
     const onMove = (event: PointerEvent) => {
       const stage = stageRef.current;
       if (!stage) return;
+      // Any real pointer takes over from the carousel of offers.
+      setWantsHelp((help) => (help ? false : help));
       const rect = stage.getBoundingClientRect();
       pointerX.set(event.clientX - rect.left);
       pointerY.set(event.clientY - rect.top);
@@ -252,7 +309,7 @@ export function FloatingProjectCards({
   }, [still, pointerX, pointerY]);
 
   return (
-    <div ref={stageRef} className="plastic-float-stage" aria-hidden="true">
+    <div ref={stageRef} className="plastic-float-stage">
       <div className="plastic-float-field">
         {projects.slice(0, PLACEMENTS.length).map((project, index) => (
           <FloatCard
@@ -266,6 +323,8 @@ export function FloatingProjectCards({
             active={isActive}
             reduceMotion={reduceMotion}
             compact={compact}
+            onOpen={onOpen}
+            highlight={highlight}
           />
         ))}
       </div>

@@ -27,8 +27,33 @@ test("five project windows float in the field", () => {
   assert.match(field, /projects\.slice\(0, PLACEMENTS\.length\)/);
 });
 
-test("the field is decoration, never a control", () => {
-  assert.match(field, /aria-hidden="true"/);
+test("the field is navigation: five buttons, one per project", () => {
+  assert.match(field, /<motion\.button\s+type="button"\s+className="plastic-float-card"\s+onClick=\{\(\) => onOpen\(index\)\}/);
+  assert.match(field, /\{String\(index \+ 1\)\.padStart\(2, "0"\)\}/);
+  assert.doesNotMatch(field, /className="plastic-float-stage" aria-hidden/);
+});
+
+test("a window opens its project, and the keyboard can reach it", () => {
+  assert.match(field, /onClick=\{\(\) => onOpen\(index\)\}/);
+  assert.match(field, /onFocus=\{\(\) => setFocused\(true\)\}/);
+  assert.match(field, /Math\.max\(n, o, focused \? 0\.8 : 0\)/);
+  assert.match(field, /className="plastic-float-open"/);
+});
+
+test("the title keeps the middle, and one card wins", () => {
+  assert.match(field, /const clearance = clamp\(\(fromTitle - 180\) \/ 260, 0\.45, 1\);/);
+  assert.match(field, /const answer = placement\.answer \* clearance;/);
+  assert.match(field, /const invitation = useTransform\(glow, \[0\.62, 0\.92\], \[0, 1\]\);/);
+});
+
+test("something happens before the pointer arrives", () => {
+  assert.match(field, /const highlight = useMotionValue\(-1\);/);
+  assert.match(field, /\}, 3600\);/);
+  assert.match(field, /const offered = useTransform\(highlight, \(value\): number => \(value === index \? 0\.72 : 0\)\);/);
+  assert.match(field, /wantsHelp/, "a real pointer takes over from the offer");
+});
+
+test("the field takes no gesture from the tour", () => {
   assert.match(field, /className="plastic-float-stage"/);
   assert.doesNotMatch(field, /onWheel|onTouchStart|onTouchMove|addEventListener\("wheel"/);
   assert.doesNotMatch(field, /pointerdown/i);
@@ -51,7 +76,7 @@ test("every card answers the pointer on its own", () => {
 
 test("the answer falls off with distance, and is felt before it lands", () => {
   assert.match(field, /const falloff = clamp\(1 - distance \/ reach, 0, 1\);/);
-  assert.match(field, /return falloff \* falloff;/);
+  assert.match(field, /return falloff \* falloff \* falloff;/, "the nearest window wins clearly");
   assert.match(field, /const TILT = 30;/);
   assert.match(field, /const MAGNET = 44;/);
   assert.match(field, /placement\.depth \+ LIFT \* answer/);
