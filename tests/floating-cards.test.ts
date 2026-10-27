@@ -52,9 +52,9 @@ test("every card answers the pointer on its own", () => {
 test("the answer falls off with distance, and is felt before it lands", () => {
   assert.match(field, /const falloff = clamp\(1 - distance \/ reach, 0, 1\);/);
   assert.match(field, /return falloff \* falloff;/);
-  assert.match(field, /const TILT = 16;/);
-  assert.match(field, /const MAGNET = 12;/);
-  assert.match(field, /placement\.depth \+ 140 \* answer/);
+  assert.match(field, /const TILT = 30;/);
+  assert.match(field, /const MAGNET = 44;/);
+  assert.match(field, /placement\.depth \+ LIFT \* answer/);
   assert.match(field, /clamp\(p \* 1\.6, 0, 1\)/, "the edge lights before the card moves");
 });
 

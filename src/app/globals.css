@@ -884,7 +884,7 @@ html {
 
 .plastic-float-slot {
   position: absolute;
-  width: clamp(132px, 17vw, 232px);
+  width: clamp(158px, 20vw, 300px);
   transform: translate(-50%, -50%);
   transform-style: preserve-3d;
 }
@@ -894,10 +894,10 @@ html {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-height: clamp(84px, 11vw, 148px);
+  min-height: clamp(96px, 13vw, 188px);
   padding: clamp(10px, 1.1vw, 16px);
-  border: 1px solid color-mix(in oklch, var(--foreground), transparent 72%);
-  background: color-mix(in oklch, var(--background), transparent 18%);
+  border: 1px solid color-mix(in oklch, var(--foreground), transparent 78%);
+  background: color-mix(in oklch, var(--background), transparent 22%);
   color: color-mix(in oklch, var(--foreground), transparent 30%);
   transform-style: preserve-3d;
   will-change: transform;
@@ -921,7 +921,7 @@ html {
 
 .plastic-float-name {
   font-family: var(--font-sans);
-  font-size: clamp(15px, 1.5vw, 21px);
+  font-size: clamp(16px, 1.7vw, 26px);
   font-weight: 500;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -948,7 +948,7 @@ html {
     display: none;
   }
   .plastic-float-slot {
-    width: clamp(124px, 36vw, 176px);
+    width: clamp(126px, 33vw, 176px);
   }
   /* A narrow card keeps the name and the kind; the status is the first thing
      to go, and the meta never runs past the card's own edge. */

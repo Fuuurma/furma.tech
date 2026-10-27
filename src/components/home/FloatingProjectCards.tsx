@@ -30,9 +30,11 @@ import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 /** Offscreen, so a field with no pointer has every card at rest. */
 const NO_POINTER = -10_000;
 /** Degrees of tilt a card takes at the far edge of its reach. */
-const TILT = 16;
+const TILT = 30;
 /** How far a card drifts toward the pointer, in px, at its centre. */
-const MAGNET = 12;
+const MAGNET = 44;
+/** How far a card rises out of the plate when the pointer is on it, in px. */
+const LIFT = 260;
 
 type Placement = {
   /** Centre of the card, in % of the stage. */
@@ -53,20 +55,35 @@ type Placement = {
   answer: number;
   /** Cards past the second stay off a narrow screen. */
   narrow: boolean;
+  /** Where the card sits when the stage is a phone: inside the frame, not bled. */
+  compact?: { x: number; y: number };
 };
 
 const PLACEMENTS: readonly Placement[] = [
-  { x: 20, y: 33, depth: 0, rotateX: 6, rotateY: 14, rotateZ: -4, lift: 10, breath: 11, delay: 0, reach: 340, answer: 1, narrow: true },
-  { x: 81, y: 26, depth: -120, rotateX: -5, rotateY: -16, rotateZ: 3, lift: 8, breath: 13, delay: 1.4, reach: 300, answer: 0.8, narrow: true },
-  { x: 13, y: 72, depth: -200, rotateX: 4, rotateY: 10, rotateZ: 4, lift: 7, breath: 15, delay: 2.6, reach: 270, answer: 0.66, narrow: false },
-  { x: 88, y: 71, depth: -280, rotateX: -3, rotateY: -12, rotateZ: -3, lift: 6, breath: 12, delay: 0.8, reach: 250, answer: 0.55, narrow: false },
-  { x: 50, y: 86, depth: -160, rotateX: 5, rotateY: 6, rotateZ: 1, lift: 9, breath: 14, delay: 2, reach: 230, answer: 0.72, narrow: false },
+  { x: 20, y: 33, depth: 0, rotateX: 9, rotateY: 22, rotateZ: -5, lift: 14, breath: 11, delay: 0, reach: 620, answer: 1, narrow: true, compact: { x: 30, y: 31 } },
+  { x: 81, y: 26, depth: -120, rotateX: -8, rotateY: -24, rotateZ: 4, lift: 11, breath: 13, delay: 1.4, reach: 560, answer: 0.85, narrow: true, compact: { x: 72, y: 25 } },
+  { x: 13, y: 72, depth: -200, rotateX: 7, rotateY: 17, rotateZ: 5, lift: 10, breath: 15, delay: 2.6, reach: 500, answer: 0.72, narrow: true, compact: { x: 26, y: 73 } },
+  { x: 88, y: 71, depth: -280, rotateX: -6, rotateY: -19, rotateZ: -4, lift: 9, breath: 12, delay: 0.8, reach: 470, answer: 0.62, narrow: false },
+  { x: 50, y: 86, depth: -160, rotateX: 8, rotateY: 11, rotateZ: 2, lift: 12, breath: 14, delay: 2, reach: 440, answer: 0.78, narrow: false },
 ];
 
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));
 
 type Size = { width: number; height: number };
+
+/** True on a phone-width stage, where the field shows fewer windows. */
+function useCompact() {
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 760px)");
+    const sync = () => setCompact(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+  return compact;
+}
 
 function FloatCard({
   project,
@@ -75,7 +92,9 @@ function FloatCard({
   pointerX,
   pointerY,
   size,
-  still,
+  active,
+  reduceMotion,
+  compact,
 }: {
   project: HomeProject;
   placement: Placement;
@@ -83,8 +102,12 @@ function FloatCard({
   pointerX: MotionValue<number>;
   pointerY: MotionValue<number>;
   size: Size;
-  still: boolean;
+  active: boolean;
+  reduceMotion: boolean;
+  compact: boolean;
 }) {
+  const spot = compact && placement.compact ? placement.compact : placement;
+  const still = reduceMotion || !active;
   // Every card smooths the pointer with its own spring, so a quick sweep leaves
   // them strung out behind one another instead of arriving together. The
   // springs run on unit-space values (−1…1 across the card's reach, 0…1 near),
@@ -94,8 +117,8 @@ function FloatCard({
   const damping = 13 + index * 2.5;
   const settle = { stiffness, damping, mass: 0.6 } as const;
 
-  const centreX = (size.width * placement.x) / 100;
-  const centreY = (size.height * placement.y) / 100;
+  const centreX = (size.width * spot.x) / 100;
+  const centreY = (size.height * spot.y) / 100;
   const reach = placement.reach;
   const answer = placement.answer;
 
@@ -113,7 +136,7 @@ function FloatCard({
 
   const rotateY = useTransform([nx, near], ([n, p]: number[]) => placement.rotateY + n * TILT * answer * p);
   const rotateX = useTransform([ny, near], ([n, p]: number[]) => placement.rotateX - n * TILT * answer * p);
-  const z = useTransform(near, [0, 1], [placement.depth, placement.depth + 140 * answer]);
+  const z = useTransform(near, [0, 1], [placement.depth, placement.depth + LIFT * answer]);
   const nudgeX = useTransform([nx, near], ([n, p]: number[]) => n * MAGNET * answer * p);
   const nudgeY = useTransform([ny, near], ([n, p]: number[]) => n * MAGNET * answer * p);
   // The edge lights before the card moves: the approach is legible even when
@@ -121,10 +144,13 @@ function FloatCard({
   const glow = useTransform(near, (p) => clamp(p * 1.6, 0, 1));
 
   return (
-    <div
+    <motion.div
       className="plastic-float-slot"
-      style={{ left: `${placement.x}%`, top: `${placement.y}%` }}
+      style={{ left: `${spot.x}%`, top: `${spot.y}%` }}
       data-narrow={placement.narrow ? "true" : "false"}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: active ? 1 : 0 }}
+      transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : index * 0.06 }}
     >
       <motion.div
         className="plastic-float-drift"
@@ -143,6 +169,9 @@ function FloatCard({
         <motion.div
           className="plastic-float-card"
           style={{
+            // A window further back is printed lighter: the field reads as
+            // depth at rest, before the pointer moves anything.
+            opacity: 1 - Math.min(0.34, Math.abs(placement.depth) / 900),
             transformPerspective: 1000,
             x: nudgeX,
             y: nudgeY,
@@ -163,7 +192,7 @@ function FloatCard({
           </span>
         </motion.div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -179,6 +208,7 @@ export function FloatingProjectCards({
   const [size, setSize] = useState<Size>({ width: 0, height: 0 });
   const pointerX = useMotionValue(NO_POINTER);
   const pointerY = useMotionValue(NO_POINTER);
+  const compact = useCompact();
 
   const still = reduceMotion || !isActive;
 
@@ -233,7 +263,9 @@ export function FloatingProjectCards({
             pointerX={pointerX}
             pointerY={pointerY}
             size={size}
-            still={still}
+            active={isActive}
+            reduceMotion={reduceMotion}
+            compact={compact}
           />
         ))}
       </div>
