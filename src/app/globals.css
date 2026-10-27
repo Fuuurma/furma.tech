@@ -988,8 +988,6 @@ html {
   align-items: center;
   justify-content: flex-end;
   margin-top: clamp(24px, 4vh, 40px);
-  padding-top: clamp(14px, 2.5vh, 24px);
-  border-top: 1px solid var(--surface-dark-line);
 }
 
 .plastic-entry-actions {
