@@ -39,13 +39,7 @@ test("sitemap: the URL set is preserved", () => {
     `${BASE}/portfolio`,
     `${BASE}/showcase`,
     `${BASE}/privacy`,
-    `${BASE}/portfolio/aitlas`,
-    `${BASE}/portfolio/aitlas/nova`,
-    `${BASE}/portfolio/aitlas/nexus`,
-    `${BASE}/portfolio/aitlas/agents`,
-    ...HOME_PROJECTS.filter((p) => p.id !== "aitlas").map(
-      (p) => `${BASE}${p.href}`,
-    ),
+    ...HOME_PROJECTS.map((p) => `${BASE}${p.href}`),
   ]);
 });
 
@@ -57,7 +51,7 @@ test("sitemap: the change frequencies and priorities are preserved", () => {
   assert.equal(byUrl.get(`${BASE}/portfolio`)?.priority, 0.9);
   assert.equal(byUrl.get(`${BASE}/privacy`)?.changeFrequency, "yearly");
   assert.equal(byUrl.get(`${BASE}/privacy`)?.priority, 0.3);
-  assert.equal(byUrl.get(`${BASE}/portfolio/aitlas/nova`)?.priority, 0.8);
+  assert.equal(byUrl.get(`${BASE}${HOME_PROJECTS[0].href}`)?.priority, 0.7);
   assert.equal(
     byUrl.get(`${BASE}/portfolio/${HOME_PROJECTS[1].id}`)?.priority,
     0.7,

@@ -884,22 +884,60 @@ html {
 
 .plastic-float-slot {
   position: absolute;
-  width: clamp(132px, 17vw, 232px);
+  width: clamp(158px, 20vw, 300px);
   transform: translate(-50%, -50%);
   transform-style: preserve-3d;
 }
 
+/* A window is the way into its project: a real button, so the keyboard reaches
+   it and the card says what will happen. The stage around it keeps taking no
+   pointer events, so the wave still has the plate between the windows. */
 .plastic-float-card {
+  position: relative;
+  pointer-events: auto;
+  cursor: pointer;
+  appearance: none;
+  text-align: left;
+  font: inherit;
+  color: inherit;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-height: clamp(84px, 11vw, 148px);
+  min-height: clamp(96px, 13vw, 188px);
   padding: clamp(10px, 1.1vw, 16px);
-  border: 1px solid color-mix(in oklch, var(--foreground), transparent 72%);
-  background: color-mix(in oklch, var(--background), transparent 18%);
+  border: 1px solid color-mix(in oklch, var(--foreground), transparent 78%);
+  background: color-mix(in oklch, var(--background), transparent 22%);
   color: color-mix(in oklch, var(--foreground), transparent 30%);
   transform-style: preserve-3d;
   will-change: transform;
+}
+
+/* The edge lights as the pointer comes near, before the card moves: the
+   approach is legible even when the pointer is only passing by. */
+.plastic-float-glow {
+  position: absolute;
+  inset: -1px;
+  border: 1px solid color-mix(in oklch, var(--foreground), transparent 46%);
+  pointer-events: none;
+}
+
+/* The invitation, shown once the card has been lifted: it appears after the
+   movement has already said the window is awake. */
+.plastic-float-open {
+  position: absolute;
+  top: clamp(8px, 0.9vw, 14px);
+  right: clamp(8px, 0.9vw, 14px);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--foreground);
+  pointer-events: none;
+}
+
+.plastic-float-card:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 4px;
 }
 
 .plastic-float-no {
@@ -911,7 +949,7 @@ html {
 
 .plastic-float-name {
   font-family: var(--font-sans);
-  font-size: clamp(15px, 1.5vw, 21px);
+  font-size: clamp(16px, 1.7vw, 26px);
   font-weight: 500;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -938,7 +976,7 @@ html {
     display: none;
   }
   .plastic-float-slot {
-    width: clamp(124px, 36vw, 176px);
+    width: clamp(126px, 33vw, 176px);
   }
   /* A narrow card keeps the name and the kind; the status is the first thing
      to go, and the meta never runs past the card's own edge. */

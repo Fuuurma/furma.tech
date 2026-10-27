@@ -230,32 +230,119 @@ centred type: name, kind, status, hairline on paper, each at its own depth. It
 is the first slice of the project showcase; five is the smallest number that
 reads as a field rather than a stack.
 
-**It is decoration and it stays out of the way.** The stage takes no pointer
-events, so the wave keeps the hand; it carries no wheel or touch handler, so the
-tour keeps every gesture; it is `aria-hidden`, because the same projects are
-readable one panel later. The cards breathe on their own (11–15s, staggered) and
-the whole field tilts with the pointer.
+**The windows are the way into the work.** Each one is a real button: the
+pointer lifts it, an `Open →` line appears once it has actually come forward,
+and activating it walks the tour to that project's panel (`navigate` — the same
+move the old "Start with…" button made). The keyboard reaches them in reading
+order, and a focused window comes forward exactly as a hovered one does. The
+stage around them still takes no pointer events, so the wave keeps the plate
+between the windows, and the field still carries no wheel or touch handler, so
+the tour keeps every gesture.
 
-**The tilt is the studied mechanic, not an invention.** `furma.bloxs` `3d-card`
-turns the pointer's offset from the centre into degrees at 25px per degree under
-a 1000px perspective. Here that offset (clamped to ±14°) turns the field ±7° and
-each card a further ±7° against its own resting tilt, and each card's `z` does
-the rest: depth becomes parallax without a listener per card, and no card can
-drift from the physics of the others.
+**Something happens before the pointer.** Until a pointer is seen — a touch
+screen, or a visitor who has not moved yet — the field offers one window at a
+time (3.6s each), so the interaction is discoverable rather than waiting to be
+guessed. Any real pointer takes over from the offer.
 
-**Five becomes two on a phone.** Below 760px the three furthest cards are
-dropped and the status line goes with them: a 132px window cannot hold
-"AI Infrastructure · In Development", and a shrunk one is worse than none.
+**The title keeps the middle.** A card whose home is close to the centre of the
+plate answers less (`clearance`, down to 0.45), so a lift never grows into the
+word. Measured: the two outer windows answer at full strength, the centre-bottom
+one at about half.
+
+**Each card answers alone.** The field is not one board that tilts. Every card
+measures the pointer's distance to *its own* centre and answers on its own
+spring: the nearer it is, the more it lifts on `z` (up to +260px), the more it
+turns toward the pointer (up to 30° at the edge of its reach) and the more it
+drifts toward it (up to 44px). Its edge lights before it moves — the glow is
+full at about three-fifths of the way in — so an approach is legible even when
+the pointer is only passing by.
+
+Reach and strength differ per card (440–620px, 0.62–1.0), and so do stiffness
+and damping, so a sweep strings them out instead of arriving as one block:
+measured mid-sweep, the near card sat at `z 167` fully lit while the next was
+33% lit, the third 12%, and the two furthest were still asleep.
+
+**Depth is printed, not only placed.** A window further back is set lighter
+(`opacity` falls to about 0.66 on the deepest card), so the field reads as depth
+at rest, before the pointer moves anything. The field fades in, card by card,
+when the panel becomes active.
+
+**The springs run in unit space.** `−1…1` across a card's reach and `0…1` near,
+never on raw pointer pixels: a spring over a coordinate that starts offscreen
+spends a second travelling in from 10,000px, which reads as a card that ignores
+the pointer entirely. The tilt itself is still the studied `furma.bloxs`
+`3d-card` mechanic — an offset from the centre is a degree of rotation per 25px
+under a 1000px perspective — folded into that unit-space answer.
+
+**One card wins.** The falloff is cubed, not squared: the nearest window is
+clearly forward and the others trail well behind, so the field never has two of
+them shouting at once. The invitation line waits for 62% of the glow, so a card
+merely within reach keeps a lit edge and nothing else.
+
+**Five becomes three on a phone.** Below 760px the two furthest windows are
+dropped, the status line goes with them, and the remaining three move inside the
+frame — a card half off the glass reads as a bug, not as depth.
 
 Rules:
-- A floating card is never a control until it is asked to be. No hover, focus or
-  click target on the field in this phase.
+- A window that looks pressable is pressable: every card in the field is a
+  button that opens its project. A field that lifts and does nothing is the
+  defect this record exists to prevent.
 - The field breathes, it does not bounce: one slow cycle per card, `easeInOut`,
   staggered, and nothing that repeats faster than ten seconds.
+- A phone keeps three windows and moves them inside the frame; a card half off
+  the glass reads as a bug, not as depth.
+- Two cards never share a spring. If a change makes them move as one, it is the
+  wrong change.
 - Depth is one 3D stage. A card's size comes from its `z`, never from a scale
   typed next to it.
 - Reduced motion stops the breath and the tilt; the cards stay where they are.
 - The title keeps the centre. A card that covers the word is a placement bug.
+
+## The catalogue is what is real (2026-10-27)
+
+Owner's call, after the field landed: *there's gotta be less and new ones … i got
+most of this stopped. some are even in beta now in public — tic-tac-toe, gambit.*
+
+The site listed ten products, six of which were paused, retired or a roadmap
+line, and it did not mention the one that is actually playable in public. The
+catalogue is now the six that are real:
+
+| Project | Kind | State |
+|---|---|---|
+| Tic-Tac-Toe | Games | **Beta** — live at `tic-tac-toe-1ou.pages.dev` |
+| Gambit Deck | Games | **Beta** — live at `gambit-deck.pages.dev` |
+| Pond | Productivity | In Development |
+| QArt | Marketing | In Development |
+| Bloxs | Design Tools | Prototype |
+| Renfe | Civic Tech | In Development |
+
+`HOME_PROJECTS` is that list: the home tour, the field, the portfolio index, the
+footers, the sitemap and every count derive from it, so a paused project can no
+longer advertise itself as current work. The eight that are paused, retired or
+roadmapped moved to `ARCHIVED_PROJECTS`: their pages stay reachable for anyone
+holding a link, and they are no longer listed, linked, counted or submitted.
+
+**Two live projects, and they say so.** A card may carry a `live` URL only when
+a stranger can open it today; Tic-Tac-Toe and Gambit Deck carry one and read
+"Beta" — the game works, and it can change between sessions.
+
+**New case pages.** Gambit Deck, Pond, Bloxs and Renfe each got a page written
+from the project's own record (its SF state and its repo README), with a
+bespoke 520:340 concept visual and the same "concept visual" caption as the
+rest.
+
+**The rotating word follows the catalogue.** It was "AI, SaaS, games, civic
+tech" while the site showed those; it is now **games, tools, civic tech**,
+because those are the kinds of work the six are.
+
+Rules:
+- A project is listed only while someone is working on it. Paused is not a
+  status a public catalogue needs; it is a status the owner needs.
+- A `live` link is a promise that a stranger can open it. No link, no promise.
+- "Beta" means playable and changing. It does not mean finished, and the page
+  says as much in its own words.
+- A new project enters the catalogue with a page, a visual and a description
+  written from evidence, never from ambition.
 
 ## Softer screens — a plate for a footer, and no black boxes (2026-10-21)
 

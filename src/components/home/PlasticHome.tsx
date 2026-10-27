@@ -47,6 +47,7 @@ const SECTIONS = [
 ];
 
 const TOTAL = SECTIONS.length;
+const FIRST_PROJECT_SECTION = HOME_SECTION.firstProject;
 const CONTACT_SECTION = HOME_SECTION.contact;
 const HOME_REEL_ITEMS = buildHomeReelItems();
 
@@ -143,7 +144,7 @@ function HeroSlide({
 /* What the studio builds, one kind at a time. The sentence stays put and only
    the kind changes, so the line reads as a claim about one kind of work at a
    time instead of a list. */
-const STUDIO_TYPES = ["AI", "SaaS", "games", "civic tech"] as const;
+const STUDIO_TYPES = ["games", "tools", "civic tech"] as const;
 const STUDIO_TYPE_HOLD = 2600;
 
 // The kind set in the biggest type on the page. It changes under the reader at
@@ -194,7 +195,13 @@ function RotatingType({ isActive }: { isActive: boolean }) {
   );
 }
 
-function PortfolioIndexSlide({ isActive }: { isActive: boolean }) {
+function PortfolioIndexSlide({
+  isActive,
+  onOpenProject,
+}: {
+  isActive: boolean;
+  onOpenProject: (projectIndex: number) => void;
+}) {
   const surfaceRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -221,9 +228,12 @@ function PortfolioIndexSlide({ isActive }: { isActive: boolean }) {
       <FloatingProjectCards
         projects={HOME_PROJECTS}
         isActive={isActive}
+        onOpen={onOpenProject}
       />
       <div
-        className="flex-1 min-h-0 relative z-10 overflow-y-auto overscroll-contain px-6 md:px-12"
+        // The title layer is transparent to the pointer: the windows sit under
+        // it, and a full-panel heading must not swallow their clicks.
+        className="flex-1 min-h-0 relative z-10 overflow-y-auto overscroll-contain px-6 md:px-12 pointer-events-none"
         data-section-scroll
       >
         <h2 className="plastic-index min-h-full" data-screen-reserve>
@@ -739,7 +749,15 @@ export default function PlasticHome() {
                   />
                 )}
                 {section.type === "portfolio-index" && (
-                  <PortfolioIndexSlide isActive={isActive} />
+                  <PortfolioIndexSlide
+                    isActive={isActive}
+                    onOpenProject={(projectIndex) =>
+                      navigate(FIRST_PROJECT_SECTION + projectIndex, {
+                        force: true,
+                        focus: true,
+                      })
+                    }
+                  />
                 )}
                 {section.type === "project" &&
                   (() => {

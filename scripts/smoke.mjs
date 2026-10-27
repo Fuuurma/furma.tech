@@ -87,11 +87,12 @@ try {
 try {
   const { status, text } = await get("/sitemap.xml");
   assert.equal(status, 200, "/sitemap.xml should be 200");
-  must(text.includes("/portfolio/aitlas"), "sitemap missing /portfolio/aitlas");
-  must(
-    text.includes("/portfolio/restauramanager"),
-    "sitemap missing /portfolio/restauramanager",
-  );
+  // The sitemap carries the projects the site shows, and nothing it has
+  // stopped advertising: paused work keeps its page but not a submission.
+  for (const href of ["/portfolio/tic-tac-toe-disappear", "/portfolio/gambit-deck", "/portfolio/pond"]) {
+    must(text.includes(href), `sitemap missing ${href}`);
+  }
+  must(!text.includes("/portfolio/aitlas"), "the sitemap still advertises paused work");
   must(!text.includes("/v2"), "sitemap must not include /v2");
   console.log("  ok  /sitemap.xml (canonical portfolio routes, no /v2)");
 } catch (error) {
