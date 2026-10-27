@@ -177,7 +177,10 @@ test("the footer is moonlight on black, and a sunset on light paper", () => {
     /skyInk="var\(--plate-ink\)"/,
     "the sun prints solid while the sea prints as a wash",
   );
-  assert.match(footer, /sunStyle=\{sunset \? "ring" : "disc"\}/);
+  assert.ok(
+    !/sunStyle|context\.arc\(/.test(footer + readFileSync(new URL("../src/components/liquid-ascii-tw.tsx", import.meta.url), "utf8")),
+    "the picture is characters, never a vector shape",
+  );
   assert.match(
     css,
     /--plate-water: color-mix\(in oklch, var\(--plate-ink\), transparent 72%\)/,
