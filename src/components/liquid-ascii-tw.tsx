@@ -455,10 +455,11 @@ export function LiquidAscii({
           // The sun: the disc, with a soft rim; the halo falling away from
           // it; and a haze that lies along the horizon and thins upward.
           // A printed sun is a ring: the edge is ink, the middle is paper.
+          // A ringed sun is drawn as a line, not as marks: the characters
+          // stop at its edge so the circle is the only thing inside it.
           const disc =
             sunStyle === "ring"
-              ? smoothstep(radius * 0.72, radius * 0.9, distance) *
-                (1 - smoothstep(radius, radius * 1.08, distance))
+              ? 0
               : 1 - smoothstep(radius * 0.94, radius, distance);
           const core = 0;
           const halo =
@@ -730,6 +731,25 @@ export function LiquidAscii({
 
       paintCells(true);
       paintCells(false);
+
+      // The ringed sun: one hairline, clipped to the sky, so a setting sun is
+      // a circle the eye completes rather than a ring of glyphs.
+      if (sunStyle === "ring" && skyBody) {
+        const panelHeight = rows * cellHeight;
+        const radius = skyBody.radius * panelHeight;
+        const centreX = skyBody.x * columns * cellWidth;
+        const centreY = horizon - (skyBody.rise ?? 0.15) * radius;
+        context.save();
+        context.beginPath();
+        context.rect(0, 0, rect.width, horizon);
+        context.clip();
+        context.strokeStyle = sky;
+        context.lineWidth = 1;
+        context.beginPath();
+        context.arc(centreX, centreY, radius, 0, Math.PI * 2);
+        context.stroke();
+        context.restore();
+      }
     };
 
     /**

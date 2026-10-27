@@ -71,9 +71,9 @@ export function StudioWaterFooter({
         // A sunset is smaller and cleaner than the moon's night: a low disc,
         // a short halo and almost no haze, because on paper a low tone reads
         // as dust rather than as light.
-        sun={{ x: 0.82, radius: sunset ? 0.09 : 0.115, rise: sunset ? 0.62 : 0.04 }}
+        sun={{ x: 0.82, radius: sunset ? 0.075 : 0.115, rise: sunset ? 0.62 : 0.04 }}
         sunStyle={sunset ? "ring" : "disc"}
-        sunHalo={sunset ? 0.12 : 0.42}
+        sunHalo={sunset ? 0.08 : 0.42}
         sunHaze={sunset ? 0.03 : 0.26}
         moon={{ x: 0.89, radius: 0.125, rise: 1.45 }}
         color="var(--plate-water)"
