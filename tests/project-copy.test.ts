@@ -112,8 +112,8 @@ const plasticHome = readFileSync(
 test("the index states what the studio builds, one kind at a time", () => {
   assert.match(
     plasticHome,
-    /STUDIO_TYPES = \["AI", "SaaS", "games", "civic tech"\]/,
-    "the four kinds the index rotates through",
+    /STUDIO_TYPES = \["games", "tools", "civic tech"\]/,
+    "the kinds the index rotates through must be the kinds the studio shows",
   );
   assert.match(
     plasticHome,

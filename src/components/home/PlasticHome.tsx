@@ -144,7 +144,7 @@ function HeroSlide({
 /* What the studio builds, one kind at a time. The sentence stays put and only
    the kind changes, so the line reads as a claim about one kind of work at a
    time instead of a list. */
-const STUDIO_TYPES = ["AI", "SaaS", "games", "civic tech"] as const;
+const STUDIO_TYPES = ["games", "tools", "civic tech"] as const;
 const STUDIO_TYPE_HOLD = 2600;
 
 // The kind set in the biggest type on the page. It changes under the reader at

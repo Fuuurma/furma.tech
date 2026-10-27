@@ -51,16 +51,13 @@ export function buildSitemap(
     },
   ];
 
-  const portfolioPages: MetadataRoute.Sitemap = [
-    `${baseUrl}/portfolio/aitlas`,
-    `${baseUrl}/portfolio/aitlas/nova`,
-    `${baseUrl}/portfolio/aitlas/nexus`,
-    `${baseUrl}/portfolio/aitlas/agents`,
-    ...projects.filter((p) => p.id !== "aitlas").map((p) => `${baseUrl}${p.href}`),
-  ].map((url) => ({
-    url,
+  // Only the projects the studio shows. Paused work keeps its pages for anyone
+  // holding a link, but a sitemap that keeps submitting it advertises it, which
+  // is the thing the 2026-10-27 curation was meant to stop.
+  const portfolioPages: MetadataRoute.Sitemap = projects.map((p) => ({
+    url: `${baseUrl}${p.href}`,
     changeFrequency: "weekly" as const,
-    priority: url.includes("/aitlas") ? 0.8 : 0.7,
+    priority: 0.7,
   }));
 
   return [...staticPages, ...portfolioPages];

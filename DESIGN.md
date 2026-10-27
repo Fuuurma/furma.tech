@@ -298,6 +298,52 @@ Rules:
 - Reduced motion stops the breath and the tilt; the cards stay where they are.
 - The title keeps the centre. A card that covers the word is a placement bug.
 
+## The catalogue is what is real (2026-10-27)
+
+Owner's call, after the field landed: *there's gotta be less and new ones … i got
+most of this stopped. some are even in beta now in public — tic-tac-toe, gambit.*
+
+The site listed ten products, six of which were paused, retired or a roadmap
+line, and it did not mention the one that is actually playable in public. The
+catalogue is now the six that are real:
+
+| Project | Kind | State |
+|---|---|---|
+| Tic-Tac-Toe | Games | **Beta** — live at `tic-tac-toe-1ou.pages.dev` |
+| Gambit Deck | Games | **Beta** — live at `gambit-deck.pages.dev` |
+| Pond | Productivity | In Development |
+| QArt | Marketing | In Development |
+| Bloxs | Design Tools | Prototype |
+| Renfe | Civic Tech | In Development |
+
+`HOME_PROJECTS` is that list: the home tour, the field, the portfolio index, the
+footers, the sitemap and every count derive from it, so a paused project can no
+longer advertise itself as current work. The eight that are paused, retired or
+roadmapped moved to `ARCHIVED_PROJECTS`: their pages stay reachable for anyone
+holding a link, and they are no longer listed, linked, counted or submitted.
+
+**Two live projects, and they say so.** A card may carry a `live` URL only when
+a stranger can open it today; Tic-Tac-Toe and Gambit Deck carry one and read
+"Beta" — the game works, and it can change between sessions.
+
+**New case pages.** Gambit Deck, Pond, Bloxs and Renfe each got a page written
+from the project's own record (its SF state and its repo README), with a
+bespoke 520:340 concept visual and the same "concept visual" caption as the
+rest.
+
+**The rotating word follows the catalogue.** It was "AI, SaaS, games, civic
+tech" while the site showed those; it is now **games, tools, civic tech**,
+because those are the kinds of work the six are.
+
+Rules:
+- A project is listed only while someone is working on it. Paused is not a
+  status a public catalogue needs; it is a status the owner needs.
+- A `live` link is a promise that a stranger can open it. No link, no promise.
+- "Beta" means playable and changing. It does not mean finished, and the page
+  says as much in its own words.
+- A new project enters the catalogue with a page, a visual and a description
+  written from evidence, never from ambition.
+
 ## Softer screens — a plate for a footer, and no black boxes (2026-10-21)
 
 The owner's second look at the landed pass: *the effect is an improvement; the

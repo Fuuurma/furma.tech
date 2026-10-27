@@ -13,6 +13,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { HOME_PROJECTS } from "../src/lib/home-projects.ts";
 
 const read = (path: string): string =>
   readFileSync(new URL(path, import.meta.url), "utf8");
@@ -21,9 +22,13 @@ const field = read("../src/components/home/FloatingProjectCards.tsx");
 const home = read("../src/components/home/PlasticHome.tsx");
 const css = read("../src/app/globals.css");
 
-test("five project windows float in the field", () => {
+test("one window per project floats in the field", () => {
   const placements = field.match(/\{ x: [\d.]+, y: [\d.]+, depth:/g) ?? [];
-  assert.equal(placements.length, 5, "the field starts with five placements");
+  assert.equal(
+    placements.length,
+    HOME_PROJECTS.length,
+    "every shown project gets a window",
+  );
   assert.match(field, /projects\.slice\(0, PLACEMENTS\.length\)/);
 });
 

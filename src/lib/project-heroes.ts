@@ -14,6 +14,10 @@ import {
 
 export type ProjectHeroVisual = ComponentType<{ className?: string }>;
 
+import { GambitDeckHero } from "@/components/heroes/GambitDeckHero";
+import { PondHero } from "@/components/heroes/PondHero";
+import { BloxsHero } from "@/components/heroes/BloxsHero";
+import { RenfeHero } from "@/components/heroes/RenfeHero";
 export const PROJECT_HERO_MAP: Record<string, ProjectHeroVisual> = {
   aitlas: AitlasHero,
   restauramanager: RestauManagerHero,
@@ -25,4 +29,8 @@ export const PROJECT_HERO_MAP: Record<string, ProjectHeroVisual> = {
   linkup: LinkUpHero,
   onetomany: OneToManyHero,
   opengovern: OpenGovernHero,
+  "gambit-deck": GambitDeckHero,
+  pond: PondHero,
+  bloxs: BloxsHero,
+  putarenfe: RenfeHero,
 };

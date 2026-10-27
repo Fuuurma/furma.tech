@@ -66,6 +66,7 @@ const PLACEMENTS: readonly Placement[] = [
   { x: 13, y: 72, depth: -200, rotateX: 7, rotateY: 17, rotateZ: 5, lift: 10, breath: 15, delay: 2.6, reach: 500, answer: 0.72, narrow: true, compact: { x: 26, y: 73 } },
   { x: 88, y: 71, depth: -280, rotateX: -6, rotateY: -19, rotateZ: -4, lift: 9, breath: 12, delay: 0.8, reach: 470, answer: 0.62, narrow: false },
   { x: 50, y: 86, depth: -160, rotateX: 8, rotateY: 11, rotateZ: 2, lift: 12, breath: 14, delay: 2, reach: 440, answer: 0.78, narrow: false },
+  { x: 60, y: 19, depth: -90, rotateX: -4, rotateY: -18, rotateZ: -3, lift: 9, breath: 16, delay: 1.1, reach: 480, answer: 0.7, narrow: false },
 ];
 
 const clamp = (value: number, min: number, max: number) =>
