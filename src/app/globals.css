@@ -1002,6 +1002,215 @@ html {
   text-wrap: balance;
 }
 
+/* ── Contact ────────────────────────────────────────────────────────────────
+   The panel is a page of facts on the left and one form on the right. The form
+   is a set of rules, not boxes: every field is a hairline under a label that
+   fills with ink as the field takes focus, and the action is a rule that
+   inverts on hover. No hue anywhere — the house has none. */
+
+.plastic-facts {
+  margin: clamp(24px, 4vh, 40px) 0 0;
+  border-top: 1px solid var(--foreground);
+}
+
+.plastic-facts__row {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 8px 16px;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid color-mix(in oklch, var(--foreground), transparent 84%);
+}
+
+.plastic-facts dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--foreground), transparent 40%);
+}
+
+.plastic-facts dd {
+  margin: 0;
+  min-width: 0;
+  font-size: var(--text-small);
+  line-height: 1.4;
+}
+
+.plastic-facts__link {
+  color: var(--foreground);
+  border-bottom: 1px solid color-mix(in oklch, var(--foreground), transparent 65%);
+  transition: border-color 0.2s ease;
+}
+
+.plastic-facts__link:hover,
+.plastic-facts__link:focus-visible {
+  border-bottom-color: var(--foreground);
+}
+
+.plastic-facts .plastic-mail__link {
+  font-size: inherit;
+  font-family: var(--font-mono);
+  letter-spacing: -0.01em;
+}
+
+.plastic-facts .plastic-mail__copy {
+  font-size: var(--text-label);
+  padding: 2px 8px;
+}
+
+.plastic-contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vh, 30px);
+}
+
+.plastic-contact-form__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 28px;
+}
+
+@media (max-width: 640px) {
+  .plastic-contact-form__row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* The message is the one field with room to think in, so it is the one field
+   that is a sheet rather than a rule: a hairline box with a breath of paper in
+   it. Two name-length facts stay underlines; a paragraph gets a place. */
+.plastic-field--area {
+  min-height: clamp(96px, 13vh, 132px);
+  padding: 12px 14px;
+  border: 1px solid color-mix(in oklch, var(--foreground), transparent 80%);
+  background: color-mix(in oklch, var(--foreground), transparent 97%);
+  line-height: 1.55;
+}
+
+.plastic-field--area:focus-visible {
+  border-color: var(--foreground);
+  box-shadow: none;
+}
+
+.plastic-hint {
+  margin: 10px 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  color: color-mix(in oklch, var(--foreground), transparent 42%);
+}
+
+.plastic-form-alert {
+  margin: 0;
+  padding: 10px 0 0;
+  border-top: 1px solid var(--foreground);
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground);
+}
+
+/* The action is a rule of its own: full width, hairlines above and below, the
+   ink inverting on hover. It reads as the end of the form, not a button
+   borrowed from another site. */
+.plastic-send {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-height: 56px;
+  padding: 0 2px;
+  border: 0;
+  border-top: 1px solid var(--foreground);
+  border-bottom: 1px solid var(--foreground);
+  background: transparent;
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.plastic-send:hover,
+.plastic-send:focus-visible {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.plastic-send:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 4px;
+}
+
+.plastic-send__arrow {
+  font-size: 1.05em;
+  letter-spacing: 0;
+  transition: transform 0.25s var(--ease-out-expo);
+}
+
+.plastic-send:hover .plastic-send__arrow {
+  transform: translateX(4px);
+}
+
+.plastic-send--busy {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+/* The confirmation is a page, not a toast: what happened, and when the reply
+   arrives. */
+.plastic-sent__title {
+  margin: 12px 0 16px;
+  font-family: var(--font-sans);
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.plastic-link-button {
+  margin-top: clamp(20px, 3vh, 32px);
+  padding: 0 0 3px;
+  border: 0;
+  border-bottom: 1px solid color-mix(in oklch, var(--foreground), transparent 50%);
+  background: transparent;
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.plastic-link-button:hover,
+.plastic-link-button:focus-visible {
+  border-bottom-color: var(--foreground);
+}
+
+.plastic-link-button:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plastic-send,
+  .plastic-send__arrow,
+  .plastic-facts__link,
+  .plastic-field-group .plastic-label {
+    transition: none;
+  }
+  .plastic-send:hover .plastic-send__arrow {
+    transform: none;
+  }
+}
+
 .plastic-field-error {
   margin: 0.45rem 0 0;
   font-family: var(--font-mono);
