@@ -39,9 +39,13 @@ test("Detail hero states the 3-piece rule, not turn-based vanishing", () => {
   assert.match(detailPage, /only 3 pieces per player/i);
 });
 
-test("detail CTA matches In-Dev status (no Play promise)", () => {
-  assert.doesNotMatch(detailPage, /Play the vanishing-move variant/i);
-  assert.match(detailPage, /Get updates/);
+test("detail CTA matches the live beta (the door is the game)", () => {
+  // It is playable in public, so the page's action is the game itself — not a
+  // mailing list for a product a stranger can already open.
+  assert.match(detailPage, /status=\{\{ label: "Beta"/);
+  assert.match(detailPage, /primaryHref="https:\/\/tic-tac-toe-1ou\.pages\.dev"/);
+  assert.match(detailPage, /primaryLabel="Play Tic-Tac-Toe"/);
+  assert.doesNotMatch(detailPage, /Get updates/);
 });
 
 // FT-CONTENT-02: QArt is stage=building, so index/home/detail must all

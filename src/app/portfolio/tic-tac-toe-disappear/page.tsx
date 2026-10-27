@@ -46,25 +46,28 @@ const features = [
 
 export default function TicTacToePage() {
   return (
-    <ProjectLayout>
+    <ProjectLayout live={{ href: "https://tic-tac-toe-1ou.pages.dev", label: "Play" }}>
       <ProjectHero
         label="Games"
         title="Tic-Tac-Toe Disappear"
         description="A strategic twist on the classic game: only 3 pieces per player — place a 4th and your oldest vanishes. Think ahead, adapt fast, and outmaneuver your opponent in this dynamic battlefield."
-        status={{ label: "In Dev", variant: "soon" }}
+        status={{ label: "Beta", variant: "beta" }}
         projectId="tic-tac-toe"
       >
-        <ProjectTrustRow items={["React", "Canvas API", "TypeScript"]} />
-        <p className="pt-3 m-0">
+        <p className="pt-5 m-0">
           <a
             href="https://tic-tac-toe-1ou.pages.dev"
             target="_blank"
             rel="noreferrer"
-            className="plastic-label motion-link-subtle hover:text-foreground"
+            className="plastic-open"
           >
-            Play the live preview ↗ (early build)
+            <span>Play it — early build</span>
+            <span aria-hidden className="plastic-open__arrow">
+              ↗
+            </span>
           </a>
         </p>
+        <ProjectTrustRow items={["React", "Canvas API", "TypeScript"]} />
       </ProjectHero>
 
       <ProjectSection>
@@ -95,8 +98,8 @@ export default function TicTacToePage() {
       <ProjectCTA
         title="Ready to think ahead?"
         description="The 3-piece variant is in development — online play and AI opponents are on the way."
-        primaryHref="/#contact"
-        primaryLabel="Get updates"
+        primaryHref="https://tic-tac-toe-1ou.pages.dev"
+        primaryLabel="Play Tic-Tac-Toe"
         secondaryHref="/portfolio"
         secondaryLabel="Back to Portfolio"
       />

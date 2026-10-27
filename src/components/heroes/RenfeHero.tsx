@@ -3,10 +3,10 @@
 // Renfe — a departure board with measured delay bars
 export function RenfeHero({ className = "" }: { className?: string }) {
   const trains = [
-    { time: "08:12", route: "Barcelona · Sitges", delay: 4 },
-    { time: "08:26", route: "Sitges · Vilanova", delay: 0 },
+    { time: "08:12", route: "Barcelona · Tarragona", delay: 4 },
+    { time: "08:26", route: "Sants · Girona", delay: 0 },
     { time: "08:41", route: "Barcelona · Tarragona", delay: 17 },
-    { time: "09:03", route: "Sitges · Barcelona", delay: 0 },
+    { time: "09:03", route: "Girona · Barcelona", delay: 0 },
     { time: "09:18", route: "Barcelona · Reus", delay: 31 },
   ];
   return (

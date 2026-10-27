@@ -13,8 +13,8 @@ export function StudioSiteFooter() {
           <div className="md:col-span-4">
             <p className="plastic-label mb-4">Furma.tech</p>
             <p className="font-sans text-body leading-relaxed text-foreground/65 max-w-sm">
-              Digital studio building industry SaaS and the Aitlas AI ecosystem.
-              Bootstrapped from Sitges, Catalonia.
+              Digital studio building industry SaaS and the Aitlas AI
+              ecosystem.
             </p>
           </div>
           <div className="md:col-span-4 md:col-start-6">
@@ -73,7 +73,6 @@ export function StudioSiteFooter() {
       </div>
       <div className="border-t border-foreground/10 px-6 md:px-12 py-5 flex flex-col sm:flex-row sm:justify-between gap-2">
         <span className="plastic-label">© 2026 Furma.tech</span>
-        <span className="plastic-label">Sitges, Catalonia</span>
       </div>
     </footer>
   );

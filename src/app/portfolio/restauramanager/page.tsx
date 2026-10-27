@@ -106,7 +106,7 @@ export default function RestauManagerPage() {
       <ProjectHero
         label="Hospitality"
         title="restauManager"
-        description="Complete restaurant management platform with TheFork integration. Floor plans, reservations, staff coordination, and analytics. Built for Catalonia, designed to scale."
+        description="Complete restaurant management platform with TheFork integration. Floor plans, reservations, staff coordination, and analytics. Built for busy service, designed to scale."
         status={{ label: "In Development", variant: "beta" }}
         projectId="restauramanager"
       >

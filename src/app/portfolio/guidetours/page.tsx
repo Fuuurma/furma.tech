@@ -86,7 +86,7 @@ export default function GuideToursPage() {
       <ProjectHero
         label="Tourism"
         title="GuideTours"
-        description="Multi-tenant SaaS platform for tour operators. CRM, staff scheduling, real-time availability, and OTA integrations. Built for Catalonia, designed to scale worldwide."
+        description="Multi-tenant SaaS platform for tour operators. CRM, staff scheduling, real-time availability, and OTA integrations. Built for operators, designed to scale worldwide."
         status={{ label: "In Development", variant: "beta" }}
         projectId="guidetours"
       >

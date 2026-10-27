@@ -50,7 +50,7 @@ const features = [
 
 export default function GambitDeckPage() {
   return (
-    <ProjectLayout>
+    <ProjectLayout live={{ href: "https://gambit-deck.pages.dev", label: "Play" }}>
       <ProjectHero
         label="Games"
         title="Gambit Deck"
@@ -70,9 +70,12 @@ export default function GambitDeckPage() {
             href="https://gambit-deck.pages.dev"
             target="_blank"
             rel="noreferrer"
-            className="plastic-label motion-link-subtle hover:text-foreground"
+            className="plastic-open"
           >
-            Play the beta ↗
+            <span>Play it — beta</span>
+            <span aria-hidden className="plastic-open__arrow">
+              ↗
+            </span>
           </a>
         </p>
       </ProjectHero>

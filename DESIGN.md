@@ -372,6 +372,35 @@ Rules:
   input box.
 - The action is a rule, not a slab.
 
+## A case page is a shop window; the door is the product (2026-10-27)
+
+Owner's read: *it's only a marketing page — they should land on the project if
+they want to see it.*
+
+A case page exists to convince someone the thing is worth opening, so the thing
+itself has to be reachable from it, in two places and without a hunt:
+
+- **In the hero**, under the description, the first action is the product —
+  `Play it — beta` / `Play it — early build`, a rule button pointing outward.
+  Not a mailing list, not "get updates": if a stranger can open it today, the
+  page's action is to open it.
+- **In the corner**, a small fixed `Play ↗` (`.plastic-live`), so a reader who
+  is already convinced at any scroll depth never has to scroll back.
+
+A page with no live product gets no door: the button is absent, not disabled,
+and the closing call to action asks for an address instead. `ProjectLayout`
+takes `live={{ href, label }}` and renders the corner door only when it is given
+one.
+
+The status follows the product, not the ambition: Tic-Tac-Toe was still labelled
+"In Dev" while it had been playable in public for weeks. It reads **Beta** now,
+like Gambit Deck, and its closing action is the game.
+
+Rules:
+- If a stranger can open it, the page's primary action opens it.
+- The corner door is the only fixed element on the site; it stays small.
+- Never advertise a door that does not open: no live link, no Play button.
+
 ## The footer: a sunset on paper, a moon on black (2026-10-27)
 
 The plate was painted black in both themes. Owner: *the light theme is the

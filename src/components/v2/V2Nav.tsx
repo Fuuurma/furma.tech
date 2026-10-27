@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 
@@ -10,34 +10,6 @@ const NAV_LINKS = [
   { href: "#verticals", label: "Verticals" },
   { href: "#contact", label: "Contact" },
 ] as const;
-
-function SitgesClock() {
-  const [time, setTime] = useState<string | null>(null);
-
-  useEffect(() => {
-    const formatter = new Intl.DateTimeFormat("en-GB", {
-      timeZone: "Europe/Madrid",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    });
-    const tick = () => setTime(formatter.format(new Date()));
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  return (
-    <span className="v2-label hidden sm:inline-flex items-center gap-2">
-      <span
-        className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--v2-accent)]"
-        aria-hidden="true"
-      />
-      Sitges&nbsp;<span className="tabular-nums">{time ?? "--:--:--"}</span>
-    </span>
-  );
-}
 
 export function V2Nav() {
   const { scrollY } = useScroll();
@@ -81,7 +53,6 @@ export function V2Nav() {
         </nav>
 
         <div className="flex items-center gap-5">
-          <SitgesClock />
           <Link
             href="/"
             data-cursor-label="v1"
