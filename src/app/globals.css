@@ -120,6 +120,22 @@
 
   --surface-dark-foreground: oklch(1 0 0);
   --surface-dark: oklch(0 0 0);
+  /* The one control on the opening: the theme, in the corner, out of the way. */
+.plastic-entry-theme {
+  position: absolute;
+  right: clamp(16px, 3vw, 32px);
+  top: clamp(16px, 3vh, 32px);
+  z-index: 3;
+  color: var(--entry-ink);
+}
+
+/* The entry follows the page's theme: white paper with black ink in the light
+     theme, black paper with white ink in the dark one. Declared on the root
+     because the wave resolves its colours through a probe in the body. */
+  --entry-paper: var(--background);
+  --entry-ink: var(--foreground);
+  --entry-muted: color-mix(in oklch, var(--foreground), transparent 42%);
+  --entry-line: color-mix(in oklch, var(--foreground), transparent 72%);
   /* The footer's sunset: warm paper and ink, the light theme's own plate. */
   --plate-sunset-paper: oklch(0.965 0.008 88);
   --plate-sunset-ink: oklch(0.18 0 0);
@@ -755,6 +771,34 @@ html {
 
 .plastic-label--inverse-faint {
   color: rgba(255, 255, 255, 0.55);
+}
+
+/* A theme switch is a change of paper, not a flash: the surfaces carry the
+   colour across in a quarter second. Nothing moves, so reduced motion keeps the
+   transition — only its colour, no transform. */
+body,
+.plastic-entry-frame,
+.portfolio-hero,
+.portfolio-page__cover,
+.plastic-cover,
+.studio-plate,
+.studio-site-footer {
+  transition:
+    background-color 260ms ease,
+    color 260ms ease,
+    border-color 260ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .plastic-entry-frame,
+  .portfolio-hero,
+  .portfolio-page__cover,
+  .plastic-cover,
+  .studio-plate,
+  .studio-site-footer {
+    transition: none;
+  }
 }
 
 /* The site's closing plate. It is painted, not themed with the page: on the
@@ -1393,7 +1437,7 @@ html.light {
   position: relative;
   height: 100%;
   overflow: hidden;
-  background: var(--surface-dark);
+  background: var(--entry-paper);
 }
 
 .plastic-entry {
@@ -1402,7 +1446,7 @@ html.light {
   height: 100%;
   overflow-y: auto;
   overscroll-behavior: contain;
-  color: var(--surface-dark-foreground);
+  color: var(--entry-ink);
   padding: clamp(24px, 4vw, 64px);
   display: flex;
   flex-direction: column;
@@ -1419,7 +1463,7 @@ html.light {
 }
 
 .plastic-entry .plastic-hero-title {
-  color: var(--surface-dark-foreground);
+  color: var(--entry-ink);
 }
 
 .plastic-entry .plastic-hero-letter {
@@ -1447,7 +1491,7 @@ html.light {
 .plastic-entry-kind {
   font-size: var(--text-small);
   line-height: 1.5;
-  color: var(--surface-dark-muted);
+  color: var(--entry-muted);
   margin-top: 12px;
 }
 
@@ -1467,13 +1511,13 @@ html.light {
 }
 
 .plastic-entry .plastic-cta--inverse {
-  color: var(--surface-dark-foreground);
-  border-color: var(--surface-dark-line);
+  color: var(--entry-ink);
+  border-color: var(--entry-line);
 }
 
 .plastic-entry .plastic-cta:hover {
   opacity: 1;
-  border-color: var(--surface-dark-foreground);
+  border-color: var(--entry-ink);
 }
 
 .plastic-entry .plastic-cta--quiet {
@@ -1481,7 +1525,7 @@ html.light {
 }
 
 .plastic-entry .plastic-cta:focus-visible {
-  outline: 2px solid var(--surface-dark-foreground);
+  outline: 2px solid var(--entry-ink);
   outline-offset: 5px;
 }
 
@@ -2085,6 +2129,39 @@ a.studio-chrome__view-link:hover {
 
 .studio-chrome__view-link:focus-visible,
 .studio-chrome__action:focus-visible,
+.studio-chrome__theme > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: color-mix(in oklch, var(--foreground), transparent 55%);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* The theme you are in is the one that is inked. */
+.studio-chrome__theme > button[aria-pressed="true"] {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.studio-chrome__theme > button:focus-visible {
+  outline: 1px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .studio-chrome__theme > button {
+    transition: none;
+  }
+}
+
 .studio-chrome__theme:focus-visible {
   outline: 1px solid var(--foreground);
   outline-offset: 3px;
@@ -2122,8 +2199,12 @@ a.studio-chrome__view-link:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 2px;
   min-width: 44px;
   min-height: 44px;
+  padding: 2px;
+  border: 1px solid color-mix(in oklch, var(--foreground), transparent 80%);
+  border-radius: 999px;
   color: color-mix(in oklch, var(--foreground), transparent 25%);
   background: transparent;
   border: none;

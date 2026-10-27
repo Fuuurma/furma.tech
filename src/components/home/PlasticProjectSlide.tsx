@@ -30,7 +30,7 @@ function ProjectCover({
   isActive?: boolean;
 }) {
   return (
-    <div className={cn("plastic-cover min-h-0 bg-black relative overflow-hidden", className)}>
+    <div className={cn("plastic-cover min-h-0 bg-background relative overflow-hidden", className)}>
       <ParallaxFrame
         enabled={isActive}
         className="absolute inset-0"

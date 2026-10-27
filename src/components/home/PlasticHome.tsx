@@ -19,6 +19,7 @@ import {
 import { HOME_RESET_EVENT } from "@/components/home/PlasticBrandLink";
 import { SectionReelBar } from "@/components/home/SectionReelBar";
 import { StudioChrome } from "@/components/studio/StudioChrome";
+import ThemeToggle from "@/components/ThemeToggle";
 import { StudioWaterFooter } from "@/components/studio/StudioWaterFooter";
 import { ScrollProgress } from "@/components/home/ScrollProgress";
 import { PlasticProjectSlide } from "@/components/home/PlasticProjectSlide";
@@ -117,9 +118,9 @@ function HeroSlide({
           type keeps clean paper around itself on the plate. */}
       <DitherWave
         surfaceRef={surfaceRef}
-        primaryColor="#000000"
-        secondaryColor="#ffffff"
-        tertiaryColor="#ffffff"
+        primaryColor="var(--entry-paper)"
+        secondaryColor="var(--entry-ink)"
+        tertiaryColor="var(--entry-ink)"
         speed={0.6}
         intensity={1}
         scale={5}
@@ -130,6 +131,11 @@ function HeroSlide({
         idleCueDelay={5000}
         interactive
       />
+      {/* The entry carries no chrome, so the one control a visitor may want
+          before reading anything sits in the corner: the theme. */}
+      <div className="plastic-entry-theme">
+        <ThemeToggle />
+      </div>
       <div className="plastic-entry" data-section-scroll>
         <div className="plastic-entry-center">
           {/* One reserve around both lines: the ink thins behind the words as a
@@ -694,7 +700,10 @@ export default function PlasticHome() {
           />
         ))}
 
-      <div className="relative flex-1 min-h-0 overflow-hidden">
+      {/* `clip`, not `hidden`: an overflow-hidden box is still a scroll
+          container, and focusing the theme control in the hero scrolled it 401px
+          out of place. A clipped box cannot be scrolled at all. */}
+      <div className="relative flex-1 min-h-0 overflow-clip">
         <ScrollProgress activeIndex={activeIndex} total={TOTAL} />
 
         <div className="absolute inset-0">

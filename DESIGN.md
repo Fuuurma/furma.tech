@@ -35,8 +35,9 @@ not the default public face until a deliberate cutover.
   none in a house file. The theme's own warm dark paper is the exception,
   and it is a theme, not a hue on the page
 - The hero carries no scroll cue — no label, no rule. The wave is the cue.
-- Full-bleed plates (hero, footer, case-study band) are painted black outright,
-  never with the theme's foreground: the dark theme must not make one white
+- Full-bleed plates follow the theme: the hero, the case-study cover and the
+  index are paper and ink (white/black in light, black/white in dark); the
+  footer is the one painted plate, a sunset on paper or a moon on black
 - The footer is one plate: a sky behind the type, a sun, and a sea at the foot
   that the reader can put a hand in. The type thins the ink around itself; it
   does not cut a hole in it
@@ -132,6 +133,40 @@ Rules:
 - No slide sets type over a picture.
 - A form field is 16px or more on a touch screen.
 - Anything that reads `location.hash` on mount runs before anything that writes it.
+
+## Two themes, on every plate (2026-10-27)
+
+Owner's read: *the hero is always dark — two themes, white and black, as the
+whole app. Also check the icon, it feels backwards.*
+
+- **The hero follows the theme.** Its wave takes `--background` / `--foreground`
+  through the `--entry-*` tokens, so light is white paper with black marks and
+  dark is the reverse. The tokens live on `:root`, not on the plate: the wave
+  resolves colours through a probe in the body, and a token scoped to the frame
+  resolved to the fallback (a black hero in light mode).
+- **Every other plate follows too**: the portfolio band, the case-study cover
+  and the project covers are `bg-background`; the closing CTA lost its black
+  band; the footer keeps its own painted plate (sunset on paper, moon on black).
+- **The switch is a pair, not a mystery icon.** It was one icon showing the
+  theme you would get, which reads backwards as often as forwards. It is now two
+  named states — sun = light, moon = dark — with the one you are in inked, and
+  it appears on the hero too (the entry carries no chrome, so it lives in the
+  top-right corner).
+- **A theme change is a change of paper**: surfaces carry the colour across in
+  260ms, and reduced motion drops the transition.
+
+**One bug worth the note:** the tour's viewport was `overflow-hidden`, which is
+still a scroll container. Focusing the new theme control in the hero scrolled
+that box 401px and the whole page slid out of place. It is `overflow-clip` now —
+a clipped box cannot be scrolled by a focus ring.
+
+Rules:
+- A plate that follows the theme takes its paper and ink from the page's tokens,
+  never from a literal.
+- One control, both states named. An icon that means "the other one" is a coin
+  flip for the reader.
+- Tokens that the canvas resolves must live where the probe can see them: the
+  root.
 
 ## The lens was tried and dropped — the reserve is better (2026-10-27)
 
