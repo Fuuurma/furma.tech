@@ -86,7 +86,8 @@ the picture's lower half, on a gradient. It is gone; its two projects take
 `editorial-right` and `visual-heavy`, and nothing in the slides sets type over a
 picture now.
 
-**3. The intro is a contents page.** "10 products across…" opens on a lead
+**3. The intro is a contents page.** *(Superseded 2026-10-27 — see "The index is
+one sentence" below.)* "10 products across…" opens on a lead
 headline and ten hairline rows (number, name, status) that jump the tour to a
 project. The tour had a way to start and no way to choose; the reel bar only
 appears after the first project. The rows run down the column first (01–05,
@@ -166,6 +167,54 @@ Rules:
   the entry is not a design option.
 - The project's plate, its caption and its ratio belong to the project slides,
   not to the hero.
+
+## The index is one sentence (2026-10-27)
+
+Owner's read of the tour's first panel: *this section now. we gonna change it a
+lot. the main text about what we build. rotating text, animated. it will be
+changing between the different types so no x,y,z. center it. get rid of all the
+other text on that section/screen.*
+
+The panel had grown into a page: two labels at the left ("Portfolio", "Guided
+tour"), a lead sentence listing four kinds, a "Start with Aitlas" button, a skip
+link to the full index, and ten hairline rows of the work. Every one of those was
+a different idea competing for the same screen.
+
+What the panel is now — one sentence about the studio, centred:
+
+- the frame, at the mono small step: **10 products across** (the number still
+  counts up when the panel becomes active);
+- underneath it, in the page's biggest type, the one kind it means this moment:
+  **AI**, **SaaS**, **games**, **civic tech**, changing every 2.6s with a 0.42s
+  roll (`y` 0.55em → 0, opacity 0 → 1, `EASE_OUT_EXPO`, old kind leaves first).
+
+Nothing else. No labels, no buttons, no list, no link.
+
+**The slot is sized by its longest word.** `.plastic-index__type` is an
+`inline-grid` with one grid area; an invisible sizer holds the longest kind and
+the moving word shares its cell, so the centred line does not shift sideways
+when "AI" becomes "civic tech". Measured at 1440: the word's centre is 720 for
+all four.
+
+**The kinds are read once, not four times.** The moving copy is `aria-hidden`;
+the headline carries the list in one `sr-only` string. Under
+`prefers-reduced-motion` the word does not move and the four kinds are set once,
+allowed to wrap.
+
+Checked the component libraries before writing it: Magic UI's `word-rotate`,
+KokonutUI's `dynamic-text` and react-bits' `RotatingText` are all the same shape
+— `AnimatePresence` + a keyed `motion.span` with `y`/`opacity` — and we already
+ship `framer-motion` 12. Copying one would have added a dependency and a second
+motion idiom for the same twenty lines, so the component lives in
+`PlasticHome.tsx` on the house's own tokens.
+
+Rules:
+- The index states the claim once, centred. A second column, a list or a CTA on
+  this panel is a regression.
+- Anything that changes on a timer sizes its slot from its longest value.
+- A moving word is decoration: the same words are readable once in text.
+- The motion stops when the panel is not active and when the reader asked for
+  less motion.
 
 ## Softer screens — a plate for a footer, and no black boxes (2026-10-21)
 
