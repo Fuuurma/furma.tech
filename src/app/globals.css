@@ -864,6 +864,99 @@ html {
   white-space: nowrap;
 }
 
+/* The field of project windows. It sits between the wave and the title: the
+   cards are decoration (no pointer events, hidden from assistive tech), so the
+   wave keeps the hand and the tour keeps every gesture. Depth is one 3D stage:
+   a card pushed back on z reads smaller and moves further as the field turns. */
+.plastic-float-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.plastic-float-field {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.plastic-float-slot {
+  position: absolute;
+  width: clamp(132px, 17vw, 232px);
+  transform: translate(-50%, -50%);
+  transform-style: preserve-3d;
+}
+
+.plastic-float-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: clamp(84px, 11vw, 148px);
+  padding: clamp(10px, 1.1vw, 16px);
+  border: 1px solid color-mix(in oklch, var(--foreground), transparent 72%);
+  background: color-mix(in oklch, var(--background), transparent 18%);
+  color: color-mix(in oklch, var(--foreground), transparent 30%);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.plastic-float-no {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.14em;
+  color: color-mix(in oklch, var(--foreground), transparent 58%);
+}
+
+.plastic-float-name {
+  font-family: var(--font-sans);
+  font-size: clamp(15px, 1.5vw, 21px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: color-mix(in oklch, var(--foreground), transparent 12%);
+}
+
+.plastic-float-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2px 8px;
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--foreground), transparent 55%);
+}
+
+/* A phone has no room for five windows around the title; the two nearest the
+   centre stay. */
+@media (max-width: 760px) {
+  .plastic-float-slot[data-narrow="false"] {
+    display: none;
+  }
+  .plastic-float-slot {
+    width: clamp(124px, 36vw, 176px);
+  }
+  /* A narrow card keeps the name and the kind; the status is the first thing
+     to go, and the meta never runs past the card's own edge. */
+  .plastic-float-meta {
+    font-size: var(--text-label);
+    letter-spacing: 0.08em;
+  }
+  .plastic-float-meta > span:last-child {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plastic-float-card {
+    will-change: auto;
+  }
+}
+
 /* Without motion the kinds are set once, and the line is allowed to wrap: a
    reader who asked for stillness gets the whole sentence, not a moving one. */
 .plastic-index__word--static {

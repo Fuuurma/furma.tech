@@ -26,6 +26,7 @@ import { PROJECT_HERO_MAP } from "@/lib/project-heroes";
 import { SlideReveal } from "@/components/motion/SlideReveal";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { DitherWave } from "@/components/dither-wave-tw";
+import { FloatingProjectCards } from "@/components/home/FloatingProjectCards";
 import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 import {
   useSmoothSectionScroll,
@@ -216,6 +217,10 @@ function PortfolioIndexSlide({ isActive }: { isActive: boolean }) {
         maxFPS={45}
         composition="field"
         interactive
+      />
+      <FloatingProjectCards
+        projects={HOME_PROJECTS}
+        isActive={isActive}
       />
       <div
         className="flex-1 min-h-0 relative z-10 overflow-y-auto overscroll-contain px-6 md:px-12"

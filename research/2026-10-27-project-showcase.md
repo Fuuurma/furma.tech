@@ -147,8 +147,9 @@ Each phase is a reviewable slice, in this order.
    float (spring), the layout (row / diagonal / orbit), and the depth budget (how many cards
    visible at once). Output: one annotated still, one paragraph of physics. Owner review
    before any component exists.
-1. **Ten marks, no windows.** `10` cards that carry a project's mark and name only — the
-   logos the ask settles on as a starting point. Float, autoplay, hover-to-front, click opens
+1. **Marks, no windows.** *(Started 2026-10-27 with five windows instead of ten marks —
+   see DESIGN.md, "The field of windows".)* Cards that carry a project's mark and name only —
+   the logos the ask settles on as a starting point. Float, autoplay, hover-to-front, click opens
    the project slide. Nothing to read, so the motion can be judged alone. This is where the
    feel gets tuned (spring frequency, spread, dwell, dim curve).
 

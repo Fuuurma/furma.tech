@@ -220,6 +220,43 @@ Rules:
 - The motion stops when the panel is not active and when the reader asked for
   less motion.
 
+## The field of windows — five projects float behind the title (2026-10-27)
+
+Owner's call, after the index settled on one rotating word: *3dcard — make the bg
+to have floating 3dcards. lets start with 5.*
+
+The index panel's background is now a field of five project windows around the
+centred type: name, kind, status, hairline on paper, each at its own depth. It
+is the first slice of the project showcase; five is the smallest number that
+reads as a field rather than a stack.
+
+**It is decoration and it stays out of the way.** The stage takes no pointer
+events, so the wave keeps the hand; it carries no wheel or touch handler, so the
+tour keeps every gesture; it is `aria-hidden`, because the same projects are
+readable one panel later. The cards breathe on their own (11–15s, staggered) and
+the whole field tilts with the pointer.
+
+**The tilt is the studied mechanic, not an invention.** `furma.bloxs` `3d-card`
+turns the pointer's offset from the centre into degrees at 25px per degree under
+a 1000px perspective. Here that offset (clamped to ±14°) turns the field ±7° and
+each card a further ±7° against its own resting tilt, and each card's `z` does
+the rest: depth becomes parallax without a listener per card, and no card can
+drift from the physics of the others.
+
+**Five becomes two on a phone.** Below 760px the three furthest cards are
+dropped and the status line goes with them: a 132px window cannot hold
+"AI Infrastructure · In Development", and a shrunk one is worse than none.
+
+Rules:
+- A floating card is never a control until it is asked to be. No hover, focus or
+  click target on the field in this phase.
+- The field breathes, it does not bounce: one slow cycle per card, `easeInOut`,
+  staggered, and nothing that repeats faster than ten seconds.
+- Depth is one 3D stage. A card's size comes from its `z`, never from a scale
+  typed next to it.
+- Reduced motion stops the breath and the tilt; the cards stay where they are.
+- The title keeps the centre. A card that covers the word is a placement bug.
+
 ## Softer screens — a plate for a footer, and no black boxes (2026-10-21)
 
 The owner's second look at the landed pass: *the effect is an improvement; the
