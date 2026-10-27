@@ -391,12 +391,18 @@ horizon, `color` for the sea — so the sun prints solid and the sea prints as a
 wash. `--plate-water` is the ink at 76% transparency on paper and the full ink
 on black; `--plate-ink` is the sun (and the moon) and the type.
 
-**A sunset is not the moon with the colours swapped.** The light plate carries
-its own numbers: the sun is small (radius 0.07 against the moon's 0.115) and
-half-set (`rise` 0.6, where the moon's 1.45 puts it well up the sky), its halo
-falls to 0.24 and its haze to 0.03 — a haze strong enough for a night sky prints
-as a band of dust on paper. The night path is untouched: white marks, the moon,
-the stars, the full-tone sea.
+**A printed sun is a ring, not a blot.** On paper the sun's edge is ink and its
+middle is paper, so the day sky prints as a circle of the densest marks with a
+hollow core (`sunStyle="ring"`), against the moon's filled disc. Its numbers are
+its own: radius 0.09 and half-set (`rise` 0.62, where the moon's 1.45 puts it
+well up the sky), a halo of 0.12 and a haze of 0.03 — a haze strong enough for a
+night sky prints as a band of dust on paper. The lattice is finer too
+(`cellSize` 13): at 16 a ring of seven cells reads as a scribble, at 13 it reads
+as a circle. The night path is untouched: white marks, the moon, the stars, the
+full-tone sea.
+
+**The sea is a wash, not a field.** `--plate-water` is the ink at 72% on paper;
+the water's own surface is the horizon, so no rule is drawn there.
 
 **The tokens live on the root, not on the plate.** The screen resolves a colour
 by probing a detached element in the body, so a token scoped to the footer

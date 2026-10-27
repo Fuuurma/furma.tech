@@ -138,6 +138,12 @@ export interface LiquidAsciiProps {
    */
   skyInk?: string;
   /**
+   * How the day's sun is drawn. `disc` fills it; `ring` prints its edge and
+   * leaves the middle to the paper, which is how a printer draws a light
+   * source — a circle of marks, not a blot.
+   */
+  sunStyle?: "disc" | "ring";
+  /**
    * House addition: the night sky. When the page is in its dark theme the
    * plate shows this moon instead of the sun, with a scatter of stars, and
    * the moon's path on the water is narrower and fainter. The plate itself is
@@ -228,6 +234,7 @@ export function LiquidAscii({
   sunHalo = 0.42,
   sunHaze = 0.26,
   skyInk = color,
+  sunStyle = "disc",
   moon: moonProp,
 }: LiquidAsciiProps) {
   // The sun is a small object a caller writes inline; the effect depends on
@@ -447,14 +454,20 @@ export function LiquidAscii({
 
           // The sun: the disc, with a soft rim; the halo falling away from
           // it; and a haze that lies along the horizon and thins upward.
-          const disc = 1 - smoothstep(radius * 0.94, radius, distance);
+          // A printed sun is a ring: the edge is ink, the middle is paper.
+          const disc =
+            sunStyle === "ring"
+              ? smoothstep(radius * 0.72, radius * 0.9, distance) *
+                (1 - smoothstep(radius, radius * 1.08, distance))
+              : 1 - smoothstep(radius * 0.94, radius, distance);
+          const core = 0;
           const halo =
             distance > radius
               ? sunHalo * Math.exp(-(((distance - radius) / (radius * 0.8)) ** 2))
               : 0;
           const haze =
             sunHaze * Math.exp(-(((horizon - y) / (radius * 0.75)) ** 2));
-          skyTone[index] = Math.max(disc, halo, haze);
+          skyTone[index] = Math.max(disc, core, halo, haze);
         }
       }
     };
@@ -921,6 +934,7 @@ export function LiquidAscii({
     sunHalo,
     sunHaze,
     skyInk,
+    sunStyle,
     moonX,
     moonRadius,
     moonRise,

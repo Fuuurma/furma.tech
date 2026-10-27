@@ -777,7 +777,7 @@ html.light {
   --plate-ink: var(--plate-sunset-ink);
   /* The sea is printed lighter than the type on paper: a wash, not a field of
      marks. On black the water and the ink are the same white. */
-  --plate-water: color-mix(in oklch, var(--plate-ink), transparent 76%);
+  --plate-water: color-mix(in oklch, var(--plate-ink), transparent 72%);
 }
 
 .studio-plate {

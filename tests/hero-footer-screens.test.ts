@@ -177,9 +177,10 @@ test("the footer is moonlight on black, and a sunset on light paper", () => {
     /skyInk="var\(--plate-ink\)"/,
     "the sun prints solid while the sea prints as a wash",
   );
+  assert.match(footer, /sunStyle=\{sunset \? "ring" : "disc"\}/);
   assert.match(
     css,
-    /--plate-water: color-mix\(in oklch, var\(--plate-ink\), transparent 76%\)/,
+    /--plate-water: color-mix\(in oklch, var\(--plate-ink\), transparent 72%\)/,
     "paper wants a wash, not a field of marks",
   );
   assert.match(
