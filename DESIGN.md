@@ -391,16 +391,20 @@ horizon, `color` for the sea — so the sun prints solid and the sea prints as a
 wash. `--plate-water` is the ink at 76% transparency on paper and the full ink
 on black; `--plate-ink` is the sun (and the moon) and the type.
 
-**A printed sun is a line, not a blot.** On paper the sun is one hairline circle
-(`sunStyle="ring"`), clipped to the sky and half-set on the horizon, with the
-characters left to the field around it: a ring of glyphs seven cells across read
-as a scribble, and no arrangement of characters draws a circle as well as a
-circle does. The moon keeps its filled disc. The day's numbers are its own:
-radius 0.075 and half-set (`rise` 0.62, where the moon's 1.45 puts it well up
-the sky), a halo of 0.08 and a haze of 0.03 — a haze strong enough for a night
-sky prints as a band of dust on paper. The lattice is finer too (`cellSize` 13).
-The night path is untouched: white marks, the moon, the stars, the full-tone
-sea.
+**A sunset is characters, not a drawing.** Round two of this plate put a hairline
+vector circle in for the sun. Owner's read: *supposed to be ASCII — wtf is there
+a full circle for the sun.* Correct: this plate is a character screen, and a
+vector shape in it is a different medium wearing its clothes. The sun is back to
+what the first cut had — a disc of the heaviest marks, half-set on the horizon,
+its light falling away through a halo of lighter marks, and its reflection
+breaking up on the water. No `arc`, no ring style, no vector stroke anywhere in
+the picture; a test holds the screen to it.
+
+What the second cut keeps from the work after it, because those parts were
+sound: **two inks** (the sun solid, the sea a wash at 72%), the day's own
+numbers — radius 0.1, half-set (`rise` 0.62), halo 0.16, haze 0.03 — and the
+finer lattice (`cellSize` 13). The night path is untouched: white marks, the
+moon, the stars, the full-tone sea.
 
 **The sea is a wash, not a field.** `--plate-water` is the ink at 72% on paper;
 the water's own surface is the horizon, so no rule is drawn there.
