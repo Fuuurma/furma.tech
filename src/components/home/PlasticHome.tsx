@@ -27,6 +27,8 @@ import { SlideReveal } from "@/components/motion/SlideReveal";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { DitherWave } from "@/components/dither-wave-tw";
 import { FloatingProjectCards } from "@/components/home/FloatingProjectCards";
+import { Glass } from "glisse";
+import "glisse/styles.css";
 import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 import {
   useSmoothSectionScroll,
@@ -65,10 +67,21 @@ function sectionLabel(index: number): string {
   return `Section ${index + 1}`;
 }
 
-function LetterSpacedTitle({ text }: { text: string }) {
+function LetterSpacedTitle({
+  text,
+  reserve = true,
+}: {
+  text: string;
+  /** The wave thins its ink behind the words. A lens does that job itself. */
+  reserve?: boolean;
+}) {
   const reduceMotion = useStableReducedMotion();
   return (
-    <h1 className="plastic-hero-title" aria-label={text} data-screen-reserve>
+    <h1
+      className="plastic-hero-title"
+      aria-label={text}
+      data-screen-reserve={reserve || undefined}
+    >
       {text.split("").map((char, i) => (
         <span
           key={`${char}-${i}`}
@@ -100,7 +113,7 @@ function HeroSlide({
   const surfaceRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="plastic-entry-frame" ref={surfaceRef}>
+    <div className="plastic-entry-frame" ref={surfaceRef} data-glisse-backdrop>
       {/* The hero is the house's wave: it prints the swell that says the page
           continues, and the swell waits for an idle reader. The entry's own
           type keeps clean paper around itself on the plate. */}
@@ -121,10 +134,12 @@ function HeroSlide({
       />
       <div className="plastic-entry" data-section-scroll>
         <div className="plastic-entry-center">
-          <LetterSpacedTitle text="furma.tech" />
-          <p className="plastic-entry-kind" data-screen-reserve>
-            Digital studio
-          </p>
+          <Glass className="plastic-hero-glass">
+            <LetterSpacedTitle text="furma.tech" reserve={false} />
+            <p className="plastic-entry-kind plastic-entry-kind--in-glass">
+              Digital studio
+            </p>
+          </Glass>
         </div>
         <div className="plastic-entry-foot">
           <div className="plastic-entry-actions">

@@ -133,6 +133,36 @@ Rules:
 - A form field is 16px or more on a touch screen.
 - Anything that reads `location.hash` on mount runs before anything that writes it.
 
+## The name is a lens (2026-10-27)
+
+Owner's brief: keep the ASCII/dither plate, add glass — *test it on the hero*,
+put the title inside it, and see whether the lens does the job the ink-mask was
+doing. Library: **glisse** (`0kzh/glisse`, MIT, 0.4.3) — IOS 26 liquid glass as a
+React component, refraction from an SVG displacement filter built on the
+client, so it samples the live backdrop rather than a screenshot.
+
+What landed:
+
+- The hero frame carries `data-glisse-backdrop` and the name sits inside
+  `<Glass className="plastic-hero-glass">` — a lens the width of the type, dark
+  glass on a dark plate (`--lg-glass: rgb(255 255 255 / 0.04)`, a bright rim, no
+  drop shadow), `--lg-blur: 0px`, bezel 25px, thickness 50px, zoom 1.13.
+- **"Digital studio" moved inside the lens** with the name. A label half on the
+  glass and half on the wave read as two objects.
+- **The screen reserve is off inside the lens** (`reserve={false}` on the title,
+  no `data-screen-reserve` on the label): the glass is the thing that keeps the
+  words legible, and letting the wave run through it is the point. Measured with
+  the swell crossing the pill — the dots pass behind the type and the type still
+  reads; what the reserve was buying (a clean rectangle) is now bought by the
+  lens, and without a visible box.
+
+Rules:
+- A lens is a material, not a card: it takes no fill of its own beyond a rim and
+  a breath of tint, and it never casts a shadow on this page.
+- Text on a lens does not also get the ink mask. One mechanism per text block.
+- The wave keeps moving through the glass. A glass that freezes its backdrop has
+  become a picture of glass.
+
 ## The entry is one line — the project leaves the opening (2026-10-27)
 
 Owner's read of the landed opening: *the right side is all off — the Aitlas
