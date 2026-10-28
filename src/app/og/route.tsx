@@ -23,7 +23,7 @@ export function GET(request: Request) {
   const title = clampParam(searchParams.get("title"), "Build software that works.");
   const subtitle = clampParam(
     searchParams.get("subtitle"),
-    "Digital Venture Studio & Sovereign AI Ecosystem",
+    "Bootstrapped studio building industry-grade SaaS tools and the Aitlas AI ecosystem",
     140,
   );
 

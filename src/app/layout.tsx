@@ -4,7 +4,6 @@ import "./globals.css";
 import { LayoutChrome } from "@/components/LayoutChrome";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Analytics } from "@/components/Analytics";
-import { getOgImageUrl } from "@/lib/metadata";
 
 // The face the site is set in. It was Syne, whose `g` has a severed descender
 // by design — the Google Fonts original draws it the same way, so it is not a
@@ -40,10 +39,10 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const OG_IMAGE = getOgImageUrl({
-  title: "Build software that works.",
-  subtitle: "Digital Venture Studio & Sovereign AI Ecosystem",
-});
+// F99: the shared card is the designed asset — public/og.png, the 1200x630
+// render of the real hero (DESIGN.md). The dynamic /og route stays for
+// per-title cards (product pages, Aitlas); the root card must not re-render
+// the retired "Digital Venture Studio" template.
 
 export const metadata: Metadata = {
   title: "Furma.tech — Digital Studio",
@@ -60,13 +59,13 @@ export const metadata: Metadata = {
     description: "Building software that works. Two verticals: B2B SaaS + Aitlas AI ecosystem.",
     type: "website",
     locale: "en_US",
-    images: [OG_IMAGE],
+    images: ["/og.png"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Furma.tech — Digital Studio",
     description: "Building software that works.",
-    images: [OG_IMAGE],
+    images: ["/og.png"],
   },
   robots: {
     index: true,

@@ -29,14 +29,17 @@ test("the share image is a 1200×630 PNG", () => {
   assert.ok(png.length < 600_000, `the card is a link preview, not a poster (${png.length} bytes)`);
 });
 
-test("the site's metadata names the card", () => {
+test("the site's metadata names the designed card (F99)", () => {
   const layout = readFileSync(here("../src/app/layout.tsx"), "utf8");
   assert.ok(/metadataBase:\s*new URL\("https:\/\/furma\.tech"\)/.test(layout), "relative image URLs need a base");
-  // The card is the dynamic /og PNG route (src/app/og/route.tsx): layout names
-  // it through OG_IMAGE, and getOgImageUrl's /og contract is pinned by
-  // og-metadata.test.ts.
-  assert.ok(/openGraph:[\s\S]*?images:\s*\[OG_IMAGE\]/.test(layout), "Open Graph must name the card");
-  assert.ok(/twitter:[\s\S]*?images:\s*\[OG_IMAGE\]/.test(layout), "the Twitter card must name it too");
+  // The shared card is the designed asset: public/og.png, the hero render
+  // DESIGN.md names. Per-title cards keep the dynamic /og route (pinned in
+  // og-metadata.test.ts). Strip comments first: the rationale may NAME the
+  // retired template without shipping it.
+  const code = layout.replace(/^\/\/.*$/gm, "");
+  assert.ok(/openGraph:[\s\S]*?images:\s*\["\/og\.png"\]/.test(code), "Open Graph must name the designed card");
+  assert.ok(/twitter:[\s\S]*?images:\s*\["\/og\.png"\]/.test(code), "the Twitter card must name it too");
+  assert.ok(!/Digital Venture Studio/.test(code), "the retired studio template must not ride the share card");
   const metadata = readFileSync(here("../src/lib/metadata.ts"), "utf8");
   assert.ok(!/og-image\.svg/.test(metadata), "no metadata may point at the SVG");
 });

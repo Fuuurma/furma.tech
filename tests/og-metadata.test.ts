@@ -15,7 +15,7 @@ import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { getOgImageUrl, constructMetadata } from "../src/lib/metadata.ts";
 
-test("getOgImageUrl returns the PNG /og route, never SVG or the dead /og.png", () => {
+test("getOgImageUrl returns the PNG /og route, never SVG (F99: per-title cards keep the dynamic route)", () => {
   const url = getOgImageUrl({ title: "OpenGovern", subtitle: "Direct Democracy", variant: "product" });
   assert.ok(url.startsWith("https://furma.tech/og?"), url);
   assert.ok(!url.endsWith(".svg"), url);
@@ -51,7 +51,9 @@ test("root layout sets metadataBase, canonical, OG image, and JSON-LD", () => {
   const src = readFileSync("src/app/layout.tsx", "utf8");
   assert.ok(src.includes("metadataBase"), "layout.tsx missing metadataBase");
   assert.match(src, /canonical:\s*"\/"/, "layout.tsx missing canonical /");
-  assert.match(src, /images:\s*\[OG_IMAGE\]/, "layout.tsx missing OG image");
+  // F99: the shared card is the designed /og.png asset; per-title cards keep
+  // the dynamic /og route through getOgImageUrl.
+  assert.match(src, /images:\s*\["\/og\.png"\]/, "layout.tsx missing OG image");
   assert.ok(src.includes("application/ld+json"), "layout.tsx missing JSON-LD");
 });
 
