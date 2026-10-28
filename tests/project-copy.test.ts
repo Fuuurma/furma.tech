@@ -36,7 +36,8 @@ test("home card description states the 3-piece rule", () => {
 
 test("Detail hero states the 3-piece rule, not turn-based vanishing", () => {
   assert.doesNotMatch(detailPage, /vanish after a set number of turns/i);
-  assert.match(detailPage, /only 3 pieces per player/i);
+  assert.match(detailPage, /three pieces each/i);
+  assert.match(detailPage, /place a fourth and your oldest one vanishes/i);
 });
 
 test("detail CTA matches the live beta (the door is the game)", () => {
@@ -44,7 +45,7 @@ test("detail CTA matches the live beta (the door is the game)", () => {
   // mailing list for a product a stranger can already open.
   assert.match(detailPage, /status=\{\{ label: "Beta"/);
   assert.match(detailPage, /primaryHref="https:\/\/tic-tac-toe-1ou\.pages\.dev"/);
-  assert.match(detailPage, /primaryLabel="Play Tic-Tac-Toe"/);
+  assert.match(detailPage, /primaryLabel="Play Tic-Tac-Toe Disappear"/);
   assert.doesNotMatch(detailPage, /Get updates/);
 });
 
@@ -173,7 +174,7 @@ test("Portfolio list preview labels the artwork as a concept visual", () => {
   assert.match(listItem, /Concept visual/);
 });
 
-test("Tic-tac-toe detail links the live preview as inspectable proof", () => {
+test("Tic-tac-toe detail links the live game as inspectable proof", () => {
   assert.match(tttDetail, /tic-tac-toe-1ou\.pages\.dev/);
-  assert.match(tttDetail, /early build/i);
+  assert.match(tttDetail, /Play a game/);
 });
