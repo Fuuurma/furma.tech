@@ -4,5 +4,6 @@
 # releases that would otherwise false-positive.
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 43200
+minimumReleaseAge: 1440
 allowBuilds:
   unrs-resolver: true
