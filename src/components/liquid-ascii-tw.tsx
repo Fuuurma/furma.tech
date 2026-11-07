@@ -855,6 +855,25 @@ export function LiquidAscii({
       attributeFilter: ["class"],
     });
 
+    // A change of device ratio — a zoom, or a move to another display —
+    // changes the resolution the marks are baked at, and it fires no
+    // resize, so the atlas is redrawn for the new one here. The lattice
+    // itself is set in CSS pixels and does not move: the water keeps its
+    // state and only the marks are drawn again.
+    let resolution = window.matchMedia(
+      `(resolution: ${window.devicePixelRatio || 1}dppx)`,
+    );
+    const onResolution = () => {
+      resolution.removeEventListener("change", onResolution);
+      resolution = window.matchMedia(
+        `(resolution: ${window.devicePixelRatio || 1}dppx)`,
+      );
+      resolution.addEventListener("change", onResolution);
+      buildAtlas(Math.min(2, Math.max(1, window.devicePixelRatio || 1)));
+      paint();
+    };
+    resolution.addEventListener("change", onResolution);
+
     // A screen that is off the page has nothing to say, and a water
     // simulation is not cheap enough to run for nobody.
     //
@@ -899,6 +918,7 @@ export function LiquidAscii({
       themeObserver.disconnect();
       reserveObserver.disconnect();
       intersection?.disconnect();
+      resolution.removeEventListener("change", onResolution);
       unbind?.();
     };
   }, [
