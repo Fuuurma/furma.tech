@@ -9,7 +9,7 @@
 
 Core ethos: **0% VC, profitable before flashy, "build software that works."**
 
-This is a **Next.js 16.2 website** using the App Router, serving as the corporate site and developer portal. It features a custom design system with semantic CSS variables, scroll-triggered animations, glass effects, and dark mode support.
+This is a **Next.js 16.3.5 website** using the App Router, serving as the corporate site and developer portal. It features a custom design system with semantic CSS variables, scroll-triggered animations, glass effects, and dark mode support.
 
 ---
 
@@ -17,11 +17,11 @@ This is a **Next.js 16.2 website** using the App Router, serving as the corporat
 
 | Category | Technology |
 |----------|------------|
-| Framework | Next.js 16.2.1 (App Router) |
-| UI | React 19.2.3 |
+| Framework | Next.js 16.3.5 (App Router) |
+| UI | React 19.2.8 |
 | Language | TypeScript (strict mode) |
 | Styling | Tailwind CSS v4 |
-| Components | Radix UI + Lucide Icons |
+| Components | Base UI (`@base-ui/react`) + Lucide Icons |
 | Validation | Zod v4 |
 | Package Manager | pnpm |
 | Analytics | Vercel Analytics + Speed Insights |
@@ -37,14 +37,14 @@ src/
 │   ├── globals.css         # Tailwind v4 config, CSS variables, animations
 │   └── [route]/page.tsx   # Route pages
 ├── components/
-│   ├── ui/                # Primitive UI components
+│   ├── ui/                # Primitive UI components (Base UI)
 │   └── *.tsx              # Shared/components
-├── lib/
-│   ├── utils.ts           # cn() utility (clsx + tailwind-merge)
-│   ├── metadata.ts        # SEO metadata helpers
-│   ├── schemas.ts         # Zod validation schemas
-│   └── actions.ts         # Server actions
-└── hooks/                 # Custom React hooks
+├── hooks/                 # Custom React hooks
+└── lib/
+    ├── utils.ts           # cn() utility (clsx + tailwind-merge)
+    ├── metadata.ts        # SEO metadata helpers
+    ├── schemas.ts         # Zod validation schemas
+    └── server-actions.ts  # Server actions
 ```
 
 ---
@@ -53,13 +53,15 @@ src/
 
 ```bash
 pnpm install        # Install dependencies
-pnpm dev            # Start dev server (http://127.0.0.1:3080, Turbopack enabled)
+pnpm dev            # Start dev server (http://127.0.0.1:3080, Turbopack is the default bundler)
 pnpm build          # Production build
 pnpm start          # Start production server
 pnpm lint           # Run ESLint
+pnpm test           # Zero-dependency node --test gate (tests/*.test.ts)
+pnpm test:smoke     # Production-server route smoke check (scripts/smoke.mjs)
 ```
 
-**Before committing:** Always run `pnpm lint && pnpm build`.
+**Before committing:** Always run `pnpm lint && pnpm test && pnpm build`.
 
 ---
 
@@ -79,7 +81,7 @@ pnpm lint           # Run ESLint
 ### Imports (ordered)
 1. React core (`react`, `react-dom`)
 2. Next.js (`next/link`, `next/image`, `next/metadata`)
-3. Third-party (Radix, Lucide, Zod, class-variance-authority)
+3. Third-party (Base UI, Lucide, Zod, class-variance-authority)
 4. Internal `@/` aliases
 5. Relative imports (rarely used)
 
@@ -98,11 +100,12 @@ pnpm lint           # Run ESLint
 
 ### Animations & Effects
 - `.animate-fade-up` — Main fade-up animation
-- `.delay-1` through `.delay-5` — Stagger delays (0.1s–0.65s)
+- `.delay-1` through `.delay-5` — Stagger delays (0.1s–0.5s)
 - `.reveal` / `.reveal.visible` — Scroll-triggered reveals
 - `.glass` — Backdrop blur effect
-- `.hover-lift` / `.card-hover` — Hover shadow lift
-- `.gradient-text` — Amber→orange→pink gradient text
+- `.hover-lift` — `translateY(-2px)` on hover
+- `.card-hover` — Border turns to the foreground colour on hover
+- `.gradient-text` — Legacy name; prints the foreground colour, no gradient (the page is monochrome — `DESIGN.md`)
 
 ### Zod Validation (v4)
 ```typescript
@@ -133,12 +136,13 @@ const result = Schema.safeParse(data);
 
 | Route | Description |
 |-------|-------------|
-| `/` | Homepage |
-| `/about` | Studio info |
-| `/projects/aitlas` | AI ecosystem |
-| `/projects/saas` | Industry SaaS |
-| `/contact` | Contact form |
-| `/docs` | Developer portal |
+| `/` | Fullscreen studio home (contact at `/#contact`) |
+| `/portfolio` | Editorial project list |
+| `/portfolio/[project]` | Case study pages |
+| `/privacy` | Privacy policy |
+| `/brand` | Brand assets (noindex) |
+| `/styleguide` | UI primitive reference |
+| `/v2` | Alternate "Workshop" concept (excluded from the sitemap) |
 
 ---
 
@@ -158,7 +162,7 @@ const result = Schema.safeParse(data);
 
 ## Testing
 
-No test framework is currently configured. When adding tests, use **Vitest + React Testing Library**.
+Tests run on Node's built-in runner — **zero-dependency `node --test`**, no third-party framework. `pnpm test` runs `node --test "tests/*.test.ts"`; each file in `tests/` imports `node:test` and `node:assert/strict`. `pnpm test:smoke` runs `scripts/smoke.mjs`. See `AGENTS.md` §8.
 
 ---
 

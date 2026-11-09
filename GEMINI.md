@@ -11,12 +11,12 @@ This file provides essential context, architecture overview, and development sta
 The project is built with a focus on performance, scalability, and a minimalist, high-end "monochrome" aesthetic.
 
 ### Core Technology Stack
-- **Framework:** Next.js 16.2 (App Router)
-- **Library:** React 19
+- **Framework:** Next.js 16.3.5 (App Router)
+- **Library:** React 19.2.8
 - **Language:** TypeScript (Strict Mode)
 - **Styling:** Tailwind CSS v4
 - **Validation:** Zod
-- **UI Components:** Radix UI Primitives & Lucide Icons
+- **UI Components:** Base UI (`@base-ui/react`) & Lucide Icons
 - **Package Manager:** pnpm
 
 ---
@@ -30,14 +30,14 @@ src/
 │   ├── globals.css         # Tailwind v4 configuration + design system variables
 │   └── [route]/page.tsx   # Individual route pages
 ├── components/
-│   ├── ui/                # Primitive UI components (shadcn/ui style)
+│   ├── ui/                # Primitive UI components (Base UI)
 │   └── *.tsx              # Shared/Feature components
-├── lib/                   # Core utilities and shared logic
-│   ├── utils.ts           # Tailwind merge (cn) utility
-│   ├── metadata.ts        # SEO and OpenGraph configurations
-│   ├── schemas.ts         # Zod validation schemas
-│   └── actions.ts         # Next.js Server Actions
-└── hooks/                 # Custom React hooks
+├── hooks/                 # Custom React hooks
+└── lib/                   # Core utilities and shared logic
+    ├── utils.ts           # Tailwind merge (cn) utility
+    ├── metadata.ts        # SEO and OpenGraph configurations
+    ├── schemas.ts         # Zod validation schemas
+    └── server-actions.ts  # Next.js Server Actions
 ```
 
 ---
@@ -46,10 +46,12 @@ src/
 
 | Command | Description |
 |---------|-------------|
-| `pnpm dev` | Starts the development server with Turbopack enabled. |
+| `pnpm dev` | Starts the development server (Turbopack is the default bundler). |
 | `pnpm build` | Creates a production-ready build of the application. |
 | `pnpm start` | Runs the production build locally. |
 | `pnpm lint` | Executes ESLint to check for code quality and style issues. |
+| `pnpm test` | Runs the zero-dependency `node --test` gate over `tests/*.test.ts`. |
+| `pnpm test:smoke` | Runs the production-server route smoke check (`scripts/smoke.mjs`). |
 
 ---
 
@@ -79,7 +81,7 @@ src/
 - **Client Components:** Only use `'use client'` when strictly necessary (state, effects, browser APIs).
 
 ### Verification Checklist
-- Run `pnpm lint` before pushing changes.
+- Run `pnpm lint` and `pnpm test` before pushing changes.
 - Ensure `pnpm build` succeeds to verify type safety and production readiness.
 - No `console.log` in production code.
 
