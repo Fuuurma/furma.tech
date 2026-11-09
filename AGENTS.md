@@ -29,21 +29,22 @@ Alternate UI concept: `/v2` — "The Workshop" (warm editorial, self-contained: 
 
 Core ethos: 0% VC, profitable before flashy, "build software that works."
 
-**Stack:** Next.js 16.2.1 | React 19.2.3 | TypeScript (strict) | Tailwind v4 | Zod | Radix UI | Lucide
+**Stack:** Next.js 16.3.5 | React 19.2.8 | TypeScript (strict) | Tailwind v4 | Zod | Base UI | Lucide
 
 ---
 
 ## 1. Commands
 
 ```bash
-  pnpm dev          # Start dev server (http://127.0.0.1:3080)
-pnpm dev --turbo  # Force Turbopack (default in 16.2)
+pnpm dev          # Start dev server (http://127.0.0.1:3080, Turbopack is the default bundler)
 pnpm build        # Production build
 pnpm start        # Start production server
 pnpm lint         # Run ESLint
+pnpm test         # Zero-dependency node --test gate (tests/*.test.ts)
+pnpm test:smoke   # Production-server smoke check (scripts/smoke.mjs)
 ```
 
-**Note:** No test framework configured yet. When adding tests, use Vitest + RTL.
+**Note:** Tests run on the `node --test` runner — no third-party test framework (see §8).
 
 ### Dev Server Lock
 ```bash
@@ -63,10 +64,10 @@ src/
 │   └── [route]/page.tsx   # Route pages
 ├── components/
 │   ├── *.tsx              # Shared components (PascalCase)
-│   └── ui/                # Primitive UI components
-├── lib/                   # Utilities (camelCase)
-│   └── utils.ts           # cn() helper using clsx + tailwind-merge
-└── styles/                # (unused, globals.css is in app/)
+│   └── ui/                # Primitive UI components (Base UI)
+├── hooks/                 # Custom React hooks (useScroll.ts)
+└── lib/                   # Utilities and shared logic (camelCase)
+    └── utils.ts           # cn() helper using clsx + tailwind-merge
 ```
 
 ---
@@ -80,7 +81,7 @@ import { ReactNode, useState } from "react";
 // 2. Next.js (link, image, metadata)
 import Link from "next/link";
 import type { Metadata } from "next";
-// 3. Third-party (Radix, Lucide, class-variance-authority, Zod)
+// 3. Third-party (Base UI, Lucide, class-variance-authority, Zod)
 import { clsx, type ClassValue } from "clsx";
 // 4. Internal @/ aliases
 import Navigation from "@/components/Navigation";
@@ -154,8 +155,11 @@ export default function MyComponent({ defaultValue = "", onSubmit }: Props) {
 --color-primary, --color-secondary, --color-muted, --color-border
 /* Grey scale */
 --color-grey-50 through --color-grey-900
-/* Brand accents */
---color-amber, --color-green, --color-blue, --color-purple (with -400, -500, -10, -20 variants)
+/* Legacy accent names, no hue */
+--color-amber, --color-green, --color-blue, --color-purple
+/*   Aliased to the monochrome scale (--color-amber: var(--foreground),
+     --color-amber-400: var(--grey-400), …). The page is monochrome:
+     product colour lives only inside its own picture (DESIGN.md). */
 /* Fonts */
 --font-serif, --font-sans, --font-mono
 ```
@@ -163,20 +167,20 @@ export default function MyComponent({ defaultValue = "", onSubmit }: Props) {
 ### Animation Classes
 ```css
 .animate-fade-up         /* Main fade-up */
-.delay-1 through .delay-5  /* 0.1s to 0.65s delays */
+.delay-1 through .delay-5  /* 0.1s to 0.5s stagger delays */
 .animate-ticker          /* Horizontal ticker (pauses on hover) */
 .reveal / .reveal.visible  /* Scroll reveal (add .visible via JS) */
-/* Directional reveals: .reveal-up, .reveal-down, .reveal-left, .reveal-right */
-.section                 /* padding: 120px 0 (80px mobile) */
+/* Directional reveals: .reveal-up, .reveal-down, .reveal-left, .reveal-right, .reveal-fade */
+.section                 /* padding: 100px 0 (60px mobile) */
 ```
 
 ### Glass & Effects
 ```css
 .glass         /* backdrop-filter blur + semi-transparent bg */
-.hover-lift    /* translateY(-4px) on hover */
-.card-hover    /* subtle shadow lift on hover */
-.gradient-text /* amber→orange→pink text gradient */
-.glow-amber-sm /* amber glow effect */
+.hover-lift    /* translateY(-2px) on hover */
+.card-hover    /* border-color to foreground on hover */
+.gradient-text /* legacy name — prints the foreground colour, no gradient */
+.glow-mono     /* soft white glow shadow */
 ```
 
 ---
@@ -231,33 +235,28 @@ try {
 
 ## 8. Testing Guidelines
 
-No test framework is configured yet. When adding tests:
+Tests run on Node's built-in runner — **zero-dependency `node --test`** (`tests/package.json`). No Vitest, no React Testing Library.
 
-**Framework:** Vitest + React Testing Library
 **Running tests:**
 ```bash
-pnpm test           # Run tests in watch mode
-pnpm test:run      # Run tests once (CI mode)
-pnpm test:coverage # Generate coverage report
+pnpm test           # node --test "tests/*.test.ts"
+pnpm test:smoke     # scripts/smoke.mjs — production-server route smoke check
 ```
 
 **Test file naming:**
-- Unit tests: `ComponentName.test.tsx`
-- Integration tests: `api.endpoint.test.ts`
-- E2E tests: `*.e2e.test.ts`
+- One file per module, kebab-case, in `tests/`: `rate-limit-scopes.test.ts`, `phone-grids.test.ts`
 
 **Test patterns:**
 ```typescript
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 
-describe("ComponentName", () => {
-  it("renders correctly", () => {
-    render(<ComponentName />);
-    expect(screen.getByText("Expected")).toBeInTheDocument();
-  });
+test("describes the boundary it pins", () => {
+  assert.equal(actual, expected);
 });
 ```
+
+Tests are plain Node: they import `node:test`, `node:assert/strict`, and the module under test directly — no DOM, no component rendering. Boundary tests that read the stylesheet or source (e.g. `monochrome-chrome.test.ts`, `type-contrast.test.ts`) walk the files with `node:fs`.
 
 ---
 
@@ -265,6 +264,7 @@ describe("ComponentName", () => {
 
 ```bash
 pnpm lint   # ESLint check
+pnpm test   # node --test gate
 pnpm build  # Production build
 ```
 

@@ -10,7 +10,7 @@
 
 ## Stack
 
-Next.js 16.2 (App Router) | React 19 | TypeScript (strict) | Tailwind CSS v4 | Zod | Radix UI | Lucide
+Next.js 16.3.5 (App Router) | React 19.2.8 | TypeScript (strict) | Tailwind CSS v4 | Zod | Base UI | Lucide
 
 ---
 
@@ -29,10 +29,12 @@ Open [http://127.0.0.1:3080](http://127.0.0.1:3080)
 
 | Command | Description |
 |---------|-------------|
-| `pnpm dev` | Start dev server (Turbopack enabled) |
+| `pnpm dev` | Start dev server (Turbopack is the default bundler) |
 | `pnpm build` | Production build |
 | `pnpm start` | Start production server |
 | `pnpm lint` | ESLint check |
+| `pnpm test` | Zero-dependency `node --test` gate (`tests/*.test.ts`) |
+| `pnpm test:smoke` | Production-server route smoke check (`scripts/smoke.mjs`) |
 
 ---
 
@@ -45,15 +47,17 @@ src/
 │   ├── globals.css         # Tailwind v4 config + CSS variables
 │   └── [route]/page.tsx   # Route pages
 ├── components/
-│   ├── ui/                # Primitive UI components
+│   ├── ui/                # Primitive UI components (Base UI)
 │   └── *.tsx              # Shared components
-├── lib/
-│   ├── utils.ts           # cn() utility
-│   ├── metadata.ts        # SEO metadata
-│   ├── schemas.ts         # Zod validation
-│   └── actions.ts        # Server actions
-└── hooks/                # Custom React hooks
+├── hooks/                 # Custom React hooks
+└── lib/
+    ├── utils.ts           # cn() utility
+    ├── metadata.ts        # SEO metadata
+    ├── schemas.ts         # Zod validation
+    └── server-actions.ts  # Server actions
 ```
+
+Tests live in `tests/` (`*.test.ts`, run by `pnpm test`); the smoke script is `scripts/smoke.mjs`.
 
 ---
 
@@ -62,7 +66,7 @@ src/
 - **Colors**: Semantic CSS variables (`--color-primary`, `--color-secondary`, etc.) + grey scale (`--color-grey-50` through `--color-grey-900`)
 - **Fonts**: Syne (sans), Cormorant (serif), JetBrains Mono (mono)
 - **Animations**: `.animate-fade-up`, `.animate-ticker`, `.reveal` (scroll-triggered)
-- **Effects**: `.glass`, `.glow-amber-sm`, `.hover-lift`, `.card-hover`
+- **Effects**: `.glass`, `.glow-mono`, `.hover-lift`, `.card-hover` — all monochrome; the page carries no hue (`DESIGN.md`)
 
 See `AGENTS.md` for full guidelines.
 
@@ -77,6 +81,8 @@ See `AGENTS.md` for full guidelines.
 | `/portfolio/[project]` | Case study pages |
 | `/privacy` | Privacy policy |
 | `/brand` | Brand assets (noindex) |
+| `/styleguide` | UI primitive reference |
+| `/v2` | Alternate "Workshop" concept (excluded from the sitemap) |
 
 Contact lives on the home experience at `/#contact`.
 
