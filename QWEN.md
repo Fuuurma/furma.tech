@@ -2,14 +2,21 @@
 
 ## Project Overview
 
-**Furma.tech** is a bootstrapped studio (Estonian OÜ, based in Sitges, Catalonia) building two main verticals:
+**Furma.tech** is a bootstrapped studio (Estonian OÜ, based in Sitges, Catalonia). The product catalogue is `src/lib/home-projects.ts`: six advertised products (`HOME_PROJECTS`) plus eight archived pages (`ARCHIVED_PROJECTS`) that stay reachable but are not advertised. `tests/guide-catalogue.test.ts` fails when this block drifts from the catalogue.
 
-- **Industry SaaS** — B2B tools for restaurants and tourism (restauManager, GuideTours)
-- **Aitlas** — Sovereign AI ecosystem (BYOK model, MCP-first, 34+ Actions)
+**Advertised products (`HOME_PROJECTS`):**
+- **Tic-Tac-Toe** — Vanishing-move strategy game (Beta)
+- **Gambit Deck** — Guest-first card game, no account to play (Beta)
+- **Pond** — Capture-first library and planner (In Development)
+- **QArt** — AI-generated QR codes that look like art (In Development)
+- **Bloxs** — Component library rebuilt from named sources (Prototype)
+- **Renfe** — Civic dashboard measuring Renfe service from open feeds (In Development)
+
+**Archived (`ARCHIVED_PROJECTS`, reachable, not advertised):** Aitlas, restauManager, GuideTours, FinanceHub, PicksTracker, LinkUp, OneToMany, OpenGovern.
 
 Core ethos: **0% VC, profitable before flashy, "build software that works."**
 
-This is a **Next.js 16.2 website** using the App Router, serving as the corporate site and developer portal. It features a custom design system with semantic CSS variables, scroll-triggered animations, glass effects, and dark mode support.
+This is a **Next.js 16.4 website** using the App Router, serving as the corporate site and developer portal. It features a custom design system with semantic CSS variables, scroll-triggered animations, glass effects, and dark mode support.
 
 ---
 
@@ -17,11 +24,11 @@ This is a **Next.js 16.2 website** using the App Router, serving as the corporat
 
 | Category | Technology |
 |----------|------------|
-| Framework | Next.js 16.2.1 (App Router) |
-| UI | React 19.2.3 |
+| Framework | Next.js 16.4.2 (App Router) |
+| UI | React 19.2.8 |
 | Language | TypeScript (strict mode) |
 | Styling | Tailwind CSS v4 |
-| Components | Radix UI + Lucide Icons |
+| Components | Base UI + Lucide Icons |
 | Validation | Zod v4 |
 | Package Manager | pnpm |
 | Analytics | Vercel Analytics + Speed Insights |
@@ -57,6 +64,8 @@ pnpm dev            # Start dev server (http://127.0.0.1:3080, Turbopack enabled
 pnpm build          # Production build
 pnpm start          # Start production server
 pnpm lint           # Run ESLint
+pnpm test           # node:test contract suites in tests/
+pnpm test:smoke     # Runtime smoke gate (needs pnpm start on :3080)
 ```
 
 **Before committing:** Always run `pnpm lint && pnpm build`.
@@ -79,7 +88,7 @@ pnpm lint           # Run ESLint
 ### Imports (ordered)
 1. React core (`react`, `react-dom`)
 2. Next.js (`next/link`, `next/image`, `next/metadata`)
-3. Third-party (Radix, Lucide, Zod, class-variance-authority)
+3. Third-party (Base UI, Lucide, Zod, class-variance-authority)
 4. Internal `@/` aliases
 5. Relative imports (rarely used)
 
@@ -134,11 +143,10 @@ const result = Schema.safeParse(data);
 | Route | Description |
 |-------|-------------|
 | `/` | Homepage |
-| `/about` | Studio info |
-| `/projects/aitlas` | AI ecosystem |
-| `/projects/saas` | Industry SaaS |
-| `/contact` | Contact form |
-| `/docs` | Developer portal |
+| `/portfolio` | Portfolio index (all advertised products) |
+| `/portfolio/[project]` | Product page |
+| `/privacy` | Privacy policy |
+| `/#contact` | Contact (home anchor) |
 
 ---
 
@@ -158,7 +166,9 @@ const result = Schema.safeParse(data);
 
 ## Testing
 
-No test framework is currently configured. When adding tests, use **Vitest + React Testing Library**.
+Zero-dependency `node:test` contract suites under `tests/` — no framework
+install (`pnpm test`). Suites import pure `src/lib` modules and read source
+files to pin product decisions. Runtime smoke gate: `pnpm test:smoke`.
 
 ---
 
