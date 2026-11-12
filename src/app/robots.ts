@@ -15,8 +15,6 @@ export default function robots(): MetadataRoute.Robots {
         // Disallow admin/internal paths if they exist
         disallow: [
           '/api/',
-          '/_next/',
-          '/node_modules/',
           '/styleguide',
         ],
       },
@@ -68,7 +66,6 @@ export default function robots(): MetadataRoute.Robots {
         // Allow AI bots but with restrictions
         disallow: [
           '/api/',
-          '/_next/',
           '/styleguide',
           '/brand',
         ],
