@@ -962,25 +962,25 @@ export default function StyleguidePage() {
                 <div key={i} className="p-4 border border-border hover:border-foreground/30 transition-colors">
                   <div className="font-bold text-sm mb-2">{comp.name}</div>
                   <div className="text-meta text-grey-500 space-y-1">
-                    {comp.variants && <div>Variants: {comp.variants.join(", ")}</div>}
-                    {comp.sizes && <div>Sizes: {comp.sizes.join(", ")}</div>}
-                    {comp.states && <div>States: {comp.states.join(", ")}</div>}
-                    {comp.types && <div>Types: {comp.types.join(", ")}</div>}
-                    {comp.orientation && <div>Orientation: {comp.orientation.join(", ")}</div>}
-                    {comp.position && <div>Position: {comp.position.join(", ")}</div>}
-                    {comp.align && <div>Align: {comp.align.join(", ")}</div>}
-                    {comp.direction && <div>Direction: {comp.direction.join(", ")}</div>}
-                    {comp.addon && <div>Addon: {comp.addon.join(", ")}</div>}
-                    {comp.validation && <div>Validation: {comp.validation.join(", ")}</div>}
-                    {comp.views && <div>Views: {comp.views.join(", ")}</div>}
-                    {comp.length && <div>Length: {comp.length.join(", ")}</div>}
-                    {comp.variant && <div>Variant: {comp.variant.join(", ")}</div>}
-                    {comp.trigger && <div>Trigger: {comp.trigger.join(", ")}</div>}
-                    {comp.use && <div>Use: {comp.use.join(", ")}</div>}
-                    {comp.layout && <div>Layout: {comp.layout.join(", ")}</div>}
+                    {Boolean(comp.variants?.length) && <div>Variants: {comp.variants?.join(", ")}</div>}
+                    {Boolean(comp.sizes?.length) && <div>Sizes: {comp.sizes?.join(", ")}</div>}
+                    {Boolean(comp.states?.length) && <div>States: {comp.states?.join(", ")}</div>}
+                    {Boolean(comp.types?.length) && <div>Types: {comp.types?.join(", ")}</div>}
+                    {Boolean(comp.orientation?.length) && <div>Orientation: {comp.orientation?.join(", ")}</div>}
+                    {Boolean(comp.position?.length) && <div>Position: {comp.position?.join(", ")}</div>}
+                    {Boolean(comp.align?.length) && <div>Align: {comp.align?.join(", ")}</div>}
+                    {Boolean(comp.direction?.length) && <div>Direction: {comp.direction?.join(", ")}</div>}
+                    {Boolean(comp.addon?.length) && <div>Addon: {comp.addon?.join(", ")}</div>}
+                    {Boolean(comp.validation?.length) && <div>Validation: {comp.validation?.join(", ")}</div>}
+                    {Boolean(comp.views?.length) && <div>Views: {comp.views?.join(", ")}</div>}
+                    {Boolean(comp.length?.length) && <div>Length: {comp.length?.join(", ")}</div>}
+                    {Boolean(comp.variant?.length) && <div>Variant: {comp.variant?.join(", ")}</div>}
+                    {Boolean(comp.trigger?.length) && <div>Trigger: {comp.trigger?.join(", ")}</div>}
+                    {Boolean(comp.use?.length) && <div>Use: {comp.use?.join(", ")}</div>}
+                    {Boolean(comp.layout?.length) && <div>Layout: {comp.layout?.join(", ")}</div>}
                     {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                    {(comp as any).shape && <div>Shape: {(comp as any).shape.join(", ")}</div>}
-                    {comp.shapes && <div>Shapes: {comp.shapes.join(", ")}</div>}
+                    {Boolean((comp as any).shape?.length) && <div>Shape: {(comp as any).shape?.join(", ")}</div>}
+                    {Boolean(comp.shapes?.length) && <div>Shapes: {comp.shapes?.join(", ")}</div>}
                     {comp.icons && <div>With Icons: Yes</div>}
                   </div>
                 </div>
