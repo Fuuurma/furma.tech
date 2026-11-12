@@ -2,8 +2,9 @@
 /**
  * Black-box runtime smoke gate for furma.tech (VAL-STATIC-FUR-001 / 005 / 006).
  *
- * Zero-dependency (Node 24 global fetch + node:assert). Start the production
- * server first, then run:
+ * Zero-dependency (Node 24 global fetch + node:assert; the one non-node
+ * import is src/lib/home-projects.ts, read through Node's type stripping the
+ * same way tests/ are). Start the production server first, then run:
  *
  *   node scripts/smoke.mjs [base-url]
  *
@@ -13,14 +14,18 @@
  * every one of them drifted from the others.
  *
  * Asserts that every required content route serves 200 with the main landmark
- * + a heading, that /v2 stays noindex, that the sitemap lists the canonical
- * portfolio routes and excludes /v2, that the /og OG ImageResponse route serves
- * 200 image/png, and that the landing contact surface + direct mailto
- * alternative are present.
+ * + a heading — the advertised catalogue (HOME_PROJECTS + /showcase) derived
+ * from the honest list itself, so the routes cannot drift from the site —
+ * that one archived page stays reachable without being advertised, that /v2
+ * stays noindex, that the sitemap lists the canonical catalogue routes and
+ * excludes /v2, that every catalogue URL the sitemap lists actually serves,
+ * that the /og OG ImageResponse route serves 200 image/png, and that the
+ * landing contact surface + direct mailto alternative are present.
  */
 
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { HOME_PROJECTS } from "../src/lib/home-projects.ts";
 
 const pkg = JSON.parse(
   readFileSync(new URL("../package.json", import.meta.url), "utf8"),
@@ -46,13 +51,50 @@ function must(condition, message) {
   }
 }
 
+/**
+ * The advertised catalogue's headings, keyed by route. The routes themselves
+ * come from HOME_PROJECTS, so the list of covered pages cannot drift from the
+ * honest list; only each page's heading string lives here.
+ */
+const CATALOGUE_HEADINGS = {
+  "/portfolio/tic-tac-toe-disappear": "Tic-Tac-Toe Disappear",
+  "/portfolio/gambit-deck": "Gambit Deck",
+  "/portfolio/pond": "Pond",
+  "/portfolio/qart": "QArt",
+  "/portfolio/bloxs": "Bloxs",
+  "/portfolio/putarenfe": "Renfe",
+};
+
+// A project the studio advertises without a heading here would ship through
+// this gate unchecked — refuse to run instead.
+for (const project of HOME_PROJECTS) {
+  if (!(project.href in CATALOGUE_HEADINGS)) {
+    throw new Error(
+      `HOME_PROJECTS advertises ${project.href} but CATALOGUE_HEADINGS has ` +
+        `no heading for it; add one so the catalogue stays covered.`,
+    );
+  }
+}
+
 const REQUIRED_ROUTES = [
   { path: "/", heading: "furma.tech" },
   { path: "/portfolio", heading: "products" },
+  { path: "/showcase", heading: "Every product, in motion", strictHeading: true },
+  ...HOME_PROJECTS.map((p) => ({
+    path: p.href,
+    heading: CATALOGUE_HEADINGS[p.href],
+    strictHeading: true,
+  })),
+  // Reachable but unadvertised: aitlas is archived — off the lists and the
+  // sitemap — yet must keep serving for anyone holding an old link.
   { path: "/portfolio/aitlas", heading: "Aitlas" },
-  { path: "/portfolio/restauramanager", heading: "restauManager" },
   { path: "/privacy", heading: "Privacy policy" },
 ];
+
+/** Escape a heading for the h1 accessible-name regex. */
+function headingPattern(heading) {
+  return heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
 let failures = 0;
 
@@ -61,7 +103,18 @@ for (const route of REQUIRED_ROUTES) {
     const { status, text } = await get(route.path);
     assert.equal(status, 200, `${route.path} should be 200`);
     must(text.includes('id="main-content"'), `${route.path} missing main#main-content`);
-    must(text.includes(route.heading), `${route.path} missing heading "${route.heading}"`);
+    // Catalogue h1s render through SplitReveal: the accessible heading lives
+    // on the h1's aria-label, and the raw string also shows up in <title> and
+    // body copy — so a broken h1 must fail even when the words survive
+    // elsewhere. Strict routes pin the h1's accessible name itself.
+    if (route.strictHeading) {
+      must(
+        new RegExp(`<h1[^>]*aria-label="${headingPattern(route.heading)}"`).test(text),
+        `${route.path} missing h1 heading "${route.heading}"`,
+      );
+    } else {
+      must(text.includes(route.heading), `${route.path} missing heading "${route.heading}"`);
+    }
     console.log(`  ok  ${route.path} (200, main landmark + heading)`);
   } catch (error) {
     failures += 1;
@@ -83,18 +136,25 @@ try {
   console.error(`  FAIL /v2: ${error.message}`);
 }
 
-// Sitemap must include canonical portfolio routes and exclude /v2.
+// Sitemap must include canonical catalogue routes and exclude /v2.
 try {
   const { status, text } = await get("/sitemap.xml");
   assert.equal(status, 200, "/sitemap.xml should be 200");
   // The sitemap carries the projects the site shows, and nothing it has
   // stopped advertising: paused work keeps its page but not a submission.
-  for (const href of ["/portfolio/tic-tac-toe-disappear", "/portfolio/gambit-deck", "/portfolio/pond"]) {
+  const cataloguePaths = ["/showcase", ...HOME_PROJECTS.map((p) => p.href)];
+  for (const href of cataloguePaths) {
     must(text.includes(href), `sitemap missing ${href}`);
   }
   must(!text.includes("/portfolio/aitlas"), "the sitemap still advertises paused work");
   must(!text.includes("/v2"), "sitemap must not include /v2");
-  console.log("  ok  /sitemap.xml (canonical portfolio routes, no /v2)");
+  // A listed URL that does not serve is worse than a missing one: open every
+  // catalogue URL the XML asserts instead of only reading the XML.
+  for (const path of cataloguePaths) {
+    const opened = await get(path);
+    assert.equal(opened.status, 200, `sitemap-listed ${path} should be 200`);
+  }
+  console.log("  ok  /sitemap.xml (canonical catalogue routes, listed URLs serve, no /v2)");
 } catch (error) {
   failures += 1;
   console.error(`  FAIL /sitemap.xml: ${error.message}`);
