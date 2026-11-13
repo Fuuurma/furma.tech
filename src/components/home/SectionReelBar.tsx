@@ -98,9 +98,9 @@ function ReelColumn({
         transform: `translate3d(0, calc(-1 * ${translateIndex} * var(--plastic-nav-h)), 0)`,
       }}
     >
-      {rows.map((row, i) => (
+      {rows.map((row) => (
         <ReelRow
-          key={row.item?.id ?? `ghost-${columnOffset}-${i}`}
+          key={row.item?.id ?? `ghost-${columnOffset}`}
           item={row.item}
           label={label}
           isCurrent={
