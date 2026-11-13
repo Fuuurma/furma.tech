@@ -5,5 +5,10 @@
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 43200
 minimumReleaseAge: 1440
+overrides:
+  # GHSA-g3hv-75wg-m249: typescript-estree caps minimatch at ^10.2.2 and no
+  # stable parent allows >=11.0.1 yet, so the bump is scoped to that one edge;
+  # eslint's minimatch@3 consumers keep their own resolution.
+  '@typescript-eslint/typescript-estree>minimatch': ^11.0.1
 allowBuilds:
   unrs-resolver: true
