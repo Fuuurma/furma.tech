@@ -82,7 +82,7 @@ export function V2Verticals() {
                     <span className="v2-label">{item.tag}</span>
                     <span
                       aria-hidden="true"
-                      className="opacity-0 transition-all duration-300 group-hover/item:translate-x-1 group-hover/item:opacity-100"
+                      className="opacity-0 transition-[opacity,translate] duration-300 group-hover/item:translate-x-1 group-hover/item:opacity-100"
                     >
                       ↗
                     </span>
@@ -134,7 +134,7 @@ export function V2Verticals() {
                     <span className="v2-label v2-label--cream">{item.tag}</span>
                     <span
                       aria-hidden="true"
-                      className="text-[var(--v2-accent)] opacity-0 transition-all duration-300 group-hover/item:translate-x-1 group-hover/item:opacity-100"
+                      className="text-[var(--v2-accent)] opacity-0 transition-[opacity,translate] duration-300 group-hover/item:translate-x-1 group-hover/item:opacity-100"
                     >
                       ↗
                     </span>

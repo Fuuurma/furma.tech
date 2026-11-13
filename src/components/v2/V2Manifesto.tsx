@@ -107,7 +107,7 @@ export function V2Manifesto() {
             className="group"
           >
             <p className="v2-label mb-5 flex items-center gap-3">
-              <span className="inline-block h-px w-8 bg-[var(--v2-accent)] transition-all duration-500 group-hover:w-14" />
+              <span className="inline-block h-px w-8 bg-[var(--v2-accent)] transition-[width] duration-500 group-hover:w-14" />
               {p.n}
             </p>
             <h3 className="mb-3 font-[family-name:var(--v2-font-display)] text-[clamp(1.2rem,1.7vw,1.5rem)] font-extrabold tracking-[-0.01em] uppercase [font-stretch:118%]">
