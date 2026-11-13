@@ -588,11 +588,11 @@ export function LiquidAscii({
     // paint also runs from observer callbacks, and a subscription created
     // inside a subscription's own callback cannot prove it is cleaned up.
     const syncReserves = () => {
-      const blocks = Array.from(
+      const blocks = new Set(
         surface.querySelectorAll<HTMLElement>("[data-screen-reserve]"),
       );
       for (const element of observed) {
-        if (!blocks.includes(element)) {
+        if (!blocks.has(element)) {
           reserveObserver.unobserve(element);
           observed.delete(element);
         }
