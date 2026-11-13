@@ -150,7 +150,7 @@ export function V2Contact() {
                 type="submit"
                 disabled={pending}
                 data-cursor-label="send"
-                className="group inline-flex w-fit items-center gap-3 rounded-full bg-[var(--v2-accent)] px-8 py-4 font-[family-name:var(--v2-font-mono)] text-[11px] font-semibold tracking-[0.12em] text-[var(--v2-ink)] uppercase transition-all duration-300 hover:bg-[var(--v2-cream-on-dark)] disabled:cursor-wait disabled:opacity-60"
+                className="group inline-flex w-fit items-center gap-3 rounded-full bg-[var(--v2-accent)] px-8 py-4 font-[family-name:var(--v2-font-mono)] text-[11px] font-semibold tracking-[0.12em] text-[var(--v2-ink)] uppercase transition-[background-color,opacity] duration-300 hover:bg-[var(--v2-cream-on-dark)] disabled:cursor-wait disabled:opacity-60"
               >
                 {pending ? "Sending…" : "Send to the workshop"}
                 <span

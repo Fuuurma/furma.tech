@@ -151,7 +151,7 @@ function WorkRow({
 
         <span
           aria-hidden="true"
-          className="hidden text-xl opacity-30 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100 md:block"
+          className="hidden text-xl opacity-30 transition-[opacity,translate] duration-300 group-hover:translate-x-1 group-hover:opacity-100 md:block"
         >
           ↗
         </span>
