@@ -175,12 +175,11 @@ export function SectionReelBar({
     <StudioChrome
       onBrandReset={onBrandReset}
       projectsSlot={
-        <div
+        <nav
           className={cn(
             "plastic-reel__projects w-full",
             direction !== "idle" && `plastic-reel__projects--${direction}`,
           )}
-          role="navigation"
           aria-label="Site sections"
           data-active-index={activeReelIndex}
         >
@@ -228,7 +227,7 @@ export function SectionReelBar({
               →
             </button>
           </div>
-        </div>
+        </nav>
       }
       className="border-foreground/10"
     />

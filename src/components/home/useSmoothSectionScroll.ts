@@ -165,7 +165,9 @@ export function useSmoothSectionScroll(total: number) {
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
-      const diff = touchStart.current - e.changedTouches[0].clientY;
+      const touch = e.changedTouches[0];
+      if (!touch) return;
+      const diff = touchStart.current - touch.clientY;
       if (Math.abs(diff) > 50) {
         goTo(activeRef.current + (diff > 0 ? 1 : -1));
       }
