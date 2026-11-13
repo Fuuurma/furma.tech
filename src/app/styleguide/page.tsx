@@ -262,7 +262,7 @@ export default function StyleguidePage() {
         <Container size="full">
           <SectionHeader label="05 / Components" title="Cards" description="Containers for grouping related content. Styling via className." />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-            <Card className="hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-all duration-500">
+            <Card className="hover:border-foreground/30 hover:shadow-2xl hover:shadow-foreground/5 transition-[border-color,box-shadow] duration-500">
               <CardHeader><CardTitle>Standard</CardTitle><CardDescription>With hover effect</CardDescription></CardHeader>
               <CardContent><p className="text-sm text-grey-600 dark:text-grey-400">Base card with hover border animation.</p></CardContent>
             </Card>

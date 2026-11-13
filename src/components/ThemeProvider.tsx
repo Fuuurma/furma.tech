@@ -9,6 +9,18 @@ const ThemeContext = React.createContext<{
   setTheme: (theme: Theme) => void;
 } | undefined>(undefined);
 
+const emptySnapshot = () => null;
+
+function readStoredTheme(storageKey: string): Theme | null {
+  const stored = localStorage.getItem(storageKey);
+  return stored === 'light' || stored === 'dark' ? stored : null;
+}
+
+function subscribeToStorage(onStoreChange: () => void) {
+  window.addEventListener('storage', onStoreChange);
+  return () => window.removeEventListener('storage', onStoreChange);
+}
+
 export function ThemeProvider({
   children,
   defaultTheme = 'light',
@@ -18,38 +30,36 @@ export function ThemeProvider({
   defaultTheme?: Theme;
   storageKey?: string;
 }) {
-  const [theme, setTheme] = React.useState<Theme>(defaultTheme);
-  const [isMounted, setIsMounted] = React.useState(false);
+  const [override, setOverride] = React.useState<Theme | null>(null);
+
+  const getSnapshot = React.useCallback(
+    () => readStoredTheme(storageKey),
+    [storageKey]
+  );
+
+  const storedTheme = React.useSyncExternalStore(
+    subscribeToStorage,
+    getSnapshot,
+    emptySnapshot
+  );
+
+  const theme = override ?? storedTheme ?? defaultTheme;
 
   React.useEffect(() => {
-    // localStorage is unreadable during an SSR render; `isMounted` is the
-    // standard guard that keeps the server and client markup in agreement
-    // before the stored theme is applied.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsMounted(true);
-    const stored = localStorage.getItem(storageKey) as Theme | null;
-    if (stored) {
-      setTheme(stored);
-    }
-  }, [storageKey]);
-
-  React.useEffect(() => {
-    if (!isMounted) return;
-    
     const root = document.documentElement;
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
-    localStorage.setItem(storageKey, theme);
-  }, [theme, storageKey, isMounted]);
+  }, [theme]);
 
   const value = React.useMemo(
     () => ({
       theme,
       setTheme: (newTheme: Theme) => {
-        setTheme(newTheme);
+        setOverride(newTheme);
+        localStorage.setItem(storageKey, newTheme);
       },
     }),
-    [theme]
+    [theme, storageKey]
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
