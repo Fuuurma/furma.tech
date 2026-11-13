@@ -63,6 +63,12 @@ export function V2Manifesto() {
   });
 
   const words = CREED.split(" ");
+  const occurrences = new Map<string, number>();
+  const keyedWords = words.map((word) => {
+    const occurrence = occurrences.get(word) ?? 0;
+    occurrences.set(word, occurrence + 1);
+    return { word, key: `${word}-${occurrence}` };
+  });
 
   return (
     <section
@@ -79,9 +85,9 @@ export function V2Manifesto() {
 
       <div ref={ref}>
         <p className="max-w-[24ch] font-[family-name:var(--v2-font-display)] text-[clamp(1.9rem,4.6vw,4.2rem)] leading-[1.12] font-bold tracking-[-0.015em] [font-stretch:112%]">
-          {words.map((word, i) => (
+          {keyedWords.map(({ word, key }, i) => (
             <Word
-              key={`${word}-${i}`}
+              key={key}
               index={i}
               total={words.length}
               progress={scrollYProgress}
