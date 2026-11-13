@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { Activity, Clock, Radio } from "lucide-react";
 import { RenfeHero } from "@/components/heroes/RenfeHero";
 import {

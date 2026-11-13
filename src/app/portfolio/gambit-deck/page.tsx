@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { Layers, Swords, UserCheck } from "lucide-react";
 import { GambitDeckHero } from "@/components/heroes/GambitDeckHero";
 import {

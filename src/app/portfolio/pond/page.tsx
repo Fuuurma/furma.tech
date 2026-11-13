@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { CalendarCheck, Inbox, WifiOff } from "lucide-react";
 import { PondHero } from "@/components/heroes/PondHero";
 import {

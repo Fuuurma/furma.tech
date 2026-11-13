@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { Bot, Link2, MonitorPlay, Radio, ShieldCheck, Swords } from "lucide-react";
 import {
   ProjectLayout,

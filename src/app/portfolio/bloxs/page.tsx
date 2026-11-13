@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { BookOpen, Boxes, ShieldCheck } from "lucide-react";
 import { BloxsHero } from "@/components/heroes/BloxsHero";
 import {

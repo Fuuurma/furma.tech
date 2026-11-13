@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Video, Shuffle, Shield } from 'lucide-react';
 import { ProjectLayout, ProjectHero, ProjectStatusPlaceholder } from '@/components/ui/ProjectLayout';
 import { getOgImageUrl } from '@/lib/metadata';
