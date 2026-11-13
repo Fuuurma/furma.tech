@@ -50,7 +50,6 @@ export function StudioWaterFooter({
   return (
     <footer
       ref={plateRef}
-      role="contentinfo"
       className={cn(
         "relative flex flex-col bg-black text-white overflow-hidden",
         variant === "panel" ? "h-full" : "min-h-[640px] md:min-h-[min(100svh,820px)]",

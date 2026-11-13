@@ -3,6 +3,7 @@
 import {
   useCallback,
   useEffect,
+  useEffectEvent,
   useRef,
   useState,
   useSyncExternalStore,
@@ -97,6 +98,8 @@ export function PortfolioNavDropdown() {
     setOpen(false);
   }, [clearCloseTimer]);
 
+  const closeMenuEvent = useEffectEvent(closeMenu);
+
   const scheduleClose = useCallback(() => {
     clearCloseTimer();
     closeTimer.current = setTimeout(() => setOpen(false), 200);
@@ -123,11 +126,11 @@ export function PortfolioNavDropdown() {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
-      closeMenu();
+      closeMenuEvent();
       triggerRef.current?.focus();
     };
     const onPointerDown = (e: PointerEvent) => {
-      if (!isInsidePortfolioMenu(e.target as Node)) closeMenu();
+      if (!isInsidePortfolioMenu(e.target as Node)) closeMenuEvent();
     };
     window.addEventListener("keydown", onKey);
     document.addEventListener("pointerdown", onPointerDown);
@@ -135,7 +138,7 @@ export function PortfolioNavDropdown() {
       window.removeEventListener("keydown", onKey);
       document.removeEventListener("pointerdown", onPointerDown);
     };
-  }, [open, closeMenu]);
+  }, [open]);
 
   const panel = (
     <AnimatePresence>
