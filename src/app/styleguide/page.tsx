@@ -84,6 +84,13 @@ import {
   Lock, KeyRound, ShieldCheck, Fingerprint, ScanFace, Rocket,
 } from "lucide-react";
 
+const LONG_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
 // ——— Helper: section row layout ———
 function SectionRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -716,7 +723,7 @@ export default function StyleguidePage() {
             <Calendar mode="single" selected={date} onSelect={setDate} className="border border-border" month={calendarMonth} onMonthChange={setCalendarMonth} />
             <div className="space-y-2">
               <p className="text-sm font-bold">Selected:</p>
-              <p className="text-sm text-grey-500">{date ? date.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" }) : "No date selected"}</p>
+              <p className="text-sm text-grey-500" suppressHydrationWarning>{date ? LONG_DATE_FORMATTER.format(date) : "No date selected"}</p>
             </div>
           </div>
         </Container>
@@ -958,8 +965,8 @@ export default function StyleguidePage() {
                 { name: "Collapsible", state: ["expanded", "collapsed"] },
                 { name: "Empty State", variant: ["no results", "error", "blank slate"] },
                 { name: "Item", layout: ["with media", "with description"] },
-              ].map((comp, i) => (
-                <div key={i} className="p-4 border border-border hover:border-foreground/30 transition-colors">
+              ].map((comp) => (
+                <div key={comp.name} className="p-4 border border-border hover:border-foreground/30 transition-colors">
                   <div className="font-bold text-sm mb-2">{comp.name}</div>
                   <div className="text-meta text-grey-500 space-y-1">
                     {Boolean(comp.variants?.length) && <div>Variants: {comp.variants?.join(", ")}</div>}
