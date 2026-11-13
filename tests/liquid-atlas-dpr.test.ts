@@ -56,9 +56,15 @@ test("a new ratio redraws the atlas at that ratio", () => {
 });
 
 test("the resolution listener is cleaned up with the effect", () => {
-  const cleanup = liquid.slice(liquid.lastIndexOf("return () =>"));
+  // The effect returns `dispose`, the cleanup it also returns when the panel
+  // has no box yet, so the listener is let go on every path out.
+  const dispose = liquid.slice(liquid.indexOf("const dispose = ()"));
   assert.ok(
-    cleanup.includes('resolution.removeEventListener("change", onResolution)'),
+    dispose.includes('resolution.removeEventListener("change", onResolution)'),
     "the listener must not outlive the effect",
+  );
+  assert.ok(
+    liquid.includes("return dispose"),
+    "the effect must return the cleanup",
   );
 });
