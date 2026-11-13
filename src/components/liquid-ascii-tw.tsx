@@ -584,21 +584,10 @@ export function LiquidAscii({
       return tone;
     };
 
-    const paint = () => {
-      if (!water || !atlas) return;
-
-      const rect = surface.getBoundingClientRect();
-      if (rect.width <= 0 || rect.height <= 0) return;
-
-      const ratio = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
-      const pixelWidth = Math.round(rect.width * ratio);
-      const pixelHeight = Math.round(rect.height * ratio);
-      if (canvas.width !== pixelWidth) canvas.width = pixelWidth;
-      if (canvas.height !== pixelHeight) canvas.height = pixelHeight;
-      canvas.style.width = `${rect.width}px`;
-      canvas.style.height = `${rect.height}px`;
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-
+    // The reserve targets are re-synced on the frame path, not inside paint:
+    // paint also runs from observer callbacks, and a subscription created
+    // inside a subscription's own callback cannot prove it is cleaned up.
+    const syncReserves = () => {
       const blocks = Array.from(
         surface.querySelectorAll<HTMLElement>("[data-screen-reserve]"),
       );
@@ -614,6 +603,22 @@ export function LiquidAscii({
           observed.add(element);
         }
       }
+    };
+
+    const paint = () => {
+      if (!water || !atlas) return;
+
+      const rect = surface.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return;
+
+      const ratio = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+      const pixelWidth = Math.round(rect.width * ratio);
+      const pixelHeight = Math.round(rect.height * ratio);
+      if (canvas.width !== pixelWidth) canvas.width = pixelWidth;
+      if (canvas.height !== pixelHeight) canvas.height = pixelHeight;
+      canvas.style.width = `${rect.width}px`;
+      canvas.style.height = `${rect.height}px`;
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
 
       reserveAge += 1;
       if (reserveAge >= 6) {
@@ -775,6 +780,7 @@ export function LiquidAscii({
       inkField?.step(seconds);
       elapsed += (1 / 60) * speed;
       water?.step(1 / 60, pointer(elapsed));
+      syncReserves();
       paint();
       schedule();
     };
@@ -849,9 +855,20 @@ export function LiquidAscii({
       intersection.observe(wrapper);
     }
 
-    // The water, once the lattice is laid out.
+    const dispose = () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      observer.disconnect();
+      themeObserver.disconnect();
+      reserveObserver.disconnect();
+      intersection?.disconnect();
+      resolution.removeEventListener("change", onResolution);
+      unbind?.();
+    };
+
+    // The water, once the lattice is laid out. A panel with no box yet keeps
+    // its observers so a later resize can lay it out; unmount still cleans.
     const body = layout();
-    if (!body) return;
+    if (!body) return dispose;
 
     if (reduceMotion) {
       // Reduced motion gets one still frame: the water caught mid-slosh, and
@@ -865,15 +882,7 @@ export function LiquidAscii({
       schedule();
     }
 
-    return () => {
-      if (frame) window.cancelAnimationFrame(frame);
-      observer.disconnect();
-      themeObserver.disconnect();
-      reserveObserver.disconnect();
-      intersection?.disconnect();
-      resolution.removeEventListener("change", onResolution);
-      unbind?.();
-    };
+    return dispose;
   }, [
     surfaceRef,
     speed,
