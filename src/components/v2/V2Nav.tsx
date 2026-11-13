@@ -11,18 +11,19 @@ const NAV_LINKS = [
   { href: "#contact", label: "Contact" },
 ] as const;
 
+const SITGES_CLOCK_FORMATTER = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Europe/Madrid",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  hour12: false,
+});
+
 function SitgesClock() {
   const [time, setTime] = useState<string | null>(null);
 
   useEffect(() => {
-    const formatter = new Intl.DateTimeFormat("en-GB", {
-      timeZone: "Europe/Madrid",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    });
-    const tick = () => setTime(formatter.format(new Date()));
+    const tick = () => setTime(SITGES_CLOCK_FORMATTER.format(new Date()));
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
