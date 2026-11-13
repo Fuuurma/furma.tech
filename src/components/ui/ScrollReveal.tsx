@@ -1,7 +1,7 @@
 "use client";
 
 import { useInView } from "@/hooks/useScroll";
-import { ReactNode, RefObject } from "react";
+import { isValidElement, ReactNode, RefObject } from "react";
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -50,18 +50,26 @@ export function StaggerChildren({ children, staggerDelay = 100, className = "", 
     none: "reveal-fade",
   };
 
+  let anonymousIndex = 0;
+
   return (
     <div ref={ref as RefObject<HTMLDivElement>} className={className}>
       {Array.isArray(children) ? (
-        children.map((child, index) => (
-          <div
-            key={index}
-            className={`${directionClasses[direction]} ${isInView ? "visible" : ""}`}
-            style={{ transitionDelay: `${index * staggerDelay}ms` }}
-          >
-            {child}
-          </div>
-        ))
+        children.map((child, index) => {
+          const key =
+            isValidElement(child) && child.key != null
+              ? child.key
+              : `anonymous-${anonymousIndex++}`;
+          return (
+            <div
+              key={key}
+              className={`${directionClasses[direction]} ${isInView ? "visible" : ""}`}
+              style={{ transitionDelay: `${index * staggerDelay}ms` }}
+            >
+              {child}
+            </div>
+          );
+        })
       ) : (
         <div className={`${directionClasses[direction]} ${isInView ? "visible" : ""}`}>{children}</div>
       )}

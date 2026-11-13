@@ -176,8 +176,8 @@ export default function Breadcrumbs({ items, className = "" }: BreadcrumbsProps)
         <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         <span className="sr-only">Home</span>
       </Link>
-      {breadcrumbItems.map((item, index) => (
-        <div key={index} className="flex items-center gap-1 sm:gap-1.5">
+      {breadcrumbItems.map((item) => (
+        <div key={`${item.label}:${item.href ?? ""}`} className="flex items-center gap-1 sm:gap-1.5">
           <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-grey-400" />
           {item.href ? (
             <Link href={item.href} className="text-grey-500 hover:text-foreground transition-colors no-underline">
