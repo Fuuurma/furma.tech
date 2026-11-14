@@ -319,6 +319,27 @@ export function DitherWave({
       return -0.2 + phase * 1.4;
     };
 
+    // The reserve targets are re-synced on the frame path, not inside paint:
+    // paint also runs from observer callbacks, and a subscription created
+    // inside a subscription's own callback cannot prove it is cleaned up.
+    const syncReserves = () => {
+      const blocks = new Set(
+        surface.querySelectorAll<HTMLElement>("[data-screen-reserve]"),
+      );
+      for (const element of observed) {
+        if (!blocks.has(element)) {
+          reserveObserver.unobserve(element);
+          observed.delete(element);
+        }
+      }
+      for (const element of blocks) {
+        if (!observed.has(element)) {
+          reserveObserver.observe(element);
+          observed.add(element);
+        }
+      }
+    };
+
     const paint = (time: number) => {
       const rect = surface.getBoundingClientRect();
       if (rect.width <= 0 || rect.height <= 0) return;
@@ -435,22 +456,6 @@ export function DitherWave({
         { scale, intensity, octaves: OCTAVES[quality] },
         warp,
       );
-
-      const blocks = Array.from(
-        surface.querySelectorAll<HTMLElement>("[data-screen-reserve]"),
-      );
-      for (const element of observed) {
-        if (!blocks.includes(element)) {
-          reserveObserver.unobserve(element);
-          observed.delete(element);
-        }
-      }
-      for (const element of blocks) {
-        if (!observed.has(element)) {
-          reserveObserver.observe(element);
-          observed.add(element);
-        }
-      }
 
       reserveAge += 1;
       if (reserveAge >= 6) {
@@ -624,6 +629,7 @@ export function DitherWave({
       lastDraw = now;
 
       clock = now / 1000;
+      syncReserves();
       paint(clock * speed);
       schedule();
     };

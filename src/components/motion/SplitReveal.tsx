@@ -38,6 +38,13 @@ export function SplitReveal({
       ? text.split("\n").filter(Boolean)
       : text.split(/\s+/).filter(Boolean);
 
+  const occurrences = new Map<string, number>();
+  const keyedUnits = units.map((unit) => {
+    const occurrence = occurrences.get(unit) ?? 0;
+    occurrences.set(unit, occurrence + 1);
+    return { unit, key: `${unit}-${occurrence}` };
+  });
+
   if (reduceMotion) {
     return (
       <Tag
@@ -59,8 +66,8 @@ export function SplitReveal({
       aria-label={text}
       data-screen-reserve={reserve ? "block" : undefined}
     >
-      {units.map((unit, i) => (
-        <span key={`${unit}-${i}`} className="split-reveal__unit">
+      {keyedUnits.map(({ unit, key }, i) => (
+        <span key={key} className="split-reveal__unit">
           <motion.span
             className="split-reveal__inner"
             initial={{ y: "115%", rotate: 1.5 }}

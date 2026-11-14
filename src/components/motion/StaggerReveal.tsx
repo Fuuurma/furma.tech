@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Children } from "react";
+import { Children, isValidElement } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "@/hooks/useScroll";
 import { useStableReducedMotion } from "@/lib/use-reduced-motion";
@@ -41,6 +41,8 @@ export function StaggerReveal({ children, className }: StaggerRevealProps) {
     return <div className={className}>{children}</div>;
   }
 
+  let anonymousIndex = 0;
+
   return (
     <motion.div
       ref={ref}
@@ -49,11 +51,17 @@ export function StaggerReveal({ children, className }: StaggerRevealProps) {
       initial="hidden"
       animate={inView ? "show" : "hidden"}
     >
-      {Children.map(children, (child, i) => (
-        <motion.div key={i} variants={itemVariants}>
-          {child}
-        </motion.div>
-      ))}
+      {Children.map(children, (child) => {
+        const key =
+          isValidElement(child) && child.key != null
+            ? child.key
+            : `anonymous-${anonymousIndex++}`;
+        return (
+          <motion.div key={key} variants={itemVariants}>
+            {child}
+          </motion.div>
+        );
+      })}
     </motion.div>
   );
 }
