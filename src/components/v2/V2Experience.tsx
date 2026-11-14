@@ -115,7 +115,12 @@ export function V2Experience({ children }: V2ExperienceProps) {
       if (!anchor) return;
       const id = anchor.getAttribute("href");
       if (!id || id === "#") return;
-      const el = document.querySelector(id);
+      let el: Element | null;
+      try {
+        el = document.querySelector(id);
+      } catch {
+        return;
+      }
       if (!el) return;
       e.preventDefault();
       lenis.scrollTo(el as HTMLElement, { offset: -72 });
