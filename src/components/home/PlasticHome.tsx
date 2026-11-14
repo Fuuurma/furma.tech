@@ -284,6 +284,148 @@ function PortfolioIndexSlide({
 
 const CONTACT_EMAIL = "hello@furma.tech";
 
+function ContactSentPanel({
+  sentTo,
+  statusRef,
+  onWriteAnother,
+}: {
+  sentTo: string;
+  statusRef: React.RefObject<HTMLDivElement | null>;
+  onWriteAnother: () => void;
+}) {
+  return (
+    <div
+      ref={statusRef}
+      tabIndex={-1}
+      role="status"
+      aria-live="polite"
+      className="plastic-letter__sent outline-none"
+    >
+      <p className="plastic-letter__label">Sent</p>
+      <p className="plastic-letter__title plastic-letter__title--sent">
+        Thank you.
+      </p>
+      <p className="plastic-letter__lede">
+        {sentTo ? (
+          <>
+            Your message reached us from{" "}
+            <span className="text-foreground">{sentTo}</span>.{" "}
+          </>
+        ) : (
+          "Your message reached us. "
+        )}
+        You&apos;ll get a reply within two working days.
+      </p>
+      <button type="button" onClick={onWriteAnother} className="plastic-letter__again">
+        Write another <span aria-hidden>→</span>
+      </button>
+    </div>
+  );
+}
+
+function ContactFields({
+  fieldErrors,
+  fieldsLocked,
+  onFieldChange,
+}: {
+  fieldErrors: Record<string, string>;
+  fieldsLocked: boolean;
+  onFieldChange: (field: string) => void;
+}) {
+  return (
+    <>
+      <div className="plastic-letter__field">
+        <label htmlFor="contact-name" className="plastic-letter__label">
+          Who is writing
+        </label>
+        <input
+          id="contact-name"
+          name="name"
+          type="text"
+          autoComplete="name"
+          placeholder="Your name"
+          required
+          className={cn(
+            "plastic-letter__input",
+            fieldErrors.name && "plastic-letter__input--invalid",
+          )}
+          aria-invalid={fieldErrors.name ? true : undefined}
+          aria-describedby={fieldErrors.name ? "contact-name-error" : undefined}
+          disabled={fieldsLocked}
+          onChange={() => onFieldChange("name")}
+        />
+        {fieldErrors.name && (
+          <p id="contact-name-error" className="plastic-field-error" role="alert">
+            {fieldErrors.name}
+          </p>
+        )}
+      </div>
+
+      <div className="plastic-letter__field">
+        <label htmlFor="contact-email" className="plastic-letter__label">
+          Where to write back
+        </label>
+        <input
+          id="contact-email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          inputMode="email"
+          placeholder="you@company.com"
+          required
+          className={cn(
+            "plastic-letter__input",
+            fieldErrors.email && "plastic-letter__input--invalid",
+          )}
+          aria-invalid={fieldErrors.email ? true : undefined}
+          aria-describedby={fieldErrors.email ? "contact-email-error" : undefined}
+          disabled={fieldsLocked}
+          onChange={() => onFieldChange("email")}
+        />
+        {fieldErrors.email && (
+          <p id="contact-email-error" className="plastic-field-error" role="alert">
+            {fieldErrors.email}
+          </p>
+        )}
+      </div>
+
+      <div className="plastic-letter__field">
+        <label htmlFor="contact-message" className="plastic-letter__label">
+          What are we making
+        </label>
+        <textarea
+          id="contact-message"
+          name="message"
+          rows={3}
+          placeholder="A paragraph is plenty. A link is welcome."
+          required
+          className={cn(
+            "plastic-letter__input plastic-letter__input--area",
+            fieldErrors.message && "plastic-letter__input--invalid",
+          )}
+          aria-invalid={fieldErrors.message ? true : undefined}
+          aria-describedby={
+            fieldErrors.message
+              ? "contact-message-error contact-message-hint"
+              : "contact-message-hint"
+          }
+          disabled={fieldsLocked}
+          onChange={() => onFieldChange("message")}
+        />
+        {fieldErrors.message && (
+          <p id="contact-message-error" className="plastic-field-error" role="alert">
+            {fieldErrors.message}
+          </p>
+        )}
+        <p id="contact-message-hint" className="plastic-letter__hint">
+          All three fields are required. Only used to reply — no list,
+          no sharing.
+        </p>
+      </div>
+    </>
+  );
+}
+
 // The address is the contact's headline: one tap opens a mail client, and a
 // second control copies it for the reader who has none.
 function ContactSlide({ isActive }: { isActive: boolean }) {
@@ -408,32 +550,11 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
 
           <SlideReveal isActive={isActive} delay={0.12}>
             {status === "sent" ? (
-              <div
-                ref={statusRef}
-                tabIndex={-1}
-                role="status"
-                aria-live="polite"
-                className="plastic-letter__sent outline-none"
-              >
-                <p className="plastic-letter__label">Sent</p>
-                <p className="plastic-letter__title plastic-letter__title--sent">
-                  Thank you.
-                </p>
-                <p className="plastic-letter__lede">
-                  {sentTo ? (
-                    <>
-                      Your message reached us from{" "}
-                      <span className="text-foreground">{sentTo}</span>.{" "}
-                    </>
-                  ) : (
-                    "Your message reached us. "
-                  )}
-                  You&apos;ll get a reply within two working days.
-                </p>
-                <button type="button" onClick={writeAnother} className="plastic-letter__again">
-                  Write another <span aria-hidden>→</span>
-                </button>
-              </div>
+              <ContactSentPanel
+                sentTo={sentTo}
+                statusRef={statusRef}
+                onWriteAnother={writeAnother}
+              />
             ) : (
               <form
                 ref={formRef}
@@ -444,94 +565,11 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
               >
                 <input type="hidden" name="subject" value="general" />
 
-                <div className="plastic-letter__field">
-                  <label htmlFor="contact-name" className="plastic-letter__label">
-                    Who is writing
-                  </label>
-                  <input
-                    id="contact-name"
-                    name="name"
-                    type="text"
-                    autoComplete="name"
-                    placeholder="Your name"
-                    required
-                    className={cn(
-                      "plastic-letter__input",
-                      fieldErrors.name && "plastic-letter__input--invalid",
-                    )}
-                    aria-invalid={fieldErrors.name ? true : undefined}
-                    aria-describedby={fieldErrors.name ? "contact-name-error" : undefined}
-                    disabled={fieldsLocked}
-                    onChange={() => clearFieldError("name")}
-                  />
-                  {fieldErrors.name && (
-                    <p id="contact-name-error" className="plastic-field-error" role="alert">
-                      {fieldErrors.name}
-                    </p>
-                  )}
-                </div>
-
-                <div className="plastic-letter__field">
-                  <label htmlFor="contact-email" className="plastic-letter__label">
-                    Where to write back
-                  </label>
-                  <input
-                    id="contact-email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    inputMode="email"
-                    placeholder="you@company.com"
-                    required
-                    className={cn(
-                      "plastic-letter__input",
-                      fieldErrors.email && "plastic-letter__input--invalid",
-                    )}
-                    aria-invalid={fieldErrors.email ? true : undefined}
-                    aria-describedby={fieldErrors.email ? "contact-email-error" : undefined}
-                    disabled={fieldsLocked}
-                    onChange={() => clearFieldError("email")}
-                  />
-                  {fieldErrors.email && (
-                    <p id="contact-email-error" className="plastic-field-error" role="alert">
-                      {fieldErrors.email}
-                    </p>
-                  )}
-                </div>
-
-                <div className="plastic-letter__field">
-                  <label htmlFor="contact-message" className="plastic-letter__label">
-                    What are we making
-                  </label>
-                  <textarea
-                    id="contact-message"
-                    name="message"
-                    rows={3}
-                    placeholder="A paragraph is plenty. A link is welcome."
-                    required
-                    className={cn(
-                      "plastic-letter__input plastic-letter__input--area",
-                      fieldErrors.message && "plastic-letter__input--invalid",
-                    )}
-                    aria-invalid={fieldErrors.message ? true : undefined}
-                    aria-describedby={
-                      fieldErrors.message
-                        ? "contact-message-error contact-message-hint"
-                        : "contact-message-hint"
-                    }
-                    disabled={fieldsLocked}
-                    onChange={() => clearFieldError("message")}
-                  />
-                  {fieldErrors.message && (
-                    <p id="contact-message-error" className="plastic-field-error" role="alert">
-                      {fieldErrors.message}
-                    </p>
-                  )}
-                  <p id="contact-message-hint" className="plastic-letter__hint">
-                    All three fields are required. Only used to reply — no list,
-                    no sharing.
-                  </p>
-                </div>
+                <ContactFields
+                  fieldErrors={fieldErrors}
+                  fieldsLocked={fieldsLocked}
+                  onFieldChange={clearFieldError}
+                />
 
                 {status === "error" && (
                   <p role="alert" className="plastic-form-alert">
