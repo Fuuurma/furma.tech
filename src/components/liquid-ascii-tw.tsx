@@ -197,50 +197,71 @@ const SPLASH_DEPTH = 66;
 /** How fast the reader's hand may move, in px/s. */
 const MAX_HAND_SPEED = 900;
 
+interface LiquidAsciiScreenOptions {
+  surfaceRef: LiquidAsciiProps["surfaceRef"];
+  speed: number;
+  cellSize: number;
+  gravity: number;
+  flipRatio: number;
+  pressureIters: number;
+  separationIters: number;
+  overRelaxation: number;
+  fillHeight: number;
+  cursorRadius: number;
+  cursorForce: number;
+  characters: string;
+  color: string;
+  backgroundColor: string;
+  fontFamily: string;
+  autoWave: boolean;
+  maxFPS: number;
+  pauseWhenOffscreen: boolean;
+  damping: number;
+  showInk: boolean;
+  zoneRef: LiquidAsciiProps["zoneRef"];
+  sunX: number | undefined;
+  sunRadius: number | undefined;
+  sunRise: number;
+  sunHalo: number;
+  sunHaze: number;
+  skyInk: string;
+  moonX: number | undefined;
+  moonRadius: number | undefined;
+  moonRise: number;
+}
 
-export function LiquidAscii({
-  width,
-  height,
-  className,
-  children,
-  speed = 0.9,
-  cellSize = 15,
-  gravity = 1400,
-  flipRatio = 0.3,
-  pressureIters = 30,
-  separationIters = 3,
-  overRelaxation = 1.5,
-  fillHeight = 0.4,
-  cursorRadius = 0.25,
-  cursorForce = 66,
-  characters = " ·:-~=+*#%@",
-  color = "#ffffff",
-  backgroundColor = "#000000",
-  fontFamily = "monospace",
-  opacity = 1,
-  autoWave = true,
-  maxFPS = 60,
-  pauseWhenOffscreen = true,
+function useLiquidAsciiScreen({
   surfaceRef,
-  damping = 0.7,
-  ink: showInk = true,
+  speed,
+  cellSize,
+  gravity,
+  flipRatio,
+  pressureIters,
+  separationIters,
+  overRelaxation,
+  fillHeight,
+  cursorRadius,
+  cursorForce,
+  characters,
+  color,
+  backgroundColor,
+  fontFamily,
+  autoWave,
+  maxFPS,
+  pauseWhenOffscreen,
+  damping,
+  showInk,
   zoneRef,
-  sun: sunProp,
-  sunHalo = 0.42,
-  sunHaze = 0.26,
-  skyInk = color,
-
-  moon: moonProp,
-}: LiquidAsciiProps) {
-  // The sun is a small object a caller writes inline; the effect depends on
-  // its three numbers, not on the object, so a re-render does not rebuild
-  // the water.
-  const sunX = sunProp?.x;
-  const sunRadius = sunProp?.radius;
-  const sunRise = sunProp?.rise ?? 0.15;
-  const moonX = moonProp?.x;
-  const moonRadius = moonProp?.radius;
-  const moonRise = moonProp?.rise ?? 1.5;
+  sunX,
+  sunRadius,
+  sunRise,
+  sunHalo,
+  sunHaze,
+  skyInk,
+  moonX,
+  moonRadius,
+  moonRise,
+}: LiquidAsciiScreenOptions) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduceMotion = useStableReducedMotion();
@@ -963,6 +984,85 @@ export function LiquidAscii({
     moonRise,
     reduceMotion,
   ]);
+
+  return { wrapperRef, canvasRef };
+}
+
+export function LiquidAscii({
+  width,
+  height,
+  className,
+  children,
+  speed = 0.9,
+  cellSize = 15,
+  gravity = 1400,
+  flipRatio = 0.3,
+  pressureIters = 30,
+  separationIters = 3,
+  overRelaxation = 1.5,
+  fillHeight = 0.4,
+  cursorRadius = 0.25,
+  cursorForce = 66,
+  characters = " ·:-~=+*#%@",
+  color = "#ffffff",
+  backgroundColor = "#000000",
+  fontFamily = "monospace",
+  opacity = 1,
+  autoWave = true,
+  maxFPS = 60,
+  pauseWhenOffscreen = true,
+  surfaceRef,
+  damping = 0.7,
+  ink: showInk = true,
+  zoneRef,
+  sun: sunProp,
+  sunHalo = 0.42,
+  sunHaze = 0.26,
+  skyInk = color,
+
+  moon: moonProp,
+}: LiquidAsciiProps) {
+  // The sun is a small object a caller writes inline; the effect depends on
+  // its three numbers, not on the object, so a re-render does not rebuild
+  // the water.
+  const sunX = sunProp?.x;
+  const sunRadius = sunProp?.radius;
+  const sunRise = sunProp?.rise ?? 0.15;
+  const moonX = moonProp?.x;
+  const moonRadius = moonProp?.radius;
+  const moonRise = moonProp?.rise ?? 1.5;
+  const { wrapperRef, canvasRef } = useLiquidAsciiScreen({
+    surfaceRef,
+    speed,
+    cellSize,
+    gravity,
+    flipRatio,
+    pressureIters,
+    separationIters,
+    overRelaxation,
+    fillHeight,
+    cursorRadius,
+    cursorForce,
+    characters,
+    color,
+    backgroundColor,
+    fontFamily,
+    autoWave,
+    maxFPS,
+    pauseWhenOffscreen,
+    damping,
+    showInk,
+    zoneRef,
+    sunX,
+    sunRadius,
+    sunRise,
+    sunHalo,
+    sunHaze,
+    skyInk,
+    moonX,
+    moonRadius,
+    moonRise,
+  });
 
   return (
     <div
