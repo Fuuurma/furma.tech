@@ -12,6 +12,18 @@ import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from "lucide-react"
 
+const dayDateFormatters = new Map<string, Intl.DateTimeFormat>()
+
+function getDayDateFormatter(localeCode: string | undefined) {
+  const key = localeCode ?? ""
+  let formatter = dayDateFormatters.get(key)
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat(localeCode)
+    dayDateFormatters.set(key, formatter)
+  }
+  return formatter
+}
+
 function Calendar({
   className,
   classNames,
@@ -198,7 +210,7 @@ function CalendarDayButton({
     <Button
       variant="ghost"
       size="icon"
-      data-day={day.date.toLocaleDateString(locale?.code)}
+      data-day={getDayDateFormatter(locale?.code).format(day.date)}
       data-selected-single={
         modifiers.selected &&
         !modifiers.range_start &&
