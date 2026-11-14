@@ -965,8 +965,8 @@ export default function StyleguidePage() {
                 { name: "Collapsible", state: ["expanded", "collapsed"] },
                 { name: "Empty State", variant: ["no results", "error", "blank slate"] },
                 { name: "Item", layout: ["with media", "with description"] },
-              ].map((comp, i) => (
-                <div key={i} className="p-4 border border-border hover:border-foreground/30 transition-colors">
+              ].map((comp) => (
+                <div key={comp.name} className="p-4 border border-border hover:border-foreground/30 transition-colors">
                   <div className="font-bold text-sm mb-2">{comp.name}</div>
                   <div className="text-meta text-grey-500 space-y-1">
                     {comp.variants && <div>Variants: {comp.variants.join(", ")}</div>}
@@ -980,7 +980,7 @@ export default function StyleguidePage() {
                     {comp.addon && <div>Addon: {comp.addon.join(", ")}</div>}
                     {comp.validation && <div>Validation: {comp.validation.join(", ")}</div>}
                     {comp.views && <div>Views: {comp.views.join(", ")}</div>}
-                    {comp.length && <div>Length: {comp.length.join(", ")}</div>}
+                    {comp.length ? <div>Length: {comp.length.join(", ")}</div> : null}
                     {comp.variant && <div>Variant: {comp.variant.join(", ")}</div>}
                     {comp.trigger && <div>Trigger: {comp.trigger.join(", ")}</div>}
                     {comp.use && <div>Use: {comp.use.join(", ")}</div>}
