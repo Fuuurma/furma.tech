@@ -94,6 +94,13 @@ const JSON_LD = {
   ],
 };
 
+// JSON.stringify is not HTML-safe: a `<` in the data could close the script
+// tag. Escaping to JSON unicode sequences keeps the parsed payload identical.
+const JSON_LD_SCRIPT = JSON.stringify(JSON_LD)
+  .replace(/&/g, "\\u0026")
+  .replace(/</g, "\\u003c")
+  .replace(/>/g, "\\u003e");
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -104,7 +111,7 @@ export default function RootLayout({
       <body className="font-sans antialiased min-h-screen flex flex-col">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+          dangerouslySetInnerHTML={{ __html: JSON_LD_SCRIPT }}
         />
         <ThemeProvider defaultTheme="light" storageKey="furma-theme">
         <a href="#main-content" className="skip-link">
