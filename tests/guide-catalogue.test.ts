@@ -5,8 +5,8 @@
  * QWEN.md) carry a picture of what the studio sells; the catalogue they
  * must picture is `HOME_PROJECTS` in `src/lib/home-projects.ts` — the
  * honest list the home tour, portfolio index, footers and sitemap all
- * read. The guides once said "two verticals" with Aitlas as an active
- * product above a stale list missing the four newest products; this
+ * read. Since 2026-11-16 that list is the active set and nothing else:
+ * there is no archive export and no reachable-but-unlisted shelf. This
  * suite pins every guide's block to the catalogue so drift in any of
  * them cannot return.
  *
@@ -16,7 +16,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { HOME_PROJECTS, ARCHIVED_PROJECTS } from "../src/lib/home-projects.ts";
+import { HOME_PROJECTS } from "../src/lib/home-projects.ts";
 
 const GUIDES = ["AGENTS.md", "GEMINI.md", "QWEN.md"] as const;
 
@@ -53,12 +53,14 @@ for (const guide of GUIDES) {
     );
   });
 
-  test(`${guide} names the archived set as reachable, not advertised`, () => {
-    const line = text.split("\n").find((l) => l.startsWith("**Archived ("));
-    assert.ok(line, `${guide} must carry the **Archived (...) catalogue line`);
-    assert.match(line, /reachable, not advertised/);
-    for (const p of ARCHIVED_PROJECTS) {
-      assert.ok(line.includes(p.name), `the archived line must still name ${p.name}`);
-    }
+  test(`${guide} carries no archive — the catalogue is the active set`, () => {
+    assert.ok(
+      !text.includes("ARCHIVED_PROJECTS"),
+      `${guide} must not reference the removed archive export`,
+    );
+    assert.ok(
+      !text.split("\n").some((l) => l.startsWith("**Archived (")),
+      `${guide} must not carry an archive line`,
+    );
   });
 }

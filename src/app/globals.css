@@ -1090,8 +1090,7 @@ html.light {
   color: color-mix(in oklch, var(--foreground), transparent 55%);
 }
 
-/* A phone has no room for five windows around the title; the two nearest the
-   centre stay. */
+/* A phone has no room for every window around the title; the near ones stay. */
 @media (max-width: 760px) {
   .plastic-float-slot[data-narrow="false"] {
     display: none;

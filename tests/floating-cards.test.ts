@@ -1,5 +1,5 @@
 /**
- * Five project windows float on the index panel, and they are decoration.
+ * The catalogue's windows float on the index panel, and they are decoration.
  *
  * The home is a panel tour: a wheel gesture advances a section, and the panel's
  * wave takes the hand. A floating field that listened to either would fight
@@ -32,7 +32,7 @@ test("one window per project floats in the field", () => {
   assert.match(field, /projects\.slice\(0, PLACEMENTS\.length\)/);
 });
 
-test("the field is navigation: five buttons, one per project", () => {
+test("the field is navigation: one button per project", () => {
   assert.match(field, /<motion\.button\s+type="button"\s+className="plastic-float-card"\s+onClick=\{\(\) => onOpen\(index\)\}/);
   assert.match(field, /\{String\(index \+ 1\)\.padStart\(2, "0"\)\}/);
   assert.doesNotMatch(field, /className="plastic-float-stage" aria-hidden/);
@@ -70,7 +70,7 @@ test("the field takes no gesture from the tour", () => {
 });
 
 test("every card answers the pointer on its own", () => {
-  // One pointer, five springs: the cards must not arrive together.
+  // One pointer, one spring set per card: the cards must not arrive together.
   assert.match(field, /const stiffness = 34 \+ index \* 9;/);
   assert.match(field, /const damping = 13 \+ index \* 2\.5;/);
   assert.match(field, /const nx = useSpring\(rawX, settle\);/);

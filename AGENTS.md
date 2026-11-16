@@ -9,17 +9,18 @@
 - Name three references + one craft move before generating UI. Default shadcn is not done.
 - Hub catalogs: `~/Projects/hub/design/README.md`.
 
-**Context:** Furma.tech is a bootstrapped studio (Estonian OÜ). The product catalogue is `src/lib/home-projects.ts`: six advertised products (`HOME_PROJECTS`) plus eight archived pages (`ARCHIVED_PROJECTS`) that stay reachable but are not advertised. `tests/guide-catalogue.test.ts` fails when this block drifts from the catalogue.
+**Context:** Furma.tech is a bootstrapped studio (Estonian OÜ). The product catalogue is `src/lib/home-projects.ts`: the nine active products (`HOME_PROJECTS`) — the only projects listed, linked or counted anywhere on the site. `tests/guide-catalogue.test.ts` fails when this block drifts from the catalogue.
 
 **Advertised products (`HOME_PROJECTS`):**
 - **Tic-Tac-Toe** — Vanishing-move strategy game (Beta)
 - **Gambit Deck** — Guest-first card game, no account to play (Beta)
-- **Pond** — Capture-first library and planner (In Development)
-- **QArt** — AI-generated QR codes that look like art (In Development)
 - **Bloxs** — Component library rebuilt from named sources (Prototype)
 - **Renfe** — Civic dashboard measuring Renfe service from open feeds (In Development)
-
-**Archived (`ARCHIVED_PROJECTS`, reachable, not advertised):** Aitlas, restauManager, GuideTours, FinanceHub, PicksTracker, LinkUp, OneToMany, OpenGovern.
+- **Aitlas** — Sovereign AI ecosystem: Nova, Nexus, agents marketplace (In Development)
+- **Software Factory** — Private control plane for agentic work (In Development)
+- **FUDDY** — Shared household meal planner (In Development)
+- **QArt** — AI-generated QR codes that look like art (In Development)
+- **Benxer** — Local-first model intelligence explorer (In Development)
 
 Primary routes: `/`, `/portfolio`, `/portfolio/[project]`, `/privacy`. Contact: `/#contact`.
 

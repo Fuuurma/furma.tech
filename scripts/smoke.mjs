@@ -16,11 +16,11 @@
  * Asserts that every required content route serves 200 with the main landmark
  * + a heading — the advertised catalogue (HOME_PROJECTS + /showcase) derived
  * from the honest list itself, so the routes cannot drift from the site —
- * that one archived page stays reachable without being advertised, that /v2
- * stays noindex, that the sitemap lists the canonical catalogue routes and
- * excludes /v2, that every catalogue URL the sitemap lists actually serves,
- * that the /og OG ImageResponse route serves 200 image/png, and that the
- * landing contact surface + direct mailto alternative are present.
+ * that /v2 stays noindex, that the sitemap lists the canonical catalogue
+ * routes and excludes /v2 and the retired project pages, that every catalogue
+ * URL the sitemap lists actually serves, that the /og OG ImageResponse route
+ * serves 200 image/png, and that the landing contact surface + direct mailto
+ * alternative are present.
  */
 
 import assert from "node:assert/strict";
@@ -59,10 +59,13 @@ function must(condition, message) {
 const CATALOGUE_HEADINGS = {
   "/portfolio/tic-tac-toe-disappear": "Tic-Tac-Toe Disappear",
   "/portfolio/gambit-deck": "Gambit Deck",
-  "/portfolio/pond": "Pond",
-  "/portfolio/qart": "QArt",
   "/portfolio/bloxs": "Bloxs",
   "/portfolio/putarenfe": "Renfe",
+  "/portfolio/aitlas": "Aitlas Ecosystem",
+  "/portfolio/software-factory": "Software Factory",
+  "/portfolio/fuddy": "FUDDY",
+  "/portfolio/qart": "QArt",
+  "/portfolio/benxer": "Benxer",
 };
 
 // A project the studio advertises without a heading here would ship through
@@ -85,9 +88,6 @@ const REQUIRED_ROUTES = [
     heading: CATALOGUE_HEADINGS[p.href],
     strictHeading: true,
   })),
-  // Reachable but unadvertised: aitlas is archived — off the lists and the
-  // sitemap — yet must keep serving for anyone holding an old link.
-  { path: "/portfolio/aitlas", heading: "Aitlas" },
   { path: "/privacy", heading: "Privacy policy" },
 ];
 
@@ -140,13 +140,15 @@ try {
 try {
   const { status, text } = await get("/sitemap.xml");
   assert.equal(status, 200, "/sitemap.xml should be 200");
-  // The sitemap carries the projects the site shows, and nothing it has
-  // stopped advertising: paused work keeps its page but not a submission.
+  // The sitemap carries the active catalogue and nothing retired: removed
+  // projects keep neither a page nor a submission.
   const cataloguePaths = ["/showcase", ...HOME_PROJECTS.map((p) => p.href)];
   for (const href of cataloguePaths) {
     must(text.includes(href), `sitemap missing ${href}`);
   }
-  must(!text.includes("/portfolio/aitlas"), "the sitemap still advertises paused work");
+  for (const retired of ["/portfolio/pond", "/portfolio/restauramanager", "/portfolio/guidetours"]) {
+    must(!text.includes(retired), `the sitemap still advertises retired work: ${retired}`);
+  }
   must(!text.includes("/v2"), "sitemap must not include /v2");
   // A listed URL that does not serve is worse than a missing one: open every
   // catalogue URL the XML asserts instead of only reading the XML.

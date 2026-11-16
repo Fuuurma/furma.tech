@@ -16,12 +16,12 @@ import { join } from "node:path";
 import { getOgImageUrl, constructMetadata } from "../src/lib/metadata.ts";
 
 test("getOgImageUrl returns the PNG /og route, never SVG (F99: per-title cards keep the dynamic route)", () => {
-  const url = getOgImageUrl({ title: "OpenGovern", subtitle: "Direct Democracy", variant: "product" });
+  const url = getOgImageUrl({ title: "Benxer", subtitle: "Model Intelligence", variant: "product" });
   assert.ok(url.startsWith("https://furma.tech/og?"), url);
   assert.ok(!url.endsWith(".svg"), url);
   assert.ok(!url.includes("/og.png"), url);
-  assert.ok(url.includes("title=OpenGovern"), url);
-  assert.ok(url.includes("subtitle=Direct"), url);
+  assert.ok(url.includes("title=Benxer"), url);
+  assert.ok(url.includes("subtitle=Model"), url);
   assert.ok(url.includes("variant=product"), url);
 });
 

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Five project windows float on the index panel's wave.
+ * The catalogue's windows float on the index panel's wave.
  *
  * Each window answers the pointer on its own: the distance from the pointer to
  * that card's centre decides how much it tilts toward it, how far it lifts, and
@@ -67,6 +67,9 @@ const PLACEMENTS: readonly Placement[] = [
   { x: 88, y: 71, depth: -280, rotateX: -6, rotateY: -19, rotateZ: -4, lift: 9, breath: 12, delay: 0.8, reach: 470, answer: 0.62, narrow: false },
   { x: 50, y: 86, depth: -160, rotateX: 8, rotateY: 11, rotateZ: 2, lift: 12, breath: 14, delay: 2, reach: 440, answer: 0.78, narrow: false },
   { x: 60, y: 19, depth: -90, rotateX: -4, rotateY: -18, rotateZ: -3, lift: 9, breath: 16, delay: 1.1, reach: 480, answer: 0.7, narrow: false },
+  { x: 16, y: 50, depth: -230, rotateX: 7, rotateY: 14, rotateZ: -4, lift: 10, breath: 14, delay: 0.5, reach: 460, answer: 0.7, narrow: false },
+  { x: 84, y: 50, depth: -190, rotateX: -6, rotateY: -16, rotateZ: 4, lift: 11, breath: 13, delay: 1.9, reach: 450, answer: 0.74, narrow: false },
+  { x: 50, y: 66, depth: -250, rotateX: 5, rotateY: 9, rotateZ: -3, lift: 9, breath: 15, delay: 2.5, reach: 420, answer: 0.58, narrow: false },
 ];
 
 const clamp = (value: number, min: number, max: number) =>

@@ -77,31 +77,10 @@ test("QArt detail badge says In Development with no expired date", () => {
   assert.match(qartDetail, /label: "In Development", variant: "beta"/);
 });
 
-// FT-CONTENT-03: numeric marketing claims must read as labeled
-// estimates/targets unless a measurement backs them. Neither claim has
-// one: guides-tours has no time-savings study, and FinanceHub is a
-// parked gh-only repo — so both stay on the page as qualified claims,
-// never bare facts.
-
-const guidetoursDetail = readFileSync(
-  new URL("../src/app/portfolio/guidetours/page.tsx", import.meta.url),
-  "utf8",
-);
-const financehubDetail = readFileSync(
-  new URL("../src/app/portfolio/financehub/page.tsx", import.meta.url),
-  "utf8",
-);
-
-test("GuideTours hours claim reads as an estimate", () => {
-  assert.doesNotMatch(guidetoursDetail, /save you 8\+ hours per week/);
-  assert.match(guidetoursDetail, /estimated 8\+ hours per week/i);
-});
-
-test("FinanceHub cache claim reads as a target, not a measured rate", () => {
-  assert.doesNotMatch(financehubDetail, /achieving 85-95% hit rate/);
-  assert.doesNotMatch(financehubDetail, /with 85-95% hit rate/);
-  assert.match(financehubDetail, /target(ing|ed)?[^.]{0,40}85-95% hit rate/i);
-});
+// FT-CONTENT-03 guarded the qualified-claims wording on the GuideTours and
+// FinanceHub pages. Both projects left the catalogue on 2026-11-16 and their
+// pages are gone, so there is nothing left to pin — the rule itself lives on
+// in DESIGN/copy review for any page that returns a numeric claim.
 
 // The index is one word about what the studio builds, set as the page's title.
 // The kind changes at a walk's pace so the panel says one thing at a time

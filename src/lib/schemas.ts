@@ -37,7 +37,7 @@ export const waitlistSchema = z.object({
     .string()
     .email('Please enter a valid email address'),
   interest: z
-    .enum(['aitlas', 'restaurantManager', 'tourManager', 'financeHub', 'all'])
+    .enum(['aitlas', 'fuddy', 'benxer', 'all'])
     .optional()
     .default('all'),
 });
@@ -73,7 +73,7 @@ export const bookingSchema = z.object({
     .string()
     .default('Europe/Madrid'),
   product: z
-    .enum(['aitlas', 'restaurantManager', 'tourManager', 'financeHub', 'not_sure']),
+    .enum(['aitlas', 'fuddy', 'benxer', 'not_sure']),
   notes: z
     .string()
     .max(1000, 'Notes must be less than 1000 characters')

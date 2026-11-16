@@ -3,7 +3,7 @@
 **Bootstrapped studio building games, tools, and civic tech.**
 
 - **In beta** — Tic-Tac-Toe, Gambit Deck
-- **In development** — Pond, QArt, Renfe
+- **In development** — Renfe, Aitlas, Software Factory, FUDDY, QArt, Benxer
 - **Prototype** — Bloxs
 - **0% VC** | Estonian OÜ
 

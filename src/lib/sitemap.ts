@@ -51,9 +51,8 @@ export function buildSitemap(
     },
   ];
 
-  // Only the projects the studio shows. Paused work keeps its pages for anyone
-  // holding a link, but a sitemap that keeps submitting it advertises it, which
-  // is the thing the 2026-10-27 curation was meant to stop.
+  // Only the active catalogue. Retired projects keep neither a page nor a
+  // submission — a sitemap that keeps listing them advertises them.
   const portfolioPages: MetadataRoute.Sitemap = projects.map((p) => ({
     url: `${baseUrl}${p.href}`,
     changeFrequency: "weekly" as const,

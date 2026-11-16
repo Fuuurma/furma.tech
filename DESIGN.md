@@ -380,9 +380,11 @@ clearly forward and the others trail well behind, so the field never has two of
 them shouting at once. The invitation line waits for 62% of the glow, so a card
 merely within reach keeps a lit edge and nothing else.
 
-**Five becomes three on a phone.** Below 760px the two furthest windows are
-dropped, the status line goes with them, and the remaining three move inside the
-frame — a card half off the glass reads as a bug, not as depth.
+**The field seats the whole catalogue.** `PLACEMENTS` in
+`FloatingProjectCards.tsx` carries one window per `HOME_PROJECTS` entry — the
+count is pinned by test, so adding a project means adding its window. Below
+760px only the windows marked `narrow` stay, moved inside the frame: a card
+half off the glass reads as a bug, not as depth.
 
 Rules:
 - A window that looks pressable is pressable: every card in the field is a
@@ -444,6 +446,45 @@ Rules:
   says as much in its own words.
 - A new project enters the catalogue with a page, a visual and a description
   written from evidence, never from ambition.
+
+## The catalogue is the active set (2026-11-16)
+
+Owner's call: *the listing shows only the active set.* The 2026-10-27 ruling
+kept paused and roadmap work reachable-but-unlisted; this one removes it
+entirely — from the listing, the linked pages and every data source.
+
+The catalogue is the nine the studio is actually working on:
+
+| Project | Kind | State |
+|---|---|---|
+| Tic-Tac-Toe | Games | **Beta** — live at `tic-tac-toe-1ou.pages.dev` |
+| Gambit Deck | Games | **Beta** — live at `gambit-deck.pages.dev` |
+| Bloxs | Design Tools | Prototype |
+| Renfe | Civic Tech | In Development |
+| Aitlas | AI Infrastructure | In Development |
+| Software Factory | Agent Infrastructure | In Development |
+| FUDDY | Food | In Development |
+| QArt | Marketing | In Development |
+| Benxer | AI Tools | In Development |
+
+`HOME_PROJECTS` is that list and the only one: `ARCHIVED_PROJECTS` is gone,
+and with it the eight retired portfolio pages, their hero components and
+their showcase films. Aitlas — archived on 2026-10-27 — is back in the
+catalogue because it is active work again. Software Factory, FUDDY and
+Benxer each got a case page written from the project's own record, with a
+bespoke 520:340 concept visual and the same "concept visual" caption as the
+rest; the field, the tour, the index, the footers, the sitemap, the showcase
+index and every count derive from the same nine.
+
+Rules:
+- The catalogue is the active set and nothing else. There is no archive
+  shelf on the public site — retired work leaves the pages and the data,
+  not just the links.
+- Every listed project has a page, a visual and a description written from
+  evidence — the project's own record, never ambition.
+- Removing a project removes its route, its hero, its films and its rows in
+  every derived surface in the same change; a half-removed project is a
+  dead link waiting to be found.
 
 ## The contact is a letter (2026-10-27, second cut)
 
