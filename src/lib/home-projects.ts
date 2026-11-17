@@ -53,7 +53,7 @@ export const HOME_PROJECTS: HomeProject[] = [
     category: "Marketing",
     description:
       "AI-generated QR codes that look like art — scannable, beautiful, and fully customizable.",
-    status: "Roadmap",
+    status: "Soon",
     href: "/portfolio/qart",
     layout: "stacked",
   },
@@ -113,7 +113,7 @@ export const HOME_PROJECTS: HomeProject[] = [
     category: "Civic Tech",
     description:
       "Direct democracy tooling for municipalities — citizen proposals, transparent voting, open governance.",
-    status: "Paused",
+    status: "Roadmap",
     href: "/portfolio/opengovern",
     layout: "editorial-right",
   },
