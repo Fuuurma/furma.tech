@@ -51,6 +51,7 @@ The slice's landing set is **non-main / non-master / non-archive / non-hold remo
 - The two `fleet-hold/*` branches and `main` are already ancestors of `origin/main` (0 unique commits), so even setting scope aside there would be nothing to land from them.
 - `master` adjudication is consistent with `reports/furmatech-branch-reconcile1-REPORT.md` (2026-11-14): repo HEAD points to `master` (shipping line), `main`'s code is fully covered on `master`, and the divergence/retire decision is owner-gated — so `master` is held, not force-landed onto `main`.
 - All 19 `archive/*` branches intentionally retain their unique commits; "nothing deleted or archived" is satisfied — this lane created no new archive refs and deleted no refs.
+- Artifact branch: this lane pushed `fleet/branch-land-all-tech` @ `3ec44ed641efae004dbbbab81f9ce8d830091d97` (a docs-only report commit on top of `c97de51`) as the durable home for this report. It is a lane artifact, not product work, and is intentionally not landed onto `main`; it did not exist at dispatch, so it is outside the 23-branch set checked above.
 
 ## Verification evidence
 
