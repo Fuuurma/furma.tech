@@ -1,16 +1,17 @@
 # Furma.tech
 
-**Bootstrapped studio building profitable SaaS and the Aitlas AI ecosystem.**
+**Bootstrapped studio building games, tools, and civic tech.**
 
-- **Industry SaaS** — B2B tools for restaurants/tourism (restauManager, GuideTours)
-- **Aitlas** — Sovereign AI platform (BYOK, MCP-first, 34+ Actions)
-- **0% VC** | Estonian OÜ | Based in Sitges, Catalonia
+- **In beta** — Tic-Tac-Toe, Gambit Deck
+- **In development** — Renfe, Aitlas, Software Factory, FUDDY, QArt, Benxer
+- **Prototype** — Bloxs
+- **0% VC** | Estonian OÜ
 
 ---
 
 ## Stack
 
-Next.js 16.3.5 (App Router) | React 19.2.8 | TypeScript (strict) | Tailwind CSS v4 | Zod | Base UI | Lucide
+Next.js 16.4 (App Router) | React 19.2 | TypeScript (strict) | Tailwind CSS v4 | Zod | Base UI | Lucide
 
 ---
 
@@ -33,8 +34,8 @@ Open [http://127.0.0.1:3080](http://127.0.0.1:3080)
 | `pnpm build` | Production build |
 | `pnpm start` | Start production server |
 | `pnpm lint` | ESLint check |
-| `pnpm test` | Zero-dependency `node --test` gate (`tests/*.test.ts`) |
-| `pnpm test:smoke` | Production-server route smoke check (`scripts/smoke.mjs`) |
+| `pnpm test` | node:test contract suites in `tests/` |
+| `pnpm test:smoke` | Runtime smoke gate (needs `pnpm start` on :3080) |
 
 ---
 
@@ -43,18 +44,18 @@ Open [http://127.0.0.1:3080](http://127.0.0.1:3080)
 ```
 src/
 ├── app/                    # App Router pages
-│   ├── layout.tsx         # Root layout (fonts, theme, nav, footer)
+│   ├── layout.tsx         # Root layout (fonts, theme, metadata)
 │   ├── globals.css         # Tailwind v4 config + CSS variables
 │   └── [route]/page.tsx   # Route pages
 ├── components/
 │   ├── ui/                # Primitive UI components (Base UI)
 │   └── *.tsx              # Shared components
-├── hooks/                 # Custom React hooks
-└── lib/
-    ├── utils.ts           # cn() utility
-    ├── metadata.ts        # SEO metadata
-    ├── schemas.ts         # Zod validation
-    └── server-actions.ts  # Server actions
+├── lib/
+│   ├── utils.ts           # cn() utility
+│   ├── metadata.ts        # SEO metadata
+│   ├── schemas.ts         # Zod validation
+│   └── server-actions.ts # Server actions
+└── hooks/                # Custom React hooks
 ```
 
 Tests live in `tests/` (`*.test.ts`, run by `pnpm test`); the smoke script is `scripts/smoke.mjs`.
@@ -64,9 +65,9 @@ Tests live in `tests/` (`*.test.ts`, run by `pnpm test`); the smoke script is `s
 ## Design System
 
 - **Colors**: Semantic CSS variables (`--color-primary`, `--color-secondary`, etc.) + grey scale (`--color-grey-50` through `--color-grey-900`)
-- **Fonts**: Syne (sans), Cormorant (serif), JetBrains Mono (mono)
+- **Fonts**: Instrument Sans (sans), Cormorant (serif), JetBrains Mono (mono)
 - **Animations**: `.animate-fade-up`, `.animate-ticker`, `.reveal` (scroll-triggered)
-- **Effects**: `.glass`, `.glow-mono`, `.hover-lift`, `.card-hover` — all monochrome; the page carries no hue (`DESIGN.md`)
+- **Effects**: `.glass`, `.hover-lift`, `.card-hover`
 
 See `AGENTS.md` for full guidelines.
 
@@ -82,6 +83,7 @@ See `AGENTS.md` for full guidelines.
 | `/privacy` | Privacy policy |
 | `/brand` | Brand assets (noindex) |
 | `/styleguide` | UI primitive reference |
+| `/showcase` | Product films index |
 | `/v2` | Alternate "Workshop" concept (excluded from the sitemap) |
 
 Contact lives on the home experience at `/#contact`.

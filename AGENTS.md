@@ -9,19 +9,18 @@
 - Name three references + one craft move before generating UI. Default shadcn is not done.
 - Hub catalogs: `~/Projects/hub/design/README.md`.
 
-**Context:** Furma.tech is a bootstrapped studio (Estonian OÜ, Sitges, Catalonia). 11 products across games, SaaS, AI, finance, and civic tech:
+**Context:** Furma.tech is a bootstrapped studio (Estonian OÜ). The product catalogue is `src/lib/home-projects.ts`: the nine active products (`HOME_PROJECTS`) — the only projects listed, linked or counted anywhere on the site. `tests/guide-catalogue.test.ts` fails when this block drifts from the catalogue.
 
-**Products:**
-- **Tic-Tac-Toe Disappear** — Vanishing-move strategy game (In Dev)
-- **QArt** — AI-generated QR codes that look like art (Soon)
-- **GuideTours** — Tour operator platform with Viator sync (In Dev)
-- **restauManager** — Restaurant management with TheFork integration (In Dev)
-- **FinanceHub** — Market data & portfolio monitoring (Paused)
-- **OneToMany** — Goal setting & habit tracking (Paused)
-- **OpenGovern** — Direct democracy tooling for municipalities (Roadmap)
-- **LinkUp** — Short-video professional matching (Paused)
-- **PicksTracker** — Sports pick tracking with social predictions (Roadmap)
-- **Aitlas** — Sovereign AI ecosystem: Nova workspace, Nexus runtime, Agents marketplace (In Dev)
+**Advertised products (`HOME_PROJECTS`):**
+- **Tic-Tac-Toe** — Vanishing-move strategy game (Beta)
+- **Gambit Deck** — Guest-first card game, no account to play (Beta)
+- **Bloxs** — Component library rebuilt from named sources (Prototype)
+- **Renfe** — Civic dashboard measuring Renfe service from open feeds (In Development)
+- **Aitlas** — Sovereign AI ecosystem: Nova, Nexus, agents marketplace (In Development)
+- **Software Factory** — Private control plane for agentic work (In Development)
+- **FUDDY** — Shared household meal planner (In Development)
+- **QArt** — AI-generated QR codes that look like art (In Development)
+- **Benxer** — Local-first model intelligence explorer (In Development)
 
 Primary routes: `/`, `/portfolio`, `/portfolio/[project]`, `/privacy`. Contact: `/#contact`.
 
@@ -29,27 +28,27 @@ Alternate UI concept: `/v2` — "The Workshop" (warm editorial, self-contained: 
 
 Core ethos: 0% VC, profitable before flashy, "build software that works."
 
-**Stack:** Next.js 16.3.5 | React 19.2.8 | TypeScript (strict) | Tailwind v4 | Zod | Base UI | Lucide
+**Stack:** Next.js 16.4.2 | React 19.2.8 | TypeScript (strict) | Tailwind v4 | Zod | Base UI | Lucide
 
 ---
 
 ## 1. Commands
 
 ```bash
-pnpm dev          # Start dev server (http://127.0.0.1:3080, Turbopack is the default bundler)
+pnpm dev          # Start dev server (http://127.0.0.1:3080)
+pnpm dev --turbo  # Force Turbopack (the default in Next 16)
 pnpm build        # Production build
 pnpm start        # Start production server
 pnpm lint         # Run ESLint
-pnpm test         # Zero-dependency node --test gate (tests/*.test.ts)
-pnpm test:smoke   # Production-server smoke check (scripts/smoke.mjs)
+pnpm test         # node:test contract suites in tests/
+pnpm test:smoke   # Runtime smoke gate (needs pnpm start on :3080)
 ```
-
-**Note:** Tests run on the `node --test` runner — no third-party test framework (see §8).
 
 ### Dev Server Lock
 ```bash
 cat .next/dev/lock  # Check running PID
 taskkill /F /T /PID <pid>  # Kill stuck server (Windows)
+kill <pid>               # Kill stuck server (macOS/Linux)
 ```
 
 ---
@@ -66,8 +65,10 @@ src/
 │   ├── *.tsx              # Shared components (PascalCase)
 │   └── ui/                # Primitive UI components (Base UI)
 ├── hooks/                 # Custom React hooks (useScroll.ts)
-└── lib/                   # Utilities and shared logic (camelCase)
+└── lib/                   # Utilities (camelCase)
     └── utils.ts           # cn() helper using clsx + tailwind-merge
+tests/                     # node:test contract suites (run via pnpm test)
+scripts/                   # Zero-dep ops scripts (smoke.mjs runtime gate)
 ```
 
 ---
@@ -84,7 +85,7 @@ import type { Metadata } from "next";
 // 3. Third-party (Base UI, Lucide, class-variance-authority, Zod)
 import { clsx, type ClassValue } from "clsx";
 // 4. Internal @/ aliases
-import Navigation from "@/components/Navigation";
+import { LayoutChrome } from "@/components/LayoutChrome";
 // 5. Relative imports (rarely used)
 ```
 
@@ -155,11 +156,9 @@ export default function MyComponent({ defaultValue = "", onSubmit }: Props) {
 --color-primary, --color-secondary, --color-muted, --color-border
 /* Grey scale */
 --color-grey-50 through --color-grey-900
-/* Legacy accent names, no hue */
+/* Accent names kept as monochrome aliases — they resolve to
+   foreground/grey and carry no hue (the page is monochrome; DESIGN.md) */
 --color-amber, --color-green, --color-blue, --color-purple
-/*   Aliased to the monochrome scale (--color-amber: var(--foreground),
-     --color-amber-400: var(--grey-400), …). The page is monochrome:
-     product colour lives only inside its own picture (DESIGN.md). */
 /* Fonts */
 --font-serif, --font-sans, --font-mono
 ```
@@ -179,8 +178,6 @@ export default function MyComponent({ defaultValue = "", onSubmit }: Props) {
 .glass         /* backdrop-filter blur + semi-transparent bg */
 .hover-lift    /* translateY(-2px) on hover */
 .card-hover    /* border-color to foreground on hover */
-.gradient-text /* legacy name — prints the foreground colour, no gradient */
-.glow-mono     /* soft white glow shadow */
 ```
 
 ---
@@ -235,23 +232,24 @@ try {
 
 ## 8. Testing Guidelines
 
-Tests run on Node's built-in runner — **zero-dependency `node --test`** (`tests/package.json`). No Vitest, no React Testing Library.
+Zero-dependency `node:test` contract suites under `tests/` — no framework
+install. Suites import pure `src/lib` modules directly and read component
+source with `readFileSync` to pin product decisions (copy, a11y, config).
 
 **Running tests:**
 ```bash
-pnpm test           # node --test "tests/*.test.ts"
-pnpm test:smoke     # scripts/smoke.mjs — production-server route smoke check
+pnpm test        # All contract suites (listed in package.json)
+pnpm test:smoke  # Runtime smoke gate against a running server
 ```
 
-**Test file naming:**
-- One file per module, kebab-case, in `tests/`: `rate-limit-scopes.test.ts`, `phone-grids.test.ts`
+**Test file naming:** `tests/<area>.test.ts`
 
-**Test patterns:**
+**Test pattern:**
 ```typescript
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-test("describes the boundary it pins", () => {
+test("the contract holds", () => {
   assert.equal(actual, expected);
 });
 ```
@@ -264,7 +262,7 @@ Tests are plain Node: they import `node:test`, `node:assert/strict`, and the mod
 
 ```bash
 pnpm lint   # ESLint check
-pnpm test   # node --test gate
+pnpm test   # node:test contract suites
 pnpm build  # Production build
 ```
 
@@ -337,3 +335,13 @@ explicitly and follow only the references relevant to the approved task.
 The foundation supplements this repository's rules; it grants no additional
 permissions. `retro` is owner-invoked, and raw session history stays local.
 Provenance: `.devin/skills/mattpocock-source.json`.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

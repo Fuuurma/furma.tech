@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, type LucideIcon } from "lucide-react";
 import { StaggerReveal } from "@/components/motion/StaggerReveal";
 import { ProjectCTA } from "@/components/ui/project/ProjectCTA";
+import { ProjectLive } from "@/components/ui/project/ProjectLive";
 import { ProjectCoverVisual } from "@/components/ui/project/ProjectCoverVisual";
 import { ProjectHero as ProjectHeroMotion } from "@/components/ui/project/ProjectHero";
 import { ProjectLayoutFooter } from "@/components/ui/project/ProjectLayoutFooter";
@@ -11,13 +12,16 @@ import { ProjectSectionHeader } from "@/components/ui/project/ProjectSectionHead
 import { cn } from "@/lib/utils";
 
 interface ProjectLayoutProps {
+  /** When the product is open to a stranger, the way in lives in the corner. */
+  live?: { href: string; label: string };
   children: ReactNode;
 }
 
-export function ProjectLayout({ children }: ProjectLayoutProps) {
+export function ProjectLayout({ children, live }: ProjectLayoutProps) {
   return (
     <div className="portfolio-page min-h-screen bg-background text-foreground selection:bg-foreground selection:text-background">
       {children}
+      {live && <ProjectLive href={live.href} label={live.label} />}
       <ProjectLayoutFooter />
     </div>
   );
@@ -262,7 +266,7 @@ export function ProjectPricing({ tiers }: ProjectPricingProps) {
 }
 
 interface ProjectStatusPlaceholderProps {
-  status: "paused" | "roadmap" | "soon";
+  status: "paused" | "roadmap" | "soon" | "development";
   highlights?: { icon: LucideIcon; title: string; desc: string }[];
 }
 
@@ -284,6 +288,10 @@ export function ProjectStatusPlaceholder({
     soon: {
       label: "Coming Soon",
       message: "We're actively working on this. Stay tuned for updates.",
+    },
+    development: {
+      label: "In Development",
+      message: "We're actively building this. Stay tuned for updates.",
     },
   };
 

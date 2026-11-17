@@ -14,8 +14,19 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { HOME_PROJECTS, type HomeProject } from "@/lib/home-projects";
 import { EASE_OUT_EXPO, motionDuration } from "@/lib/motion";
+import { nextMenuIndex, type MenuNavKey } from "@/lib/section-scroll";
 import { cn } from "@/lib/utils";
 import { useStableReducedMotion } from "@/lib/use-reduced-motion";
+
+function menuItems(): HTMLElement[] {
+  return Array.from(
+    document.querySelectorAll<HTMLElement>('#portfolio-nav-panel [role="menuitem"]'),
+  );
+}
+
+function focusMenuItem(index: number) {
+  menuItems()[index]?.focus();
+}
 
 function isInsidePortfolioMenu(node: Node | null) {
   if (!node || !(node instanceof Element)) return false;
@@ -111,6 +122,18 @@ export function PortfolioNavDropdown() {
     setOpen(true);
   }, [clearCloseTimer, syncPanelPosition]);
 
+  const handlePanelKeyDown = (e: React.KeyboardEvent) => {
+    const key = e.key;
+    if (key !== "ArrowDown" && key !== "ArrowUp" && key !== "Home" && key !== "End") {
+      return;
+    }
+    const items = menuItems();
+    if (items.length === 0) return;
+    e.preventDefault();
+    const current = items.indexOf(document.activeElement as HTMLElement);
+    focusMenuItem(nextMenuIndex(Math.max(current, 0), items.length, key as MenuNavKey));
+  };
+
   useEffect(() => {
     if (!open) return;
     const onScrollOrResize = () => syncPanelPosition();
@@ -148,6 +171,7 @@ export function PortfolioNavDropdown() {
           role="menu"
           aria-label="Portfolio projects"
           className="studio-portfolio-panel"
+          data-section-scroll
           style={{ top: panelTop }}
           initial={reduceMotion ? false : { opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -155,6 +179,7 @@ export function PortfolioNavDropdown() {
           transition={{ duration: motionDuration.base, ease: EASE_OUT_EXPO }}
           onMouseEnter={handleOpen}
           onMouseLeave={scheduleClose}
+          onKeyDown={handlePanelKeyDown}
         >
           <header className="studio-portfolio-panel__head">
             <span className="studio-portfolio-panel__title">Portfolio</span>
@@ -227,6 +252,13 @@ export function PortfolioNavDropdown() {
         aria-expanded={open}
         aria-controls="portfolio-nav-panel"
         aria-haspopup="menu"
+        onKeyDown={(e) => {
+          if (e.key !== "ArrowDown") return;
+          e.preventDefault();
+          handleOpen();
+          // The panel portals on the next commit — focus after mount.
+          window.setTimeout(() => focusMenuItem(0), 0);
+        }}
         onClick={(e) => {
           // Touch: first tap opens; second tap follows the link to the index.
           if (window.matchMedia("(hover: none)").matches) {

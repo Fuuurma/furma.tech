@@ -4,19 +4,28 @@ This file provides essential context, architecture overview, and development sta
 
 ## Project Overview
 
-**Furma.tech** is a bootstrapped studio (Estonian OÜ) based in Sitges, Catalonia. It operates in two main verticals:
-- **Industry SaaS:** B2B tools for restaurants and tourism (e.g., restauManager, GuideTours).
-- **Aitlas:** A sovereign AI ecosystem featuring a BYOK model and MCP-first architecture with 34+ Actions.
+**Furma.tech** is a bootstrapped studio (Estonian OÜ) based in Sitges, Catalonia. The product catalogue is `src/lib/home-projects.ts`: the nine active products (`HOME_PROJECTS`) — the only projects listed, linked or counted anywhere on the site. `tests/guide-catalogue.test.ts` fails when this block drifts from the catalogue.
+
+**Advertised products (`HOME_PROJECTS`):**
+- **Tic-Tac-Toe** — Vanishing-move strategy game (Beta)
+- **Gambit Deck** — Guest-first card game, no account to play (Beta)
+- **Bloxs** — Component library rebuilt from named sources (Prototype)
+- **Renfe** — Civic dashboard measuring Renfe service from open feeds (In Development)
+- **Aitlas** — Sovereign AI ecosystem: Nova, Nexus, agents marketplace (In Development)
+- **Software Factory** — Private control plane for agentic work (In Development)
+- **FUDDY** — Shared household meal planner (In Development)
+- **QArt** — AI-generated QR codes that look like art (In Development)
+- **Benxer** — Local-first model intelligence explorer (In Development)
 
 The project is built with a focus on performance, scalability, and a minimalist, high-end "monochrome" aesthetic.
 
 ### Core Technology Stack
-- **Framework:** Next.js 16.3.5 (App Router)
-- **Library:** React 19.2.8
+- **Framework:** Next.js 16.4.2 (App Router)
+- **Library:** React 19
 - **Language:** TypeScript (Strict Mode)
 - **Styling:** Tailwind CSS v4
 - **Validation:** Zod
-- **UI Components:** Base UI (`@base-ui/react`) & Lucide Icons
+- **UI Components:** Base UI & Lucide Icons
 - **Package Manager:** pnpm
 
 ---
@@ -50,8 +59,8 @@ src/
 | `pnpm build` | Creates a production-ready build of the application. |
 | `pnpm start` | Runs the production build locally. |
 | `pnpm lint` | Executes ESLint to check for code quality and style issues. |
-| `pnpm test` | Runs the zero-dependency `node --test` gate over `tests/*.test.ts`. |
-| `pnpm test:smoke` | Runs the production-server route smoke check (`scripts/smoke.mjs`). |
+| `pnpm test` | Runs the zero-dependency node:test contract suites in `tests/`. |
+| `pnpm test:smoke` | Runtime smoke gate (needs `pnpm start` on :3080). |
 
 ---
 

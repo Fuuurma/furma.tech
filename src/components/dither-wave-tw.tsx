@@ -187,29 +187,43 @@ function swell(u: number, v: number, position: number): number {
   return Math.exp(-(distance * distance));
 }
 
-export function DitherWave({
-  width,
-  height,
-  speed = 1,
-  intensity = 1,
-  scale = 6,
-  downScale = 0.5,
-  primaryColor = "#5227FF",
-  secondaryColor = "#5227FF",
-  tertiaryColor = "#0a0a0a",
-  opacity = 1,
-  quality = "medium",
-  maxFPS = 60,
-  pauseWhenOffscreen = true,
-  className,
-  children,
+interface DitherWaveScreenOptions {
+  surfaceRef: DitherWaveProps["surfaceRef"];
+  cell: number;
+  speed: number;
+  intensity: number;
+  scale: number;
+  downScale: number;
+  primaryColor: string;
+  secondaryColor: string;
+  tertiaryColor: string;
+  quality: NonNullable<DitherWaveProps["quality"]>;
+  maxFPS: number;
+  pauseWhenOffscreen: boolean;
+  idleCue: boolean;
+  idleCueDelay: number;
+  interactive: boolean;
+  composition: NonNullable<DitherWaveProps["composition"]>;
+}
+
+function useDitherWaveScreen({
   surfaceRef,
-  cell = 7,
-  idleCue = false,
-  idleCueDelay = 5000,
-  interactive = false,
-  composition = "corners",
-}: DitherWaveProps) {
+  cell,
+  speed,
+  intensity,
+  scale,
+  downScale,
+  primaryColor,
+  secondaryColor,
+  tertiaryColor,
+  quality,
+  maxFPS,
+  pauseWhenOffscreen,
+  idleCue,
+  idleCueDelay,
+  interactive,
+  composition,
+}: DitherWaveScreenOptions) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduceMotion = useStableReducedMotion();
@@ -744,6 +758,51 @@ export function DitherWave({
     composition,
     reduceMotion,
   ]);
+
+  return { wrapperRef, canvasRef };
+}
+
+export function DitherWave({
+  width,
+  height,
+  speed = 1,
+  intensity = 1,
+  scale = 6,
+  downScale = 0.5,
+  primaryColor = "#5227FF",
+  secondaryColor = "#5227FF",
+  tertiaryColor = "#0a0a0a",
+  opacity = 1,
+  quality = "medium",
+  maxFPS = 60,
+  pauseWhenOffscreen = true,
+  className,
+  children,
+  surfaceRef,
+  cell = 7,
+  idleCue = false,
+  idleCueDelay = 5000,
+  interactive = false,
+  composition = "corners",
+}: DitherWaveProps) {
+  const { wrapperRef, canvasRef } = useDitherWaveScreen({
+    surfaceRef,
+    cell,
+    speed,
+    intensity,
+    scale,
+    downScale,
+    primaryColor,
+    secondaryColor,
+    tertiaryColor,
+    quality,
+    maxFPS,
+    pauseWhenOffscreen,
+    idleCue,
+    idleCueDelay,
+    interactive,
+    composition,
+  });
 
   return (
     <div

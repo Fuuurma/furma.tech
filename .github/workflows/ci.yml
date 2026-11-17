@@ -1,0 +1,48 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm lint
+      - run: npx tsc --noEmit
+      - run: pnpm test
+      - run: pnpm build
+
+      - name: smoke
+        run: |
+          # The port comes from the start script, never from a copy in this
+          # file. A hardcoded 4080 drifted when start and dev were unified
+          # on 3080 (1976fc8): the app never opened 4080, so the gate failed
+          # with ECONNREFUSED on every run once that change reached master
+          # (2026-10-22) — and the wait loop's own failure was never checked,
+          # so the real cause was masked by the smoke script's "fetch failed".
+          PORT="$(node -p "require('./package.json').scripts.start.match(/--port (\d+)/)[1]")"
+          echo "smoke target: 127.0.0.1:${PORT}"
+          pnpm start &
+          ready=0
+          for i in $(seq 1 30); do
+            if curl -sf -o /dev/null "http://127.0.0.1:${PORT}/"; then ready=1; break; fi
+            sleep 1
+          done
+          if [ "$ready" != "1" ]; then
+            echo "::error::the app never answered on 127.0.0.1:${PORT} within 30s"
+            exit 1
+          fi
+          node scripts/smoke.mjs "http://127.0.0.1:${PORT}"

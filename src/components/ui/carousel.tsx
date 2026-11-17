@@ -18,7 +18,6 @@ type CarouselProps = {
   opts?: CarouselOptions
   plugins?: CarouselPlugin
   orientation?: "horizontal" | "vertical"
-  setApi?: (api: CarouselApi) => void
 }
 
 type CarouselContextProps = {
@@ -45,7 +44,6 @@ function useCarousel() {
 function Carousel({
   orientation = "horizontal",
   opts,
-  setApi,
   plugins,
   className,
   children,
@@ -58,14 +56,19 @@ function Carousel({
     },
     plugins
   )
-  const [canScrollPrev, setCanScrollPrev] = React.useState(false)
-  const [canScrollNext, setCanScrollNext] = React.useState(false)
-
-  const onSelect = React.useCallback((api: CarouselApi) => {
-    if (!api) return
-    setCanScrollPrev(api.canScrollPrev())
-    setCanScrollNext(api.canScrollNext())
-  }, [])
+  const subscribe = React.useCallback((onChange: () => void) => {
+    if (!api) return () => {}
+    api.on("reInit", onChange)
+    api.on("select", onChange)
+    return () => {
+      api.off("reInit", onChange)
+      api.off("select", onChange)
+    }
+  }, [api])
+  const getCanScrollPrev = React.useCallback(() => api?.canScrollPrev() ?? false, [api])
+  const getCanScrollNext = React.useCallback(() => api?.canScrollNext() ?? false, [api])
+  const canScrollPrev = React.useSyncExternalStore(subscribe, getCanScrollPrev, () => false)
+  const canScrollNext = React.useSyncExternalStore(subscribe, getCanScrollNext, () => false)
 
   const scrollPrev = React.useCallback(() => {
     api?.scrollPrev()
@@ -88,41 +91,32 @@ function Carousel({
     [scrollPrev, scrollNext]
   )
 
-  React.useEffect(() => {
-    if (!api || !setApi) return
-    setApi(api)
-  }, [api, setApi])
-
-  React.useEffect(() => {
-    if (!api) return
-    // Notifying the consumer of the embla instance's current state on mount.
-    // `api` is created by the external embla system after mount, so this
-    // cannot be derived during render.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    onSelect(api)
-    api.on("reInit", onSelect)
-    api.on("select", onSelect)
-
-    return () => {
-      api?.off("reInit", onSelect)
-      api?.off("select", onSelect)
-    }
-  }, [api, onSelect])
+  const contextValue = React.useMemo(
+    () => ({
+      carouselRef,
+      api: api,
+      opts,
+      orientation:
+        orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
+      scrollPrev,
+      scrollNext,
+      canScrollPrev,
+      canScrollNext,
+    }),
+    [
+      carouselRef,
+      api,
+      opts,
+      orientation,
+      scrollPrev,
+      scrollNext,
+      canScrollPrev,
+      canScrollNext,
+    ]
+  )
 
   return (
-    <CarouselContext.Provider
-      value={{
-        carouselRef,
-        api: api,
-        opts,
-        orientation:
-          orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
-        scrollPrev,
-        scrollNext,
-        canScrollPrev,
-        canScrollNext,
-      }}
-    >
+    <CarouselContext.Provider value={contextValue}>
       <div
         onKeyDownCapture={handleKeyDown}
         className={cn("relative", className)}

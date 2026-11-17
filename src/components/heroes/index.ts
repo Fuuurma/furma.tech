@@ -1,10 +1,9 @@
+/**
+ * Hero components barrel. Each hero is a bespoke, monochrome SVG concept
+ * visual for one catalogue project — labelled "Concept visual" wherever it
+ * is shown, never passed off as a product screenshot.
+ */
+
 export { AitlasHero } from "./AitlasHero";
-export { RestauManagerHero } from "./RestauManagerHero";
-export { GuideToursHero } from "./GuideToursHero";
-export { TicTacToeHero } from "./TicTacToeHero";
 export { QArtHero } from "./QArtHero";
-export { FinanceHubHero } from "./FinanceHubHero";
-export { PicksTrackerHero } from "./PicksTrackerHero";
-export { LinkUpHero } from "./LinkUpHero";
-export { OneToManyHero } from "./OneToManyHero";
-export { OpenGovernHero } from "./OpenGovernHero";
+export { TicTacToeHero } from "./TicTacToeHero";

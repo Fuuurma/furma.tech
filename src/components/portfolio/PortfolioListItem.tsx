@@ -33,7 +33,14 @@ function PreviewVisual({
       <span className="portfolio-list-page__preview-fallback">{name}</span>
     );
   }
-  return <HeroVisual className="portfolio-list-page__preview-visual" />;
+  return (
+    <span className="portfolio-list-page__preview-art">
+      <HeroVisual className="portfolio-list-page__preview-visual" />
+      <span className="plastic-label portfolio-list-page__preview-caption">
+        Concept visual
+      </span>
+    </span>
+  );
 }
 
 function StaticRowContent({
@@ -74,6 +81,12 @@ function StaticRowContent({
         <span>{project.status}</span>
       </div>
       <p className="portfolio-list-page__mobile-desc">{project.description}</p>
+
+      {/* A touch reader has no hover to reveal a picture with, so the picture is
+          simply there, at a size a row can carry. */}
+      <div className="portfolio-list-page__thumb" aria-hidden="true">
+        <PreviewVisual name={project.name} HeroVisual={HeroVisual} />
+      </div>
 
       <div className="portfolio-list-page__expand" aria-hidden="true">
         <div className="portfolio-list-page__expand-inner">
@@ -145,6 +158,12 @@ function AnimatedRowContent({
         <span>{project.status}</span>
       </div>
       <p className="portfolio-list-page__mobile-desc">{project.description}</p>
+
+      {/* A touch reader has no hover to reveal a picture with, so the picture is
+          simply there, at a size a row can carry. */}
+      <div className="portfolio-list-page__thumb" aria-hidden="true">
+        <PreviewVisual name={project.name} HeroVisual={HeroVisual} />
+      </div>
 
       <div className="portfolio-list-page__expand" aria-hidden="true">
         <div className="portfolio-list-page__expand-inner">

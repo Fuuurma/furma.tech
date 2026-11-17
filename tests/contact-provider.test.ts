@@ -176,6 +176,52 @@ test("submitToProvider: REGRESSION 2xx with empty body is NOT durable success", 
   }
 });
 
+test("submitToProvider: REGRESSION bare `{ ok: true }` with no reference is NOT durable success", async () => {
+  // A generic webhook/CRM reply `{ ok: true }` carries no proof of
+  // persistence. The contract accepts the legacy `ok` alias ONLY with a
+  // non-empty `reference`/`id` (file header :37, function doc :176); the
+  // canonical `acknowledged: true` flag is the shape that suffices alone.
+  const original = globalThis.fetch;
+  globalThis.fetch = (async () =>
+    new Response(JSON.stringify({ ok: true }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    })) as typeof fetch;
+  try {
+    const result = await submitToProvider(
+      { channel: "contact", name: "A", email: "a@b.test", message: "hi" },
+      { configured: true, url: "https://hook.test/inbox" },
+    );
+    assert.equal(result.ok, false, "bare `ok: true` must not be reported as success");
+    assert.equal(result.reference, undefined, "no reference invented");
+    assert.equal(result.message, "provider-acknowledgment-missing");
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test("submitToProvider: REGRESSION `ok: true` with a blank reference is NOT durable success", async () => {
+  // Same gap, thinner disguise: `{ ok: true, reference: "   " }` still
+  // carries no provider id, so it is not a durable acknowledgment either.
+  const original = globalThis.fetch;
+  globalThis.fetch = (async () =>
+    new Response(JSON.stringify({ ok: true, reference: "   " }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    })) as typeof fetch;
+  try {
+    const result = await submitToProvider(
+      { channel: "contact", name: "A", email: "a@b.test", message: "hi" },
+      { configured: true, url: "https://hook.test/inbox" },
+    );
+    assert.equal(result.ok, false, "`ok: true` with a blank reference must not be reported as success");
+    assert.equal(result.reference, undefined);
+    assert.equal(result.message, "provider-acknowledgment-missing");
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
 test("submitToProvider: REGRESSION 2xx with unrelated payload is NOT durable success", async () => {
   // A 2xx body that doesn't match the acknowledgment schema (no
   // `acknowledged: true`, no `reference`, no `id`, no `ok: true`) must

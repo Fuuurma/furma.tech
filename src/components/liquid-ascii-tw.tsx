@@ -124,6 +124,21 @@ export interface LiquidAsciiProps {
    */
   sun?: { x: number; radius: number; rise?: number };
   /**
+   * How far the sun's light falls away from its disc, and how much haze lies
+   * along the horizon. The defaults are the dark plate's; a plate printed on
+   * paper wants less of both, because a low tone that reads as light on black
+   * reads as dust on white.
+   */
+  sunHalo?: number;
+  sunHaze?: number;
+  /**
+   * The ink the sky is printed in. Defaults to `color`; a plate on paper needs
+   * two: the sun is printed solid and the sea as a wash, because one ink cannot
+   * be both a shape and a texture.
+   */
+  skyInk?: string;
+
+  /**
    * House addition: the night sky. When the page is in its dark theme the
    * plate shows this moon instead of the sun, with a scatter of stars, and
    * the moon's path on the water is narrower and fainter. The plate itself is
@@ -182,46 +197,71 @@ const SPLASH_DEPTH = 66;
 /** How fast the reader's hand may move, in px/s. */
 const MAX_HAND_SPEED = 900;
 
+interface LiquidAsciiScreenOptions {
+  surfaceRef: LiquidAsciiProps["surfaceRef"];
+  speed: number;
+  cellSize: number;
+  gravity: number;
+  flipRatio: number;
+  pressureIters: number;
+  separationIters: number;
+  overRelaxation: number;
+  fillHeight: number;
+  cursorRadius: number;
+  cursorForce: number;
+  characters: string;
+  color: string;
+  backgroundColor: string;
+  fontFamily: string;
+  autoWave: boolean;
+  maxFPS: number;
+  pauseWhenOffscreen: boolean;
+  damping: number;
+  showInk: boolean;
+  zoneRef: LiquidAsciiProps["zoneRef"];
+  sunX: number | undefined;
+  sunRadius: number | undefined;
+  sunRise: number;
+  sunHalo: number;
+  sunHaze: number;
+  skyInk: string;
+  moonX: number | undefined;
+  moonRadius: number | undefined;
+  moonRise: number;
+}
 
-export function LiquidAscii({
-  width,
-  height,
-  className,
-  children,
-  speed = 0.9,
-  cellSize = 15,
-  gravity = 1400,
-  flipRatio = 0.3,
-  pressureIters = 30,
-  separationIters = 3,
-  overRelaxation = 1.5,
-  fillHeight = 0.4,
-  cursorRadius = 0.25,
-  cursorForce = 66,
-  characters = " ·:-~=+*#%@",
-  color = "#ffffff",
-  backgroundColor = "#000000",
-  fontFamily = "monospace",
-  opacity = 1,
-  autoWave = true,
-  maxFPS = 60,
-  pauseWhenOffscreen = true,
+function useLiquidAsciiScreen({
   surfaceRef,
-  damping = 0.7,
-  ink: showInk = true,
+  speed,
+  cellSize,
+  gravity,
+  flipRatio,
+  pressureIters,
+  separationIters,
+  overRelaxation,
+  fillHeight,
+  cursorRadius,
+  cursorForce,
+  characters,
+  color,
+  backgroundColor,
+  fontFamily,
+  autoWave,
+  maxFPS,
+  pauseWhenOffscreen,
+  damping,
+  showInk,
   zoneRef,
-  sun: sunProp,
-  moon: moonProp,
-}: LiquidAsciiProps) {
-  // The sun is a small object a caller writes inline; the effect depends on
-  // its three numbers, not on the object, so a re-render does not rebuild
-  // the water.
-  const sunX = sunProp?.x;
-  const sunRadius = sunProp?.radius;
-  const sunRise = sunProp?.rise ?? 0.15;
-  const moonX = moonProp?.x;
-  const moonRadius = moonProp?.radius;
-  const moonRise = moonProp?.rise ?? 1.5;
+  sunX,
+  sunRadius,
+  sunRise,
+  sunHalo,
+  sunHaze,
+  skyInk,
+  moonX,
+  moonRadius,
+  moonRise,
+}: LiquidAsciiScreenOptions) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduceMotion = useStableReducedMotion();
@@ -277,17 +317,20 @@ export function LiquidAscii({
     // whenever the theme changes, so the water never keeps the palette it
     // was mounted with.
     let ink = resolve(color);
+    let sky = resolve(skyInk);
     let paper = resolve(backgroundColor);
     const face = resolveFont(fontFamily);
 
     const readColours = () => {
       ink = resolve(color);
+      sky = resolve(skyInk);
       paper = resolve(backgroundColor);
     };
     const glyphs = Array.from(characters.length > 0 ? characters : " ");
 
     let water: Water | null = null;
     let atlas: HTMLCanvasElement | null = null;
+    let skyAtlas: HTMLCanvasElement | null = null;
     /** The ramp of marks, lightest first, with the share each one inks. */
     let ramp: { glyph: string; coverage: number }[] = [];
     let cellWidth = 1;
@@ -334,16 +377,16 @@ export function LiquidAscii({
      * than asking the browser to set the same few hundred characters every
      * frame, and it keeps the marks on one lattice.
      */
-    const buildAtlas = (ratio: number): boolean => {
+    const buildAtlas = (ratio: number, paintWith: string = ink): HTMLCanvasElement | null => {
       const atlasCanvas = document.createElement("canvas");
       atlasCanvas.width = Math.ceil(cellWidth * ratio * glyphs.length);
       atlasCanvas.height = Math.ceil(cellHeight * ratio);
       const atlasContext = atlasCanvas.getContext("2d");
-      if (!atlasContext) return false;
+      if (!atlasContext) return null;
       atlasContext.font = `${fontSize * ratio}px ${face}`;
       atlasContext.textAlign = "center";
       atlasContext.textBaseline = "middle";
-      atlasContext.fillStyle = ink;
+      atlasContext.fillStyle = paintWith;
       glyphs.forEach((glyph, index) => {
         atlasContext.fillText(
           glyph,
@@ -351,8 +394,7 @@ export function LiquidAscii({
           atlasCanvas.height / 2,
         );
       });
-      atlas = atlasCanvas;
-      return true;
+      return atlasCanvas;
     };
 
     /**
@@ -428,13 +470,19 @@ export function LiquidAscii({
 
           // The sun: the disc, with a soft rim; the halo falling away from
           // it; and a haze that lies along the horizon and thins upward.
+          // A printed sun is a ring: the edge is ink, the middle is paper.
+          // The sun is marks: a soft disc of the heaviest characters, the way
+          // a screen prints a light source. A line would be a different
+          // medium, and this plate is characters.
           const disc = 1 - smoothstep(radius * 0.94, radius, distance);
+          const core = 0;
           const halo =
             distance > radius
-              ? 0.42 * Math.exp(-(((distance - radius) / (radius * 0.8)) ** 2))
+              ? sunHalo * Math.exp(-(((distance - radius) / (radius * 0.8)) ** 2))
               : 0;
-          const haze = 0.26 * Math.exp(-(((horizon - y) / (radius * 0.75)) ** 2));
-          skyTone[index] = Math.max(disc, halo, haze);
+          const haze =
+            sunHaze * Math.exp(-(((horizon - y) / (radius * 0.75)) ** 2));
+          skyTone[index] = Math.max(disc, core, halo, haze);
         }
       }
     };
@@ -482,7 +530,9 @@ export function LiquidAscii({
         .map((glyph, index) => ({ glyph, coverage: coverage[index] ?? 0 }))
         .sort((a, b) => a.coverage - b.coverage);
 
-      if (!buildAtlas(ratio)) return null;
+      atlas = buildAtlas(ratio, ink);
+      skyAtlas = buildAtlas(ratio, sky);
+      if (!atlas || !skyAtlas) return null;
 
       if (hands) {
         if (inkField) {
@@ -606,7 +656,9 @@ export function LiquidAscii({
     };
 
     const paint = () => {
-      if (!water || !atlas) return;
+      if (!water || !atlas || !skyAtlas) return;
+      const bodyAtlas = atlas;
+      const headAtlas = skyAtlas;
 
       const rect = surface.getBoundingClientRect();
       if (rect.width <= 0 || rect.height <= 0) return;
@@ -642,6 +694,10 @@ export function LiquidAscii({
         }
       }
 
+      // Two inks, two passes: the sky (sun or moon) is printed solid, the sea
+      // as a wash. One pass would have to choose one ink for both, and a tone
+      // faint enough to be water is too faint to be a sun.
+      const paintCells = (skyPass: boolean) => {
       for (let row = 0; row < rows; row++) {
         for (let column = 0; column < columns; column++) {
           const x = column * cellWidth;
@@ -657,8 +713,13 @@ export function LiquidAscii({
             x + cellWidth / 2,
             y + cellHeight / 2,
           );
-          const value = tone[row * columns + column] * keep;
+          const index0 = row * columns + column;
+          const value = tone[index0] * keep;
           if (value <= 0.002) continue;
+
+          const inSky =
+            skyBody !== null && y + cellHeight <= horizon + cellHeight * 0.5;
+          if (inSky !== skyPass) continue;
 
           const index = ditherRamp(
             ramp,
@@ -673,7 +734,7 @@ export function LiquidAscii({
 
           const sourceWidth = cellWidth * ratio;
           context.drawImage(
-            atlas,
+            skyPass ? headAtlas : bodyAtlas,
             glyphIndex * sourceWidth,
             0,
             sourceWidth,
@@ -685,6 +746,11 @@ export function LiquidAscii({
           );
         }
       }
+      };
+
+      paintCells(true);
+      paintCells(false);
+
     };
 
     /**
@@ -806,7 +872,9 @@ export function LiquidAscii({
       // The sky follows the theme: the sun by day, the moon by night.
       printSky();
       // The ink is baked into the atlas, so the atlas is drawn again.
-      buildAtlas(Math.min(2, Math.max(1, window.devicePixelRatio || 1)));
+      const r = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+      atlas = buildAtlas(r, ink);
+      skyAtlas = buildAtlas(r, sky);
       paint();
     });
     themeObserver.observe(document.documentElement, {
@@ -908,11 +976,93 @@ export function LiquidAscii({
     sunX,
     sunRadius,
     sunRise,
+    sunHalo,
+    sunHaze,
+    skyInk,
     moonX,
     moonRadius,
     moonRise,
     reduceMotion,
   ]);
+
+  return { wrapperRef, canvasRef };
+}
+
+export function LiquidAscii({
+  width,
+  height,
+  className,
+  children,
+  speed = 0.9,
+  cellSize = 15,
+  gravity = 1400,
+  flipRatio = 0.3,
+  pressureIters = 30,
+  separationIters = 3,
+  overRelaxation = 1.5,
+  fillHeight = 0.4,
+  cursorRadius = 0.25,
+  cursorForce = 66,
+  characters = " ·:-~=+*#%@",
+  color = "#ffffff",
+  backgroundColor = "#000000",
+  fontFamily = "monospace",
+  opacity = 1,
+  autoWave = true,
+  maxFPS = 60,
+  pauseWhenOffscreen = true,
+  surfaceRef,
+  damping = 0.7,
+  ink: showInk = true,
+  zoneRef,
+  sun: sunProp,
+  sunHalo = 0.42,
+  sunHaze = 0.26,
+  skyInk = color,
+
+  moon: moonProp,
+}: LiquidAsciiProps) {
+  // The sun is a small object a caller writes inline; the effect depends on
+  // its three numbers, not on the object, so a re-render does not rebuild
+  // the water.
+  const sunX = sunProp?.x;
+  const sunRadius = sunProp?.radius;
+  const sunRise = sunProp?.rise ?? 0.15;
+  const moonX = moonProp?.x;
+  const moonRadius = moonProp?.radius;
+  const moonRise = moonProp?.rise ?? 1.5;
+  const { wrapperRef, canvasRef } = useLiquidAsciiScreen({
+    surfaceRef,
+    speed,
+    cellSize,
+    gravity,
+    flipRatio,
+    pressureIters,
+    separationIters,
+    overRelaxation,
+    fillHeight,
+    cursorRadius,
+    cursorForce,
+    characters,
+    color,
+    backgroundColor,
+    fontFamily,
+    autoWave,
+    maxFPS,
+    pauseWhenOffscreen,
+    damping,
+    showInk,
+    zoneRef,
+    sunX,
+    sunRadius,
+    sunRise,
+    sunHalo,
+    sunHaze,
+    skyInk,
+    moonX,
+    moonRadius,
+    moonRise,
+  });
 
   return (
     <div

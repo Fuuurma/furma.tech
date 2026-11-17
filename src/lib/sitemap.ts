@@ -40,22 +40,23 @@ export function buildSitemap(
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/showcase`,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/privacy`,
       changeFrequency: "yearly",
       priority: 0.3,
     },
   ];
 
-  const portfolioPages: MetadataRoute.Sitemap = [
-    `${baseUrl}/portfolio/aitlas`,
-    `${baseUrl}/portfolio/aitlas/nova`,
-    `${baseUrl}/portfolio/aitlas/nexus`,
-    `${baseUrl}/portfolio/aitlas/agents`,
-    ...projects.filter((p) => p.id !== "aitlas").map((p) => `${baseUrl}${p.href}`),
-  ].map((url) => ({
-    url,
+  // Only the active catalogue. Retired projects keep neither a page nor a
+  // submission — a sitemap that keeps listing them advertises them.
+  const portfolioPages: MetadataRoute.Sitemap = projects.map((p) => ({
+    url: `${baseUrl}${p.href}`,
     changeFrequency: "weekly" as const,
-    priority: url.includes("/aitlas") ? 0.8 : 0.7,
+    priority: 0.7,
   }));
 
   return [...staticPages, ...portfolioPages];

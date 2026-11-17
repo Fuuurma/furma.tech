@@ -5,10 +5,12 @@
 // moves focus to its status on send, and body-scroll lock while mounted.
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
+
 import { submitContactForm } from "@/lib/server-actions";
 import { contactFormSchema, validateForm } from "@/lib/schemas";
 import { HOME_PROJECTS } from "@/lib/home-projects";
+import { EASE_OUT_EXPO } from "@/lib/motion";
 import {
   buildHomeReelItems,
   HOME_SECTION,
@@ -17,14 +19,15 @@ import {
 import { HOME_RESET_EVENT } from "@/components/home/PlasticBrandLink";
 import { SectionReelBar } from "@/components/home/SectionReelBar";
 import { StudioChrome } from "@/components/studio/StudioChrome";
+import ThemeToggle from "@/components/ThemeToggle";
 import { StudioWaterFooter } from "@/components/studio/StudioWaterFooter";
 import { ScrollProgress } from "@/components/home/ScrollProgress";
 import { PlasticProjectSlide } from "@/components/home/PlasticProjectSlide";
 import { PROJECT_HERO_MAP } from "@/lib/project-heroes";
-import { AnimatedNumber } from "@/components/motion/AnimatedNumber";
 import { SlideReveal } from "@/components/motion/SlideReveal";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { DitherWave } from "@/components/dither-wave-tw";
+import { FloatingProjectCards } from "@/components/home/FloatingProjectCards";
 import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 import {
   useSmoothSectionScroll,
@@ -47,7 +50,6 @@ const SECTIONS = [
 const TOTAL = SECTIONS.length;
 const FIRST_PROJECT_SECTION = HOME_SECTION.firstProject;
 const CONTACT_SECTION = HOME_SECTION.contact;
-
 const HOME_REEL_ITEMS = buildHomeReelItems();
 
 function sectionLabel(index: number): string {
@@ -64,10 +66,21 @@ function sectionLabel(index: number): string {
   return `Section ${index + 1}`;
 }
 
-function LetterSpacedTitle({ text }: { text: string }) {
+function LetterSpacedTitle({
+  text,
+  reserve = true,
+}: {
+  text: string;
+  /** The wave thins its ink behind the words. A lens does that job itself. */
+  reserve?: boolean;
+}) {
   const reduceMotion = useStableReducedMotion();
   return (
-    <h1 className="plastic-hero-title" aria-label={text} data-screen-reserve>
+    <h1
+      className="plastic-hero-title"
+      aria-label={text}
+      data-screen-reserve={reserve || undefined}
+    >
       {text.split("").map((char, i) => (
         <span
           key={`${char}-${i}`}
@@ -89,6 +102,19 @@ function LetterSpacedTitle({ text }: { text: string }) {
   );
 }
 
+/** True on a phone-width viewport; the wave prints finer there. */
+function useCompactViewport() {
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 760px)");
+    const sync = () => setCompact(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+  return compact;
+}
+
 function HeroSlide({
   onEnterWork,
   onContact,
@@ -96,22 +122,22 @@ function HeroSlide({
   onEnterWork: () => void;
   onContact: () => void;
 }) {
-  const reduceMotion = useStableReducedMotion();
   const surfaceRef = useRef<HTMLDivElement>(null);
+  const compact = useCompactViewport();
 
   return (
-    <div
-      ref={surfaceRef}
-      className="h-full w-full flex flex-col bg-black text-white relative overflow-hidden"
-    >
+    <div className="plastic-entry-frame" ref={surfaceRef}>
+      {/* The hero is the house's wave: it prints the swell that says the page
+          continues, and the swell waits for an idle reader. The entry's own
+          type keeps clean paper around itself on the plate. */}
       <DitherWave
         surfaceRef={surfaceRef}
-        primaryColor="#000000"
-        secondaryColor="#ffffff"
-        tertiaryColor="#ffffff"
+        primaryColor="var(--entry-paper)"
+        secondaryColor="var(--entry-ink)"
+        tertiaryColor="var(--entry-ink)"
         speed={0.6}
         intensity={1}
-        scale={5}
+        scale={compact ? 3.4 : 5}
         downScale={0.5}
         quality="medium"
         maxFPS={60}
@@ -119,68 +145,97 @@ function HeroSlide({
         idleCueDelay={5000}
         interactive
       />
-
-      <div className="flex-1 flex flex-col items-center justify-center px-6 relative">
-        <LetterSpacedTitle text="furma.tech" />
-        <p
-          className={cn(
-            "mt-10 font-sans text-meta uppercase tracking-[0.2em] plastic-label--inverse",
-            !reduceMotion && "opacity-0 animate-fade-up",
-          )}
-          style={
-            reduceMotion
-              ? undefined
-              : { animationDelay: "1.2s", animationFillMode: "forwards" }
-          }
-          data-screen-reserve
-        >
-          Digital studio
-        </p>
+      {/* The entry carries no chrome, so the one control a visitor may want
+          before reading anything sits in the corner: the theme. */}
+      <div className="plastic-entry-theme">
+        <ThemeToggle />
       </div>
-
-      <div
-        className={cn(
-          "shrink-0 border-t border-white/10 px-6 md:px-12 py-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6",
-          !reduceMotion && "opacity-0 animate-fade-up",
-        )}
-        style={
-          reduceMotion
-            ? undefined
-            : { animationDelay: "1.5s", animationFillMode: "forwards" }
-        }
-      >
-        <div className="flex flex-wrap items-center gap-3 sm:gap-4 sm:ml-auto">
-          <button
-            type="button"
-            onClick={onEnterWork}
-            className="plastic-cta plastic-cta--inverse"
-            data-screen-reserve
-          >
-            See projects
-            <span aria-hidden>↓</span>
-          </button>
-          <button
-            type="button"
-            onClick={onContact}
-            className="plastic-cta plastic-cta--inverse plastic-cta--quiet"
-            data-screen-reserve
-          >
-            Contact
-          </button>
+      <div className="plastic-entry" data-section-scroll>
+        <div className="plastic-entry-center">
+          {/* One reserve around both lines: the ink thins behind the words as a
+              soft halo, not as a box behind a label. */}
+          <div className="plastic-entry-name" data-screen-reserve>
+            <LetterSpacedTitle text="furma.tech" reserve={false} />
+            <p className="plastic-entry-kind plastic-entry-kind--under-name">
+              Digital studio
+            </p>
+          </div>
+        </div>
+        <div className="plastic-entry-foot">
+          <div className="plastic-entry-actions">
+            <button type="button" onClick={onEnterWork} className="plastic-cta plastic-cta--inverse">
+              See projects <span aria-hidden>↓</span>
+            </button>
+            <button type="button" onClick={onContact} className="plastic-cta plastic-cta--inverse plastic-cta--quiet">
+              Contact
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
+/* What the studio builds, one kind at a time. The sentence stays put and only
+   the kind changes, so the line reads as a claim about one kind of work at a
+   time instead of a list. */
+const STUDIO_TYPES = ["games", "tools", "civic tech"] as const;
+const STUDIO_TYPE_HOLD = 2600;
+
+// The kind set in the biggest type on the page. It changes under the reader at
+// a walk's pace; the slot is sized for the longest kind so the centred line
+// never shifts sideways between words. The list is exposed once, in the
+// headline's own text, and the moving copy is decoration for the eye.
+function RotatingType({ isActive }: { isActive: boolean }) {
+  const reduceMotion = useStableReducedMotion();
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (!isActive || reduceMotion) return;
+    const id = window.setInterval(
+      () => setIndex((current) => (current + 1) % STUDIO_TYPES.length),
+      STUDIO_TYPE_HOLD,
+    );
+    return () => window.clearInterval(id);
+  }, [isActive, reduceMotion]);
+
+  if (reduceMotion) {
+    return (
+      <span className="plastic-index__word plastic-index__word--static">
+        {STUDIO_TYPES.join(", ")}
+      </span>
+    );
+  }
+
+  return (
+    <span className="plastic-index__type">
+      <span className="plastic-index__sizer" aria-hidden="true">
+        {STUDIO_TYPES.reduce((longest, type) =>
+          type.length > longest.length ? type : longest,
+        )}
+      </span>
+      <AnimatePresence initial={false} mode="wait">
+        <motion.span
+          key={STUDIO_TYPES[index]}
+          className="plastic-index__word"
+          initial={{ y: "0.35em", opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: "-0.3em", opacity: 0 }}
+          transition={{ duration: 0.36, ease: EASE_OUT_EXPO }}
+        >
+          {STUDIO_TYPES[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
+
 function PortfolioIndexSlide({
-  onStart,
-  count,
   isActive,
+  onOpenProject,
 }: {
-  onStart: () => void;
-  count: number;
   isActive: boolean;
+  onOpenProject: (projectIndex: number) => void;
 }) {
   const surfaceRef = useRef<HTMLDivElement>(null);
 
@@ -205,63 +260,183 @@ function PortfolioIndexSlide({
         composition="field"
         interactive
       />
-      <div className="flex-1 flex items-center justify-center px-6 md:px-12 relative z-10">
-        <div className="max-w-[1280px] w-full grid grid-cols-12 gap-6">
-          <SlideReveal isActive={isActive} className="col-span-12 md:col-span-4">
-            <p className="plastic-label" data-screen-reserve>
-              Portfolio
-            </p>
-            <p className="plastic-label mt-6" data-screen-reserve>
-              Index 00
-            </p>
-          </SlideReveal>
-          <div className="col-span-12 md:col-span-8 md:col-start-5">
-            <h2 className="plastic-headline" data-screen-reserve>
-              <AnimatedNumber value={count} trigger={isActive} className="inline" />
-              {" "}
-              <SplitReveal
-                as="span"
-                text="products across AI, SaaS, games, and civic tech."
-                className="inline"
-                delay={120}
-                trigger={isActive}
-              />
-            </h2>
-            <SlideReveal isActive={isActive} delay={0.2}>
-              <button
-                type="button"
-                onClick={onStart}
-                className="plastic-cta mt-12"
-                data-screen-reserve
-              >
-                Start with {HOME_PROJECTS[0]?.name ?? "projects"}
-                <span aria-hidden>→</span>
-              </button>
-              <div className="mt-6">
-                <Link
-                  href="/portfolio"
-                  className="plastic-label motion-link-subtle hover:text-foreground"
-                  data-screen-reserve
-                >
-                  Or open full index
-                </Link>
-              </div>
-            </SlideReveal>
-          </div>
-        </div>
+      <FloatingProjectCards
+        projects={HOME_PROJECTS}
+        isActive={isActive}
+        onOpen={onOpenProject}
+      />
+      <div
+        // The title layer is transparent to the pointer: the windows sit under
+        // it, and a full-panel heading must not swallow their clicks.
+        className="flex-1 min-h-0 relative z-10 overflow-y-auto overscroll-contain px-6 md:px-12 pointer-events-none"
+        data-section-scroll
+      >
+        <h2 className="plastic-index min-h-full" data-screen-reserve>
+          <span className="plastic-index__type-row" aria-hidden="true">
+            <RotatingType isActive={isActive} />
+          </span>
+          <span className="sr-only">{STUDIO_TYPES.join(", ")}.</span>
+        </h2>
       </div>
     </div>
   );
 }
 
+const CONTACT_EMAIL = "hello@furma.tech";
+
+function ContactSentPanel({
+  sentTo,
+  statusRef,
+  onWriteAnother,
+}: {
+  sentTo: string;
+  statusRef: React.RefObject<HTMLDivElement | null>;
+  onWriteAnother: () => void;
+}) {
+  return (
+    <div
+      ref={statusRef}
+      tabIndex={-1}
+      role="status"
+      aria-live="polite"
+      className="plastic-letter__sent outline-none"
+    >
+      <p className="plastic-letter__label">Sent</p>
+      <p className="plastic-letter__title plastic-letter__title--sent">
+        Thank you.
+      </p>
+      <p className="plastic-letter__lede">
+        {sentTo ? (
+          <>
+            Your message reached us from{" "}
+            <span className="text-foreground">{sentTo}</span>.{" "}
+          </>
+        ) : (
+          "Your message reached us. "
+        )}
+        You&apos;ll get a reply within two working days.
+      </p>
+      <button type="button" onClick={onWriteAnother} className="plastic-letter__again">
+        Write another <span aria-hidden>→</span>
+      </button>
+    </div>
+  );
+}
+
+function ContactFields({
+  fieldErrors,
+  fieldsLocked,
+  onFieldChange,
+}: {
+  fieldErrors: Record<string, string>;
+  fieldsLocked: boolean;
+  onFieldChange: (field: string) => void;
+}) {
+  return (
+    <>
+      <div className="plastic-letter__field">
+        <label htmlFor="contact-name" className="plastic-letter__label">
+          Who is writing
+        </label>
+        <input
+          id="contact-name"
+          name="name"
+          type="text"
+          autoComplete="name"
+          placeholder="Your name"
+          required
+          className={cn(
+            "plastic-letter__input",
+            fieldErrors.name && "plastic-letter__input--invalid",
+          )}
+          aria-invalid={fieldErrors.name ? true : undefined}
+          aria-describedby={fieldErrors.name ? "contact-name-error" : undefined}
+          disabled={fieldsLocked}
+          onChange={() => onFieldChange("name")}
+        />
+        {fieldErrors.name && (
+          <p id="contact-name-error" className="plastic-field-error" role="alert">
+            {fieldErrors.name}
+          </p>
+        )}
+      </div>
+
+      <div className="plastic-letter__field">
+        <label htmlFor="contact-email" className="plastic-letter__label">
+          Where to write back
+        </label>
+        <input
+          id="contact-email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          inputMode="email"
+          placeholder="you@company.com"
+          required
+          className={cn(
+            "plastic-letter__input",
+            fieldErrors.email && "plastic-letter__input--invalid",
+          )}
+          aria-invalid={fieldErrors.email ? true : undefined}
+          aria-describedby={fieldErrors.email ? "contact-email-error" : undefined}
+          disabled={fieldsLocked}
+          onChange={() => onFieldChange("email")}
+        />
+        {fieldErrors.email && (
+          <p id="contact-email-error" className="plastic-field-error" role="alert">
+            {fieldErrors.email}
+          </p>
+        )}
+      </div>
+
+      <div className="plastic-letter__field">
+        <label htmlFor="contact-message" className="plastic-letter__label">
+          What are we making
+        </label>
+        <textarea
+          id="contact-message"
+          name="message"
+          rows={3}
+          placeholder="A paragraph is plenty. A link is welcome."
+          required
+          className={cn(
+            "plastic-letter__input plastic-letter__input--area",
+            fieldErrors.message && "plastic-letter__input--invalid",
+          )}
+          aria-invalid={fieldErrors.message ? true : undefined}
+          aria-describedby={
+            fieldErrors.message
+              ? "contact-message-error contact-message-hint"
+              : "contact-message-hint"
+          }
+          disabled={fieldsLocked}
+          onChange={() => onFieldChange("message")}
+        />
+        {fieldErrors.message && (
+          <p id="contact-message-error" className="plastic-field-error" role="alert">
+            {fieldErrors.message}
+          </p>
+        )}
+        <p id="contact-message-hint" className="plastic-letter__hint">
+          All three fields are required. Only used to reply — no list,
+          no sharing.
+        </p>
+      </div>
+    </>
+  );
+}
+
+// The address is the contact's headline: one tap opens a mail client, and a
+// second control copies it for the reader who has none.
 function ContactSlide({ isActive }: { isActive: boolean }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle",
   );
   const [errorMessage, setErrorMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [sentTo, setSentTo] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
-  const statusRef = useRef<HTMLParagraphElement>(null);
+  const statusRef = useRef<HTMLDivElement>(null);
 
   function clearFieldError(field: string) {
     setFieldErrors((prev) => {
@@ -278,7 +453,9 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
       email: "contact-email",
       message: "contact-message",
     };
-    const first = (["name", "email", "message"] as const).find((key) => errors[key]);
+    const first = (["name", "email", "message"] as const).find(
+      (key) => errors[key],
+    );
     if (!first || !formRef.current) return;
     formRef.current.querySelector<HTMLElement>(`#${ids[first]}`)?.focus();
   }
@@ -327,202 +504,107 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
         else statusRef.current?.focus();
         return;
       }
+      setSentTo(payload.email);
       setStatus("sent");
       formRef.current?.reset();
-      window.setTimeout(() => setStatus("idle"), 6000);
     } catch {
       setStatus("error");
       setErrorMessage("Couldn't send right now. Please try again in a moment.");
     }
   }
 
+  function writeAnother() {
+    setStatus("idle");
+    setSentTo("");
+    setErrorMessage("");
+    setFieldErrors({});
+  }
+
   useEffect(() => {
     if (status === "sent") statusRef.current?.focus();
   }, [status]);
 
-  const fieldsLocked = status === "sending" || status === "sent";
+  const fieldsLocked = status === "sending";
 
   return (
     <div
-      className="h-full w-full flex items-center bg-background overflow-y-auto"
+      className="h-full w-full bg-background overflow-y-auto overscroll-contain"
       data-section-scroll
     >
-      <div className="w-full max-w-[1280px] mx-auto px-6 md:px-12 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          <div className="lg:col-span-5">
-            <SlideReveal isActive={isActive}>
-              <p className="plastic-label mb-6">Contact</p>
-              <SplitReveal
-                as="h2"
-                text="Let's build something together."
-                className="plastic-headline block mb-6"
-                delay={60}
-                trigger={isActive}
+      <div className="min-h-full flex items-center">
+        <div className="w-full max-w-[880px] mx-auto px-6 md:px-12 py-14">
+          <SlideReveal isActive={isActive}>
+            <p className="plastic-label">Contact</p>
+            <SplitReveal
+              as="h2"
+              text="Write to us."
+              className="plastic-letter__title block"
+              delay={60}
+              trigger={isActive}
+            />
+            <p className="plastic-letter__lede">
+              One person reads this. Products, a collaboration, or integrating
+              sovereign AI — say what you are making and why it matters.
+            </p>
+          </SlideReveal>
+
+          <SlideReveal isActive={isActive} delay={0.12}>
+            {status === "sent" ? (
+              <ContactSentPanel
+                sentTo={sentTo}
+                statusRef={statusRef}
+                onWriteAnother={writeAnother}
               />
-            </SlideReveal>
-            <SlideReveal isActive={isActive} delay={0.12}>
-              <p className="plastic-paragraph text-foreground/70 max-w-sm mb-8">
-                Interested in our products, a collaboration, or integrating
-                sovereign AI? We read every message.
-              </p>
-              <div className="flex gap-10">
-                {[
-                  ["Email", "hello@furma.tech", "mailto:hello@furma.tech"],
-                  ["GitHub", "@Fuuurma", "https://github.com/Fuuurma"],
-                ].map(([label, text, href]) => (
-                  <div key={label} className="flex flex-col gap-1">
-                    <span className="plastic-label">{label}</span>
-                    <a
-                      href={href}
-                      target={label === "GitHub" ? "_blank" : undefined}
-                      rel={
-                        label === "GitHub" ? "noopener noreferrer" : undefined
-                      }
-                      className="text-body text-foreground border-b border-foreground/20 pb-0.5 hover:border-foreground transition-colors"
-                    >
-                      {text}
-                    </a>
-                  </div>
-                ))}
-              </div>
-            </SlideReveal>
-          </div>
-          <SlideReveal
-            isActive={isActive}
-            className="lg:col-span-6 lg:col-start-7"
-            delay={0.18}
-          >
-            <form
-              ref={formRef}
-              onSubmit={handleSubmit}
-              className="flex flex-col gap-6"
-              noValidate
-              aria-busy={status === "sending"}
-            >
-              <input type="hidden" name="subject" value="general" />
-              {[
-                {
-                  id: "contact-name",
-                  name: "name",
-                  label: "Name",
-                  type: "text",
-                  placeholder: "Your name",
-                  autoComplete: "name",
-                },
-                {
-                  id: "contact-email",
-                  name: "email",
-                  label: "Email",
-                  type: "email",
-                  placeholder: "your@email.com",
-                  autoComplete: "email",
-                },
-              ].map((f) => {
-                const errorId = `${f.id}-error`;
-                const hasError = Boolean(fieldErrors[f.name]);
-                return (
-                  <div key={f.id}>
-                    <label htmlFor={f.id} className="plastic-label block mb-2">
-                      {f.label}
-                    </label>
-                    <input
-                      id={f.id}
-                      name={f.name}
-                      type={f.type}
-                      placeholder={f.placeholder}
-                      autoComplete={f.autoComplete}
-                      className={cn(
-                        "plastic-field w-full border-b bg-transparent pb-2.5 pt-1 font-mono text-small text-foreground placeholder:text-foreground/60 outline-none transition-colors",
-                        hasError
-                          ? "border-foreground plastic-field--invalid"
-                          : "border-foreground/25 focus-visible:border-foreground",
-                      )}
-                      aria-invalid={hasError || undefined}
-                      aria-describedby={hasError ? errorId : undefined}
-                      disabled={fieldsLocked}
-                      onChange={() => clearFieldError(f.name)}
-                    />
-                    {hasError && (
-                      <p id={errorId} className="plastic-field-error" role="alert">
-                        {fieldErrors[f.name]}
-                      </p>
-                    )}
-                  </div>
-                );
-              })}
-              <div>
-                <label htmlFor="contact-message" className="plastic-label block mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="contact-message"
-                  name="message"
-                  rows={3}
-                  placeholder="Tell us what you're building…"
-                  className={cn(
-                    "plastic-field w-full resize-none border-b bg-transparent pb-2.5 pt-1 font-mono text-small text-foreground placeholder:text-foreground/60 outline-none transition-colors",
-                    fieldErrors.message
-                      ? "border-foreground plastic-field--invalid"
-                      : "border-foreground/25 focus-visible:border-foreground",
-                  )}
-                  aria-invalid={fieldErrors.message ? true : undefined}
-                  aria-describedby={
-                    fieldErrors.message ? "contact-message-error" : undefined
-                  }
-                  disabled={fieldsLocked}
-                  onChange={() => clearFieldError("message")}
+            ) : (
+              <form
+                ref={formRef}
+                onSubmit={handleSubmit}
+                className="plastic-letter"
+                noValidate
+                aria-busy={status === "sending"}
+              >
+                <input type="hidden" name="subject" value="general" />
+
+                <ContactFields
+                  fieldErrors={fieldErrors}
+                  fieldsLocked={fieldsLocked}
+                  onFieldChange={clearFieldError}
                 />
-                {fieldErrors.message && (
-                  <p
-                    id="contact-message-error"
-                    className="plastic-field-error"
-                    role="alert"
-                  >
-                    {fieldErrors.message}
+
+                {status === "error" && (
+                  <p role="alert" className="plastic-form-alert">
+                    {errorMessage}
                   </p>
                 )}
-              </div>
-              <p
-                ref={statusRef}
-                id="contact-form-status"
-                role="status"
-                aria-live="polite"
-                tabIndex={-1}
-                className={cn(
-                  "font-mono text-meta uppercase tracking-[0.12em] outline-none min-h-[1.25rem]",
-                  status === "idle"
-                    ? "sr-only"
-                    : status === "error"
-                      ? "text-foreground"
-                      : "text-foreground/70",
-                )}
-              >
-                {status === "sending"
-                  ? "Sending your message…"
-                  : status === "sent"
-                    ? "Message sent. We'll get back to you soon."
-                    : status === "error"
-                      ? errorMessage
-                      : ""}
-              </p>
-              <button
-                type="submit"
-                disabled={fieldsLocked}
-                className={cn(
-                  "plastic-submit h-12 w-full font-mono text-meta uppercase tracking-[0.12em] transition-opacity duration-300",
-                  status === "sent"
-                    ? "bg-foreground/80 text-background"
-                    : "bg-foreground text-background hover:opacity-80",
-                  fieldsLocked && "cursor-not-allowed",
-                )}
-              >
-                {status === "sending"
-                  ? "Sending…"
-                  : status === "sent"
-                    ? "Sent ✓"
-                    : "Send message →"}
-              </button>
-            </form>
+
+                <button
+                  type="submit"
+                  disabled={fieldsLocked}
+                  className={cn("plastic-send", fieldsLocked && "plastic-send--busy")}
+                >
+                  <span>{status === "sending" ? "Sending…" : "Send message"}</span>
+                  <span aria-hidden className="plastic-send__arrow">
+                    →
+                  </span>
+                </button>
+
+                <p className="plastic-letter__elsewhere">
+                  Or write to{" "}
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="plastic-facts__link">
+                    {CONTACT_EMAIL}
+                  </a>
+                  <span aria-hidden> · </span>
+                  <a
+                    href="https://github.com/Fuuurma"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="plastic-facts__link"
+                  >
+                    github.com/Fuuurma
+                  </a>
+                </p>
+              </form>
+            )}
           </SlideReveal>
         </div>
       </div>
@@ -593,10 +675,6 @@ export default function PlasticHome() {
   }, [setFocusHandler]);
 
   useEffect(() => {
-    syncContactHash(activeIndex);
-  }, [activeIndex, syncContactHash]);
-
-  useEffect(() => {
     document.body.style.overflow = "hidden";
     document.documentElement.setAttribute("data-plastic-home", "true");
     return () => {
@@ -627,6 +705,13 @@ export default function PlasticHome() {
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, [navigate]);
+
+  // Declared after the effect that reads the incoming hash: effects run in
+  // order, and on mount this one sees section 0 and would strip "#contact"
+  // before a deep link to it had been read.
+  useEffect(() => {
+    syncContactHash(activeIndex);
+  }, [activeIndex, syncContactHash]);
 
   const handleReelSelect = (reelIndex: number) => {
     const target = HOME_REEL_ITEMS[reelIndex];
@@ -667,7 +752,10 @@ export default function PlasticHome() {
           />
         ))}
 
-      <div className="relative flex-1 min-h-0 overflow-hidden">
+      {/* `clip`, not `hidden`: an overflow-hidden box is still a scroll
+          container, and focusing the theme control in the hero scrolled it 401px
+          out of place. A clipped box cannot be scrolled at all. */}
+      <div className="relative flex-1 min-h-0 overflow-clip">
         <ScrollProgress activeIndex={activeIndex} total={TOTAL} />
 
         <div className="absolute inset-0">
@@ -713,14 +801,13 @@ export default function PlasticHome() {
                 )}
                 {section.type === "portfolio-index" && (
                   <PortfolioIndexSlide
-                    count={HOME_PROJECTS.length}
-                    onStart={() =>
-                      navigate(FIRST_PROJECT_SECTION, {
+                    isActive={isActive}
+                    onOpenProject={(projectIndex) =>
+                      navigate(FIRST_PROJECT_SECTION + projectIndex, {
                         force: true,
                         focus: true,
                       })
                     }
-                    isActive={isActive}
                   />
                 )}
                 {section.type === "project" &&

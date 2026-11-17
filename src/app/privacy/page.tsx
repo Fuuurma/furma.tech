@@ -1,10 +1,11 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/privacy" },
   title: "Privacy Policy — Furma.tech",
   description: "Privacy policy for Furma.tech - how we handle your data.",
 };
@@ -54,8 +55,8 @@ export default function PrivacyPage() {
               <div>
                 <SectionHeading>1. Who we are</SectionHeading>
                 <Body>
-                  Furma.tech OÜ is a digital studio based in Sitges,
-                  Catalonia, operating as an Estonian company (e-Residency). We
+                  Furma.tech OÜ is a digital studio operating as an Estonian
+                  company (e-Residency). We
                   build and operate software products including industry SaaS
                   tools and the Aitlas AI ecosystem.
                 </Body>

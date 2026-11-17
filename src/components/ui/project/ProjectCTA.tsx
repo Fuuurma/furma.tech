@@ -33,12 +33,12 @@ export function ProjectCTA({
         "portfolio-page__section px-6 md:px-12 py-20 md:py-24 border-b border-foreground/10",
         // The dark band is painted black outright, like the hero and the footer:
         // the page's dark theme must not turn it into a cream sheet.
-        isDark ? "bg-black text-white border-white/10" : "bg-foreground/[0.02]",
+        isDark ? "bg-foreground/[0.04] text-foreground border-foreground/10" : "bg-foreground/[0.02]",
       )}
     >
       <div className="max-w-[1280px] mx-auto grid grid-cols-12 gap-x-0 gap-y-8 md:gap-x-8 items-end">
         <ScrollReveal className="col-span-12 md:col-span-8 md:col-start-4 lg:col-start-5">
-          <p className={cn("plastic-label mb-6", isDark && "text-white/55")}>
+          <p className={cn("plastic-label mb-6", isDark && "text-foreground/55")}>
             Get started
           </p>
           <SplitReveal
@@ -46,14 +46,14 @@ export function ProjectCTA({
             text={title}
             className={cn(
               "plastic-headline mb-6 block",
-              isDark ? "text-white" : "text-foreground",
+              "text-foreground",
             )}
             delay={50}
           />
           <p
             className={cn(
               "plastic-paragraph text-[clamp(16px,2vw,22px)] max-w-xl mb-10",
-              isDark ? "text-white/70" : "text-foreground/70",
+              "text-foreground/70",
             )}
           >
             {description}
@@ -61,10 +61,7 @@ export function ProjectCTA({
           <div className="flex flex-col sm:flex-row gap-6 items-start">
             <Link
               href={primaryHref}
-              className={cn(
-                "plastic-cta motion-link",
-                isDark && "plastic-cta--inverse",
-              )}
+              className={cn("plastic-cta motion-link")}
             >
               {primaryLabel}
               <ArrowRight className="w-3 h-3" aria-hidden />
@@ -74,7 +71,7 @@ export function ProjectCTA({
                 href={secondaryHref}
                 className={cn(
                   "plastic-label motion-link-subtle hover:opacity-100 transition-opacity",
-                  isDark ? "text-white/55 hover:text-white" : "",
+                  isDark ? "text-foreground/55 hover:text-foreground" : "",
                 )}
               >
                 {secondaryLabel}

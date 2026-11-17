@@ -63,9 +63,9 @@ function BreadcrumbLink({
   })
 }
 
-function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
+function BreadcrumbPage({ className, ...props }: React.ComponentProps<"a">) {
   return (
-    <span
+    <a
       data-slot="breadcrumb-page"
       role="link"
       aria-disabled="true"
@@ -152,17 +152,15 @@ const routeLabels: Record<string, string> = {
   nexus: "Nexus",
   agents: "Agents Store",
 
-  restauramanager: "restauManager",
-  guidetours: "GuideTours",
+  bloxs: "Bloxs",
+  "gambit-deck": "Gambit Deck",
+  putarenfe: "Renfe",
+  "software-factory": "Software Factory",
+  fuddy: "FUDDY",
+  benxer: "Benxer",
   qart: "QArt",
   "tic-tac-toe": "Tic-Tac-Toe",
   "tic-tac-toe-disappear": "Tic-Tac-Toe",
-  sailingmate: "SailingMate",
-  financehub: "FinanceHub",
-  linkup: "LinkUp",
-  pickstracker: "PicksTracker",
-  onetomany: "OneToMany",
-  opengovern: "OpenGovern",
 }
 
 export default function Breadcrumbs({ items, className = "" }: BreadcrumbsProps) {

@@ -1,4 +1,4 @@
-import { MetadataRoute } from 'next';
+import type { MetadataRoute } from 'next';
 
 /**
  * Robots.txt for Furma.tech
@@ -15,8 +15,7 @@ export default function robots(): MetadataRoute.Robots {
         // Disallow admin/internal paths if they exist
         disallow: [
           '/api/',
-          '/_next/',
-          '/node_modules/',
+          '/styleguide',
         ],
       },
       // Be more restrictive with AI crawlers
@@ -65,12 +64,8 @@ export default function robots(): MetadataRoute.Robots {
           'YouBot',
         ],
         // Allow AI bots but with restrictions
-        allow: [
-          '/og/', // Allow OG image generation
-        ],
         disallow: [
           '/api/',
-          '/_next/',
           '/styleguide',
           '/brand',
         ],

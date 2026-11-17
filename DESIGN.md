@@ -4,9 +4,9 @@
 
 ## Direction
 
-**Quiet mono editorial (v1 public home)** — Syne / Cormorant / JetBrains,
-B/W. `/v2` Workshop (cream + orange) is an alternate concept, not the default
-public face until a deliberate cutover.
+**Quiet mono editorial (v1 public home)** — Instrument Sans / Cormorant /
+JetBrains Mono, B/W. `/v2` Workshop (cream + orange) is an alternate concept,
+not the default public face until a deliberate cutover.
 
 ### References
 - gionatannese.com — nerdy details, restraint
@@ -35,8 +35,9 @@ public face until a deliberate cutover.
   none in a house file. The theme's own warm dark paper is the exception,
   and it is a theme, not a hue on the page
 - The hero carries no scroll cue — no label, no rule. The wave is the cue.
-- Full-bleed plates (hero, footer, case-study band) are painted black outright,
-  never with the theme's foreground: the dark theme must not make one white
+- Full-bleed plates follow the theme: the hero, the case-study cover and the
+  index are paper and ink (white/black in light, black/white in dark); the
+  footer is the one painted plate, a sunset on paper or a moon on black
 - The footer is one plate: a sky behind the type, a sun, and a sea at the foot
   that the reader can put a hand in. The type thins the ink around itself; it
   does not cut a hole in it
@@ -50,8 +51,547 @@ public face until a deliberate cutover.
 - The index is the width of the screen: the rules that separate the work run
   edge to edge, and the work stays stacked top to bottom
 - The shot fills its mount. A picture shown as a thumbnail inside a frame is
-  a caption with a picture attached
+  a caption with a picture attached. The home's plate is the picture's own box
+  (520:340) with one even margin of paper; no bar on any side
 - Invoke `design-arsenal` + `impeccable` on UI passes
+
+### Public opening
+
+The first viewport is one centred line on the wave: the studio's name, the kind
+of studio under it, and the two ways in at the foot of the plate — See projects
+and Contact, right aligned over a hairline. No project shares the opening; the
+work begins one section later, in the contents index. The wave stays the
+picture, and the swell still waits for an idle reader. The entry is a scroll
+region, so a swipe that begins inside it scrolls the entry instead of advancing
+the tour. V1 motion reads media preference through the SSR-safe hook so server
+markup and the first client render agree.
+
+## The way in — plate, contents, address (2026-10-26)
+
+A look at the live home, section by section, found five things the contract
+already promised and the page did not do.
+
+**1. The plate is the picture's own box.** The cover gave each concept visual a
+frame the size of the room it sat in, and the 520:340 drawing letterboxed
+inside it: a grey bar down two sides on a desk, a grey slab above and below on
+a phone, and a caption half-hidden behind the picture ("CONCEP"). That is the
+"thumbnail in a frame" the index rule forbids. The plate is now sized from the
+picture's ratio with container-query units, and the sheet (`--mount`) is its
+border, so the paper is one even margin on all four sides. The caption sits
+under the plate on the black ground. The pictures are lifted
+(`brightness(1.6)`): they were drawn at 4–8% white and read as a dark
+rectangle. `tests/project-plate.test.ts` fails if a picture leaves 520:340.
+
+**2. One layout fewer.** The `overlay` layout set a title and a paragraph over
+the picture's lower half, on a gradient. It is gone; its two projects take
+`editorial-right` and `visual-heavy`, and nothing in the slides sets type over a
+picture now.
+
+**3. The intro is a contents page.** *(Superseded 2026-10-27 — see "The index is
+one sentence" below.)* "10 products across…" opens on a lead
+headline and ten hairline rows (number, name, status) that jump the tour to a
+project. The tour had a way to start and no way to choose; the reel bar only
+appears after the first project. The rows run down the column first (01–05,
+06–10) and are real buttons with a 44px target.
+
+**4. The hero's way in is a button.** *(Superseded 2026-10-27 — see "The entry
+is one line" below.)* "See projects" is the one solid action on
+the black plate, in the plate's own two tones; Contact and Full index stay
+quiet underlines at the small step. A mono line sets the studio's local time
+(`Europe/Madrid`, rendered after hydration, kept to the minute) at the foot of
+the plate — a real fact about where the studio is, not a claim.
+
+**5. The address is the contact.** `hello@furma.tech` is set at headline size
+with a Copy control; the fields are the body step on a desk and 16px on a touch
+screen (anything smaller makes iOS zoom the page on focus); a label lights with
+its field. The panel centres with `min-h-full`, not `items-center` on the
+scroller, which clipped the top of the form on a short screen.
+
+**Fixed on the way: `/#contact` opened the hero.** On mount the effect that
+syncs the hash saw section 0 and stripped `#contact` before the effect that
+reads an incoming hash ran, so a fresh load of the site's contact address — and
+the portfolio's "Get in touch" — never reached the form. The read now runs
+first; a test holds the order.
+
+References (with why):
+- **gionatannese.com** — nerdy, true details. Why: the local-time line is the
+  kind of thing that says where the studio is without a sentence.
+- **Experimental Jetset** — one structure, many members. Why: ten products
+  share one plate instead of each arranging its picture its own way.
+- **The Swiss contents page** — number, title, status, hairline. Why: a list
+  of ten that reads as an index and asks nothing but a click.
+
+Craft move: **the sheet is the border.** The paper margin is not a wrapper
+with padding around a picture that may not fill it; it is the picture's own
+edge, so the two can never disagree about their size.
+
+Catalog pick: **none.** Container-query units and `aspect-ratio`.
+
+Rules:
+- A picture's plate takes the picture's ratio. A new picture is drawn at
+  520:340, or the plate changes for all of them.
+- No slide sets type over a picture.
+- A form field is 16px or more on a touch screen.
+- Anything that reads `location.hash` on mount runs before anything that writes it.
+
+## Care for the hand that is not a mouse (2026-10-27)
+
+Owner's brief: *accessibility, layout, responsive — the index projects are
+hoverable, on mobile that effect is lost, and like that with more.*
+
+**The audit first.** axe-core (WCAG 2 A/AA, 2.1 A/AA) over `/`, `/portfolio`,
+`/portfolio/gambit-deck` and `/#contact` at 1440×900 and 390×844: **zero
+violations** at both widths. The gaps were not detectable by a rule engine —
+they were interaction and material gaps.
+
+**What was wrong, and is now fixed:**
+
+- **The list was a black page in both themes.** `.portfolio-list-page__list`
+  was `background: #000; color: #fff` with `rgba(255,255,255,…)` ink. It reads
+  from `--background` / `--foreground` now, like every other plate.
+- **The list's pictures were hover-only.** A desktop reader who hovers sees the
+  project; a thumb got nothing. On `(hover: none)` each row now carries a static
+  thumbnail (the same visual the reveal uses), sized by the row, no motion.
+- **Touch targets.** Anything meant to be pressed is 44px on `(pointer: coarse)`:
+  the theme switch's two buttons (40×40), every footer link, the chromes'
+  actions, the corner play door, the letter's "write another".
+- **The footer's sun sat under the project links on a phone.** The sky's body is
+  now smaller and lower below 760px (sun radius 0.055 at rise 0.4, moon 0.07 at
+  1.7) so the picture stays in its own zone.
+- **The hero's wave was chunky on a phone.** The lattice scale drops from 5 to
+  3.4 below 760px — the same drawing at a finer screen, not a different one.
+- **The footer claimed a landmark it could not have.** `role="contentinfo"` on a
+  footer nested inside `main` is a violation; the element is a plain `<footer>`
+  and the rule is gone.
+
+**What still needs a human:** VoiceOver/TalkBack passes on a real device, 200%
+text zoom, and the touch gestures on the canvas (the wave answers a finger, but
+nothing here was tested on hardware).
+
+Rules:
+- A hover-only affordance needs a second life on `(hover: none)`. If the hover
+  gave information, the touch version shows it without asking.
+- 44px on coarse pointers, always — including a 26px icon inside a pill.
+- A picture that shares space with type moves out of it on a phone; it does not
+  get smaller in the same place.
+
+## Two themes, on every plate (2026-10-27)
+
+Owner's read: *the hero is always dark — two themes, white and black, as the
+whole app. Also check the icon, it feels backwards.*
+
+- **The hero follows the theme.** Its wave takes `--background` / `--foreground`
+  through the `--entry-*` tokens, so light is white paper with black marks and
+  dark is the reverse. The tokens live on `:root`, not on the plate: the wave
+  resolves colours through a probe in the body, and a token scoped to the frame
+  resolved to the fallback (a black hero in light mode).
+- **Every other plate follows too**: the portfolio band, the case-study cover
+  and the project covers are `bg-background`; the closing CTA lost its black
+  band; the footer keeps its own painted plate (sunset on paper, moon on black).
+- **The switch is a pair, not a mystery icon.** It was one icon showing the
+  theme you would get, which reads backwards as often as forwards. It is now two
+  named states — sun = light, moon = dark — with the one you are in inked, and
+  it appears on the hero too (the entry carries no chrome, so it lives in the
+  top-right corner).
+- **A theme change is a change of paper**: surfaces carry the colour across in
+  260ms, and reduced motion drops the transition.
+
+**One bug worth the note:** the tour's viewport was `overflow-hidden`, which is
+still a scroll container. Focusing the new theme control in the hero scrolled
+that box 401px and the whole page slid out of place. It is `overflow-clip` now —
+a clipped box cannot be scrolled by a focus ring.
+
+Rules:
+- A plate that follows the theme takes its paper and ink from the page's tokens,
+  never from a literal.
+- One control, both states named. An icon that means "the other one" is a coin
+  flip for the reader.
+- Tokens that the canvas resolves must live where the probe can see them: the
+  root.
+
+## The lens was tried and dropped — the reserve is better (2026-10-27)
+
+Owner's read after the glass went in: *what a weird effect… it doesn't feel like
+it… also the dither still hurts the title and subtitle.* Both true, for the same
+reason.
+
+**Why the glass read as a card.** A lens has nothing to show unless the thing
+behind it has structure. `glisse` refracts the live backdrop faithfully, and on
+this plate the backdrop under the pill was near-black: the result was a dark
+lozenge with a bright rim — a card wearing a glass costume. Over a photograph or
+a dense field it would read; here it could not. It was removed, and the library
+came out of `package.json` with it.
+
+**Readability is the reserve's job, and it was doing it.** The title and the
+small step under it now share **one** `data-screen-reserve` block, so the wave
+thins behind both as a single soft halo instead of a small box behind a label —
+the box was what looked broken, not the thinning. Measured with the swell
+crossing the name: the dots fall away under the words and return around them
+without an edge you can point at.
+
+Rules:
+- A material needs a picture to work on. Glass over a black field is a border.
+- One reserve per block of type, sized to the block, never per element.
+- If type stops reading, fix the ink around it; do not put a surface under it.
+
+## The entry is one line — the project leaves the opening (2026-10-27)
+
+Owner's read of the landed opening: *the right side is all off — the Aitlas
+project; it was only centred: furma.tech, two buttons bottom right, contact and
+projects, and the background and effects were the same. Way more minimalistic.*
+
+The 2026-10-04 pass had put one project's plate beside the name so the first
+viewport showed work as well as claim. On the real page that made a two-column
+opening whose second column carried a caption, a concept label, a category, a
+status and a link — five pieces of furniture around the name, and the name
+pushed left off centre. The opening is not the place to prove the work; the
+contents index one section later does that in ten rows.
+
+What the opening is now:
+
+- the name, centred, at the title step on the wave — no override shrinks it
+  back to a two-column size;
+- one small step under it, "Digital studio";
+- a hairline at the foot of the plate with the two ways in right aligned:
+  **See projects** (the tour) and **Contact** (the form). Both are quiet
+  outlines; the solid fill, the third link and the local-time line are gone.
+
+Removed with it: `AitlasEntryVisual`, `.plastic-entry-project*`,
+`.plastic-entry-preview*`, `.plastic-entry-layout`, `.plastic-entry-copy`,
+`.plastic-entry-premise`, the `plastic-cta--primary` fill and the
+`plastic-cta__arrow`. The wave, its two lobes, the idle swell and the hand are
+untouched — the effects were the part that worked.
+
+Rules:
+- The opening carries the name and the two ways in. Nothing else.
+- A change to the first viewport keeps the name centred; a second column in
+  the entry is not a design option.
+- The project's plate, its caption and its ratio belong to the project slides,
+  not to the hero.
+
+## The index is one sentence (2026-10-27)
+
+Owner's read of the tour's first panel: *this section now. we gonna change it a
+lot. the main text about what we build. rotating text, animated. it will be
+changing between the different types so no x,y,z. center it. get rid of all the
+other text on that section/screen.*
+
+The panel had grown into a page: two labels at the left ("Portfolio", "Guided
+tour"), a lead sentence listing four kinds, a "Start with Aitlas" button, a skip
+link to the full index, and ten hairline rows of the work. Every one of those was
+a different idea competing for the same screen.
+
+What the panel is now — one word, centred, set as the page's title:
+
+- **AI**, **SaaS**, **games**, **civic tech** in the page's biggest type
+  (`clamp(56px, 19vw, 190px)`), changing every 2.6s with a 0.36s roll (`y`
+  0.35em → 0, opacity 0 → 1, `EASE_OUT_EXPO`, the old kind leaves first);
+- nothing else — no count line, no labels, no buttons, no list, no link. The
+  "10 products across" frame the first pass kept was removed on sight: the
+  rotating word is the title.
+
+**The slot is sized by its longest word.** `.plastic-index__type` is an
+`inline-grid` with one grid area; an invisible sizer holds the longest kind and
+the moving word shares its cell, so the centred word does not shift sideways
+when "AI" becomes "civic tech". Measured: the word's centre is the viewport's
+centre for all four, at 1440, 390 and 320.
+
+**Nothing is clipped.** The first cut masked the roll with `overflow: hidden`,
+and at 190px Syne's ink reaches past the line box, so the tops of `f` and the
+tails of `g` were cut at the mask edge. The mask is gone: the word rises 0.35em
+and fades, which reads as a roll without a hard edge crossing a glyph.
+
+**The kinds are read once, not four times.** The moving copy is `aria-hidden`;
+the headline carries the list in one `sr-only` string. Under
+`prefers-reduced-motion` the word does not move and the four kinds are set once,
+allowed to wrap.
+
+Checked the component libraries before writing it: Magic UI's `word-rotate`,
+KokonutUI's `dynamic-text` and react-bits' `RotatingText` are all the same shape
+— `AnimatePresence` + a keyed `motion.span` with `y`/`opacity` — and we already
+ship `framer-motion` 12. Copying one would have added a dependency and a second
+motion idiom for the same twenty lines, so the component lives in
+`PlasticHome.tsx` on the house's own tokens.
+
+Rules:
+- The index states the claim once, centred. A second column, a list or a CTA on
+  this panel is a regression.
+- Anything that changes on a timer sizes its slot from its longest value.
+- A moving word is decoration: the same words are readable once in text.
+- The motion stops when the panel is not active and when the reader asked for
+  less motion.
+
+## The field of windows — five projects float behind the title (2026-10-27)
+
+Owner's call, after the index settled on one rotating word: *3dcard — make the bg
+to have floating 3dcards. lets start with 5.*
+
+The index panel's background is now a field of five project windows around the
+centred type: name, kind, status, hairline on paper, each at its own depth. It
+is the first slice of the project showcase; five is the smallest number that
+reads as a field rather than a stack.
+
+**The windows are the way into the work.** Each one is a real button: the
+pointer lifts it, an `Open →` line appears once it has actually come forward,
+and activating it walks the tour to that project's panel (`navigate` — the same
+move the old "Start with…" button made). The keyboard reaches them in reading
+order, and a focused window comes forward exactly as a hovered one does. The
+stage around them still takes no pointer events, so the wave keeps the plate
+between the windows, and the field still carries no wheel or touch handler, so
+the tour keeps every gesture.
+
+**Something happens before the pointer.** Until a pointer is seen — a touch
+screen, or a visitor who has not moved yet — the field offers one window at a
+time (3.6s each), so the interaction is discoverable rather than waiting to be
+guessed. Any real pointer takes over from the offer.
+
+**The title keeps the middle.** A card whose home is close to the centre of the
+plate answers less (`clearance`, down to 0.45), so a lift never grows into the
+word. Measured: the two outer windows answer at full strength, the centre-bottom
+one at about half.
+
+**Each card answers alone.** The field is not one board that tilts. Every card
+measures the pointer's distance to *its own* centre and answers on its own
+spring: the nearer it is, the more it lifts on `z` (up to +260px), the more it
+turns toward the pointer (up to 30° at the edge of its reach) and the more it
+drifts toward it (up to 44px). Its edge lights before it moves — the glow is
+full at about three-fifths of the way in — so an approach is legible even when
+the pointer is only passing by.
+
+Reach and strength differ per card (440–620px, 0.62–1.0), and so do stiffness
+and damping, so a sweep strings them out instead of arriving as one block:
+measured mid-sweep, the near card sat at `z 167` fully lit while the next was
+33% lit, the third 12%, and the two furthest were still asleep.
+
+**Depth is printed, not only placed.** A window further back is set lighter
+(`opacity` falls to about 0.66 on the deepest card), so the field reads as depth
+at rest, before the pointer moves anything. The field fades in, card by card,
+when the panel becomes active.
+
+**The springs run in unit space.** `−1…1` across a card's reach and `0…1` near,
+never on raw pointer pixels: a spring over a coordinate that starts offscreen
+spends a second travelling in from 10,000px, which reads as a card that ignores
+the pointer entirely. The tilt itself is still the studied `furma.bloxs`
+`3d-card` mechanic — an offset from the centre is a degree of rotation per 25px
+under a 1000px perspective — folded into that unit-space answer.
+
+**One card wins.** The falloff is cubed, not squared: the nearest window is
+clearly forward and the others trail well behind, so the field never has two of
+them shouting at once. The invitation line waits for 62% of the glow, so a card
+merely within reach keeps a lit edge and nothing else.
+
+**The field seats the whole catalogue.** `PLACEMENTS` in
+`FloatingProjectCards.tsx` carries one window per `HOME_PROJECTS` entry — the
+count is pinned by test, so adding a project means adding its window. Below
+760px only the windows marked `narrow` stay, moved inside the frame: a card
+half off the glass reads as a bug, not as depth.
+
+Rules:
+- A window that looks pressable is pressable: every card in the field is a
+  button that opens its project. A field that lifts and does nothing is the
+  defect this record exists to prevent.
+- The field breathes, it does not bounce: one slow cycle per card, `easeInOut`,
+  staggered, and nothing that repeats faster than ten seconds.
+- A phone keeps three windows and moves them inside the frame; a card half off
+  the glass reads as a bug, not as depth.
+- Two cards never share a spring. If a change makes them move as one, it is the
+  wrong change.
+- Depth is one 3D stage. A card's size comes from its `z`, never from a scale
+  typed next to it.
+- Reduced motion stops the breath and the tilt; the cards stay where they are.
+- The title keeps the centre. A card that covers the word is a placement bug.
+
+## The catalogue is what is real (2026-10-27)
+
+Owner's call, after the field landed: *there's gotta be less and new ones … i got
+most of this stopped. some are even in beta now in public — tic-tac-toe, gambit.*
+
+The site listed ten products, six of which were paused, retired or a roadmap
+line, and it did not mention the one that is actually playable in public. The
+catalogue is now the six that are real:
+
+| Project | Kind | State |
+|---|---|---|
+| Tic-Tac-Toe | Games | **Beta** — live at `tic-tac-toe-1ou.pages.dev` |
+| Gambit Deck | Games | **Beta** — live at `gambit-deck.pages.dev` |
+| Pond | Productivity | In Development |
+| QArt | Marketing | In Development |
+| Bloxs | Design Tools | Prototype |
+| Renfe | Civic Tech | In Development |
+
+`HOME_PROJECTS` is that list: the home tour, the field, the portfolio index, the
+footers, the sitemap and every count derive from it, so a paused project can no
+longer advertise itself as current work. The eight that are paused, retired or
+roadmapped moved to `ARCHIVED_PROJECTS`: their pages stay reachable for anyone
+holding a link, and they are no longer listed, linked, counted or submitted.
+
+**Two live projects, and they say so.** A card may carry a `live` URL only when
+a stranger can open it today; Tic-Tac-Toe and Gambit Deck carry one and read
+"Beta" — the game works, and it can change between sessions.
+
+**New case pages.** Gambit Deck, Pond, Bloxs and Renfe each got a page written
+from the project's own record (its SF state and its repo README), with a
+bespoke 520:340 concept visual and the same "concept visual" caption as the
+rest.
+
+**The rotating word follows the catalogue.** It was "AI, SaaS, games, civic
+tech" while the site showed those; it is now **games, tools, civic tech**,
+because those are the kinds of work the six are.
+
+Rules:
+- A project is listed only while someone is working on it. Paused is not a
+  status a public catalogue needs; it is a status the owner needs.
+- A `live` link is a promise that a stranger can open it. No link, no promise.
+- "Beta" means playable and changing. It does not mean finished, and the page
+  says as much in its own words.
+- A new project enters the catalogue with a page, a visual and a description
+  written from evidence, never from ambition.
+
+## The catalogue is the active set (2026-11-16)
+
+Owner's call: *the listing shows only the active set.* The 2026-10-27 ruling
+kept paused and roadmap work reachable-but-unlisted; this one removes it
+entirely — from the listing, the linked pages and every data source.
+
+The catalogue is the nine the studio is actually working on:
+
+| Project | Kind | State |
+|---|---|---|
+| Tic-Tac-Toe | Games | **Beta** — live at `tic-tac-toe-1ou.pages.dev` |
+| Gambit Deck | Games | **Beta** — live at `gambit-deck.pages.dev` |
+| Bloxs | Design Tools | Prototype |
+| Renfe | Civic Tech | In Development |
+| Aitlas | AI Infrastructure | In Development |
+| Software Factory | Agent Infrastructure | In Development |
+| FUDDY | Food | In Development |
+| QArt | Marketing | In Development |
+| Benxer | AI Tools | In Development |
+
+`HOME_PROJECTS` is that list and the only one: `ARCHIVED_PROJECTS` is gone,
+and with it the eight retired portfolio pages, their hero components and
+their showcase films. Aitlas — archived on 2026-10-27 — is back in the
+catalogue because it is active work again. Software Factory, FUDDY and
+Benxer each got a case page written from the project's own record, with a
+bespoke 520:340 concept visual and the same "concept visual" caption as the
+rest; the field, the tour, the index, the footers, the sitemap, the showcase
+index and every count derive from the same nine.
+
+Rules:
+- The catalogue is the active set and nothing else. There is no archive
+  shelf on the public site — retired work leaves the pages and the data,
+  not just the links.
+- Every listed project has a page, a visual and a description written from
+  evidence — the project's own record, never ambition.
+- Removing a project removes its route, its hero, its films and its rows in
+  every derived surface in the same change; a half-removed project is a
+  dead link waiting to be found.
+
+## The contact is a letter (2026-10-27, second cut)
+
+First cut was facts on the left and a form on the right. Owner: *still slop.*
+Fair — it was the stock two-column contact with better manners.
+
+The panel is now one letter, 880px wide, in one column. The question sits in
+the margin as a mono label; the answer is written on the rule beside it, at
+reading size in the page's own face. Three questions, one action, and the two
+other ways to reach a person under the last rule. No boxes, no table, no second
+column to fill.
+
+- **Who is writing** · **Where to write back** · **What are we making** — the
+  labels are questions, because a label is a question the reader answers.
+- The answer is type, not a control: the field has no box, only the rule under
+  it, and the rule is part of the row.
+- **Send message** is the last rule: full width, inverting on hover.
+- Errors: said once where the mistake is, once above the action.
+- Sent: the form is replaced by "Thank you", the address it came from, and when
+  the reply arrives, with one way back. Success is still only claimed when the
+  provider acknowledged it.
+
+Rules:
+- A contact page is one column. Two columns is a form beside a text block, and
+  the reader has to choose which one to read first.
+- The question lives in the margin; the answer is type on the page, not an
+  input box.
+- The action is a rule, not a slab.
+
+## A case page is a shop window; the door is the product (2026-10-27)
+
+Owner's read: *it's only a marketing page — they should land on the project if
+they want to see it.*
+
+A case page exists to convince someone the thing is worth opening, so the thing
+itself has to be reachable from it, in two places and without a hunt:
+
+- **In the hero**, under the description, the first action is the product —
+  `Play it — beta` / `Play it — early build`, a rule button pointing outward.
+  Not a mailing list, not "get updates": if a stranger can open it today, the
+  page's action is to open it.
+- **In the corner**, a small fixed `Play ↗` (`.plastic-live`), so a reader who
+  is already convinced at any scroll depth never has to scroll back.
+
+A page with no live product gets no door: the button is absent, not disabled,
+and the closing call to action asks for an address instead. `ProjectLayout`
+takes `live={{ href, label }}` and renders the corner door only when it is given
+one.
+
+The status follows the product, not the ambition: Tic-Tac-Toe was still labelled
+"In Dev" while it had been playable in public for weeks. It reads **Beta** now,
+like Gambit Deck, and its closing action is the game.
+
+Rules:
+- If a stranger can open it, the page's primary action opens it.
+- The corner door is the only fixed element on the site; it stays small.
+- Never advertise a door that does not open: no live link, no Play button.
+
+## The footer: a sunset on paper, a moon on black (2026-10-27)
+
+The plate was painted black in both themes. Owner: *the light theme is the
+sunset — it should be whitish and not black; on dark where it's the moonlight,
+that's good, no change there.*
+
+The footer now reads two tokens — `--plate-paper` and `--plate-ink` — and the
+screen resolves them, so the same solver draws both plates. On the dark theme
+they are the black plate and white ink, and the moon (unchanged). On the light
+theme they are a warm paper (`oklch(0.965 0.008 88)`) and near-black ink, and
+the sun sits low on the right at radius 0.115 — a sunset printed on paper.
+
+**Two inks, because one cannot be both.** On paper the sun and the sea need
+different weights: a tone faint enough to read as water is too faint to read as
+a sun. The screen paints two atlases — `skyInk` for everything above the
+horizon, `color` for the sea — so the sun prints solid and the sea prints as a
+wash. `--plate-water` is the ink at 76% transparency on paper and the full ink
+on black; `--plate-ink` is the sun (and the moon) and the type.
+
+**A sunset is characters, not a drawing.** Round two of this plate put a hairline
+vector circle in for the sun. Owner's read: *supposed to be ASCII — wtf is there
+a full circle for the sun.* Correct: this plate is a character screen, and a
+vector shape in it is a different medium wearing its clothes. The sun is back to
+what the first cut had — a disc of the heaviest marks, half-set on the horizon,
+its light falling away through a halo of lighter marks, and its reflection
+breaking up on the water. No `arc`, no ring style, no vector stroke anywhere in
+the picture; a test holds the screen to it.
+
+What the second cut keeps from the work after it, because those parts were
+sound: **two inks** (the sun solid, the sea a wash at 72%), the day's own
+numbers — radius 0.1, half-set (`rise` 0.62), halo 0.16, haze 0.03 — and the
+finer lattice (`cellSize` 13). The night path is untouched: white marks, the
+moon, the stars, the full-tone sea.
+
+**The sea is a wash, not a field.** `--plate-water` is the ink at 72% on paper;
+the water's own surface is the horizon, so no rule is drawn there.
+
+**The tokens live on the root, not on the plate.** The screen resolves a colour
+by probing a detached element in the body, so a token scoped to the footer
+resolved to the fallback (black) and the light plate stayed black. And the
+screen is remounted on a theme switch (`key={theme}`): its inks are resolved
+when it mounts, and a fresh mount is cheaper than proving every repaint path.
+
+Rules:
+- A plate that is painted has its own tokens; it does not borrow the page's
+  foreground.
+- The light plate is a sunset, the dark plate is a night; both are the same
+  drawing with the paper and ink swapped.
+- Water is never heavier than the type it sits under.
 
 ## Softer screens — a plate for a footer, and no black boxes (2026-10-21)
 

@@ -13,8 +13,16 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from "lucide-react"
 
-function formatDayDate(date: Date, localeCode?: string) {
-  return date.toLocaleDateString(localeCode)
+const dayDateFormatters = new Map<string, Intl.DateTimeFormat>()
+
+function getDayDateFormatter(localeCode: string | undefined) {
+  const key = localeCode ?? ""
+  let formatter = dayDateFormatters.get(key)
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat(localeCode)
+    dayDateFormatters.set(key, formatter)
+  }
+  return formatter
 }
 
 function Calendar({
@@ -45,7 +53,7 @@ function Calendar({
       locale={locale}
       formatters={{
         formatMonthDropdown: (date) =>
-          date.toLocaleString(locale?.code, { month: "short" }),
+          date.toLocaleString(locale?.code ?? "en-US", { month: "short" }),
         ...formatters,
       }}
       classNames={{
@@ -193,8 +201,6 @@ function CalendarDayButton({
   ...props
 }: React.ComponentProps<typeof DayButton> & { locale?: Partial<Locale> }) {
   const defaultClassNames = getDefaultClassNames()
-  const formattedDate = formatDayDate(day.date, locale?.code)
-
   const ref = React.useRef<HTMLButtonElement>(null)
   React.useEffect(() => {
     if (modifiers.focused) ref.current?.focus()
@@ -204,7 +210,7 @@ function CalendarDayButton({
     <Button
       variant="ghost"
       size="icon"
-      data-day={formattedDate}
+      data-day={getDayDateFormatter(locale?.code).format(day.date)}
       data-selected-single={
         modifiers.selected &&
         !modifiers.range_start &&

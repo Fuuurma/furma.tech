@@ -5,9 +5,9 @@ import { useRef } from "react";
 import {
   motion,
   useMotionValue,
-  useReducedMotion,
   useSpring,
 } from "framer-motion";
+import { useStableReducedMotion } from "@/lib/use-reduced-motion";
 import { cn } from "@/lib/utils";
 
 interface ParallaxFrameProps {
@@ -25,7 +25,7 @@ export function ParallaxFrame({
   enabled = true,
   intensity = 1,
 }: ParallaxFrameProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useStableReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);

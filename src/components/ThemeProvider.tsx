@@ -9,18 +9,6 @@ const ThemeContext = React.createContext<{
   setTheme: (theme: Theme) => void;
 } | undefined>(undefined);
 
-const emptySnapshot = () => null;
-
-function readStoredTheme(storageKey: string): Theme | null {
-  const stored = localStorage.getItem(storageKey);
-  return stored === 'light' || stored === 'dark' ? stored : null;
-}
-
-function subscribeToStorage(onStoreChange: () => void) {
-  window.addEventListener('storage', onStoreChange);
-  return () => window.removeEventListener('storage', onStoreChange);
-}
-
 export function ThemeProvider({
   children,
   defaultTheme = 'light',
@@ -30,20 +18,39 @@ export function ThemeProvider({
   defaultTheme?: Theme;
   storageKey?: string;
 }) {
-  const [override, setOverride] = React.useState<Theme | null>(null);
-
-  const getSnapshot = React.useCallback(
-    () => readStoredTheme(storageKey),
-    [storageKey]
-  );
-
-  const storedTheme = React.useSyncExternalStore(
-    subscribeToStorage,
-    getSnapshot,
-    emptySnapshot
-  );
-
-  const theme = override ?? storedTheme ?? defaultTheme;
+  // localStorage is unreadable during an SSR render, so the theme is read
+  // through `useSyncExternalStore`: the server snapshot is the default theme
+  // and the stored theme is applied after hydration. That keeps the server
+  // and client markup in agreement by construction, with no `setState` in an
+  // effect and no hydration mismatch.
+  const fallback = React.useRef<Theme>(defaultTheme);
+  const subscribe = React.useCallback((onChange: () => void) => {
+    window.addEventListener('storage', onChange);
+    window.addEventListener('furma-theme-change', onChange);
+    return () => {
+      window.removeEventListener('storage', onChange);
+      window.removeEventListener('furma-theme-change', onChange);
+    };
+  }, []);
+  const getSnapshot = React.useCallback(() => {
+    try {
+      const stored = localStorage.getItem(storageKey);
+      return stored === 'light' || stored === 'dark' ? stored : fallback.current;
+    } catch {
+      return fallback.current;
+    }
+  }, [storageKey]);
+  const getServerSnapshot = React.useCallback(() => defaultTheme, [defaultTheme]);
+  const theme = React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const setTheme = React.useCallback((next: Theme) => {
+    fallback.current = next;
+    try {
+      localStorage.setItem(storageKey, next);
+    } catch {
+      // The current tab can still switch themes when storage is unavailable.
+    }
+    window.dispatchEvent(new Event('furma-theme-change'));
+  }, [storageKey]);
 
   React.useEffect(() => {
     const root = document.documentElement;
@@ -51,16 +58,7 @@ export function ThemeProvider({
     root.classList.add(theme);
   }, [theme]);
 
-  const value = React.useMemo(
-    () => ({
-      theme,
-      setTheme: (newTheme: Theme) => {
-        setOverride(newTheme);
-        localStorage.setItem(storageKey, newTheme);
-      },
-    }),
-    [theme, storageKey]
-  );
+  const value = React.useMemo(() => ({ theme, setTheme }), [theme, setTheme]);
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }

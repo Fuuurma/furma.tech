@@ -2,14 +2,22 @@
 
 ## Project Overview
 
-**Furma.tech** is a bootstrapped studio (Estonian OÜ, based in Sitges, Catalonia) building two main verticals:
+**Furma.tech** is a bootstrapped studio (Estonian OÜ, based in Sitges, Catalonia). The product catalogue is `src/lib/home-projects.ts`: the nine active products (`HOME_PROJECTS`) — the only projects listed, linked or counted anywhere on the site. `tests/guide-catalogue.test.ts` fails when this block drifts from the catalogue.
 
-- **Industry SaaS** — B2B tools for restaurants and tourism (restauManager, GuideTours)
-- **Aitlas** — Sovereign AI ecosystem (BYOK model, MCP-first, 34+ Actions)
+**Advertised products (`HOME_PROJECTS`):**
+- **Tic-Tac-Toe** — Vanishing-move strategy game (Beta)
+- **Gambit Deck** — Guest-first card game, no account to play (Beta)
+- **Bloxs** — Component library rebuilt from named sources (Prototype)
+- **Renfe** — Civic dashboard measuring Renfe service from open feeds (In Development)
+- **Aitlas** — Sovereign AI ecosystem: Nova, Nexus, agents marketplace (In Development)
+- **Software Factory** — Private control plane for agentic work (In Development)
+- **FUDDY** — Shared household meal planner (In Development)
+- **QArt** — AI-generated QR codes that look like art (In Development)
+- **Benxer** — Local-first model intelligence explorer (In Development)
 
 Core ethos: **0% VC, profitable before flashy, "build software that works."**
 
-This is a **Next.js 16.3.5 website** using the App Router, serving as the corporate site and developer portal. It features a custom design system with semantic CSS variables, scroll-triggered animations, glass effects, and dark mode support.
+This is a **Next.js 16.4 website** using the App Router, serving as the corporate site and developer portal. It features a custom design system with semantic CSS variables, scroll-triggered animations, glass effects, and dark mode support.
 
 ---
 
@@ -17,11 +25,11 @@ This is a **Next.js 16.3.5 website** using the App Router, serving as the corpor
 
 | Category | Technology |
 |----------|------------|
-| Framework | Next.js 16.3.5 (App Router) |
+| Framework | Next.js 16.4.2 (App Router) |
 | UI | React 19.2.8 |
 | Language | TypeScript (strict mode) |
 | Styling | Tailwind CSS v4 |
-| Components | Base UI (`@base-ui/react`) + Lucide Icons |
+| Components | Base UI + Lucide Icons |
 | Validation | Zod v4 |
 | Package Manager | pnpm |
 | Analytics | Vercel Analytics + Speed Insights |
@@ -57,8 +65,8 @@ pnpm dev            # Start dev server (http://127.0.0.1:3080, Turbopack is the 
 pnpm build          # Production build
 pnpm start          # Start production server
 pnpm lint           # Run ESLint
-pnpm test           # Zero-dependency node --test gate (tests/*.test.ts)
-pnpm test:smoke     # Production-server route smoke check (scripts/smoke.mjs)
+pnpm test           # node:test contract suites in tests/
+pnpm test:smoke     # Runtime smoke gate (needs pnpm start on :3080)
 ```
 
 **Before committing:** Always run `pnpm lint && pnpm test && pnpm build`.
@@ -142,6 +150,7 @@ const result = Schema.safeParse(data);
 | `/privacy` | Privacy policy |
 | `/brand` | Brand assets (noindex) |
 | `/styleguide` | UI primitive reference |
+| `/showcase` | Product films index |
 | `/v2` | Alternate "Workshop" concept (excluded from the sitemap) |
 
 ---
@@ -162,7 +171,9 @@ const result = Schema.safeParse(data);
 
 ## Testing
 
-Tests run on Node's built-in runner — **zero-dependency `node --test`**, no third-party framework. `pnpm test` runs `node --test "tests/*.test.ts"`; each file in `tests/` imports `node:test` and `node:assert/strict`. `pnpm test:smoke` runs `scripts/smoke.mjs`. See `AGENTS.md` §8.
+Zero-dependency `node:test` contract suites under `tests/` — no framework
+install (`pnpm test`). Suites import pure `src/lib` modules and read source
+files to pin product decisions. Runtime smoke gate: `pnpm test:smoke`.
 
 ---
 

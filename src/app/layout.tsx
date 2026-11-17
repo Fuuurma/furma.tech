@@ -1,23 +1,36 @@
 import type { Metadata } from "next";
-import { Syne, Cormorant, JetBrains_Mono } from "next/font/google";
+import { Cormorant, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LayoutChrome } from "@/components/LayoutChrome";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Analytics } from "@/components/Analytics";
 
-const syne = Syne({
+// The face the site is set in. It was Syne, whose `g` has a severed descender
+// by design — the Google Fonts original draws it the same way, so it is not a
+// rendering bug, it is the typeface, and at any size it reads as an unfinished
+// letter. Furma's 2026-10-27 call: every letter has to finish.
+const instrument = Instrument_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
-  weight: ["400", "500", "600", "700"],
 });
 
 const cormorant = Cormorant({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600"],
   variable: "--font-serif",
   display: "swap",
-  style: ["normal", "italic"],
+  style: "normal",
+});
+
+// Italic Cormorant is used on the brand and styleguide routes, so keep it out of the global preload.
+const cormorantItalic = Cormorant({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-serif",
+  display: "swap",
+  style: "italic",
+  preload: false,
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -26,6 +39,11 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+// F99: the shared card is the designed asset — public/og.png, the 1200x630
+// render of the real hero (DESIGN.md). The dynamic /og route stays for
+// per-title cards (product pages, Aitlas); the root card must not re-render
+// the retired "Digital Venture Studio" template.
+
 export const metadata: Metadata = {
   title: "Furma.tech — Digital Studio",
   description: "Bootstrapped studio building industry-grade SaaS tools and the Aitlas AI ecosystem. Estonian OÜ operating globally.",
@@ -33,19 +51,15 @@ export const metadata: Metadata = {
   authors: [{ name: "Furma.tech OÜ" }],
   // Relative share-image URLs resolve against this.
   metadataBase: new URL("https://furma.tech"),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "Furma.tech — Digital Studio",
     description: "Building software that works. Two verticals: B2B SaaS + Aitlas AI ecosystem.",
     type: "website",
     locale: "en_US",
-    images: [
-      {
-        url: "/og.png",
-        width: 1200,
-        height: 630,
-        alt: "furma.tech — Digital studio",
-      },
-    ],
+    images: ["/og.png"],
   },
   twitter: {
     card: "summary_large_image",
@@ -59,14 +73,46 @@ export const metadata: Metadata = {
   },
 };
 
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://furma.tech/#org",
+      name: "Furma.tech OÜ",
+      url: "https://furma.tech",
+      logo: "https://furma.tech/logo.svg",
+      description: "Bootstrapped venture studio building industry-grade SaaS tools and the Aitlas AI ecosystem.",
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://furma.tech/#site",
+      url: "https://furma.tech",
+      name: "Furma.tech",
+      publisher: { "@id": "https://furma.tech/#org" },
+    },
+  ],
+};
+
+// JSON.stringify is not HTML-safe: a `<` in the data could close the script
+// tag. Escaping to JSON unicode sequences keeps the parsed payload identical.
+const JSON_LD_SCRIPT = JSON.stringify(JSON_LD)
+  .replace(/&/g, "\\u0026")
+  .replace(/</g, "\\u003c")
+  .replace(/>/g, "\\u003e");
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${syne.variable} ${cormorant.variable} ${jetbrainsMono.variable} scroll-smooth`} suppressHydrationWarning>
+    <html lang="en" className={`${cormorant.variable} ${cormorantItalic.variable} ${jetbrainsMono.variable} ${instrument.variable} scroll-smooth`} suppressHydrationWarning>
       <body className="font-sans antialiased min-h-screen flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON_LD_SCRIPT }}
+        />
         <ThemeProvider defaultTheme="light" storageKey="furma-theme">
         <a href="#main-content" className="skip-link">
           Skip to main content

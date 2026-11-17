@@ -13,7 +13,7 @@ export function PortfolioHero() {
     <section
       ref={surfaceRef}
       aria-labelledby="portfolio-hero-title"
-      className="portfolio-hero relative overflow-hidden bg-black"
+      className="portfolio-hero relative overflow-hidden bg-background"
     >
       <h1 id="portfolio-hero-title" className="sr-only">
         {HOME_PROJECTS.length} products
@@ -21,9 +21,9 @@ export function PortfolioHero() {
 
       <DitherWave
         surfaceRef={surfaceRef}
-        primaryColor="#000000"
-        secondaryColor="#ffffff"
-        tertiaryColor="#ffffff"
+        primaryColor="var(--background)"
+        secondaryColor="var(--foreground)"
+        tertiaryColor="var(--foreground)"
         speed={0.6}
         scale={5}
         downScale={0.5}

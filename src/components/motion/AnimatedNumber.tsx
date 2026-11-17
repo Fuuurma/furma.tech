@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import {
   motion,
   useInView,
-    useMotionValue,
+  useMotionValue,
   useTransform,
   animate,
 } from "framer-motion";
@@ -55,7 +55,7 @@ export function AnimatedNumber({
     <motion.span
       ref={ref}
       className={cn("animated-number tabular-nums", className)}
-      initial={{ opacity: 0, y: 8 }}
+      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
       animate={shouldRun ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: motionDuration.base, ease: EASE_OUT_EXPO }}
     >
