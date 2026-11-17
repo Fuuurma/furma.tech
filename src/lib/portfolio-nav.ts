@@ -1,4 +1,4 @@
-import { HOME_PROJECTS } from "@/lib/home-projects";
+import { HOME_PROJECTS } from "./home-projects.ts";
 
 function getPortfolioPageTitle(pathname: string): string {
   if (pathname === "/portfolio") return "All projects";
@@ -26,7 +26,6 @@ export function getStudioPageTitle(pathname: string): string | undefined {
   if (pathname === "/brand") return "Brand";
   if (pathname === "/privacy") return "Privacy";
   if (pathname === "/styleguide") return "Styleguide";
-  if (pathname.startsWith("/products")) return "Product";
 
   return undefined;
 }

@@ -45,14 +45,14 @@ src/
 │   ├── globals.css         # Tailwind v4 config, CSS variables, animations
 │   └── [route]/page.tsx   # Route pages
 ├── components/
-│   ├── ui/                # Primitive UI components
+│   ├── ui/                # Primitive UI components (Base UI)
 │   └── *.tsx              # Shared/components
-├── lib/
-│   ├── utils.ts           # cn() utility (clsx + tailwind-merge)
-│   ├── metadata.ts        # SEO metadata helpers
-│   ├── schemas.ts         # Zod validation schemas
-│   └── actions.ts         # Server actions
-└── hooks/                 # Custom React hooks
+├── hooks/                 # Custom React hooks
+└── lib/
+    ├── utils.ts           # cn() utility (clsx + tailwind-merge)
+    ├── metadata.ts        # SEO metadata helpers
+    ├── schemas.ts         # Zod validation schemas
+    └── server-actions.ts  # Server actions
 ```
 
 ---
@@ -61,7 +61,7 @@ src/
 
 ```bash
 pnpm install        # Install dependencies
-pnpm dev            # Start dev server (http://127.0.0.1:3080, Turbopack enabled)
+pnpm dev            # Start dev server (http://127.0.0.1:3080, Turbopack is the default bundler)
 pnpm build          # Production build
 pnpm start          # Start production server
 pnpm lint           # Run ESLint
@@ -69,7 +69,7 @@ pnpm test           # node:test contract suites in tests/
 pnpm test:smoke     # Runtime smoke gate (needs pnpm start on :3080)
 ```
 
-**Before committing:** Always run `pnpm lint && pnpm build`.
+**Before committing:** Always run `pnpm lint && pnpm test && pnpm build`.
 
 ---
 
@@ -108,11 +108,12 @@ pnpm test:smoke     # Runtime smoke gate (needs pnpm start on :3080)
 
 ### Animations & Effects
 - `.animate-fade-up` — Main fade-up animation
-- `.delay-1` through `.delay-5` — Stagger delays (0.1s–0.65s)
+- `.delay-1` through `.delay-5` — Stagger delays (0.1s–0.5s)
 - `.reveal` / `.reveal.visible` — Scroll-triggered reveals
 - `.glass` — Backdrop blur effect
-- `.hover-lift` / `.card-hover` — Hover shadow lift
-- `.gradient-text` — Amber→orange→pink gradient text
+- `.hover-lift` — `translateY(-2px)` on hover
+- `.card-hover` — Border turns to the foreground colour on hover
+- `.gradient-text` — Legacy name; prints the foreground colour, no gradient (the page is monochrome — `DESIGN.md`)
 
 ### Zod Validation (v4)
 ```typescript
@@ -143,11 +144,14 @@ const result = Schema.safeParse(data);
 
 | Route | Description |
 |-------|-------------|
-| `/` | Homepage |
-| `/portfolio` | Portfolio index (all advertised products) |
-| `/portfolio/[project]` | Product page |
+| `/` | Fullscreen studio home (contact at `/#contact`) |
+| `/portfolio` | Editorial project list |
+| `/portfolio/[project]` | Case study pages |
 | `/privacy` | Privacy policy |
-| `/#contact` | Contact (home anchor) |
+| `/brand` | Brand assets (noindex) |
+| `/styleguide` | UI primitive reference |
+| `/showcase` | Product films index |
+| `/v2` | Alternate "Workshop" concept (excluded from the sitemap) |
 
 ---
 

@@ -30,7 +30,7 @@ Open [http://127.0.0.1:3080](http://127.0.0.1:3080)
 
 | Command | Description |
 |---------|-------------|
-| `pnpm dev` | Start dev server (Turbopack enabled) |
+| `pnpm dev` | Start dev server (Turbopack is the default bundler) |
 | `pnpm build` | Production build |
 | `pnpm start` | Start production server |
 | `pnpm lint` | ESLint check |
@@ -48,7 +48,7 @@ src/
 │   ├── globals.css         # Tailwind v4 config + CSS variables
 │   └── [route]/page.tsx   # Route pages
 ├── components/
-│   ├── ui/                # Primitive UI components
+│   ├── ui/                # Primitive UI components (Base UI)
 │   └── *.tsx              # Shared components
 ├── lib/
 │   ├── utils.ts           # cn() utility
@@ -57,6 +57,8 @@ src/
 │   └── server-actions.ts # Server actions
 └── hooks/                # Custom React hooks
 ```
+
+Tests live in `tests/` (`*.test.ts`, run by `pnpm test`); the smoke script is `scripts/smoke.mjs`.
 
 ---
 
@@ -80,8 +82,9 @@ See `AGENTS.md` for full guidelines.
 | `/portfolio/[project]` | Case study pages |
 | `/privacy` | Privacy policy |
 | `/brand` | Brand assets (noindex) |
+| `/styleguide` | UI primitive reference |
 | `/showcase` | Product films index |
-| `/v2` | Alternate "Workshop" UI concept (noindex) |
+| `/v2` | Alternate "Workshop" concept (excluded from the sitemap) |
 
 Contact lives on the home experience at `/#contact`.
 

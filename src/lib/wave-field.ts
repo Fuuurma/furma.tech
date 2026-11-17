@@ -140,8 +140,13 @@ export function sampleField(
 ): number {
   if (columns <= 0 || rows <= 0) return 0;
 
-  const fx = u * (columns - 1);
-  const fy = v * (rows - 1);
+  // A point asked for past the edge reads the edge it ran off, never an
+  // index that is not there.
+  const cu = Math.min(1, Math.max(0, u));
+  const cv = Math.min(1, Math.max(0, v));
+
+  const fx = cu * (columns - 1);
+  const fy = cv * (rows - 1);
   const x0 = Math.floor(fx);
   const y0 = Math.floor(fy);
   const x1 = Math.min(columns - 1, x0 + 1);

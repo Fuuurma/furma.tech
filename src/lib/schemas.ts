@@ -26,63 +26,6 @@ export const contactFormSchema = z.object({
   newsletter: z.boolean().optional().default(false),
 });
 
-export type ContactFormData = z.infer<typeof contactFormSchema>;
-
-/**
- * Waitlist signup schema
- * Simplified form for quick signup
- */
-export const waitlistSchema = z.object({
-  email: z
-    .string()
-    .email('Please enter a valid email address'),
-  interest: z
-    .enum(['aitlas', 'fuddy', 'benxer', 'all'])
-    .optional()
-    .default('all'),
-});
-
-export type WaitlistData = z.infer<typeof waitlistSchema>;
-
-/**
- * Booking/demo request schema
- * For scheduling calls and demos
- */
-export const bookingSchema = z.object({
-  name: z
-    .string()
-    .min(2, 'Name must be at least 2 characters'),
-  email: z
-    .string()
-    .email('Please enter a valid email address'),
-  company: z
-    .string()
-    .min(2, 'Company name required'),
-  phone: z
-    .string()
-    .min(6, 'Please enter a valid phone number')
-    .optional()
-    .or(z.literal('')),
-  preferredDate: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, 'Please select a valid date'),
-  preferredTime: z
-    .string()
-    .regex(/^\d{2}:\d{2}$/, 'Please select a valid time'),
-  timezone: z
-    .string()
-    .default('Europe/Madrid'),
-  product: z
-    .enum(['aitlas', 'fuddy', 'benxer', 'not_sure']),
-  notes: z
-    .string()
-    .max(1000, 'Notes must be less than 1000 characters')
-    .optional()
-    .or(z.literal('')),
-});
-
-export type BookingData = z.infer<typeof bookingSchema>;
-
 /**
  * Validation result type
  */

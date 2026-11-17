@@ -39,14 +39,14 @@ src/
 │   ├── globals.css         # Tailwind v4 configuration + design system variables
 │   └── [route]/page.tsx   # Individual route pages
 ├── components/
-│   ├── ui/                # Primitive UI components (shadcn/ui style)
+│   ├── ui/                # Primitive UI components (Base UI)
 │   └── *.tsx              # Shared/Feature components
-├── lib/                   # Core utilities and shared logic
-│   ├── utils.ts           # Tailwind merge (cn) utility
-│   ├── metadata.ts        # SEO and OpenGraph configurations
-│   ├── schemas.ts         # Zod validation schemas
-│   └── actions.ts         # Next.js Server Actions
-└── hooks/                 # Custom React hooks
+├── hooks/                 # Custom React hooks
+└── lib/                   # Core utilities and shared logic
+    ├── utils.ts           # Tailwind merge (cn) utility
+    ├── metadata.ts        # SEO and OpenGraph configurations
+    ├── schemas.ts         # Zod validation schemas
+    └── server-actions.ts  # Next.js Server Actions
 ```
 
 ---
@@ -55,7 +55,7 @@ src/
 
 | Command | Description |
 |---------|-------------|
-| `pnpm dev` | Starts the development server with Turbopack enabled. |
+| `pnpm dev` | Starts the development server (Turbopack is the default bundler). |
 | `pnpm build` | Creates a production-ready build of the application. |
 | `pnpm start` | Runs the production build locally. |
 | `pnpm lint` | Executes ESLint to check for code quality and style issues. |

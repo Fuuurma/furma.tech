@@ -63,8 +63,8 @@ src/
 │   └── [route]/page.tsx   # Route pages
 ├── components/
 │   ├── *.tsx              # Shared components (PascalCase)
-│   └── ui/                # Primitive UI components
-├── hooks/                 # Custom React hooks
+│   └── ui/                # Primitive UI components (Base UI)
+├── hooks/                 # Custom React hooks (useScroll.ts)
 └── lib/                   # Utilities (camelCase)
     └── utils.ts           # cn() helper using clsx + tailwind-merge
 tests/                     # node:test contract suites (run via pnpm test)
@@ -166,10 +166,10 @@ export default function MyComponent({ defaultValue = "", onSubmit }: Props) {
 ### Animation Classes
 ```css
 .animate-fade-up         /* Main fade-up */
-.delay-1 through .delay-5  /* 0.1s to 0.5s delays */
+.delay-1 through .delay-5  /* 0.1s to 0.5s stagger delays */
 .animate-ticker          /* Horizontal ticker (pauses on hover) */
 .reveal / .reveal.visible  /* Scroll reveal (add .visible via JS) */
-/* Directional reveals: .reveal-up, .reveal-down, .reveal-left, .reveal-right */
+/* Directional reveals: .reveal-up, .reveal-down, .reveal-left, .reveal-right, .reveal-fade */
 .section                 /* padding: 100px 0 (60px mobile) */
 ```
 
@@ -177,7 +177,7 @@ export default function MyComponent({ defaultValue = "", onSubmit }: Props) {
 ```css
 .glass         /* backdrop-filter blur + semi-transparent bg */
 .hover-lift    /* translateY(-2px) on hover */
-.card-hover    /* subtle shadow lift on hover */
+.card-hover    /* border-color to foreground on hover */
 ```
 
 ---
@@ -253,6 +253,8 @@ test("the contract holds", () => {
   assert.equal(actual, expected);
 });
 ```
+
+Tests are plain Node: they import `node:test`, `node:assert/strict`, and the module under test directly — no DOM, no component rendering. Boundary tests that read the stylesheet or source (e.g. `monochrome-chrome.test.ts`, `type-contrast.test.ts`) walk the files with `node:fs`.
 
 ---
 
