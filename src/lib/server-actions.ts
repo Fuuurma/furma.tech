@@ -1,5 +1,5 @@
 /**
- * Server actions for contact + waitlist.
+ * Server actions for the contact form.
  *
  * Truthfulness contract (VAL-STATIC-FUR-002 / 003):
  * - Input is always validated; invalid input is rejected with field errors.
@@ -15,7 +15,7 @@
 
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
-import { contactFormSchema, waitlistSchema, validateForm } from "./schemas";
+import { contactFormSchema, validateForm } from "./schemas";
 import { checkScopedRateLimit } from "./rate-limit";
 import {
   resolveContactProvider,
@@ -160,49 +160,5 @@ export async function submitContactForm(
   return {
     success: true,
     data: result.reference ? { messageId: result.reference } : {},
-  };
-}
-
-export async function submitWaitlistSignup(
-  formData: FormData,
-): Promise<ServerActionResponse> {
-  const data = {
-    email: String(formData.get("email") ?? ""),
-    interest: String(formData.get("interest") ?? "all") || "all",
-  };
-
-  const validation = validateForm(waitlistSchema, data);
-  if (validation.errors) {
-    return { success: false, error: "Please enter a valid email address." };
-  }
-
-  const scope = checkScopedRateLimit(
-    contactScopes(
-      "waitlist",
-      rateLimitIdentifier(formData),
-      await callerScope(),
-    ),
-  );
-  if (!scope.allowed) {
-    return { success: false, error: RATE_LIMIT_MESSAGE };
-  }
-
-  const result = await submitToProvider(
-    {
-      channel: "waitlist",
-      name: "",
-      email: data.email,
-      message: "",
-      interest: data.interest,
-    },
-    resolveContactProvider(),
-  );
-  if (!result.ok) {
-    return { success: false, error: PROVIDER_UNAVAILABLE_MESSAGE };
-  }
-
-  return {
-    success: true,
-    data: result.reference ? { signupId: result.reference } : {},
   };
 }
