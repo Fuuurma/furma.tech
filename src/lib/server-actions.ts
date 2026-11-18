@@ -22,6 +22,7 @@ import {
   submitToProvider,
   type ContactSubmission,
 } from "./contact-provider";
+import { decideContactActionResponse } from "./contact-action-decision";
 
 interface ServerActionResponse<T = unknown> {
   success: boolean;
@@ -39,16 +40,6 @@ const WAITLIST_RATE_WINDOW_MS = 60_000;
 // enough for a shared office NAT, tight enough that rotation buys nothing.
 const CALLER_RATE_LIMIT = 15;
 const CALLER_RATE_WINDOW_MS = 60_000;
-
-/**
- * Truthful copy shown when no durable provider is configured (or the provider
- * fails). Never claims success, enrollment, or a receipt — always offers the
- * direct mailto alternative so the visitor still has a working contact path.
- */
-const PROVIDER_UNAVAILABLE_MESSAGE =
-  "We couldn't record your message right now. Email hello@furma.tech directly and we'll reply within 48 hours.";
-const RATE_LIMIT_MESSAGE =
-  "Too many attempts — please wait a minute and try again, or email hello@furma.tech directly.";
 
 function rateLimitIdentifier(formData: FormData): string {
   const email = String(formData.get("email") ?? "")
@@ -97,17 +88,6 @@ function contactScopes(
   ];
 }
 
-function fieldErrorMap(
-  errors: Record<string, string[]>,
-): Record<string, string> {
-  return Object.fromEntries(
-    Object.entries(errors).map(([key, messages]) => [
-      key,
-      messages[0] ?? "Invalid value",
-    ]),
-  );
-}
-
 export async function submitContactForm(
   formData: FormData,
 ): Promise<ServerActionResponse> {
@@ -122,11 +102,10 @@ export async function submitContactForm(
 
   const validation = validateForm(contactFormSchema, data);
   if (validation.errors) {
-    const fieldErrors = fieldErrorMap(validation.errors);
-    const first =
-      Object.values(fieldErrors)[0] ??
-      "Please check the form and try again.";
-    return { success: false, error: first, fieldErrors };
+    return decideContactActionResponse({
+      stage: "invalid",
+      errors: validation.errors,
+    });
   }
 
   const scope = checkScopedRateLimit(
@@ -137,7 +116,7 @@ export async function submitContactForm(
     ),
   );
   if (!scope.allowed) {
-    return { success: false, error: RATE_LIMIT_MESSAGE };
+    return decideContactActionResponse({ stage: "rate-limited" });
   }
 
   const submission: ContactSubmission = {
@@ -151,14 +130,9 @@ export async function submitContactForm(
   };
 
   const result = await submitToProvider(submission, resolveContactProvider());
-  if (!result.ok) {
-    // Fail closed: no fabricated receipt, no false enrollment.
-    return { success: false, error: PROVIDER_UNAVAILABLE_MESSAGE };
-  }
-
-  revalidatePath("/");
-  return {
-    success: true,
-    data: result.reference ? { messageId: result.reference } : {},
-  };
+  const decision = decideContactActionResponse({ stage: "provider", result });
+  // Revalidate only a truthful success; the acknowledgement gate itself
+  // lives in the pure decision seam (fail closed, no fabricated receipt).
+  if (decision.success) revalidatePath("/");
+  return decision;
 }
