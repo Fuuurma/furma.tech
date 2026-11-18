@@ -28,6 +28,7 @@ import {
   checkScopedRateLimit,
   checkRateLimit,
   __resetRateLimiterForTests,
+  __getBucketCountForTests,
 } from "../src/lib/rate-limit.ts";
 
 test.beforeEach(() => __resetRateLimiterForTests());
@@ -105,6 +106,26 @@ test("the bucket map stays bounded under a rotation flood", () => {
   const after = checkRateLimit("flood:after", 2, 60_000);
   assert.equal(after.allowed, true);
   assert.equal(after.remaining, 1);
+});
+
+test("the SCOPED path also caps the bucket map under sustained distinct keys", () => {
+  // FURMATECH-SWEEP-R1: checkScopedRateLimit is the production path (server
+  // actions call it), yet its recorder never ran the cap eviction that
+  // checkRateLimit does. Rotation of both scopes must not grow the map past
+  // the 10,000 cap (+1 tolerated for the in-flight set before eviction).
+  // The earlier flood test only exercised checkRateLimit, so it stayed green
+  // while this path leaked to 22,000 buckets.
+  for (let i = 0; i < 11_000; i++) {
+    checkScopedRateLimit([
+      { key: `scoped:email:${i}`, limit: 5, windowMs: 60_000 },
+      { key: `scoped:caller:${i}`, limit: 5, windowMs: 60_000 },
+    ]);
+  }
+  const size = __getBucketCountForTests();
+  assert.ok(
+    size <= 10_001,
+    `scoped flood grew the bucket map to ${size} (cap 10000 + 1 in-flight)`,
+  );
 });
 
 test("expired buckets are evictable — space frees for new identifiers", () => {

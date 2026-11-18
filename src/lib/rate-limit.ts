@@ -64,38 +64,46 @@ export function checkRateLimit(
   const remaining = Math.max(0, limit - hits.length);
 
   buckets.set(key, { hits });
-
-  // Eviction when the map is large — CPU-bounded by design (FURMA-CONTACT-
-  // RATE-BOUND-01): the old sweep walked the WHOLE map (10k entries) on
-  // every call once the cap was hit, letting an attacker who pins the cap
-  // tax every subsequent request. The scan now visits at most
-  // MAX_EVICTION_SCAN oldest keys (Map preserves insertion order), deletes
-  // the expired ones among them, and hard-drops oldest entries until the
-  // map is under the cap again. Memory stays bounded; so does the work per
-  // accepted or denied call.
-  if (buckets.size > MAX_BUCKETS) {
-    let scanned = 0;
-    const droppable: string[] = [];
-    for (const [mapKey, bucket] of buckets) {
-      if (scanned >= MAX_EVICTION_SCAN) break;
-      scanned += 1;
-      if (mapKey !== key && bucket.hits.every((h) => h <= cutoff)) {
-        droppable.push(mapKey);
-      }
-    }
-    for (const mapKey of droppable) buckets.delete(mapKey);
-    while (buckets.size > MAX_BUCKETS) {
-      const oldest = buckets.keys().next().value;
-      if (oldest === undefined) break;
-      buckets.delete(oldest);
-    }
-  }
+  evictIfOverCap(cutoff, new Set([key]));
 
   return { allowed, remaining, resetAt, windowMs, limit };
 }
 
 /** The eviction scan never visits more keys than this per call. */
 const MAX_EVICTION_SCAN = 200;
+
+/**
+ * Enforce MAX_BUCKETS after a write — shared by both the single-scope and the
+ * scoped path so the production route cannot skip the cap (FURMA-CONTACT-
+ * RATE-BOUND-01). The old sweep walked the WHOLE map on every call once the
+ * cap was hit; the scan now visits at most MAX_EVICTION_SCAN oldest keys (Map
+ * preserves insertion order), deletes the expired ones among them, and
+ * hard-drops oldest entries until the map is under the cap again. Memory and
+ * per-call work both stay bounded. `justWritten` keys are spared the
+ * expired-drop so a call never discards its own fresh hit.
+ */
+function evictIfOverCap(
+  cutoff: number,
+  justWritten: ReadonlySet<string>,
+): void {
+  if (buckets.size <= MAX_BUCKETS) return;
+
+  let scanned = 0;
+  const droppable: string[] = [];
+  for (const [mapKey, bucket] of buckets) {
+    if (scanned >= MAX_EVICTION_SCAN) break;
+    scanned += 1;
+    if (!justWritten.has(mapKey) && bucket.hits.every((h) => h <= cutoff)) {
+      droppable.push(mapKey);
+    }
+  }
+  for (const mapKey of droppable) buckets.delete(mapKey);
+  while (buckets.size > MAX_BUCKETS) {
+    const oldest = buckets.keys().next().value;
+    if (oldest === undefined) break;
+    buckets.delete(oldest);
+  }
+}
 
 export interface ScopedLimit {
   key: string;
@@ -140,7 +148,7 @@ export function checkScopedRateLimit(
 
   let resetAt = 0;
   for (const e of evaluations) {
-    recordScope(e.scope.key, e.hits, now);
+    recordScope(e.scope.key, e.hits, now, now - e.scope.windowMs);
     resetAt = Math.max(resetAt, e.resetAt);
   }
   return { allowed: true, resetAt, deniedScope: null };
@@ -163,12 +171,24 @@ function evaluateScope(
   return { hits, allowed, resetAt: oldest + windowMs };
 }
 
-function recordScope(key: string, hits: number[], now: number): void {
+function recordScope(
+  key: string,
+  hits: number[],
+  now: number,
+  cutoff: number,
+): void {
+  const resolvedKey = key || "anonymous";
   hits.push(now);
-  buckets.set(key || "anonymous", { hits });
+  buckets.set(resolvedKey, { hits });
+  evictIfOverCap(cutoff, new Set([resolvedKey]));
 }
 
 /** Reset all limiter state. Test-only — exported so suites stay deterministic. */
 export function __resetRateLimiterForTests(): void {
   buckets.clear();
+}
+
+/** Live bucket-map size, for the bounded-memory pinning test. Test-only. */
+export function __getBucketCountForTests(): number {
+  return buckets.size;
 }
