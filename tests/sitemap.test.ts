@@ -33,6 +33,10 @@ test("sitemap: no entry claims a lastModified date", () => {
 });
 
 test("sitemap: the URL set is preserved", () => {
+  // The expected set is hand-written, not rebuilt from HOME_PROJECTS: an
+  // expectation derived from the input agrees with it by construction and
+  // cannot notice a dropped project. Adding or removing a registry entry
+  // must fail this test until the pin is updated deliberately.
   const urls = buildSitemap(BASE, HOME_PROJECTS).map((entry) => entry.url);
   assert.deepEqual(urls, [
     BASE,
@@ -42,9 +46,15 @@ test("sitemap: the URL set is preserved", () => {
     `${BASE}/portfolio/aitlas/nova`,
     `${BASE}/portfolio/aitlas/nexus`,
     `${BASE}/portfolio/aitlas/agents`,
-    ...HOME_PROJECTS.filter((p) => p.id !== "aitlas").map(
-      (p) => `${BASE}${p.href}`,
-    ),
+    `${BASE}/portfolio/restauramanager`,
+    `${BASE}/portfolio/guidetours`,
+    `${BASE}/portfolio/qart`,
+    `${BASE}/portfolio/tic-tac-toe-disappear`,
+    `${BASE}/portfolio/financehub`,
+    `${BASE}/portfolio/pickstracker`,
+    `${BASE}/portfolio/linkup`,
+    `${BASE}/portfolio/onetomany`,
+    `${BASE}/portfolio/opengovern`,
   ]);
 });
 
@@ -57,8 +67,11 @@ test("sitemap: the change frequencies and priorities are preserved", () => {
   assert.equal(byUrl.get(`${BASE}/privacy`)?.changeFrequency, "yearly");
   assert.equal(byUrl.get(`${BASE}/privacy`)?.priority, 0.3);
   assert.equal(byUrl.get(`${BASE}/portfolio/aitlas/nova`)?.priority, 0.8);
+  // The entry's URL comes from its href, not its id: the two coincide for
+  // most entries, but the registry does not promise it (tic-tac-toe lives
+  // at /portfolio/tic-tac-toe-disappear).
   assert.equal(
-    byUrl.get(`${BASE}/portfolio/${HOME_PROJECTS[1].id}`)?.priority,
+    byUrl.get(`${BASE}${HOME_PROJECTS[1].href}`)?.priority,
     0.7,
   );
 });
