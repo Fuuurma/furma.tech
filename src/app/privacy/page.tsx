@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { STUDIO_WHO_WE_ARE } from "@/lib/metadata";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/privacy" },
@@ -56,9 +57,7 @@ export default function PrivacyPage() {
                 <SectionHeading>1. Who we are</SectionHeading>
                 <Body>
                   Furma.tech OÜ is a digital studio operating as an Estonian
-                  company (e-Residency). We
-                  build and operate software products including industry SaaS
-                  tools and the Aitlas AI ecosystem.
+                  company (e-Residency). {STUDIO_WHO_WE_ARE}
                 </Body>
                 <p className="font-mono text-small text-foreground/65">
                   Contact:{" "}

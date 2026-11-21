@@ -75,6 +75,7 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { Toaster } from "@/components/ui/sonner";
 import { Section, Container, SectionHeader } from "@/components/ui/Section";
 import { ScrollReveal, StaggerChildren } from "@/components/ui/ScrollReveal";
+import { STUDIO_DESCRIPTION_SHORT } from "@/lib/metadata";
 import {
   ArrowRight, Zap, Settings, LogOut, User, Bold, Italic, Underline,
   Search, Bell, AlertCircle, Info, ChevronDown, ExternalLink, CreditCard,
@@ -852,14 +853,14 @@ function CollapsibleSection() {
                 <CollapsibleTrigger><Button variant="ghost" size="sm"><ChevronDown className={`h-4 w-4 transition-transform ${collapsibleOpen ? "rotate-180" : ""}`} /></Button></CollapsibleTrigger>
               </div>
               <div className="border border-border px-4 py-3 text-sm text-grey-500">
-                A bootstrapped studio building industry-specific SaaS tools and the Aitlas AI ecosystem.
+                {STUDIO_DESCRIPTION_SHORT}
               </div>
             </Collapsible>
           </SectionRow>
           <Separator />
           <SectionRow label="Accordion">
             <Accordion className="max-w-xl">
-              <AccordionItem value="a"><AccordionTrigger>What is Furma.tech?</AccordionTrigger><AccordionContent className="text-sm text-grey-500">A bootstrapped studio building SaaS and AI tools.</AccordionContent></AccordionItem>
+              <AccordionItem value="a"><AccordionTrigger>What is Furma.tech?</AccordionTrigger><AccordionContent className="text-sm text-grey-500">{STUDIO_DESCRIPTION_SHORT}</AccordionContent></AccordionItem>
               <AccordionItem value="b"><AccordionTrigger>What is Aitlas?</AccordionTrigger><AccordionContent className="text-sm text-grey-500">A sovereign AI platform with BYOK architecture and MCP-first design.</AccordionContent></AccordionItem>
               <AccordionItem value="c"><AccordionTrigger>How do I get access?</AccordionTrigger><AccordionContent className="text-sm text-grey-500">Join the waitlist through the contact page.</AccordionContent></AccordionItem>
             </Accordion>

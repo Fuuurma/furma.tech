@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { STUDIO_DESCRIPTION } from "@/lib/metadata";
 
 const WIDTH = 1200;
 const HEIGHT = 630;
@@ -23,7 +24,7 @@ export function GET(request: Request) {
   const title = clampParam(searchParams.get("title"), "Build software that works.");
   const subtitle = clampParam(
     searchParams.get("subtitle"),
-    "Bootstrapped studio building industry-grade SaaS tools and the Aitlas AI ecosystem",
+    STUDIO_DESCRIPTION,
     140,
   );
 

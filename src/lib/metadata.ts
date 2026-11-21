@@ -1,5 +1,23 @@
 import type { Metadata } from "next";
 
+export const STUDIO_DESCRIPTION =
+  "Bootstrapped digital studio building games, tools, and civic tech. Estonian OÜ operating globally.";
+export const STUDIO_DESCRIPTION_SHORT =
+  "Games, tools and civic tech from a bootstrapped studio.";
+export const STUDIO_FOOTER_LINE =
+  "Digital studio building games, tools and civic tech.";
+export const STUDIO_WHO_WE_ARE =
+  "We build and operate software products across games, tools and civic tech.";
+export const STUDIO_KEYWORDS: string[] = [
+  "digital studio",
+  "games",
+  "tools",
+  "civic tech",
+  "bootstrapped",
+  "Estonia",
+  "Sitges",
+];
+
 interface MetadataProps {
   title?: string;
   description?: string;
@@ -12,7 +30,7 @@ interface MetadataProps {
 
 export function constructMetadata({
   title = "Furma.tech — Digital Studio",
-  description = "Bootstrapped studio building industry-grade SaaS tools and the Aitlas AI ecosystem.",
+  description = STUDIO_DESCRIPTION,
   image = getOgImageUrl({ title: "Furma.tech" }),
   icons = "/favicon.ico",
   noIndex = false,

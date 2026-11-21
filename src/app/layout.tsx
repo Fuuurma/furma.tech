@@ -4,6 +4,11 @@ import "./globals.css";
 import { LayoutChrome } from "@/components/LayoutChrome";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Analytics } from "@/components/Analytics";
+import {
+  STUDIO_DESCRIPTION,
+  STUDIO_DESCRIPTION_SHORT,
+  STUDIO_KEYWORDS,
+} from "@/lib/metadata";
 
 const instrument = localFont({
   src: "./fonts/instrument-sans-latin.woff2",
@@ -38,8 +43,8 @@ const jetbrainsMono = localFont({
 
 export const metadata: Metadata = {
   title: "Furma.tech — Digital Studio",
-  description: "Bootstrapped studio building industry-grade SaaS tools and the Aitlas AI ecosystem. Estonian OÜ operating globally.",
-  keywords: ["digital studio", "SaaS", "AI", "Aitlas", "MCP", "bootstrapped", "Estonia"],
+  description: STUDIO_DESCRIPTION,
+  keywords: STUDIO_KEYWORDS,
   authors: [{ name: "Furma.tech OÜ" }],
   metadataBase: new URL("https://furma.tech"),
   alternates: {
@@ -47,7 +52,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Furma.tech — Digital Studio",
-    description: "Building software that works. Two verticals: B2B SaaS + Aitlas AI ecosystem.",
+    description: STUDIO_DESCRIPTION_SHORT,
     type: "website",
     locale: "en_US",
     images: ["/og.png"],
@@ -55,7 +60,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Furma.tech — Digital Studio",
-    description: "Building software that works.",
+    description: STUDIO_DESCRIPTION_SHORT,
     images: ["/og.png"],
   },
   robots: {
@@ -73,7 +78,7 @@ const JSON_LD = {
       name: "Furma.tech OÜ",
       url: "https://furma.tech",
       logo: "https://furma.tech/logo.svg",
-      description: "Bootstrapped venture studio building industry-grade SaaS tools and the Aitlas AI ecosystem.",
+      description: STUDIO_DESCRIPTION,
     },
     {
       "@type": "WebSite",

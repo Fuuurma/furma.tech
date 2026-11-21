@@ -1,5 +1,5 @@
 {
-  "total": 2288,
+  "total": 2301,
   "files": {
     "eslint.config.mjs": 4,
     "scripts/check-comments.mjs": 21,
@@ -97,11 +97,12 @@
     "tests/showcase-films.test.ts": 6,
     "tests/sitemap.test.ts": 16,
     "tests/small-items.test.ts": 10,
+    "tests/studio-copy.test.ts": 13,
     "tests/styleguide-component-grid.test.ts": 15,
     "tests/styleguide.test.ts": 13,
     "tests/type-contrast.test.ts": 35,
     "tests/type-ladder.test.ts": 20,
     "tests/water-volume.test.ts": 22
   },
-  "updatedAt": "2026-11-21T23:48:15.910Z"
+  "updatedAt": "2026-11-21T23:54:48.862Z"
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { HOME_PROJECTS } from "@/lib/home-projects";
+import { STUDIO_FOOTER_LINE } from "@/lib/metadata";
 
 /** Plastic-styled site footer for non-portfolio studio routes (brand, privacy, etc.). */
 export function StudioSiteFooter() {
@@ -10,8 +11,7 @@ export function StudioSiteFooter() {
           <div className="md:col-span-4">
             <p className="plastic-label mb-4">Furma.tech</p>
             <p className="font-sans text-body leading-relaxed text-foreground/65 max-w-sm">
-              Digital studio building industry SaaS and the Aitlas AI
-              ecosystem.
+              {STUDIO_FOOTER_LINE}
             </p>
           </div>
           <div className="md:col-span-4 md:col-start-6">
