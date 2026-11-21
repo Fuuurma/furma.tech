@@ -38,7 +38,7 @@ pnpm dev          # Start dev server (http://127.0.0.1:3080)
 pnpm dev --turbo  # Force Turbopack (the default in Next 16)
 pnpm build        # Production build
 pnpm start        # Start production server
-pnpm lint         # Run ESLint
+pnpm lint         # Comment ratchet (scripts/check-comments.mjs), then ESLint
 pnpm test         # node:test contract suites in tests/
 pnpm test:smoke   # Runtime smoke gate (needs pnpm start on :3080)
 ```
@@ -258,7 +258,7 @@ test("the contract holds", () => {
 ## 9. Before Committing
 
 ```bash
-pnpm lint   # ESLint check
+pnpm lint   # Comment ratchet, then ESLint check
 pnpm test   # node:test contract suites
 pnpm build  # Production build
 ```

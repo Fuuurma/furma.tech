@@ -21,7 +21,6 @@
   --text-body: 15px;
 }
 
-/* Accessibility: Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -74,7 +73,6 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Grey scale - Monochrome */
   --color-grey-50: var(--grey-50);
   --color-grey-100: var(--grey-100);
   --color-grey-200: var(--grey-200);
@@ -86,7 +84,6 @@
   --color-grey-800: var(--grey-800);
   --color-grey-900: var(--grey-900);
 
-  /* Monochrome Furma palette (Replacing colored accents) */
   --color-amber: var(--foreground);
   --color-amber-400: var(--grey-400);
   --color-amber-500: var(--foreground);
@@ -196,7 +193,6 @@
   --input: oklch(0.9 0 0);
   --ring: oklch(0 0 0);
 
-  /* Grey scale - Light */
   --grey-50: oklch(0.98 0 0);
   --grey-100: oklch(0.96 0 0);
   --grey-200: oklch(0.92 0 0);
@@ -265,7 +261,6 @@
   --input: oklch(0.2 0.005 75);
   --ring: oklch(0.98 0.005 75);
 
-  /* Grey scale - Dark with warm tint */
   --grey-50: oklch(0.08 0.005 75);
   --grey-100: oklch(0.12 0.005 75);
   --grey-200: oklch(0.18 0.005 75);
@@ -333,7 +328,6 @@ body {
   transform: translateY(0);
 }
 
-/* Enhanced reveal animations with directions */
 .reveal-up {
   opacity: 0;
   transform: translateY(20px);
@@ -407,7 +401,6 @@ body {
 }
 
 
-/* Focus styles for accessibility */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -519,23 +512,19 @@ select:focus-visible {
   outline-offset: 3px;
 }
 
-/* Improved link transitions */
 a {
   transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
-/* Selection */
 ::selection {
   background-color: var(--foreground);
   color: var(--background);
 }
 
-/* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
 }
 
-/* Section spacing utility */
 .section {
   padding: 100px 0;
 }
@@ -546,7 +535,6 @@ html {
   }
 }
 
-/* Professional Animations */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-4px); }
@@ -576,7 +564,6 @@ html {
   background-size: 1000px 100%;
 }
 
-/* Professional Card Effects */
 .card-elevated {
   border: 1px solid var(--border);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -587,7 +574,6 @@ html {
   transform: translateY(-2px);
 }
 
-/* Monochrome badge styles */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -597,7 +583,7 @@ html {
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  border-radius: 2px; /* Sharper */
+  border-radius: 2px;
   transition: all 0.2s ease;
 }
 
@@ -620,7 +606,6 @@ html {
   background: var(--foreground);
 }
 
-/* AI Company UI Accents - Monochrome */
 .gradient-border {
   position: relative;
   border: 1px solid var(--border);
@@ -646,7 +631,6 @@ html {
   border-color: var(--foreground);
 }
 
-/* Glassmorphism & Interaction Variables */
 :root {
   --glass-bg: oklch(1 0 0 / 0.8);
   --glass-border: 1px solid oklch(0 0 0 / 0.08);
@@ -659,7 +643,6 @@ html {
   --glass-border: 1px solid oklch(1 0 0 / 0.15);
 }
 
-/* Base Interaction Classes */
 .glass {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
@@ -670,7 +653,6 @@ html {
   transition: all 0.5s var(--ease-spring);
 }
 
-/* Pulse Animation */
 @keyframes pulse-subtle {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.95; transform: scale(0.99); }
@@ -694,7 +676,6 @@ html {
   opacity: 0.1;
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -711,7 +692,6 @@ html {
   background: var(--grey-500);
 }
 
-/* Hide scrollbar utility */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
