@@ -5,10 +5,6 @@ import { LayoutChrome } from "@/components/LayoutChrome";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Analytics } from "@/components/Analytics";
 
-// The face the site is set in. It was Syne, whose `g` has a severed descender
-// by design — the Google Fonts original draws it the same way, so it is not a
-// rendering bug, it is the typeface, and at any size it reads as an unfinished
-// letter. Furma's 2026-10-27 call: every letter has to finish.
 const instrument = Instrument_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -38,11 +34,6 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   display: "swap",
 });
-
-// F99: the shared card is the designed asset — public/og.png, the 1200x630
-// render of the real hero (DESIGN.md). The dynamic /og route stays for
-// per-title cards (product pages, Aitlas); the root card must not re-render
-// the retired "Digital Venture Studio" template.
 
 export const metadata: Metadata = {
   title: "Furma.tech — Digital Studio",

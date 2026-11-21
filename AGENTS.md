@@ -38,7 +38,8 @@ pnpm dev          # Start dev server (http://127.0.0.1:3080)
 pnpm dev --turbo  # Force Turbopack (the default in Next 16)
 pnpm build        # Production build
 pnpm start        # Start production server
-pnpm lint         # Run ESLint
+pnpm lint         # Run ESLint + no-new-comments ratchet (scripts/check-comments.mjs)
+pnpm check:comments  # Comment ratchet only (baseline: scripts/comment-baseline.json)
 pnpm test         # node:test contract suites in tests/
 pnpm test:smoke   # Runtime smoke gate (needs pnpm start on :3080)
 ```
@@ -322,6 +323,8 @@ refactor/<short-description> # Code improvements
 | `src/lib/utils.ts` | `cn()` utility for Tailwind class merging |
 | `src/components/ThemeProvider.tsx` | Dark mode state management |
 | `eslint.config.mjs` | ESLint config (Next core-web-vitals + TypeScript) |
+| `scripts/check-comments.mjs` | No-new-comments ratchet; baseline in `scripts/comment-baseline.json` |
+| `ARCHITECTURE.md` | Module map + `## Decisions` (durable technical decisions) |
 
 ### Engineering foundation
 

@@ -620,7 +620,6 @@ html {
   background: var(--foreground);
 }
 
-/* AI Company UI Accents - Monochrome */
 .gradient-border {
   position: relative;
   border: 1px solid var(--border);
