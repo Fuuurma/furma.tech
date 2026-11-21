@@ -66,6 +66,41 @@ region, so a swipe that begins inside it scrolls the entry instead of advancing
 the tour. V1 motion reads media preference through the SSR-safe hook so server
 markup and the first client render agree.
 
+## The type is self-hosted, and the sans face has to finish (2026-11-21)
+
+The v1 chrome is set in Instrument Sans (sans), Cormorant (serif, normal and
+italic) and JetBrains Mono; v2 adds Archivo (display, width axis), Source
+Serif 4 and Geist Mono. The sans role previously belonged to Syne, whose `g`
+has a severed descender by design — the Google Fonts original draws it the
+same way, so what looked like a rendering bug was the typeface, and at any
+size it read as an unfinished letter. The 2026-10-27 call: every letter has
+to finish, so the faces were replaced.
+
+All faces ship as committed latin woff2 files under `src/app/fonts/` and load
+through `next/font/local`. Builds must not fetch fonts at build time: the
+merge gate cannot reach fonts.googleapis.com, so a build-time fetch turns
+every offline build into a hard failure. The files are the same latin
+variable-font subsets Google serves, so rendering is unchanged, and Archivo
+declares `font-stretch: 62% 125%` because v2.css asks for 125%. Italic
+Cormorant is declared with `preload: false`: only the brand and styleguide
+routes use it, and preloading it from every page would spend the global
+preload budget on a face most pages never need.
+
+## The root share card is the designed asset (2026-11-21)
+
+The share card at the site root is `public/og.png` — the 1200x630 render of
+the real hero, not a generated image. The dynamic `/og` route stays for
+per-title cards (product pages, Aitlas); the root card must not re-render the
+retired "Digital Venture Studio" template (F99).
+
+## The JSON-LD payload is escaped to unicode sequences (2026-11-21)
+
+The `application/ld+json` payload in the root layout is rewritten to
+`\\u0026`, `\\u003c` and `\\u003e` before it is inlined. `JSON.stringify` is
+not HTML-safe: a `<` in the data could close the script tag from inside.
+Escaping to JSON unicode sequences keeps the parsed payload identical while
+making the inline text unable to break out of the tag.
+
 ## The way in — plate, contents, address (2026-10-26)
 
 A look at the live home, section by section, found five things the contract
