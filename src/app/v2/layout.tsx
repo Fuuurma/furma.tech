@@ -1,24 +1,31 @@
 import type { Metadata } from "next";
-import { Archivo, Source_Serif_4, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./v2.css";
 
-const archivo = Archivo({
-  subsets: ["latin"],
+const archivo = localFont({
+  src: [
+    { path: "../fonts/archivo-latin-normal.woff2", style: "normal" },
+    { path: "../fonts/archivo-latin-italic.woff2", style: "italic" },
+  ],
+  weight: "100 900",
   variable: "--font-v2-display",
   display: "swap",
-  style: ["normal", "italic"],
-  axes: ["wdth"],
+  declarations: [{ prop: "font-stretch", value: "62% 125%" }],
 });
 
-const sourceSerif = Source_Serif_4({
-  subsets: ["latin"],
+const sourceSerif = localFont({
+  src: [
+    { path: "../fonts/source-serif-4-latin-normal.woff2", style: "normal" },
+    { path: "../fonts/source-serif-4-latin-italic.woff2", style: "italic" },
+  ],
+  weight: "200 900",
   variable: "--font-v2-serif",
   display: "swap",
-  style: ["normal", "italic"],
 });
 
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
+const geistMono = localFont({
+  src: "../fonts/geist-mono-latin.woff2",
+  weight: "100 900",
   variable: "--font-v2-mono",
   display: "swap",
 });

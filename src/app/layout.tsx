@@ -1,55 +1,46 @@
 import type { Metadata } from "next";
-import { Cormorant, Instrument_Sans, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { LayoutChrome } from "@/components/LayoutChrome";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Analytics } from "@/components/Analytics";
 
-// The face the site is set in. It was Syne, whose `g` has a severed descender
-// by design — the Google Fonts original draws it the same way, so it is not a
-// rendering bug, it is the typeface, and at any size it reads as an unfinished
-// letter. Furma's 2026-10-27 call: every letter has to finish.
-const instrument = Instrument_Sans({
-  subsets: ["latin"],
+const instrument = localFont({
+  src: "./fonts/instrument-sans-latin.woff2",
+  weight: "400 700",
   variable: "--font-sans",
   display: "swap",
 });
 
-const cormorant = Cormorant({
-  subsets: ["latin"],
-  weight: ["400", "600"],
+const cormorant = localFont({
+  src: "./fonts/cormorant-latin-normal.woff2",
+  weight: "300 700",
+  style: "normal",
   variable: "--font-serif",
   display: "swap",
-  style: "normal",
 });
 
-// Italic Cormorant is used on the brand and styleguide routes, so keep it out of the global preload.
-const cormorantItalic = Cormorant({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
+const cormorantItalic = localFont({
+  src: "./fonts/cormorant-latin-italic.woff2",
+  weight: "300 700",
+  style: "italic",
   variable: "--font-serif",
   display: "swap",
-  style: "italic",
   preload: false,
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
+const jetbrainsMono = localFont({
+  src: "./fonts/jetbrains-mono-latin.woff2",
+  weight: "100 800",
   variable: "--font-mono",
   display: "swap",
 });
-
-// F99: the shared card is the designed asset — public/og.png, the 1200x630
-// render of the real hero (DESIGN.md). The dynamic /og route stays for
-// per-title cards (product pages, Aitlas); the root card must not re-render
-// the retired "Digital Venture Studio" template.
 
 export const metadata: Metadata = {
   title: "Furma.tech — Digital Studio",
   description: "Bootstrapped studio building industry-grade SaaS tools and the Aitlas AI ecosystem. Estonian OÜ operating globally.",
   keywords: ["digital studio", "SaaS", "AI", "Aitlas", "MCP", "bootstrapped", "Estonia"],
   authors: [{ name: "Furma.tech OÜ" }],
-  // Relative share-image URLs resolve against this.
   metadataBase: new URL("https://furma.tech"),
   alternates: {
     canonical: "/",
@@ -94,8 +85,6 @@ const JSON_LD = {
   ],
 };
 
-// JSON.stringify is not HTML-safe: a `<` in the data could close the script
-// tag. Escaping to JSON unicode sequences keeps the parsed payload identical.
 const JSON_LD_SCRIPT = JSON.stringify(JSON_LD)
   .replace(/&/g, "\\u0026")
   .replace(/</g, "\\u003c")
