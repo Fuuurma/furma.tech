@@ -23,8 +23,8 @@ the visual contract.
   `halftone.ts` (the house screen: the ordered threshold, the ink ceiling,
   the measured dot radii and glyph ladder, the reserve model),
   `wave-field.ts` (the hero's wave: a warped, ridged noise field),
-  `fluid.ts` (the footer's water: a PIC/FLIP particle fluid on the
-  character's own lattice),
+  `water.ts` (the footer's sea: a 1-D shallow-water solver, one column per
+  character, printed by `liquid-ascii-tw.tsx`),
   `screen-reserves.ts` (reads the blocks of type the ink
   must avoid), `use-reduced-motion.ts` (SSR-stable reduced-motion
   preference)
@@ -34,5 +34,37 @@ the visual contract.
 - `src/components/liquid-ascii-tw.tsx` — the footer's screen: a body of
   water printed in characters (React Bits Pro `Liquid Ascii`, prop API
   verbatim)
-- `src/hooks/` — `use-mobile.ts`, `useScroll.ts`, `useAgentNavigation.ts`
+- `src/hooks/` — `useScroll.ts`
 - `scripts/smoke.mjs` — post-build smoke check
+
+## Decisions
+
+Durable technical decisions live here (migrated from source comments in
+the 2026-11-21 comment audit; see `reports/comment-audit-bootstrap-2026-11-21.md`).
+
+- **House face is Instrument Sans, not Syne.** Syne's `g` has a severed
+  descender by design — the Google Fonts original draws it the same way —
+  and at any size it reads as an unfinished letter. 2026-10-27 call:
+  every letter has to finish. Cormorant and JetBrains Mono keep the
+  serif/mono roles.
+- **The footer's sea is shallow water, not a particle fluid.** A PIC/FLIP
+  fluid was built first and dropped on measurement: on a collocated grid
+  it creeps, and in five seconds of simulation it lost ~94% of its volume
+  and collapsed (`tests/water-volume.test.ts` pins the bound). The
+  shallow-water form conserves volume by construction — the flow between
+  two columns is one number that leaves one and enters the next.
+- **The sitemap omits `lastModified`.** `buildSitemap` used to stamp every
+  URL with the build time, so the whole site claimed to change on every
+  deploy — noise a crawler learns to ignore. No page carries a real
+  content-modified date; if one ever does, emit it for that page only.
+- **CSP `script-src` keeps `'unsafe-inline'`.** Next.js streams RSC
+  payloads as inline `<script>` and next-themes injects its bootstrap
+  inline; a nonce policy needs middleware this static `next.config.ts`
+  policy does not have. `object-src`, `frame-src`, `base-uri`,
+  `form-action` stay locked and `connect-src`/`img-src` name only the
+  Vercel origins. Tighten only if inline scripts become nonce-able.
+- **Root OG card is the designed `public/og.png`.** A 1200×630 render of
+  the real hero (F99), not a re-render of the retired "Digital Venture
+  Studio" template. The dynamic `/og` ImageResponse route stays for
+  per-title cards on product pages and Aitlas — social crawlers do not
+  rasterize SVG and each title needs its own words.

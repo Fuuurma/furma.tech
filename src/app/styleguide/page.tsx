@@ -91,7 +91,6 @@ const LONG_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
 });
 
-// ——— Helper: section row layout ———
 function SectionRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-start">
@@ -105,77 +104,54 @@ export default function StyleguidePage() {
   return (
     <TooltipProvider>
     <div className="min-h-screen bg-background text-foreground selection:bg-foreground selection:text-background pb-20">
-      {/* ════ HEADER ════ */}
       <StyleguideHeader />
 
-      {/* ════ 01 / TYPOGRAPHY ════ */}
       <TypographySection />
 
-      {/* ════ 02 / COLORS ════ */}
       <ColorsSection />
 
-      {/* ════ 03 / BUTTONS ════ */}
       <ButtonsSection />
 
-      {/* ════ 04 / BADGES ════ */}
       <BadgesSection />
 
-      {/* ════ 05 / CARDS ════ */}
       <CardsSection />
 
-      {/* ════ 06 / INPUTS & FORMS ════ */}
       <InputsSection />
 
-      {/* ════ 07 / TOGGLE & TOGGLE GROUP ════ */}
       <ToggleSection />
 
-      {/* ════ 08 / OVERLAYS ════ */}
       <OverlaysSection />
 
-      {/* ════ 09 / DROPDOWN & MENUS ════ */}
       <MenusSection />
 
-      {/* ════ 10 / DATA DISPLAY ════ */}
       <DataDisplaySection />
 
-      {/* ════ 11 / CALENDAR ════ */}
       <CalendarSection />
 
-      {/* ════ 12 / COLLAPSIBLE & ACCORDION ════ */}
       <CollapsibleSection />
 
-      {/* ════ 13 / TABS ════ */}
       <TabsSection />
 
-      {/* ════ 14 / ALERTS & SONNER ════ */}
       <AlertsSection />
 
-      {/* ════ 15 / MEDIA CONTROLS ════ */}
       <MediaControlsSection />
 
-      {/* ════ 16 / SECURITY ════ */}
       <SecuritySection />
 
-      {/* ════ 17 / CAROUSEL ════ */}
       <CarouselSection />
 
-      {/* ════ 18 / LAYOUT ════ */}
       <LayoutSection />
 
-      {/* ════ 19 / CSS EFFECTS ════ */}
       <CssEffectsSection />
 
-      {/* ════ 20 / COMPONENT REFERENCE ════ */}
       <ComponentReferenceSection />
 
-      {/* ════ CTA ════ */}
       <CtaSection />
     </div>
     </TooltipProvider>
   );
 }
 
-// ——— Sections ———
 function StyleguideHeader() {
   return (
     <Section variant="dark" className="pt-32 pb-20">

@@ -1,9 +1,5 @@
 import type { MetadataRoute } from 'next';
 
-/**
- * Robots.txt for Furma.tech
- * Controls search engine crawling
- */
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = 'https://furma.tech';
   
@@ -12,7 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        // Disallow admin/internal paths if they exist
         disallow: [
           '/api/',
           '/styleguide',
@@ -63,7 +58,6 @@ export default function robots(): MetadataRoute.Robots {
           'Webzio-Extended',
           'YouBot',
         ],
-        // Allow AI bots but with restrictions
         disallow: [
           '/api/',
           '/styleguide',

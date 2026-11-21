@@ -83,18 +83,12 @@ export const bookingSchema = z.object({
 
 export type BookingData = z.infer<typeof bookingSchema>;
 
-/**
- * Validation result type
- */
 export interface ValidationResult<T> {
   success: boolean;
   data?: T;
   errors?: Record<string, string[]>;
 }
 
-/**
- * Validate form data against schema
- */
 export function validateForm<T>(
   schema: z.ZodSchema<T>,
   data: unknown
@@ -108,7 +102,6 @@ export function validateForm<T>(
     };
   }
 
-  // Format errors as field: [messages]
   const errors: Record<string, string[]> = {};
   result.error.issues.forEach((issue) => {
     const path = issue.path.join('.') || 'root';

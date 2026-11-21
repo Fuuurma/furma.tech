@@ -21,9 +21,7 @@
  * - **The surface can be pushed.** The pointer is a hand in the water: it
  *   dimples the surface, drags it, and can strike it.
  *
- * The solver is deliberately small. A particle fluid was tried here first and
- * dropped: on a collocated grid it creeps, and a body of water that slowly
- * compresses into its own floor is a worse picture than no picture at all.
+ * The solver is deliberately small.
  */
 
 export interface WaterConfig {
