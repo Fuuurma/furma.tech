@@ -1442,9 +1442,9 @@ html.light {
 }
 
 /* The public opening is one centred line on the wave: the studio's name, and
-   the two ways in at the foot of the plate. The frame is the hero's black plate
-   and carries the wave; the entry is the scroll region above it, so a swipe
-   inside it scrolls the entry rather than advancing the tour. */
+   the two ways in at the foot of the plate — the tour solid, the letter
+   quiet. The frame carries the wave; the entry is the scroll region above
+   it, so a swipe inside it scrolls the entry, not the tour. */
 .plastic-entry-frame {
   position: relative;
   height: 100%;
@@ -1534,6 +1534,26 @@ html.light {
 
 .plastic-entry .plastic-cta--quiet {
   font-size: var(--text-small);
+}
+
+.plastic-entry .plastic-cta--primary {
+  min-height: 48px;
+  padding: 0 22px;
+  gap: 14px;
+  font-size: var(--text-small);
+  letter-spacing: 0.1em;
+  color: var(--entry-paper);
+  background: var(--entry-ink);
+  border: 1px solid var(--entry-ink);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.plastic-entry .plastic-cta--primary:hover {
+  color: var(--entry-ink);
+  background: transparent;
 }
 
 .plastic-entry .plastic-cta:focus-visible {
