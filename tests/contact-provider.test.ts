@@ -12,6 +12,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   resolveContactProvider,
   submitToProvider,
@@ -20,6 +21,11 @@ import {
   checkRateLimit,
   __resetRateLimiterForTests,
 } from "../src/lib/rate-limit.ts";
+
+const readme = readFileSync(
+  new URL("../README.md", import.meta.url),
+  "utf8",
+);
 
 test("resolveContactProvider: unconfigured when URL is absent or blank", () => {
   assert.equal(resolveContactProvider({}).configured, false);
@@ -300,4 +306,15 @@ test("checkRateLimit: window slides so requests recover after it expires", () =>
     true,
     "after the window passes the identifier is allowed again",
   );
+});
+
+test("README documents the env vars that enable the durable provider", () => {
+  assert.ok(readme.includes("CONTACT_PROVIDER_URL"));
+  assert.ok(readme.includes("CONTACT_PROVIDER_TOKEN"));
+});
+
+test("README documents the acknowledgment contract and fail-closed copy", () => {
+  assert.ok(readme.includes("acknowledged"));
+  assert.ok(readme.includes("provider-acknowledgment-missing"));
+  assert.ok(readme.includes("hello@furma.tech"));
 });
