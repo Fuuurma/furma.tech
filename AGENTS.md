@@ -27,7 +27,7 @@ Alternate UI concept: `/v2` — "The Workshop" (warm editorial, self-contained: 
 
 Core ethos: 0% VC, profitable before flashy, "build software that works."
 
-**Stack:** Next.js 16.4.2 | React 19.2.8 | TypeScript (strict) | Tailwind v4 | Zod | Base UI | Lucide
+**Stack:** Next.js 16.4.6 | React 19.2.8 | TypeScript (strict) | Tailwind v4 | Zod | Base UI | Lucide
 
 ---
 

@@ -19,7 +19,7 @@ This file provides essential context, architecture overview, and development sta
 The project is built with a focus on performance, scalability, and a minimalist, high-end "monochrome" aesthetic.
 
 ### Core Technology Stack
-- **Framework:** Next.js 16.4.2 (App Router)
+- **Framework:** Next.js 16.4.6 (App Router)
 - **Library:** React 19
 - **Language:** TypeScript (Strict Mode)
 - **Styling:** Tailwind CSS v4

@@ -16,7 +16,7 @@
 
 Core ethos: **0% VC, profitable before flashy, "build software that works."**
 
-This is a **Next.js 16.4 website** using the App Router, serving as the corporate site and developer portal. It features a custom design system with semantic CSS variables, scroll-triggered animations, glass effects, and dark mode support.
+This is a **Next.js 16.4.6 website** using the App Router, serving as the corporate site and developer portal. It features a custom design system with semantic CSS variables, scroll-triggered animations, glass effects, and dark mode support.
 
 ---
 
@@ -24,7 +24,7 @@ This is a **Next.js 16.4 website** using the App Router, serving as the corporat
 
 | Category | Technology |
 |----------|------------|
-| Framework | Next.js 16.4.2 (App Router) |
+| Framework | Next.js 16.4.6 (App Router) |
 | UI | React 19.2.8 |
 | Language | TypeScript (strict mode) |
 | Styling | Tailwind CSS v4 |

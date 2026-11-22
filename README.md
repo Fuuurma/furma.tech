@@ -11,7 +11,7 @@
 
 ## Stack
 
-Next.js 16.4 (App Router) | React 19.2 | TypeScript (strict) | Tailwind CSS v4 | Zod | Base UI | Lucide
+Next.js 16.4.6 (App Router) | React 19.2 | TypeScript (strict) | Tailwind CSS v4 | Zod | Base UI | Lucide
 
 ---
 
