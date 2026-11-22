@@ -40,7 +40,7 @@ export interface ShowcaseEntry {
   film: ShowcaseFilm;
   name: string;
   kind: string;
-  status: "In Development" | "Paused" | "Roadmap";
+  status: "In Development" | "Paused" | "Roadmap" | "Beta" | "Prototype";
   /** What the film shows, in one line. */
   line: string;
   /** Case-study page, when the product has one. */
@@ -56,7 +56,7 @@ const entry = (
   href?: string,
 ): ShowcaseEntry => ({ film: film(slug, name), name, kind, status, line, href });
 
-/** Every product film, in the order /showcase lists them. */
+/** Every product film - the full record the case pages draw on. */
 export const SHOWCASE_INDEX: ShowcaseEntry[] = [
   entry("aitlas", "Aitlas", "AI infrastructure", "In Development", "A bring-your-own key wires Nova, Nexus and Agents; a task survives a server restart.", "/portfolio/aitlas"),
   entry("restauramanager", "restauManager", "Hospitality SaaS", "In Development", "Bookings from four channels land on an illustrative floor plan, then the pass rail.", "/portfolio/restauramanager"),
@@ -78,4 +78,10 @@ export const SHOWCASE_INDEX: ShowcaseEntry[] = [
   entry("onetomany", "OneToMany", "Productivity", "Paused", "One goal, many people moving it.", "/portfolio/onetomany"),
   entry("linkup", "LinkUp", "Social", "Paused", "Random or contact connections, then chat, video or voice.", "/portfolio/linkup"),
   entry("pickstracker", "PicksTracker", "Sports", "Roadmap", "Filter tipsters by sport across seven per-sport APIs.", "/portfolio/pickstracker"),
+];
+
+export const CURRENT_SHOWCASE: ShowcaseEntry[] = [
+  entry("tictactoe", "Tic-Tac-Toe", "Games", "Beta", "Three marks each; X's expired mark opens O's winning line.", "/portfolio/tic-tac-toe-disappear"),
+  entry("qart", "QArt", "Marketing", "In Development", "A plain QR code is painted into art, then scanned.", "/portfolio/qart"),
+  entry("puta-renfe", "Renfe", "Civic Tech", "In Development", "Renfe reliability from official open data: delays, cancellations, skipped stops.", "/portfolio/putarenfe"),
 ];

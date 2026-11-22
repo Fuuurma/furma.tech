@@ -35,7 +35,7 @@ test("every case page projectId has a showcase film", () => {
   }
 });
 
-test("/showcase lists every case-page film and links each case study", () => {
+test("SHOWCASE_INDEX records every case-page film and links each case study", () => {
   const listed = new Set(SHOWCASE_INDEX.map((e) => e.film.mp4));
   for (const film of Object.values(SHOWCASE_FILMS)) {
     assert.ok(listed.has(film.mp4), `${film.mp4} missing from SHOWCASE_INDEX`);

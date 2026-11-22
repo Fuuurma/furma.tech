@@ -79,7 +79,7 @@ for (const project of HOME_PROJECTS) {
 const REQUIRED_ROUTES = [
   { path: "/", heading: "furma.tech" },
   { path: "/portfolio", heading: "products" },
-  { path: "/showcase", heading: "Every product, in motion", strictHeading: true },
+  { path: "/showcase", heading: "Current work, in motion", strictHeading: true },
   ...HOME_PROJECTS.map((p) => ({
     path: p.href,
     heading: CATALOGUE_HEADINGS[p.href],
