@@ -90,7 +90,7 @@ export default function RenfePage() {
       <ProjectCTA
         title="Not public yet"
         description="The Renfe dashboard is in development. Write if you want to be told when it opens."
-        primaryHref="/#contact"
+        primaryHref="/#contact?interest=putarenfe"
         primaryLabel="Get updates"
         secondaryHref="/portfolio"
         secondaryLabel="Back to Portfolio"

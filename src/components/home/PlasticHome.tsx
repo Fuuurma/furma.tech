@@ -426,12 +426,52 @@ function ContactFields({
   );
 }
 
+const CONTACT_INTEREST_FIELD = contactFormSchema.shape.interest;
+
+function interestFromFragment(hash: string): string | null {
+  const q = hash.indexOf("?");
+  if (q < 0) return null;
+  return new URLSearchParams(hash.slice(q + 1)).get("interest");
+}
+
+function readInterestParam(): string | null {
+  if (typeof window === "undefined") return null;
+  const fromSearch = new URLSearchParams(window.location.search).get(
+    "interest",
+  );
+  return fromSearch || interestFromFragment(window.location.hash);
+}
+
+function coerceInterest(raw: string | null): string {
+  if (!raw) return "all";
+  const parsed = CONTACT_INTEREST_FIELD.safeParse(raw);
+  return parsed.success ? parsed.data : "all";
+}
+
+function migrateFragmentInterest() {
+  const hash = window.location.hash;
+  if (!hash.startsWith("#contact")) return; // CTA params ride inside the fragment
+  const fragmentInterest = interestFromFragment(hash);
+  if (fragmentInterest === null) return;
+  const params = new URLSearchParams(window.location.search);
+  const interest = coerceInterest(fragmentInterest);
+  if (interest === "all") params.delete("interest");
+  else params.set("interest", interest);
+  const qs = params.toString();
+  window.history.replaceState(
+    null,
+    "",
+    `${window.location.pathname}${qs ? `?${qs}` : ""}#contact`,
+  );
+}
+
 // The address is the contact's headline: one tap opens a mail client, and a
 // second control copies it for the reader who has none.
 function ContactSlide({ isActive }: { isActive: boolean }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle",
   );
+  const [interest, setInterest] = useState("all");
   const [errorMessage, setErrorMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [sentTo, setSentTo] = useState("");
@@ -471,6 +511,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
       email: String(fd.get("email") ?? ""),
       company: "",
       subject: String(fd.get("subject") ?? "general"),
+      interest: String(fd.get("interest") ?? "all") || "all",
       message: String(fd.get("message") ?? ""),
       newsletter: false,
     };
@@ -524,7 +565,18 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
     if (status === "sent") statusRef.current?.focus();
   }, [status]);
 
+  useEffect(() => {
+    const syncInterest = () => {
+      migrateFragmentInterest();
+      setInterest(coerceInterest(readInterestParam()));
+    };
+    syncInterest();
+    window.addEventListener("hashchange", syncInterest);
+    return () => window.removeEventListener("hashchange", syncInterest);
+  }, []);
+
   const fieldsLocked = status === "sending";
+  const interestProject = HOME_PROJECTS.find((p) => p.id === interest);
 
   return (
     <div
@@ -564,6 +616,12 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                 aria-busy={status === "sending"}
               >
                 <input type="hidden" name="subject" value="general" />
+                <input type="hidden" name="interest" value={interest} />
+                {interestProject && (
+                  <p className="plastic-letter__hint">
+                    You&apos;re writing about {interestProject.name}.
+                  </p>
+                )}
 
                 <ContactFields
                   fieldErrors={fieldErrors}

@@ -19,6 +19,21 @@ export const contactFormSchema = z.object({
     .enum(["partnership", "general"])
     .optional()
     .default("general"),
+  // The six HOME_PROJECTS ids (src/lib/home-projects.ts) plus "all", kept
+  // literal so schemas stay dependency-free; tests/contact-interest.test.ts
+  // pins parity with the catalogue.
+  interest: z
+    .enum([
+      "tic-tac-toe",
+      "gambit-deck",
+      "pond",
+      "qart",
+      "bloxs",
+      "putarenfe",
+      "all",
+    ])
+    .optional()
+    .default("all"),
   message: z
     .string()
     .min(10, "Message must be at least 10 characters")

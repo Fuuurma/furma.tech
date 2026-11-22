@@ -101,11 +101,15 @@ function fieldErrorMap(
 export async function submitContactForm(
   formData: FormData,
 ): Promise<ServerActionResponse> {
+  const interestResult = contactFormSchema.shape.interest.safeParse(
+    String(formData.get("interest") ?? "") || undefined,
+  );
   const data = {
     name: String(formData.get("name") ?? ""),
     email: String(formData.get("email") ?? ""),
     company: String(formData.get("company") ?? "") || "",
     subject: String(formData.get("subject") ?? "general") || "general",
+    interest: interestResult.success ? interestResult.data : "all",
     message: String(formData.get("message") ?? ""),
     newsletter: formData.get("newsletter") === "on",
   };
@@ -136,6 +140,7 @@ export async function submitContactForm(
     email: data.email,
     company: data.company,
     subject: data.subject,
+    interest: data.interest,
     message: data.message,
     newsletter: data.newsletter,
   };

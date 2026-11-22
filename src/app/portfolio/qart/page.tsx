@@ -63,7 +63,7 @@ export default function QArtPage() {
       <ProjectCTA
         title="Be first in line"
         description="AI-generated QR codes that look like art while maintaining 100% scannability. Request early access."
-        primaryHref="/#contact"
+        primaryHref="/#contact?interest=qart"
         primaryLabel="Request Access"
         secondaryHref="/portfolio"
         secondaryLabel="Back to Portfolio"

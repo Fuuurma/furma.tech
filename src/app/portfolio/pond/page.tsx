@@ -90,7 +90,7 @@ export default function PondPage() {
       <ProjectCTA
         title="Not open yet"
         description="Pond is in development. Write if you want to be told when it opens."
-        primaryHref="/#contact"
+        primaryHref="/#contact?interest=pond"
         primaryLabel="Get updates"
         secondaryHref="/portfolio"
         secondaryLabel="Back to Portfolio"
