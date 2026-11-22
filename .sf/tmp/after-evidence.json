@@ -1,0 +1,159 @@
+{
+  "label": "after",
+  "baseUrl": "http://127.0.0.1:3080",
+  "checks": [
+    {
+      "name": "[mobile-390] hero section active in first viewport",
+      "ok": true
+    },
+    {
+      "name": "[mobile-390] see CTA fully inside first viewport",
+      "ok": true,
+      "detail": "{\"x\":69.546875,\"y\":772,\"width\":194.1875,\"height\":48}"
+    },
+    {
+      "name": "[mobile-390] see CTA touch target >= 44px tall",
+      "ok": true,
+      "detail": "height=48.0"
+    },
+    {
+      "name": "[mobile-390] see CTA rendered opaque",
+      "ok": true
+    },
+    {
+      "name": "[mobile-390] contact CTA fully inside first viewport",
+      "ok": true,
+      "detail": "{\"x\":287.734375,\"y\":774,\"width\":78.265625,\"height\":44}"
+    },
+    {
+      "name": "[mobile-390] contact CTA touch target >= 44px tall",
+      "ok": true,
+      "detail": "height=44.0"
+    },
+    {
+      "name": "[mobile-390] contact CTA rendered opaque",
+      "ok": true
+    },
+    {
+      "name": "[mobile-390] >=3 non-hue cues separate the CTAs",
+      "ok": true,
+      "detail": "{\"differingCues\":5,\"tallerMinHeight\":4,\"largerFont\":2,\"heavierWeight\":100,\"filledBackground\":true,\"boxedBorder\":false,\"looserSpacing\":-0.06000000000000005}"
+    },
+    {
+      "name": "[mobile-390] keyboard Tab reaches See projects",
+      "ok": true,
+      "detail": "{\"text\":\"See projects ↓\",\"outlineWidth\":\"2px\",\"outlineStyle\":\"solid\",\"outlineColor\":\"lab(0 0 0)\"}"
+    },
+    {
+      "name": "[mobile-390] focus ring visible on See projects",
+      "ok": true,
+      "detail": "outline solid 2px"
+    },
+    {
+      "name": "[mobile-390] Enter on See projects reaches projects section",
+      "ok": true,
+      "detail": "projectsActive=true heroInactive=true"
+    },
+    {
+      "name": "[mobile-390] Contact opens the contact surface",
+      "ok": true
+    },
+    {
+      "name": "[mobile-390] Contact did not submit the form",
+      "ok": true,
+      "detail": "submits=0"
+    },
+    {
+      "name": "[desktop-1440] hero section active in first viewport",
+      "ok": true
+    },
+    {
+      "name": "[desktop-1440] see CTA fully inside first viewport",
+      "ok": true,
+      "detail": "{\"x\":1085.953125,\"y\":794.40625,\"width\":194.1875,\"height\":48}"
+    },
+    {
+      "name": "[desktop-1440] see CTA touch target >= 44px tall",
+      "ok": true,
+      "detail": "height=48.0"
+    },
+    {
+      "name": "[desktop-1440] see CTA rendered opaque",
+      "ok": true
+    },
+    {
+      "name": "[desktop-1440] contact CTA fully inside first viewport",
+      "ok": true,
+      "detail": "{\"x\":1304.140625,\"y\":796.40625,\"width\":78.265625,\"height\":44}"
+    },
+    {
+      "name": "[desktop-1440] contact CTA touch target >= 44px tall",
+      "ok": true,
+      "detail": "height=44.0"
+    },
+    {
+      "name": "[desktop-1440] contact CTA rendered opaque",
+      "ok": true
+    },
+    {
+      "name": "[desktop-1440] >=3 non-hue cues separate the CTAs",
+      "ok": true,
+      "detail": "{\"differingCues\":5,\"tallerMinHeight\":4,\"largerFont\":2,\"heavierWeight\":100,\"filledBackground\":true,\"boxedBorder\":false,\"looserSpacing\":-0.06000000000000005}"
+    },
+    {
+      "name": "[desktop-1440] keyboard Tab reaches See projects",
+      "ok": true,
+      "detail": "{\"text\":\"See projects ↓\",\"outlineWidth\":\"2px\",\"outlineStyle\":\"solid\",\"outlineColor\":\"lab(0 0 0)\"}"
+    },
+    {
+      "name": "[desktop-1440] focus ring visible on See projects",
+      "ok": true,
+      "detail": "outline solid 2px"
+    },
+    {
+      "name": "[desktop-1440] Enter on See projects reaches projects section",
+      "ok": true,
+      "detail": "projectsActive=true heroInactive=true"
+    },
+    {
+      "name": "[desktop-1440] Contact opens the contact surface",
+      "ok": true
+    },
+    {
+      "name": "[desktop-1440] Contact did not submit the form",
+      "ok": true,
+      "detail": "submits=0"
+    },
+    {
+      "name": "[after] reduced-motion kills CTA transitions",
+      "ok": true,
+      "detail": "plastic-cta plastic-cta--primary: 1e-05s"
+    }
+  ],
+  "screenshots": [
+    "/Users/sergi/Library/Application Support/sf-v2/worktrees/l_01M80QG2RGEJ0H8CZ7K06FGGJ6-e2/.sf/tmp/after-mobile-390-first-viewport.png",
+    "/Users/sergi/Library/Application Support/sf-v2/worktrees/l_01M80QG2RGEJ0H8CZ7K06FGGJ6-e2/.sf/tmp/after-mobile-390-after-see-projects.png",
+    "/Users/sergi/Library/Application Support/sf-v2/worktrees/l_01M80QG2RGEJ0H8CZ7K06FGGJ6-e2/.sf/tmp/after-mobile-390-after-contact.png",
+    "/Users/sergi/Library/Application Support/sf-v2/worktrees/l_01M80QG2RGEJ0H8CZ7K06FGGJ6-e2/.sf/tmp/after-desktop-1440-first-viewport.png",
+    "/Users/sergi/Library/Application Support/sf-v2/worktrees/l_01M80QG2RGEJ0H8CZ7K06FGGJ6-e2/.sf/tmp/after-desktop-1440-after-see-projects.png",
+    "/Users/sergi/Library/Application Support/sf-v2/worktrees/l_01M80QG2RGEJ0H8CZ7K06FGGJ6-e2/.sf/tmp/after-desktop-1440-after-contact.png"
+  ],
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Refused to execute script from 'http://127.0.0.1:3080/_vercel/insights/script.js' because its MIME type ('text/plain') is not executable, and strict MIME type checking is enabled.",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Refused to execute script from 'http://127.0.0.1:3080/_vercel/speed-insights/script.js' because its MIME type ('text/plain') is not executable, and strict MIME type checking is enabled.",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Refused to execute script from 'http://127.0.0.1:3080/_vercel/insights/script.js' because its MIME type ('text/plain') is not executable, and strict MIME type checking is enabled.",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Refused to execute script from 'http://127.0.0.1:3080/_vercel/speed-insights/script.js' because its MIME type ('text/plain') is not executable, and strict MIME type checking is enabled.",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Refused to execute script from 'http://127.0.0.1:3080/_vercel/insights/script.js' because its MIME type ('text/plain') is not executable, and strict MIME type checking is enabled.",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Refused to execute script from 'http://127.0.0.1:3080/_vercel/speed-insights/script.js' because its MIME type ('text/plain') is not executable, and strict MIME type checking is enabled.",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Refused to execute script from 'http://127.0.0.1:3080/_vercel/insights/script.js' because its MIME type ('text/plain') is not executable, and strict MIME type checking is enabled.",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Refused to execute script from 'http://127.0.0.1:3080/_vercel/speed-insights/script.js' because its MIME type ('text/plain') is not executable, and strict MIME type checking is enabled."
+  ]
+}

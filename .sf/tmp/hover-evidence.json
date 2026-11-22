@@ -1,0 +1,13 @@
+{
+  "before": {
+    "bg": "lab(0 0 0)",
+    "color": "lab(100 0 0)",
+    "border": "lab(0 0 0)"
+  },
+  "after": {
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "lab(0 0 0)",
+    "border": "lab(0 0 0)"
+  },
+  "hoverInverts": true
+}

@@ -1,0 +1,11 @@
+{
+  "verdict": "APPROVE",
+  "citations": [
+    "spec: give the project action a clear primary hierarchy in the first viewport, not color alone — src/app/globals.css:1539",
+    "rule: touch targets at least 44px (primary quiet now 48px, both kept ≥44px, 8px gap) — src/app/globals.css:1540",
+    "rule: key repeated same-property smooth transitions stay legible and reduced-motion kills them globally — src/app/globals.css:1549",
+    "rule: key active corner stays the one over pure white (paper), one accent per line — src/app/globals.css:1555",
+    "rule: focus visible — src/app/globals.css:1561",
+    "spec: preserve both destinations; only the See projects affordance changes — src/components/home/PlasticHome.tsx:166"
+  ]
+}
