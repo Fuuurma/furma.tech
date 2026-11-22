@@ -1,5 +1,5 @@
 /**
- * Server actions for contact + waitlist.
+ * Server actions for the contact form.
  *
  * Truthfulness contract (VAL-STATIC-FUR-002 / 003):
  * - Input is always validated; invalid input is rejected with field errors.
@@ -15,7 +15,7 @@
 
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
-import { contactFormSchema, waitlistSchema, validateForm } from "./schemas";
+import { contactFormSchema, validateForm } from "./schemas";
 import { checkScopedRateLimit } from "./rate-limit";
 import {
   resolveContactProvider,
@@ -32,8 +32,6 @@ interface ServerActionResponse<T = unknown> {
 
 const CONTACT_RATE_LIMIT = 5;
 const CONTACT_RATE_WINDOW_MS = 60_000;
-const WAITLIST_RATE_LIMIT = 5;
-const WAITLIST_RATE_WINDOW_MS = 60_000;
 // The caller scope binds the network origin, so rotating addresses cannot
 // dilute the per-address throttle (FURMA-CONTACT-RATE-BOUND-01). Generous
 // enough for a shared office NAT, tight enough that rotation buys nothing.
@@ -74,20 +72,12 @@ async function callerScope(): Promise<string> {
  * before anything is recorded, so a fresh address behind an exhausted
  * caller is still throttled (FURMA-CONTACT-RATE-BOUND-01).
  */
-function contactScopes(
-  channel: "contact" | "waitlist",
-  email: string,
-  caller: string,
-) {
-  const perAddress =
-    channel === "contact"
-      ? { limit: CONTACT_RATE_LIMIT, windowMs: CONTACT_RATE_WINDOW_MS }
-      : { limit: WAITLIST_RATE_LIMIT, windowMs: WAITLIST_RATE_WINDOW_MS };
+function contactScopes(channel: "contact", email: string, caller: string) {
   return [
     {
       key: `${channel}:${email || "anonymous"}`,
-      limit: perAddress.limit,
-      windowMs: perAddress.windowMs,
+      limit: CONTACT_RATE_LIMIT,
+      windowMs: CONTACT_RATE_WINDOW_MS,
     },
     {
       key: `${channel}:caller:${caller}`,
@@ -160,49 +150,5 @@ export async function submitContactForm(
   return {
     success: true,
     data: result.reference ? { messageId: result.reference } : {},
-  };
-}
-
-export async function submitWaitlistSignup(
-  formData: FormData,
-): Promise<ServerActionResponse> {
-  const data = {
-    email: String(formData.get("email") ?? ""),
-    interest: String(formData.get("interest") ?? "all") || "all",
-  };
-
-  const validation = validateForm(waitlistSchema, data);
-  if (validation.errors) {
-    return { success: false, error: "Please enter a valid email address." };
-  }
-
-  const scope = checkScopedRateLimit(
-    contactScopes(
-      "waitlist",
-      rateLimitIdentifier(formData),
-      await callerScope(),
-    ),
-  );
-  if (!scope.allowed) {
-    return { success: false, error: RATE_LIMIT_MESSAGE };
-  }
-
-  const result = await submitToProvider(
-    {
-      channel: "waitlist",
-      name: "",
-      email: data.email,
-      message: "",
-      interest: data.interest,
-    },
-    resolveContactProvider(),
-  );
-  if (!result.ok) {
-    return { success: false, error: PROVIDER_UNAVAILABLE_MESSAGE };
-  }
-
-  return {
-    success: true,
-    data: result.reference ? { signupId: result.reference } : {},
   };
 }
