@@ -106,6 +106,7 @@ export async function submitContactForm(
     email: String(formData.get("email") ?? ""),
     company: String(formData.get("company") ?? "") || "",
     subject: String(formData.get("subject") ?? "general") || "general",
+    interest: String(formData.get("interest") ?? "all") || "all",
     message: String(formData.get("message") ?? ""),
     newsletter: formData.get("newsletter") === "on",
   };
@@ -136,6 +137,7 @@ export async function submitContactForm(
     email: data.email,
     company: data.company,
     subject: data.subject,
+    interest: data.interest,
     message: data.message,
     newsletter: data.newsletter,
   };

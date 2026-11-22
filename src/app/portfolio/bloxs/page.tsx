@@ -90,7 +90,7 @@ export default function BloxsPage() {
       <ProjectCTA
         title="Not published yet"
         description="Bloxs is a prototype. Write if you want to see the catalogue when it opens."
-        primaryHref="/#contact"
+        primaryHref="/#contact?interest=bloxs"
         primaryLabel="Get updates"
         secondaryHref="/portfolio"
         secondaryLabel="Back to Portfolio"

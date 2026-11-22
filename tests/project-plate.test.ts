@@ -68,7 +68,7 @@ test("a deep link to #contact is read before the hash is synced", () => {
   // run after the effect that reads the incoming hash, or /#contact (the
   // site's contact address, and the portfolio's "Get in touch") opens the hero.
   const home = readFileSync(root("src/components/home/PlasticHome.tsx"), "utf8");
-  const reads = home.indexOf('if (window.location.hash === "#contact") {\n      preferContactFormFocus');
+  const reads = home.indexOf('if (isContactHash(window.location.hash)) {\n      preferContactFormFocus');
   const syncs = home.indexOf("syncContactHash(activeIndex)");
   assert.ok(reads > 0 && syncs > 0, "both effects must exist");
   assert.ok(reads < syncs, "the hash must be read before it is synced");

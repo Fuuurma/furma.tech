@@ -284,6 +284,29 @@ function PortfolioIndexSlide({
 
 const CONTACT_EMAIL = "hello@furma.tech";
 
+const CONTACT_INTERESTS = new Set<string>([
+  ...HOME_PROJECTS.map((project) => project.id),
+  "all",
+]);
+
+function isContactHash(hash: string): boolean {
+  return hash === "#contact" || hash.startsWith("#contact?");
+}
+
+function contactInterestFromLocation(): string {
+  const hash = window.location.hash;
+  const queryStart = hash.indexOf("?");
+  const hashQuery = queryStart === -1 ? "" : hash.slice(queryStart + 1);
+  const candidates = [
+    new URLSearchParams(hashQuery).get("interest"),
+    new URLSearchParams(window.location.search).get("interest"),
+  ];
+  for (const raw of candidates) {
+    if (raw && CONTACT_INTERESTS.has(raw)) return raw;
+  }
+  return "all";
+}
+
 function ContactSentPanel({
   sentTo,
   statusRef,
@@ -435,6 +458,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [sentTo, setSentTo] = useState("");
+  const [interest, setInterest] = useState("all");
   const formRef = useRef<HTMLFormElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
 
@@ -471,6 +495,7 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
       email: String(fd.get("email") ?? ""),
       company: "",
       subject: String(fd.get("subject") ?? "general"),
+      interest: String(fd.get("interest") ?? "all"),
       message: String(fd.get("message") ?? ""),
       newsletter: false,
     };
@@ -524,7 +549,21 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
     if (status === "sent") statusRef.current?.focus();
   }, [status]);
 
+  useEffect(() => {
+    const syncInterest = () => setInterest(contactInterestFromLocation());
+    syncInterest();
+    window.addEventListener("hashchange", syncInterest);
+    window.addEventListener("popstate", syncInterest);
+    return () => {
+      window.removeEventListener("hashchange", syncInterest);
+      window.removeEventListener("popstate", syncInterest);
+    };
+  }, []);
+
   const fieldsLocked = status === "sending";
+  const interestProject = HOME_PROJECTS.find(
+    (project) => project.id === interest,
+  );
 
   return (
     <div
@@ -564,6 +603,17 @@ function ContactSlide({ isActive }: { isActive: boolean }) {
                 aria-busy={status === "sending"}
               >
                 <input type="hidden" name="subject" value="general" />
+                <input
+                  type="hidden"
+                  name="interest"
+                  value={interest}
+                  readOnly
+                />
+                {interestProject && (
+                  <p className="plastic-letter__hint pt-4">
+                    You&apos;re writing about {interestProject.name}.
+                  </p>
+                )}
 
                 <ContactFields
                   fieldErrors={fieldErrors}
@@ -642,7 +692,7 @@ export default function PlasticHome() {
   const syncContactHash = useCallback((index: number) => {
     if (typeof window === "undefined") return;
     const onContact = index === CONTACT_SECTION;
-    const hasContactHash = window.location.hash === "#contact";
+    const hasContactHash = isContactHash(window.location.hash);
     if (onContact && !hasContactHash) {
       window.history.replaceState(null, "", "#contact");
     } else if (!onContact && hasContactHash) {
@@ -690,13 +740,13 @@ export default function PlasticHome() {
   }, [navigate]);
 
   useEffect(() => {
-    if (window.location.hash === "#contact") {
+    if (isContactHash(window.location.hash)) {
       preferContactFormFocus.current = true;
       navigate(CONTACT_SECTION, { force: true, focus: true });
     }
 
     const handleHashChange = () => {
-      if (window.location.hash === "#contact") {
+      if (isContactHash(window.location.hash)) {
         preferContactFormFocus.current = true;
         navigate(CONTACT_SECTION, { force: true, focus: true });
       }
