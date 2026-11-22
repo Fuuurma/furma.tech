@@ -163,7 +163,7 @@ function HeroSlide({
         </div>
         <div className="plastic-entry-foot">
           <div className="plastic-entry-actions">
-            <button type="button" onClick={onEnterWork} className="plastic-cta plastic-cta--inverse">
+            <button type="button" onClick={onEnterWork} className="plastic-cta plastic-cta--primary">
               See projects <span aria-hidden>↓</span>
             </button>
             <button type="button" onClick={onContact} className="plastic-cta plastic-cta--inverse plastic-cta--quiet">

@@ -1536,6 +1536,28 @@ html.light {
   font-size: var(--text-small);
 }
 
+.plastic-entry .plastic-cta--primary {
+  min-height: 48px;
+  padding: 0.65rem 1.25rem 0.55rem;
+  gap: 14px;
+  font-size: var(--text-body);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--entry-paper);
+  background: var(--entry-ink);
+  border: 1px solid var(--entry-ink);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.plastic-entry .plastic-cta--primary:hover {
+  color: var(--entry-ink);
+  background: transparent;
+  border-color: var(--entry-ink);
+}
+
 .plastic-entry .plastic-cta:focus-visible {
   outline: 2px solid var(--entry-ink);
   outline-offset: 5px;
