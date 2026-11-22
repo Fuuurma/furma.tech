@@ -1,5 +1,5 @@
 {
-  "total": 2288,
+  "total": 2307,
   "files": {
     "eslint.config.mjs": 4,
     "scripts/check-comments.mjs": 21,
@@ -64,7 +64,7 @@
     "src/lib/section-scroll.ts": 20,
     "src/lib/security-headers.ts": 12,
     "src/lib/server-actions.ts": 31,
-    "src/lib/showcase-films.ts": 9,
+    "src/lib/showcase-films.ts": 14,
     "src/lib/sitemap.ts": 22,
     "src/lib/track-event.ts": 4,
     "src/lib/use-reduced-motion.ts": 13,
@@ -94,6 +94,7 @@
     "tests/security-headers.test.ts": 10,
     "tests/self-hosted-fonts.test.ts": 13,
     "tests/share-image.test.ts": 15,
+    "tests/showcase-catalogue.test.ts": 14,
     "tests/showcase-films.test.ts": 6,
     "tests/sitemap.test.ts": 16,
     "tests/small-items.test.ts": 10,
@@ -103,5 +104,5 @@
     "tests/type-ladder.test.ts": 20,
     "tests/water-volume.test.ts": 22
   },
-  "updatedAt": "2026-11-21T23:48:15.910Z"
+  "updatedAt": "2026-11-21T23:59:39.296Z"
 }
