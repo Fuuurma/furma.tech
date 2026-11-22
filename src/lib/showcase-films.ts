@@ -40,7 +40,7 @@ export interface ShowcaseEntry {
   film: ShowcaseFilm;
   name: string;
   kind: string;
-  status: "In Development" | "Paused" | "Roadmap";
+  status: string;
   /** What the film shows, in one line. */
   line: string;
   /** Case-study page, when the product has one. */
@@ -78,4 +78,18 @@ export const SHOWCASE_INDEX: ShowcaseEntry[] = [
   entry("onetomany", "OneToMany", "Productivity", "Paused", "One goal, many people moving it.", "/portfolio/onetomany"),
   entry("linkup", "LinkUp", "Social", "Paused", "Random or contact connections, then chat, video or voice.", "/portfolio/linkup"),
   entry("pickstracker", "PicksTracker", "Sports", "Roadmap", "Filter tipsters by sport across seven per-sport APIs.", "/portfolio/pickstracker"),
+];
+
+/**
+ * The films /showcase lists: current-catalogue products that have one, in
+ * catalogue order. SHOWCASE_INDEX stays the full film record for case
+ * pages; archived work is never listed on the public page (DESIGN.md,
+ * "The catalogue is what is real"). Parity with HOME_PROJECTS is pinned by
+ * tests/showcase-catalogue.test.ts — this module stays import-free so
+ * node:test can load it.
+ */
+export const CURRENT_SHOWCASE: ShowcaseEntry[] = [
+  entry("tictactoe", "Tic-Tac-Toe", "Games", "Beta", "Three marks each; X's expired mark opens O's winning line.", "/portfolio/tic-tac-toe-disappear"),
+  entry("qart", "QArt", "Marketing", "In Development", "A plain QR code is painted into art, then scanned.", "/portfolio/qart"),
+  entry("puta-renfe", "Renfe", "Civic Tech", "In Development", "Renfe reliability from official open data: delays, cancellations, skipped stops.", "/portfolio/putarenfe"),
 ];
